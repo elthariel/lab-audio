@@ -3,8 +3,8 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: raul
-Version: 0.0.0
+Name: CloWidget
+Version: 0.0.1
 Description: A C++ GTKMM GUI Library
-Libs:
+Libs: -lclowidget
 Cflags: -I${includedir}
