@@ -24,13 +24,13 @@
 
 #include <gtkmm/expander.h>
 #include <gtk/gtk.h>
-#include "CloExpander.h"
+#include "clowidget/CloExpander.h"
 
 namespace CloWidget {
 
 CloExpander::CloExpander() : Gtk::Expander() {
   set_expanded(true);
-  add_events(Gdk::POINTER_MOTION_MASK); 
+  add_events(Gdk::POINTER_MOTION_MASK);
 	signal_event().connect(sigc::mem_fun(*this, &CloExpander::on_expander_event));
 	drag = false;
 	moved = false;
@@ -38,7 +38,7 @@ CloExpander::CloExpander() : Gtk::Expander() {
 
 CloExpander::CloExpander(const Glib::ustring& label, bool mnemonic) : Gtk::Expander(label, mnemonic) {
   set_expanded(true);
-  add_events(Gdk::POINTER_MOTION_MASK); 
+  add_events(Gdk::POINTER_MOTION_MASK);
 	signal_event().connect(sigc::mem_fun(*this, &CloExpander::on_expander_event));
 	drag = false;
 	moved = false;
@@ -46,7 +46,7 @@ CloExpander::CloExpander(const Glib::ustring& label, bool mnemonic) : Gtk::Expan
 
 bool CloExpander::on_expander_event(GdkEvent *ev) {
 	Gtk::Layout *layout;
-	  
+
   if (ev->type == GDK_BUTTON_PRESS) {
     drag = true;
     origx = ((GtkWidget *)gobj())->allocation.x;
