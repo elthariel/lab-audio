@@ -2,8 +2,8 @@
 
 ## Created by Anjuta
 
-gladedir = $(datadir)/libclowidget/glade
-glade_DATA = libclowidget.glade
+#gladedir = $(datadir)/libclowidget/glade
+#glade_DATA = libclowidget.glade
 
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
@@ -18,7 +18,7 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libclowidget.la
 
 libclowidget_la_SOURCES = \
-	main.cc
+	CloExpander.cpp
 
 libclowidget_la_LDFLAGS =
 
