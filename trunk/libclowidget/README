@@ -1,0 +1,9 @@
+gtkmm widgets, music oriented.
+
+CloWidget::CloExpander : Support fullscreen, mouse resize, mouse move
+CloWidget::CloKnob
+CloWidget::CloSlider
+CloWidget::CloButton : A fuckin button (support toggle too)
+CloWidget::CloArea : A widget area (that dynamically arrange all child widgets)
+CloWidget::CloPlugin : Embbed a plugin GUI
+CloWidget::CloGroup : A group of simple widget (knob/slider/button) (supporting slime/wide interface)
