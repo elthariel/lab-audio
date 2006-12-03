@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po
+SUBDIRS = src po clowidget
 
 libclowidgetdocdir = ${prefix}/doc/libclowidget
 libclowidgetdoc_DATA = \
@@ -11,6 +11,9 @@ libclowidgetdoc_DATA = \
 	ChangeLog\
 	INSTALL\
 	NEWS
+	
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libclowidget.pc
 
 EXTRA_DIST = $(libclowidgetdoc_DATA)
 
