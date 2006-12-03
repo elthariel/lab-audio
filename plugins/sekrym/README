@@ -1,0 +1,13 @@
+##
+## README for Sekrym in /home/elthariel/code/projs/alab/sekrym
+##
+## Made by Elthariel
+## Login   <elthariel@free.fr>
+##
+## Started on  Sun Dec  3 09:41:57 2006 Elthariel
+## Last update Sun Dec  3 09:44:43 2006 Elthariel
+##
+
+Sekrym is a basic Monophonic pattern sequenceur designed to creation
+of melody for live performances. It is implemented as an lv2 plugin,
+you should run it as a plugin into an host that support lv2

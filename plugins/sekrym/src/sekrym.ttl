@@ -1,0 +1,25 @@
+@prefix lv2:  <http://lv2plug.in/ontology#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
+
+<http://audiolab.epita.fr/lv2/dev/sekrym/0.0.0>
+  a lv2:Plugin;
+  doap:name "Sekrym";
+  doap:licence <http://usefulinc.com/doap/licenses/gpl>;
+
+  lv2:port  [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 0;
+    lv2:symbol "input";
+    lv2:name "MIDI input";
+  ],
+
+  [
+    a lv2:ControlRateOutputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 1;
+    lv2:symbol "output";
+    lv2:name "MIDI output";
+  ].
+
