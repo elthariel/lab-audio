@@ -1,4 +1,7 @@
 libclowidgetincludedir = $(includedir)/clowidget
 
 libclowidgetinclude_HEADERS = \
-	CloExpander.h
+	CloExpander.h \
+	CloWidget.h
+
+
