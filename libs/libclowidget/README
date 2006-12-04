@@ -24,3 +24,4 @@ CloWidget::PluginLV2 : it is maybe useless (we could handle lv2 with Plugin)
 CloWidget::AutoArea an area that support mouse resize, mouse move, fullscreen
 CloWidget::CollapsableArea : a collapsable area
 CloWidget::TabArea
+CloWidget::GroupArea

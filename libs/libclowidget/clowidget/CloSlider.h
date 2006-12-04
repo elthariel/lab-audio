@@ -37,9 +37,8 @@ public:
   void set_value(float value);
   
   //ICloWidget
-  void set_mode(CloWidgetMode mode);
-  CloWidgetMode get_supported_mode();
-  
+  void on_mode_change();
+
   
   Gtk::Adjustment& get_adjustment();
   
@@ -62,7 +61,6 @@ protected:
   bool m_integer;
   bool m_logarithmic;
   float m_step;
-  CloWidgetMode m_mode;
 };
 
 
