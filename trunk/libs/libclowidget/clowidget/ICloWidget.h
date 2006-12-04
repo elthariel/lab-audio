@@ -16,32 +16,29 @@
 
 
 //
-// Class: CloExpander
+// Class: ICloWidget
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _CLOEXPANDER_H_
-#define _CLOEXPANDER_H_
+#ifndef _ICLOWIDGET_H_
+#define _ICLOWIDGET_H_
 #include <gtkmm.h>
+
 namespace CloWidget {
-
-
-class CloExpander : public Gtk::Expander {
-public:
-	CloExpander();
-	CloExpander(const Glib::ustring& label, bool mnemonic=false);
-	~CloExpander();	
-	
-protected:
-  virtual bool on_expander_event(GdkEvent *ev);
+  enum CloWidgetMode {
+    ModeNormal = 1,
+    ModeSlime = 2,
+    ModeConnect = 4
+  };
   
-private:
-  bool drag, moved;
-  int lastx, lasty, origx, origy;
+//all widget should support this interface
+class ICloWidget {
+public:
+  virtual void set_mode(CloWidgetMode mode) = 0;
+  virtual CloWidgetMode get_supported_mode() = 0;
 };
 
 }
 
-#endif	//_CLOEXPANDER_H_
-
+#endif

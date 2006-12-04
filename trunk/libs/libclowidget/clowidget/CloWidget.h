@@ -23,6 +23,14 @@
 #ifndef _CLOWIDGET_H_
 #define _CLOWIDGET_H_
 
-#include "CloExpander.h"
+#include <clowidget/CloExpander.h>
+#include <clowidget/CloSlider.h>
+
+//stolen from ll-plugins
+#include "shapereditor.hpp"
+#include "keyboard.hpp"
+#include "pdeditor.hpp"
+#include "vgknob.hpp"
+#include "envelopeeditor.hpp"
 
 #endif

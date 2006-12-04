@@ -18,7 +18,13 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libclowidget.la
 
 libclowidget_la_SOURCES = \
-	CloExpander.cpp
+	CloExpander.cpp \
+	CloSlider.cpp \
+	shapereditor.cpp \
+	keyboard.cpp \
+	envelopeeditor.cpp \
+	vgknob.cpp \
+	pdeditor.cpp
 
 libclowidget_la_LDFLAGS =
 

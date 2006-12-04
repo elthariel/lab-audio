@@ -1,0 +1,26 @@
+
+ICloWidget : interface to all the widget
+   void set_mode()  : change the widget mode ModeNormal|ModeSlime|ModeConnect)
+   CloWidget::CloWidgetMode get_supported_mode() : return the list of all supported mode for a widget
+
+
+CloWidget::Slider : a simple slider
+CloWidget::Area : a container who re-arange his child
+CloWidget::Knob : a knob
+CloWidget::Text : a text zone
+CloWidget::Button : a simple button
+CloWidget::Pad : control x/y
+CloWidget::Crossfader : a simple crossfader
+
+//component stolen from ll-plugins
+shaper 
+CloWidget::Automation :
+CloWidget::Keyboard :
+CloWidget::SoundPeak :
+CloWidget::WaveForm :
+CloWidget::Plugin : a plugin gui container
+CloWidget::PluginLV2 : it is maybe useless (we could handle lv2 with Plugin)
+
+CloWidget::AutoArea an area that support mouse resize, mouse move, fullscreen
+CloWidget::CollapsableArea : a collapsable area
+CloWidget::TabArea

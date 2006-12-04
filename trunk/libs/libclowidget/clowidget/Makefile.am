@@ -1,7 +1,14 @@
 libclowidgetincludedir = $(includedir)/clowidget
 
 libclowidgetinclude_HEADERS = \
+	CloWidget.h \
+	ICloWidget.h \
 	CloExpander.h \
-	CloWidget.h
+	CloSlider.h \
+	shapereditor.hpp \
+	keyboard.hpp \
+	envelopeeditor.hpp \
+	vgknob.hpp \
+	pdeditor.hpp
 
 
