@@ -25,3 +25,4 @@ CloWidget::AutoArea an area that support mouse resize, mouse move, fullscreen
 CloWidget::CollapsableArea : a collapsable area
 CloWidget::TabArea
 CloWidget::GroupArea
+CloWidget::Rack

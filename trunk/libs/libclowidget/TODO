@@ -1,0 +1,29 @@
+TODO
+
+General:
+  - create an helper class witch draw text, etc... using cairo
+
+ICloWidget:
+  - add CloModeLearn
+  - add a generic interface to set_value/get_value (port?)
+
+CloSlider:
+  - good graphic
+  - support CloModeLearn
+
+ICloContainer:
+  - define the interface
+  - list all child
+  - pass on_mode_change to all child
+
+CloArea:
+  - lock the area size
+  - toggle fullscreen
+  - resize the area
+  - move the area
+  - a moved widget doesnt overlap other widget
+
+CloCollapsable:
+  - move the area - DONE
+  - support rename
+  - support mode slime
