@@ -44,8 +44,9 @@ CloSlider::CloSlider(float min, float max, float value,
     m_blue(blue),
     m_integer(integer),
     m_logarithmic(logarithmic),
-    m_step(0),
-    m_mode(ModeNormal) {
+    m_step(0) {
+  m_supported_mode = ModeNormal & ModeConnect;
+  m_mode = ModeNormal;
   
   //set_size_request(37 * 3, 33 * 3);
   set_size_request(40, 10);
@@ -64,13 +65,9 @@ Gtk::Adjustment& CloSlider::get_adjustment() {
   return m_adj;
 }
  
-void CloSlider::set_mode(CloWidgetMode cwm) {
-  m_mode = cwm;
+void CloSlider::on_mode_change() {
+  std::cout << "mode change" << m_mode << std::endl;
   queue_draw();
-}
-
-CloWidgetMode CloSlider::get_supported_mode() {
-  return ModeNormal;
 }
 
 bool CloSlider::on_expose_event(GdkEventExpose* event) {
@@ -78,21 +75,26 @@ bool CloSlider::on_expose_event(GdkEventExpose* event) {
   Glib::RefPtr<Gdk::Window> win = get_window();
   Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(win);
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
-  cc->set_line_join(Cairo::LINE_JOIN_ROUND);
-  
-  cc->move_to(0, 5);
-  cc->line_to(40, 5);
-  cc->set_source_rgba(m_red, m_green, m_blue, 0.3);
-  float value = m_adj.get_value();
-  if (m_integer)
-    value = floor(value + 0.5);
-  value = (value - m_adj.get_lower()) * 40 / (m_adj.get_upper() - m_adj.get_lower());
-  cc->move_to((int)value, 0);
-  cc->line_to((int)value, 10);
 
+  std::cout << "draw" << std::endl;
+  cc->set_line_join(Cairo::LINE_JOIN_ROUND);
+  cc->set_source_rgba(m_red, m_green, m_blue, 0.3);
+  if (m_mode == ModeNormal) {
+  	cc->move_to(2, 5);
+  	cc->line_to(37, 5);
+  	float value = m_adj.get_value();
+  	if (m_integer)
+    	value = floor(value + 0.5);
+  	value = (value - m_adj.get_lower()) * 36 / (m_adj.get_upper() - m_adj.get_lower());
+  	cc->move_to((int)value + 2, 2);
+  	cc->line_to((int)value + 2, 8);
+  } else if (m_mode == ModeConnect) {
+  	cc->move_to(0, 5);
+  	cc->line_to(40, 10);
+  }
+	
   cc->set_source_rgb(0, 0, 0);
   cc->stroke();
-  
   return true;
 }
 

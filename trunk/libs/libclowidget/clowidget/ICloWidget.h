@@ -35,8 +35,13 @@ namespace CloWidget {
 //all widget should support this interface
 class ICloWidget {
 public:
-  virtual void set_mode(CloWidgetMode mode) = 0;
-  virtual CloWidgetMode get_supported_mode() = 0;
+  virtual void on_mode_change() = 0;
+  inline void set_mode(CloWidgetMode mode) { m_mode = mode; on_mode_change(); }
+  inline int get_supported_mode() { return m_supported_mode; }
+
+protected:
+  CloWidgetMode m_mode;
+  int m_supported_mode;
 };
 
 }
