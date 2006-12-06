@@ -25,8 +25,76 @@
 
 Sekrym::Sekrym(unsigned long sample_rate,
        const char* bundle_path,
-       const LV2_Host_Feature** features);
-Sekrym::~Sekrym();
+       const LV2_Host_Feature** features)
+  :LV2Plugin(2),
+   m_outbus(*this, 1),
+   m_free_pattern(m_outbus),
+   m_pat(SEKRYM_PAT_COUNT, m_free_pattern),
+   m_playing(false),
+   m_sample_rate(sample_rate),
+   m_remaining_samples(0.0),
+   m_ticks(0),
+   m_current_pattern(0),
+   m_bpm(SEKRYM_DEFAULT_TEMPO),
+   m_tick_res(SEKRYM_PPQ),
+{
+  clear();
+}
 
-void          Sekrym::run(uint32_t sample_count);
-void          Sekrym::deactivate();
+Sekrym::~Sekrym()
+{
+}
+
+void            Sekrym::run(uint32_t sample_count)
+{
+  float         samples_to_play;
+  float         ticks
+  unsigned int  ticks_int;
+
+      samples_to_play = sample_count + m_remaining_samples;
+      ticks = samples_to_play / m_tick_len;
+      ticks_int = ticks;
+      m_remaining_samples = (ticks - (float)ticks_int) * m_tick_len;
+      m_ticks += ticks_int;
+  if (m_playing)
+    {
+      m_pat[m_current_pattern].play(ticks_int);
+    }
+}
+
+void            Sekrym::reset()
+{
+  m_remaining_samples = 0.0;
+  m_ticks = 0;
+}
+
+void            Sekrym::play()
+{
+  m_playing = true;
+}
+
+void            Sekrym::stop()
+{
+  m_playing = false;
+}
+
+void            Sekrym::clear()
+{
+  int           i;
+
+  for (i = 0; i < SEKRYM_PAT_COUNT; i++)
+    m_pat[i].clear();
+  m_current_pattern = 0;
+}
+
+void            Sekrym::set_bpm(uint32_t a_bpm)
+{
+  float         tick_len_second;
+  float         sample_len;
+
+  if (a_bpm)
+    m_bpm = a_bpm;
+  tick_len_second = (60.0 / ((float) m_bpm)) / m_tick_res;
+  sample_len = 1.0 / (float) m_sample_rate;
+  m_tick_len = tick_len_second / sample_len;
+}

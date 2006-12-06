@@ -28,6 +28,11 @@
 
 class OutBus
 {
+private:
+  OutBus();
+
+public:
+  OutBus(LV2Plugin &a_plugin, uint32_t port);
   void          send(snd_seq_event_t *ev);
 };
 
