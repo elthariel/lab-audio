@@ -23,17 +23,32 @@
 #ifndef   	SEKRYM_HH_
 # define   	SEKRYM_HH_
 
+#include <vector>
 #include "lv2plugin.hpp"
-#include "pattern.cc"
+#include "outbus.hh"
+#include "pattern.hh"
+
+# define        SEKRYM_DEFAULT_TEMPO    180
+# define        SEKRYM_PPQ              96
+# define        SEKRYM_PAT_COUNT        32
 
 class Sekrym : public LV2Plugin
 {
 protected:
-
-  Pattern               m_pat[32];
+  OutBus                m_outbus;
+  Pattern               m_free_pattern;
+  vector<Pattern>       m_pat;
+  bool                  m_playing;
 
   // remaining samples since the last tick.
-  unsigned int          m_remaining_samples.
+  unsigned int          m_sample_rate;
+  float                 m_remaining_samples;
+  uint64_t              m_ticks;
+  unsigned char         m_current_pattern;
+
+  unsigned int          m_bpm;
+  unsigned int          m_tick_res; // Pulse per quarter.
+  float                 m_tick_len; // len of a tick in sample
 
 public:
 
@@ -43,15 +58,25 @@ public:
   virtual ~Sekrym();
 
   virtual void          run(uint32_t sample_count);
-  virtual void          deactivate();
 
   /** This reset the playaing state of sekrym.
    */
   void                  reset();
 
+  /** Play() Causes the current pattern to be played.
+   */
+  void                  play();
+  /** stopm stops the play.
+   */
+  void                  stop();
+
   /** Resets the playing state & clear the pattern bank.
    */
   void                  clear();
+
+  /** Set the current bpm.
+   */
+  void                  set_bpm(uint32_t a_bpm = 0);
 };
 
 #endif	    /* !SEKRYM_HH_ */
