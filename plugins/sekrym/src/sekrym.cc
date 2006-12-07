@@ -61,6 +61,7 @@ void            Sekrym::run(uint32_t sample_count)
 //   if (m_playing)
 //     m_pat[m_current_pattern].play(ticks_int);
   m_current_sample = 0.0;
+  m_outbus.new_frame();
   while (m_current_sample + m_tick_len - m_remaining_samples
          <= (double) sample_count)
     {

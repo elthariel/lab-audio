@@ -72,7 +72,6 @@ void            Pattern::play(unsigned int a_tick_offset)
 
 void            Pattern::end_playing()
 {
-  snd_seq_event_t ev;
 
   if (m_playing_note.vel > 0)
     {
@@ -83,15 +82,42 @@ void            Pattern::end_playing()
 
 void            Pattern::play_note(unsigned char index)
 {
-  snd_seq_event_t ev;
-
   m_last_played = index;
 
   //FIXME fill note event.
+  if (m_playing_note.vel < 0)
+    {
+      if (m_pat[index].vel == 0)
+        end_playing();
+      else
+        {
+          if (m_pat[index].note != m_playing_note.note)
+            {
+              if (m_pat[index].vel > 0)
+                m_outbus.send_note_on(m_pat[index].note, m_pat[index].vel);
+              else
+                m_outbus.send_note_on(m_pat[index].note, 0 - m_pat[index].vel);
+              end_playing();
+            }
+        }
+    }
+  else
+    {
+      if (m_playing_note.vel != 0)
+        {
+          end_playing();
+        }
+      if (m_pat[index].vel)
+        {
+          if (m_pat[index].vel > 0)
+            m_outbus.send_note_on(m_pat[index].note, m_pat[index].vel);
+          else
+            m_outbus.send_note_on(m_pat[index].note,
+                                  0 - m_pat[index].vel);
+        }
+    }
 
-  m_playing_note = m_notes[index];
-  m_outbus.send(&ev);
-  end_playing();
+  m_playing_note = m_pat[index];
 }
 
 void            Pattern::stop()
