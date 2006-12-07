@@ -30,11 +30,12 @@ Note            Pattern::&operator= (Note &src)
 }
 
 Pattern::Pattern(OutBus &a_outbus)
-  :m_outbus(a_outbus), m_res(0)
+  :m_outbus(a_outbus), m_res(0),
 {
   m_playing_note.vel = 0;
   m_playing_note.note = 0;
   clear();
+  stop();
 }
 
 void            Pattern::clear()
@@ -48,7 +49,6 @@ void            Pattern::clear()
     }
   m_res = PAT_DEF_RES;
   m_len = PAT_DEF_LEN;
-  m_tick = 0;
   if (m_playing_note.vel > 0)
     end_playing();
 }
@@ -58,8 +58,11 @@ void            Pattern::play(unsigned int a_tick_offset)
   unsigned char played;
   unsigned int new_tick;
 
+  if (m_last_played < 0)
+    play_note(0);
+
   new_tick = m_tick + a_tick_offset;
-  if (m_tick + a_tick_offset >= m_tick + m_res)
+  if (new_tick >= m_last_played * m_res)
     {
       played = new_tick / m_res % m_len;
       play_note(played);
@@ -82,6 +85,8 @@ void            Pattern::play_note(unsigned char index)
 {
   snd_seq_event_t ev;
 
+  m_last_played = index;
+
   //FIXME fill note event.
 
   m_playing_note = m_notes[index];
@@ -93,6 +98,7 @@ void            Pattern::stop()
 {
   end_playing();
   m_tick = 0;
+  m_last_played = -1;
 }
 
 void            Pattern::set_res(unsigned char a_res)

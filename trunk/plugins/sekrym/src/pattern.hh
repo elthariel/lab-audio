@@ -45,11 +45,13 @@ protected:
   Note                  m_notes[PAT_SIZE];
   Note                  m_playing_note;
 
+  int                   m_last_played;
+
 public:
   Pattern(OutBus &a_outbus);
 
   virtual void          clear();
-  virtual void          play(unsigned int a_tick_offset);
+  virtual void          play(unsigned int a_tick_offset = 1);
   virtual void          set_res(unsigned char a_res);
   virtual void          set_len(unsigned char a_len);
 

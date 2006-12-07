@@ -45,6 +45,7 @@ protected:
   float                 m_remaining_samples;
   uint64_t              m_ticks;
   unsigned char         m_current_pattern;
+  double                m_current_sample;
 
   unsigned int          m_bpm;
   unsigned int          m_tick_res; // Pulse per quarter.
@@ -77,6 +78,8 @@ public:
   /** Set the current bpm.
    */
   void                  set_bpm(uint32_t a_bpm = 0);
+
+  double                get_current_sample();
 };
 
 #endif	    /* !SEKRYM_HH_ */
