@@ -23,17 +23,27 @@
 #ifndef   	OUTBUS_HH_
 # define   	OUTBUS_HH_
 
-//#include alsa.
-# include <alsa/asoundlib.h>
+#include "lv2plugin.hh"
+#include "lv2-miditype.h"
 
 class OutBus
 {
 private:
   OutBus();
 
+  LV2Plugin     &m_plugin;
+  uint32_t      m_outport;
+
+  void          push_timestamp();
+  void          push_char(unsigned char c);
+
 public:
-  OutBus(LV2Plugin &a_plugin, uint32_t port);
-  void          send(snd_seq_event_t *ev);
+  OutBus(LV2Plugin &a_plugin, uint32_t a_port);
+
+  void          new_frame();
+
+  void          send_note_on(unsigned char a_note, unsigned char a_vel);
+  void          send_note_off(unsigned char a_note, unsigned char a_vel);
 };
 
 #endif	    /* !OUTBUS_HH_ */
