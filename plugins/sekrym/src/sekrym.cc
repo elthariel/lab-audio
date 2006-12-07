@@ -35,9 +35,11 @@ Sekrym::Sekrym(unsigned long sample_rate,
    m_remaining_samples(0.0),
    m_ticks(0),
    m_current_pattern(0),
+   m_current_sample(0.0),
    m_bpm(SEKRYM_DEFAULT_TEMPO),
    m_tick_res(SEKRYM_PPQ),
 {
+  set_bpm();
   clear();
 }
 
@@ -47,23 +49,32 @@ Sekrym::~Sekrym()
 
 void            Sekrym::run(uint32_t sample_count)
 {
-  float         samples_to_play;
-  float         ticks
-  unsigned int  ticks_int;
+//   float         samples_to_play;
+//   float         ticks
+//   unsigned int  ticks_int;
 
-      samples_to_play = sample_count + m_remaining_samples;
-      ticks = samples_to_play / m_tick_len;
-      ticks_int = ticks;
-      m_remaining_samples = (ticks - (float)ticks_int) * m_tick_len;
-      m_ticks += ticks_int;
-  if (m_playing)
+//   samples_to_play = sample_count + m_remaining_samples;
+//   ticks = samples_to_play / m_tick_len;
+//   ticks_int = ticks;
+//   m_remaining_samples = (ticks - (float)ticks_int) * m_tick_len;
+//   m_ticks += ticks_int;
+//   if (m_playing)
+//     m_pat[m_current_pattern].play(ticks_int);
+  m_current_sample = 0.0;
+  while (m_current_sample + m_tick_len - m_remaining_samples
+         <= (double) sample_count)
     {
-      m_pat[m_current_pattern].play(ticks_int);
+      m_ticks++;
+      m_current_sample = m_current_sample + m_tick_len - m_remaining_samples;
+      m_remaining_samples = 0;
+      m_pat[m_current_pattern].play(1);
     }
+  m_remaining_samples = (double)sample_count - m_current_sample;
 }
 
 void            Sekrym::reset()
 {
+  m_current_sample = 0.0;
   m_remaining_samples = 0.0;
   m_ticks = 0;
 }
@@ -97,4 +108,9 @@ void            Sekrym::set_bpm(uint32_t a_bpm)
   tick_len_second = (60.0 / ((float) m_bpm)) / m_tick_res;
   sample_len = 1.0 / (float) m_sample_rate;
   m_tick_len = tick_len_second / sample_len;
+}
+
+double          Sekrym::get_current_sample()
+{
+  return (m_current_pattern);
 }
