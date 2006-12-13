@@ -1,34 +1,48 @@
 #include <map>
+//#include <vector>
+#include <string>
+#include <gdkmm.h>
 
-class iSType
- {
-
- };
-// <-- STypeImgs, STypeVector, STypeBase, STypeComputed
+using namespace Gdk;
 
 class SElement
 {
-	iStype		*m_current_type;
+	SElement();
 public:
+	SElement(Stype *, map<string, string>);
 
+	virtual Glib::RefPtr<Pixmap> render(float *a_states,
+										unsigned int a_state_count) = 0;
 };
+// <-- SERotary
 
-template <class StateType>
-class SType : public iSType 
+// <-- STypeImgs, STypeVector, STypeBase, STypeComputed
+class SType
 {
-};
-// STypeSlider, STypeRotary, StypeVuMeter, StypeButton, STypeBackground
+	SType();
+	string						m_stype_name;
 
-typedef cmap<char *, Stype *> _STypeMap;
+public:
+	SType(string a_name);
+
+};
+
+
+typedef cmap<char *, SElement *> _SEMap;
 
 /** Represent the skin for a plugin. It allows you to register STypeX objects 
  *  at runtime. It provides access to skin elements to the ui.
  */
 class SInstance
 {
-	_STypeMap			m_stmap;
+	/** Skin elements map.
+	*/
+	_SEMap			m_emap;
 	 
 public:
+	SElement		*get_element(char *);
+	void			register_element(SElement *);
+
 };
 
 /* Will be implemented in middle-term; Unique instance which provides access 
@@ -36,4 +50,8 @@ public:
  */
 class SManager
 {
+	static SManager		*m_instance;
+	SManager();
+public:
+	static SManager		*get_instance();
 };
