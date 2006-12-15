@@ -1,10 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po clowidget
+SUBDIRS = src po include
 
-libclowidgetdocdir = ${prefix}/doc/libclowidget
-libclowidgetdoc_DATA = \
+libthcdocdir = ${prefix}/doc/libthc
+libthcdoc_DATA = \
 	README\
 	COPYING\
 	AUTHORS\
@@ -13,9 +13,9 @@ libclowidgetdoc_DATA = \
 	NEWS
 	
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libclowidget.pc
+pkgconfig_DATA = libthc.pc
 
-EXTRA_DIST = $(libclowidgetdoc_DATA)
+EXTRA_DIST = $(libthcdoc_DATA)
 
 # Copy all the spec files. Of cource, only one is actually used.
 dist-hook:
