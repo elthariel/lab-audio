@@ -25,18 +25,59 @@
 #define _WIDGET_H_
 #include <gtkmm.h>
 #include <vector>
+#include <boost/shared_ptr.hpp>
 
 namespace Thc {
 
+  using boost::shared_ptr;
+  using Gtk::Adjustment;
+  
   enum WidgetMode {
     ModeNormal = 1,
     ModeSlime = 2,
     ModeConnect = 4
   };
 
+  typedef shared_ptr<Adjustment> Param;
+  
+  //all widget should support this interface
+  class IWidget {
+  public:
+    inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
+  
+  //## Parameters ##
+  public:
+    //get the number of parameter
+	inline int count_param()const { return m_params.size(); }
+	//get the parameter
+	inline Param& get_param(int id) { return m_params[id]; }
 
+  protected:
+    //add one parameter (internal)
+ 	inline void add_param(double value, double min, double max) { m_params.push_back(Param(new Adjustment(value, min, max))); }
+		
+
+  //## Widget Mode ##
+  public:
+    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
+    inline int get_supported_mode()const { return m_supported_mode; }
+    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; }
+    
+  protected:
+    virtual void on_mode_change() = 0;
+
+
+  //## Data ##
+  protected:
+    std::vector<Param> m_params;
+    WidgetMode m_mode;
+    int m_supported_mode;
+};
+
+
+/*
   //One Parameter
-/*  class Parameter {
+  class Parameter {
   public:
     void set_value(void* new_value) { value = new_value; }
     double get_value() { return value; }
@@ -45,11 +86,11 @@ namespace Thc {
   
   private:
     //value_changed signal
-    double value;
+    Gtk::Adjustment m_adj;
   };
-*/
 
-/*  template <class T> 
+
+  template <class T> 
   class Parameter {
   public:
     Parameter(float min, float max);
@@ -64,31 +105,9 @@ namespace Thc {
     Gtk::Adjustment m_adj;
   };*/
 
-  //all widget should support this interface
-  class IWidget {
-  public:
-    inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
-	//Parameters
-	inline int count_param()const { return m_params.size(); }
-	inline Gtk::Adjustment& get_param(int id) { return m_params[id]; }
-	
-	//Skins
-	
-    //Widget Mode
-    virtual void on_mode_change() = 0;
-    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
-    inline int get_supported_mode()const { return m_supported_mode; }
 
-  protected:
-    //Parameters
-    std::vector<Gtk::Adjustment&> m_params;
- 
-    //Skins
-       
-    //Widget Mode
-    WidgetMode m_mode;
-    int m_supported_mode;
-};
+
+
 
 }
 
