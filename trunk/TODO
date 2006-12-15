@@ -1,0 +1,19 @@
+TODO
+
+Clochette:
+  - implement add_port/remove/...
+  - one patch = one window
+  - basic function to connect port (when you click on a port you get a menu)
+
+  - implement drag'n'drop for lv2
+  - load/save patch
+  - load/save GUI information with metadata
+  - create a plugin for each controlable GUI element
+
+CloWidget:
+  - ICloWidget : support parameter
+  - CloPlugin : socket like, to embed gtk ui
+  - drawport/drawports
+
+Ingen:
+  - DSSIUpdateEvent,... : use the same detection code as in DSSIUIEvent (avoid segfault)
