@@ -18,7 +18,8 @@ AM_CFLAGS =\
 bin_PROGRAMS = thcmeter
 
 thcmeter_SOURCES = \
-	main.cc
+	main.cc \
+	../src/slider.cc
 
 
 thcmeter_LDADD = $(PACKAGE_LIBS)

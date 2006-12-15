@@ -41,7 +41,19 @@
 int main (int argc, char *argv[]) {
   Gtk::Main gtk_main (argc, argv);
   Gtk::Window window;
-	
+  Gtk::Button btn_normal("Normal");
+  Gtk::Button btn_connect("Connect");
+  Gtk::VBox vbox;
+  Gtk::HBox hbox;
+  Thc::Slider slider;
+  
+  window.add(vbox);
+  vbox.pack_start(hbox);
+  hbox.pack_start(btn_connect);
+  hbox.pack_start(btn_normal);
+  vbox.add(slider);
+  
+  window.show_all();
   //window = new Gtk::Window();
   gtk_main.run (window);
   return 0;

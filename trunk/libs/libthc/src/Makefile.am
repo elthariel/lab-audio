@@ -19,7 +19,7 @@ lib_LTLIBRARIES = libthc.la
 
 libthc_la_SOURCES = \
 	CloExpander.cpp \
-	CloSlider.cpp \
+	slider.cc \
 	shapereditor.cpp \
 	keyboard.cpp \
 	envelopeeditor.cpp \
