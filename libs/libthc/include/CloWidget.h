@@ -20,17 +20,17 @@
 // Created on: Sun Dec  3 19:04:51 2006
 //
 
-#ifndef _CLOWIDGET_H_
-#define _CLOWIDGET_H_
+#ifndef _THC_H_
+#define _THC_H_
 
-#include <clowidget/CloExpander.h>
-#include <clowidget/CloSlider.h>
+//#include "CloExpander.h"
+#include "Slider.h"
 
 //stolen from ll-plugins
-#include "shapereditor.hpp"
-#include "keyboard.hpp"
-#include "pdeditor.hpp"
-#include "vgknob.hpp"
-#include "envelopeeditor.hpp"
+//#include "shapereditor.hpp"
+//#include "keyboard.hpp"
+//#include "pdeditor.hpp"
+//#include "vgknob.hpp"
+//#include "envelopeeditor.hpp"
 
 #endif
