@@ -18,16 +18,35 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libthc.la
 
 libthc_la_SOURCES = \
-	CloExpander.cpp \
-	slider.cc \
-	shapereditor.cpp \
-	keyboard.cpp \
-	envelopeeditor.cpp \
-	vgknob.cpp \
-	pdeditor.cpp
+	slider.cc
+#	CloExpander.cpp \
+#	shapereditor.cpp \
+#	keyboard.cpp \
+#	envelopeeditor.cpp \
+#	vgknob.cpp \
+#	pdeditor.cpp
 
 libthc_la_LDFLAGS =
 
 libthc_la_LIBADD = $(PACKAGE_LIBS)
 
 EXTRA_DIST = $(glade_DATA)
+
+
+libthcincludedir = $(includedir)/thc
+
+libthcinclude_HEADERS = \
+	thc.h \
+	widget.h \
+	slider.h
+
+#	CloExpander.h \
+#	shapereditor.hpp \
+#	keyboard.hpp \
+#	envelopeeditor.hpp \
+#	vgknob.hpp \
+#	pdeditor.hpp
+	
+	
+	
+	

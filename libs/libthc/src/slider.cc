@@ -26,7 +26,7 @@
 #include <string>
 #include <cairomm/cairomm.h>
 
-#include "include/slider.h"
+#include "slider.h"
 
 
 namespace Thc {
@@ -38,6 +38,7 @@ Slider::Slider(float min, float max, float value, bool integer, bool logarithmic
     m_logarithmic(logarithmic),
     m_step(0),
     m_horizontal(horizontal) {
+
   add_supported_mode(ModeConnect);
   add_param(min, min, max);
   set_size_request(64, 32);
@@ -78,7 +79,6 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   	cc->move_to(40, 0);
   	cc->line_to(0, 10);
   }
-	
   cc->set_source_rgb(0, 0, 0);
   cc->stroke();
   return true;
@@ -116,10 +116,6 @@ bool Slider::on_scroll_event(GdkEventScroll* event) {
     m_params[0]->set_value(map_to_adj(map_to_knob(m_params[0]->get_value()) - step));
   return true;
 }
-
-/*
-
-*/
 
 double Slider::map_to_adj(double knob) {
   double a = m_params[0]->get_lower();

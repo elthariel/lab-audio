@@ -16,7 +16,7 @@
 
 
 //
-// Class: ICloWidget
+// Class: IWidget
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
