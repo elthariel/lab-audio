@@ -1,10 +1,10 @@
 libthcincludedir = $(includedir)/thc
 
 libthcinclude_HEADERS = \
-	CloWidget.h \
-	ICloWidget.h \
+	thc.h \
+	widget.h \
 	CloExpander.h \
-	CloSlider.h \
+	slider.h \
 	shapereditor.hpp \
 	keyboard.hpp \
 	envelopeeditor.hpp \

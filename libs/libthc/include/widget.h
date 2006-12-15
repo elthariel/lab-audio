@@ -16,21 +16,35 @@
 
 
 //
+// Class: ICloWidget
 // Created by: GESTES Cedric <goctaf@gmail.com>
-// Created on: Sun Dec  3 19:04:51 2006
+// Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _THC_H_
-#define _THC_H_
+#ifndef _WIDGET_H_
+#define _WIDGET_H_
+#include <gtkmm.h>
 
-//#include "CloExpander.h"
-#include "Slider.h"
+namespace Thc {
 
-//stolen from ll-plugins
-//#include "shapereditor.hpp"
-//#include "keyboard.hpp"
-//#include "pdeditor.hpp"
-//#include "vgknob.hpp"
-//#include "envelopeeditor.hpp"
+  enum WidgetMode {
+    ModeNormal = 1,
+    ModeSlime = 2,
+    ModeConnect = 4
+  };
+  
+//all widget should support this interface
+class IWidget {
+public:
+  virtual void on_mode_change() = 0;
+  inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
+  inline int get_supported_mode() { return m_supported_mode; }
+
+protected:
+  WidgetMode m_mode;
+  int m_supported_mode;
+};
+
+}
 
 #endif

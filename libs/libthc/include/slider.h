@@ -16,23 +16,23 @@
 
 
 //
-// Class: CloSlider
+// Class: Slider
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _CLOSLIDER_H_
-#define _CLOSLIDER_H_
+#ifndef _SLIDER_H_
+#define _SLIDER_H_
 #include <gtkmm.h>
-#include "ICloWidget.h"
+#include "widget.h"
 
-namespace CloWidget {
+namespace Thc {
 
-class CloSlider : public Gtk::DrawingArea, public ICloWidget {
+class Slider : public Gtk::DrawingArea, public IWidget {
 public:
   
-  CloSlider(float min = 0, float max = 10, float value = 0, 
-            float red = 127, float green = 256, float blue = 0, bool integer = false, bool logarithmic = false);
+  Slider(float min = 0, float max = 10, float value = 0, 
+         float red = 127, float green = 256, float blue = 0, bool integer = false, bool logarithmic = false);
   
   void set_value(float value);
   
@@ -64,6 +64,6 @@ protected:
 };
 
 
-}
+} //namespace Thc
 
-#endif	//_CLOEXPANDER_H_
+#endif	//_SLIDER_H_
