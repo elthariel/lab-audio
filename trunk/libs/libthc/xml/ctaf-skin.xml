@@ -1,8 +1,16 @@
 <thc>
-  <slider name="crossfader">
-    <image type="allstate" count="127" name="crossfader"/>
-    <image type="2state" name="crossfader"/>
-	<color line="0xFF22FF" cursor="0x00FF00" background="0x236923"/>  
+  <slider name="crossfader-full">
+    <image type="allstate" count="127" name="crossfader-full"/>
   </slider>
-  <knob>
+  
+  <slider name="crossfader-2state">
+    <image type="2state" name="crossfader-2state"/>
+  </slider>
+
+  <slider name="crossfader-vector">
+  	<color line="0xFF22FF" cursor="0x00FF00" background="0x236923"/>  
+  </slider>
+  
+  <button name="button">
+  </button>
 </thc>
