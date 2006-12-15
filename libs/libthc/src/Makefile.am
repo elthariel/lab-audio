@@ -2,8 +2,8 @@
 
 ## Created by Anjuta
 
-#gladedir = $(datadir)/libclowidget/glade
-#glade_DATA = libclowidget.glade
+#gladedir = $(datadir)/libthc/glade
+#glade_DATA = libthc.glade
 
 INCLUDES = \
 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/$(DATADIRNAME)/locale"\" \
@@ -15,9 +15,9 @@ AM_CFLAGS =\
 	 -Wall\
 	 -g
 
-lib_LTLIBRARIES = libclowidget.la
+lib_LTLIBRARIES = libthc.la
 
-libclowidget_la_SOURCES = \
+libthc_la_SOURCES = \
 	CloExpander.cpp \
 	CloSlider.cpp \
 	shapereditor.cpp \
@@ -26,8 +26,8 @@ libclowidget_la_SOURCES = \
 	vgknob.cpp \
 	pdeditor.cpp
 
-libclowidget_la_LDFLAGS =
+libthc_la_LDFLAGS =
 
-libclowidget_la_LIBADD = $(PACKAGE_LIBS)
+libthc_la_LIBADD = $(PACKAGE_LIBS)
 
 EXTRA_DIST = $(glade_DATA)
