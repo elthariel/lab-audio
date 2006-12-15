@@ -30,36 +30,30 @@ namespace Thc {
 
 class Slider : public Gtk::DrawingArea, public IWidget {
 public:
-  
-  Slider(float min = 0, float max = 10, float value = 0, 
-         float red = 127, float green = 256, float blue = 0, bool integer = false, bool logarithmic = false);
-  
-  void set_value(float value);
-  
+  //Slider(Config& xmlconfig);
+  Slider(float min = 0, float max = 10, float value = 0, bool integer = false, bool logarithmic = false, bool horizontal = true);
+ 
   //ICloWidget
   void on_mode_change();
 
-  
-  Gtk::Adjustment& get_adjustment();
-  
 protected:
   bool on_expose_event(GdkEventExpose* event);
   bool on_motion_notify_event(GdkEventMotion* event);
   bool on_button_press_event(GdkEventButton* event);
   bool on_scroll_event(GdkEventScroll* event);
   
-  int draw_digit(Cairo::RefPtr<Cairo::Context>& cc, char digit);
-  void draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::string& str,
-                   float x, float y);
+//  int draw_digit(Cairo::RefPtr<Cairo::Context>& cc, char digit);
+//  void draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::string& str,
+//                   float x, float y);
   double map_to_adj(double knob);
   double map_to_knob(double adj);
   
-  Gtk::Adjustment m_adj;
   int m_click_offset;
   float m_value_offset;
   float m_red, m_green, m_blue;
   bool m_integer;
   bool m_logarithmic;
+  bool m_horizontal;
   float m_step;
 };
 
