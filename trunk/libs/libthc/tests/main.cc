@@ -36,7 +36,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 #include <gtkmm.h>
-#include "../include/thc.h"
+#include "../src/thc.h"
 
 int main (int argc, char *argv[]) {
   Gtk::Main gtk_main (argc, argv);

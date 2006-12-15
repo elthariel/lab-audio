@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po include tests
+SUBDIRS = src po tests
 
 libthcdocdir = ${prefix}/doc/libthc
 libthcdoc_DATA = \
