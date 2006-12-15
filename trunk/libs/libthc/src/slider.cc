@@ -33,36 +33,23 @@ namespace Thc {
 
 using namespace std;
 
-Slider::Slider(float min, float max, float value, 
-               float red, float green, float blue, bool integer, 
-               bool logarithmic) 
-  : m_adj(min, min, max),
-    m_red(red),
-    m_green(green),
-    m_blue(blue),
-    m_integer(integer),
+Slider::Slider(float min, float max, float value, bool integer, bool logarithmic, bool horizontal)
+  : m_integer(integer),
     m_logarithmic(logarithmic),
-    m_step(0) {
+    m_step(0),
+    m_horizontal(horizontal) {
   m_supported_mode = ModeNormal & ModeConnect;
-  m_mode = ModeNormal;
-  
-  //set_size_request(37 * 3, 33 * 3);
-  set_size_request(40, 10);
-  add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | 
-             Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
-  m_adj.signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
+  m_params.push_back(Gtk::Adjustment(min, min, max));
+  set_size_request(64, 32);
+  add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
+  m_params[0].signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
   if (m_integer)
     m_step = 1.0 / (max - min);
   else
     m_step = 1.0 / 30;
-  m_adj.set_value(value);
+  m_params[0].set_value(value);
 }
 
-
-Gtk::Adjustment& Slider::get_adjustment() {
-  return m_adj;
-}
- 
 void Slider::on_mode_change() {
   queue_draw();
 }
@@ -72,16 +59,17 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   Glib::RefPtr<Gdk::Window> win = get_window();
   Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(win);
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
+  float value;
 
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
-  cc->set_source_rgba(m_red, m_green, m_blue, 0.3);
+  cc->set_source_rgba(127, 127, 127, 0.3);
   if (m_mode == ModeNormal) {
   	cc->move_to(2, 5);
   	cc->line_to(37, 5);
-  	float value = m_adj.get_value();
+  	value = m_params[0].get_value();
   	if (m_integer)
     	value = floor(value + 0.5);
-  	value = (value - m_adj.get_lower()) * 36 / (m_adj.get_upper() - m_adj.get_lower());
+  	value = (value - m_params[0].get_lower()) * 36 / (m_params[0].get_upper() - m_params[0].get_lower());
   	cc->move_to((int)value + 2, 2);
   	cc->line_to((int)value + 2, 8);
   } else if (m_mode == ModeConnect) {
@@ -99,19 +87,21 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
 
 bool Slider::on_motion_notify_event(GdkEventMotion* event) {
   float scale = 200;
+  float value;
+  
   if (event->state & GDK_SHIFT_MASK)
     scale *= 200;
-  float value = m_value_offset + ((m_click_offset - event->y) / scale);
+  value = m_value_offset + ((m_click_offset - event->y) / scale);
   value = value < 0 ? 0 : value;
   value = value > 1 ? 1 : value;
-  m_adj.set_value(map_to_adj(value));
+  m_params[0].set_value(map_to_adj(value));
   return true;
 }
 
 
 bool Slider::on_button_press_event(GdkEventButton* event) {
   m_click_offset = (int)event->y;
-  m_value_offset = map_to_knob(m_adj.get_value());
+  m_value_offset = map_to_knob(m_params[0].get_value());
   return true;
 }
 
@@ -121,13 +111,13 @@ bool Slider::on_scroll_event(GdkEventScroll* event) {
   if (event->state & GDK_SHIFT_MASK && !m_integer)
     step *= 0.01;
   if (event->direction == GDK_SCROLL_UP)
-    m_adj.set_value(map_to_adj(map_to_knob(m_adj.get_value()) + step));
+    m_params[0].set_value(map_to_adj(map_to_knob(m_params[0].get_value()) + step));
   else if (event->direction == GDK_SCROLL_DOWN)
-    m_adj.set_value(map_to_adj(map_to_knob(m_adj.get_value()) - step));
+    m_params[0].set_value(map_to_adj(map_to_knob(m_params[0].get_value()) - step));
   return true;
 }
 
-
+/*
 int Slider::draw_digit(Cairo::RefPtr<Cairo::Context>& cc, char digit) {
   cc->save();
   cc->set_source_rgb(0.7, 0.9, 1.0);
@@ -262,10 +252,11 @@ void Slider::draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::string& s
   }
 }
 
+*/
 
 double Slider::map_to_adj(double knob) {
-  double a = m_adj.get_lower();
-  double b = m_adj.get_upper();
+  double a = m_params[0].get_lower();
+  double b = m_params[0].get_upper();
   knob = knob < 0 ? 0 : knob;
   knob = knob > 1 ? 1 : knob;
   if (m_logarithmic)
@@ -276,8 +267,8 @@ double Slider::map_to_adj(double knob) {
 
 
 double Slider::map_to_knob(double adj) {
-  double a = m_adj.get_lower();
-  double b = m_adj.get_upper();
+  double a = m_params[0].get_lower();
+  double b = m_params[0].get_upper();
   adj = adj < a ? a : adj;
   adj = adj > b ? b : adj;
   if (m_logarithmic)

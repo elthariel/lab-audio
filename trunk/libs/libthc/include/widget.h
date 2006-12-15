@@ -24,6 +24,7 @@
 #ifndef _WIDGET_H_
 #define _WIDGET_H_
 #include <gtkmm.h>
+#include <vector>
 
 namespace Thc {
 
@@ -32,17 +33,61 @@ namespace Thc {
     ModeSlime = 2,
     ModeConnect = 4
   };
-  
-//all widget should support this interface
-class IWidget {
-public:
-  virtual void on_mode_change() = 0;
-  inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
-  inline int get_supported_mode() { return m_supported_mode; }
 
-protected:
-  WidgetMode m_mode;
-  int m_supported_mode;
+
+  //One Parameter
+/*  class Parameter {
+  public:
+    void set_value(void* new_value) { value = new_value; }
+    double get_value() { return value; }
+    
+  protected:
+  
+  private:
+    //value_changed signal
+    double value;
+  };
+*/
+
+/*  template <class T> 
+  class Parameter {
+  public:
+    Parameter(float min, float max);
+    inline void set_value(T& value) { m_value = value; }
+    inline T& get_value()const { return m_value; }
+    inline Gtk::Adjustment& get_adjustment()const { return m_adj; }
+  protected:
+  
+  private:
+    //value_changed signal
+    T m_value;
+    Gtk::Adjustment m_adj;
+  };*/
+
+  //all widget should support this interface
+  class IWidget {
+  public:
+    inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
+	//Parameters
+	inline int count_param()const { return m_params.size(); }
+	inline Gtk::Adjustment& get_param(int id) { return m_params[id]; }
+	
+	//Skins
+	
+    //Widget Mode
+    virtual void on_mode_change() = 0;
+    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
+    inline int get_supported_mode()const { return m_supported_mode; }
+
+  protected:
+    //Parameters
+    std::vector<Gtk::Adjustment&> m_params;
+ 
+    //Skins
+       
+    //Widget Mode
+    WidgetMode m_mode;
+    int m_supported_mode;
 };
 
 }
