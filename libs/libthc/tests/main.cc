@@ -54,7 +54,6 @@ int main (int argc, char *argv[]) {
   vbox.add(slider);
   
   window.show_all();
-  //window = new Gtk::Window();
   gtk_main.run (window);
   return 0;
 }

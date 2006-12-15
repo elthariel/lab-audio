@@ -64,20 +64,28 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
 
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
   cc->set_source_rgba(127, 127, 127, 0.3);
+  //cc->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
+  //cc->fill();
+  cc->move_to(event->area.x,event->area.y);
+  cc->line_to(event->area.x,event->area.height);
+  cc->line_to(event->area.width,event->area.height);
+  cc->line_to(event->area.width,event->area.y);
+  cc->line_to(event->area.x,event->area.y);
+   
   if (m_mode == ModeNormal) {
-  	cc->move_to(2, 5);
-  	cc->line_to(37, 5);
+  	cc->move_to(0, (event->area.height) / 2);
+  	cc->line_to(event->area.width, (event->area.height) / 2);
   	value = m_params[0]->get_value();
   	if (m_integer)
     	value = floor(value + 0.5);
-  	value = (value - m_params[0]->get_lower()) * 36 / (m_params[0]->get_upper() - m_params[0]->get_lower());
+  	value = (value - m_params[0]->get_lower()) * (event->area.width - 3) / (m_params[0]->get_upper() - m_params[0]->get_lower());
   	cc->move_to((int)value + 2, 2);
-  	cc->line_to((int)value + 2, 8);
+  	cc->line_to((int)value + 2, event->area.height - 2);
   } else if (m_mode == ModeConnect) {
   	cc->move_to(0, 0);
-  	cc->line_to(40, 10);
-  	cc->move_to(40, 0);
-  	cc->line_to(0, 10);
+  	cc->line_to(event->area.width, event->area.height);
+  	cc->move_to(event->area.width, 0);
+  	cc->line_to(0, event->area.height);
   }
   cc->set_source_rgb(0, 0, 0);
   cc->stroke();
@@ -98,13 +106,11 @@ bool Slider::on_motion_notify_event(GdkEventMotion* event) {
   return true;
 }
 
-
 bool Slider::on_button_press_event(GdkEventButton* event) {
   m_click_offset = (int)event->y;
   m_value_offset = map_to_knob(m_params[0]->get_value());
   return true;
 }
-
 
 bool Slider::on_scroll_event(GdkEventScroll* event) {
   double step = m_step;
@@ -128,7 +134,6 @@ double Slider::map_to_adj(double knob) {
     return a + knob * (b - a);
 }
 
-
 double Slider::map_to_knob(double adj) {
   double a = m_params[0]->get_lower();
   double b = m_params[0]->get_upper();
@@ -140,5 +145,5 @@ double Slider::map_to_knob(double adj) {
     return (adj - a) / (b - a);
 }
 
-} //namespace CloWidget
+} //namespace Thc
 
