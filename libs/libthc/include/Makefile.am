@@ -1,6 +1,6 @@
-libclowidgetincludedir = $(includedir)/clowidget
+libthcincludedir = $(includedir)/thc
 
-libclowidgetinclude_HEADERS = \
+libthcinclude_HEADERS = \
 	CloWidget.h \
 	ICloWidget.h \
 	CloExpander.h \
