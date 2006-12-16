@@ -51,13 +51,18 @@ Slider::Slider(float min, float max, float value, bool integer, bool logarithmic
     m_horizontal(horizontal) {
   add_supported_mode(ModeConnect);
   add_param(min, min, max);
-  set_size_request(64, 32);
+  if (m_horizontal)
+    set_size_request(64, 32);
+  else
+    set_size_request(32, 64);
   add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
   m_params[0]->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
   if (m_integer)
     m_step = 1.0 / (max - min);
   else
     m_step = 1.0 / 30;
+  value = (value < min ? min : value);
+  value = (value > max ? max : value);
   m_params[0]->set_value(value);
 }
 
@@ -70,21 +75,31 @@ void Slider::on_mode_change() {
 void Slider::draw_vector(GdkEventExpose* event, 
 												 Glib::RefPtr<Gdk::GC> gc, 
 												 Cairo::RefPtr<Cairo::Context> cc) {
-	float value;
+  float value;
 	
-	cc->move_to(event->area.x,event->area.y);
+  cc->move_to(event->area.x,event->area.y);
   cc->line_to(event->area.x,event->area.height);
   cc->line_to(event->area.width,event->area.height);
   cc->line_to(event->area.width,event->area.y);
   cc->line_to(event->area.x,event->area.y);
-  cc->move_to(0, (event->area.height) / 2);
-  cc->line_to(event->area.width, (event->area.height) / 2);
+  
   value = m_params[0]->get_value();
   if (m_integer)
     value = floor(value + 0.5);
-  value = (value - m_params[0]->get_lower()) * (event->area.width - 3) / (m_params[0]->get_upper() - m_params[0]->get_lower());
-  cc->move_to((int)value + 2, 2);
-  cc->line_to((int)value + 2, event->area.height - 2);
+  if (m_horizontal) {
+    cc->move_to(0, (event->area.height) / 2);
+    cc->line_to(event->area.width, (event->area.height) / 2);
+    value = (value - m_params[0]->get_lower()) * (event->area.width - 3) / (m_params[0]->get_upper() - m_params[0]->get_lower());
+    cc->move_to((int)value + 2, 2);
+    cc->line_to((int)value + 2, event->area.height - 2);
+  } else {
+    cc->move_to(event->area.width / 2, 0);
+    cc->line_to(event->area.width / 2, event->area.height);
+    value = (value - m_params[0]->get_lower()) * (event->area.height - 3) / (m_params[0]->get_upper() - m_params[0]->get_lower());
+    cc->move_to(2, (int)value + 2);
+    cc->line_to(event->area.width - 2, (int)value + 2);
+  }
+  cc->stroke();
 }
 
 void Slider::draw_images(GdkEventExpose* event, 
@@ -116,9 +131,8 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   	cc->line_to(event->area.width, event->area.height);
   	cc->move_to(event->area.width, 0);
   	cc->line_to(0, event->area.height);
+  	cc->stroke();
   }
-  //cc->set_source_rgb(0, 0, 0);
-  cc->stroke();
   return true;
 }
 

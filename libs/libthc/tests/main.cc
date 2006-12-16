@@ -38,16 +38,19 @@
 #include <gtkmm.h>
 #include "../src/thc.h"
 
-Thc::Slider *slider;
+Thc::Slider *slider, *slider2;
 
 
 void normal_mode() {
   slider->set_mode(Thc::ModeNormal);
+  slider2->set_mode(Thc::ModeNormal);
 }
 
 void connect_mode() {
   slider->set_mode(Thc::ModeConnect);
+  slider2->set_mode(Thc::ModeConnect);
 }
+
   
 int main (int argc, char *argv[]) {  
   Gtk::Main gtkmain (argc, argv);
@@ -58,11 +61,14 @@ int main (int argc, char *argv[]) {
   Gtk::HBox hbox;
   
   slider = new Thc::Slider();
+  slider2 = new Thc::Slider(0, 10, 0, false, false, false);
+  //slider3 = new Thc::Slider(0, 0, 100, false, false, false);
   window.add(vbox);
   vbox.pack_start(hbox);
   hbox.pack_start(btn_normal);
   hbox.pack_start(btn_connect);
-  vbox.add(*slider);
+  vbox.pack_start(*slider);
+  vbox.pack_start(*slider2);
   
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
