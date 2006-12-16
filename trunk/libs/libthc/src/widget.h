@@ -38,22 +38,33 @@ namespace Thc {
     ModeSlime = 2,
     ModeConnect = 4
   };
-
-  typedef shared_ptr<Adjustment> Param;
-  typedef shared_ptr<xmlpp::Node> Skins;
-  typedef shared_ptr<std::vector<shared_ptr<Gdk::Pixbuf> > > ImageCollection;
   
+  class _Skin {
+  public:
+    typedef shared_ptr<xmlpp::Node> Xml;
+    typedef shared_ptr<std::vector<shared_ptr<Gdk::Pixbuf> > > Images;
+    
+    inline _Skin(Xml node = Xml(), Images images = Images()): m_xml(node), m_images(images) {}
+    //inline _Skin(const _Skin& skin) { m_xml = skin.m_xml; m_images = skin.m_images; }
+        
+      //the skin configuration
+    Xml m_xml;
+    //image collection associated with the skin
+    Images m_images;
+
+  };
+  typedef boost::shared_ptr<_Skin> Skin;
+
   //all widget should support this interface
   class IWidget {
   public:
-    inline IWidget(Skins node = Skins(), ImageCollection images = ImageCollection())
-      : m_config(node),
-        m_images(images),
+    typedef shared_ptr<Adjustment> Param;
+  
+    inline IWidget(Skin skin = Skin())
+      : m_skin(skin),
         m_mode(ModeNormal),
         m_supported_mode(ModeNormal) {}
-     
-    //inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
-  
+
   //## Parameters ##
   public:
 	  inline int count_param()const { return m_params.size(); }
@@ -64,28 +75,23 @@ namespace Thc {
 
   //## Widget Mode ##
   public:
-    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
+    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); signal_mode_change(); }
     inline int get_supported_mode()const { return m_supported_mode; }
     inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
   protected:
-    //TODO: signal
     virtual void on_mode_change() {};
+    sigc::signal<void> signal_mode_change;
 
   //## Skin ##
   public:
     //TODO: add the image collection parameter
     //a skin is just a xmlnode, and an image collection
-    inline void set_skin(Skins node/*, shared_ptr<std::vector<Gdk::Pixbuf>>*/ )
-      { m_config = node; on_skin_change(); }
+    inline void set_skin(const Skin &skin)
+      { m_skin = skin; on_skin_change(); signal_mode_change(); }
   protected:
-    //TODO: signal
     virtual void on_skin_change() {};
-    
-    
-    
-    
-    
-    
+    sigc::signal<void> signal_skin_change;
+
   //## Data ##
   protected:
     //all parameters
@@ -94,11 +100,9 @@ namespace Thc {
     //the current mode, and all supported mode
     WidgetMode m_mode;
     int m_supported_mode;
-    
-    //the skin configuration
-    Skins m_config;
-    //image collection associated with the skin
-    ImageCollection m_images;
+
+    //the current skin config
+    Skin m_skin;    
 };
 
 
