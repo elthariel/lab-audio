@@ -26,6 +26,7 @@
 #include <gtkmm.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <libxml++/libxml++.h>
 
 namespace Thc {
 
@@ -39,39 +40,60 @@ namespace Thc {
   };
 
   typedef shared_ptr<Adjustment> Param;
+  typedef shared_ptr<xmlpp::Node> Skins;
+  //typedef shared_ptr<std::vector<shared_ptr<Gdk::PixBuf> > > ImageCollection;
   
   //all widget should support this interface
   class IWidget {
   public:
+    inline IWidget(shared_ptr<xmlpp::Node> node):m_config(node), m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
     inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
   
   //## Parameters ##
   public:
-    //get the number of parameter
-	inline int count_param()const { return m_params.size(); }
-	//get the parameter
-	inline Param& get_param(int id) { return m_params[id]; }
-
+	  inline int count_param()const { return m_params.size(); }
+	  inline Param& get_param(int id) { return m_params[id]; }
   protected:
-    //add one parameter (internal)
- 	inline void add_param(double value, double min, double max) { m_params.push_back(Param(new Adjustment(value, min, max))); }
+ 	  inline void add_param(double value, double min, double max) { m_params.push_back(Param(new Adjustment(value, min, max))); }
 		
 
   //## Widget Mode ##
   public:
     inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); }
     inline int get_supported_mode()const { return m_supported_mode; }
-    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; }
-    
+    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
   protected:
-    virtual void on_mode_change() = 0;
+    //TODO: signal
+    virtual void on_mode_change() {};
 
-
+  //## Skin ##
+  public:
+    //TODO: add the image collection parameter
+    //a skin is just a xmlnode, and an image collection
+    inline void set_skin(Skins node/*, shared_ptr<std::vector<Gdk::Pixbuf>>*/ )
+      { m_config = node; on_skin_change(); }
+  protected:
+    //TODO: signal
+    virtual void on_skin_change() {};
+    
+    
+    
+    
+    
+    
   //## Data ##
   protected:
+    //all parameters
     std::vector<Param> m_params;
+    
+    //the current mode, and all supported mode
     WidgetMode m_mode;
     int m_supported_mode;
+    
+    //the skin configuration
+    Skins m_config;
+    //image collection associated with the skin
+    //shared_ptr<imagecollection> m_images;
 };
 
 

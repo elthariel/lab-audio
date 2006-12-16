@@ -33,12 +33,22 @@ namespace Thc {
 
 using namespace std;
 
+
+Slider::Slider(shared_ptr<xmlpp::Node> node)
+  : IWidget(node),
+    m_integer(true),
+    m_logarithmic(false),
+    m_step(0),
+    m_horizontal(true) {
+//parse the xml, to know what we should draw
+//    shared_ptr<xmlpp::Node> child(node->get_children('').front());
+}
+
 Slider::Slider(float min, float max, float value, bool integer, bool logarithmic, bool horizontal)
   : m_integer(integer),
     m_logarithmic(logarithmic),
     m_step(0),
     m_horizontal(horizontal) {
-
   add_supported_mode(ModeConnect);
   add_param(min, min, max);
   set_size_request(64, 32);
@@ -55,43 +65,62 @@ void Slider::on_mode_change() {
   queue_draw();
 }
 
+
+//draw the slider with cairo
+void Slider::draw_vector(GdkEventExpose* event, 
+												 Glib::RefPtr<Gdk::GC> gc, 
+												 Cairo::RefPtr<Cairo::Context> cc) {
+	float value;
+	
+	cc->move_to(event->area.x,event->area.y);
+  cc->line_to(event->area.x,event->area.height);
+  cc->line_to(event->area.width,event->area.height);
+  cc->line_to(event->area.width,event->area.y);
+  cc->line_to(event->area.x,event->area.y);
+  cc->move_to(0, (event->area.height) / 2);
+  cc->line_to(event->area.width, (event->area.height) / 2);
+  value = m_params[0]->get_value();
+  if (m_integer)
+    value = floor(value + 0.5);
+  value = (value - m_params[0]->get_lower()) * (event->area.width - 3) / (m_params[0]->get_upper() - m_params[0]->get_lower());
+  cc->move_to((int)value + 2, 2);
+  cc->line_to((int)value + 2, event->area.height - 2);
+}
+
+void Slider::draw_images(GdkEventExpose* event, 
+												 Glib::RefPtr<Gdk::GC> gc, 
+												 Cairo::RefPtr<Cairo::Context> cc) {
+  //Glib::RefPtr<Gdk::PixBuf> image = Gdk::PixBuf::create_from_file("myimage.png");
+  //image->render_to_drawable(get_window(), get_style()->get_black_gc(), 0, 0, 100, 80,
+  //                          image->get_width(), image->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+}
+
+void Slider::draw_2images(GdkEventExpose* event, 
+												  Glib::RefPtr<Gdk::GC> gc, 
+												  Cairo::RefPtr<Cairo::Context> cc) {
+												  
+}
+												  
+
 bool Slider::on_expose_event(GdkEventExpose* event) {
   
   Glib::RefPtr<Gdk::Window> win = get_window();
   Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(win);
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
-  float value;
-
+  
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
-  cc->set_source_rgba(127, 127, 127, 0.3);
-  //cc->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
-  //cc->fill();
-  cc->move_to(event->area.x,event->area.y);
-  cc->line_to(event->area.x,event->area.height);
-  cc->line_to(event->area.width,event->area.height);
-  cc->line_to(event->area.width,event->area.y);
-  cc->line_to(event->area.x,event->area.y);
-   
   if (m_mode == ModeNormal) {
-  	cc->move_to(0, (event->area.height) / 2);
-  	cc->line_to(event->area.width, (event->area.height) / 2);
-  	value = m_params[0]->get_value();
-  	if (m_integer)
-    	value = floor(value + 0.5);
-  	value = (value - m_params[0]->get_lower()) * (event->area.width - 3) / (m_params[0]->get_upper() - m_params[0]->get_lower());
-  	cc->move_to((int)value + 2, 2);
-  	cc->line_to((int)value + 2, event->area.height - 2);
+  	draw_vector(event, gc, cc);
   } else if (m_mode == ModeConnect) {
   	cc->move_to(0, 0);
   	cc->line_to(event->area.width, event->area.height);
   	cc->move_to(event->area.width, 0);
   	cc->line_to(0, event->area.height);
   }
-  cc->set_source_rgb(0, 0, 0);
+  //cc->set_source_rgb(0, 0, 0);
   cc->stroke();
   return true;
 }
-
 
 bool Slider::on_motion_notify_event(GdkEventMotion* event) {
   float scale = 200;

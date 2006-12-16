@@ -38,23 +38,37 @@
 #include <gtkmm.h>
 #include "../src/thc.h"
 
-int main (int argc, char *argv[]) {
-  Gtk::Main gtk_main (argc, argv);
+Thc::Slider *slider;
+
+
+void normal_mode() {
+  slider->set_mode(Thc::ModeNormal);
+}
+
+void connect_mode() {
+  slider->set_mode(Thc::ModeConnect);
+}
+  
+int main (int argc, char *argv[]) {  
+  Gtk::Main gtkmain (argc, argv);
   Gtk::Window window;
   Gtk::Button btn_normal("Normal");
   Gtk::Button btn_connect("Connect");
   Gtk::VBox vbox;
   Gtk::HBox hbox;
-  Thc::Slider slider;
   
+  slider = new Thc::Slider();
   window.add(vbox);
   vbox.pack_start(hbox);
-  hbox.pack_start(btn_connect);
   hbox.pack_start(btn_normal);
-  vbox.add(slider);
+  hbox.pack_start(btn_connect);
+  vbox.add(*slider);
   
+  btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
+  btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
+    
   window.show_all();
-  gtk_main.run (window);
+  gtkmain.run (window);
   return 0;
 }
 
