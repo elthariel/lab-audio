@@ -31,7 +31,7 @@ namespace Thc {
 class Slider : public Gtk::DrawingArea, public IWidget {
 public:
   //constructor taking a xml dom as parameter
-  Slider(shared_ptr<xmlpp::Node> node);
+  Slider(Skin skin);
   //constructor for vectorial mode
   Slider(float min = 0, float max = 10, float value = 0, bool integer = false, bool logarithmic = false, bool horizontal = true);
   //constructor for images mode

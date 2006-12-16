@@ -34,8 +34,8 @@ namespace Thc {
 using namespace std;
 
 
-Slider::Slider(shared_ptr<xmlpp::Node> node)
-  : IWidget(node),
+Slider::Slider(Skin skin)
+  : IWidget(skin),
     m_integer(true),
     m_logarithmic(false),
     m_step(0),
@@ -128,7 +128,10 @@ bool Slider::on_motion_notify_event(GdkEventMotion* event) {
   
   if (event->state & GDK_SHIFT_MASK)
     scale *= 200;
-  value = m_value_offset + ((m_click_offset - event->y) / scale);
+  if (m_horizontal)
+    value = m_value_offset + ((m_click_offset - event->x) / scale);
+  else
+    value = m_value_offset + ((m_click_offset - event->y) / scale);
   value = value < 0 ? 0 : value;
   value = value > 1 ? 1 : value;
   m_params[0]->set_value(map_to_adj(value));
@@ -136,7 +139,10 @@ bool Slider::on_motion_notify_event(GdkEventMotion* event) {
 }
 
 bool Slider::on_button_press_event(GdkEventButton* event) {
-  m_click_offset = (int)event->y;
+  if (m_horizontal)
+    m_click_offset = (int)event->x;
+  else
+    m_click_offset = (int)event->y;
   m_value_offset = map_to_knob(m_params[0]->get_value());
   return true;
 }
