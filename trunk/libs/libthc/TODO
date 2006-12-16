@@ -1,15 +1,14 @@
 TODO
 
 General:
-  - create an helper class witch draw text, etc... using cairo
+  - add draw_ports and draw_port to CairoUtils
 
-ICloWidget:
-  - add CloModeLearn
-  - add a generic interface to set_value/get_value (port?)
+IWidget:
+  - better skin supporte
+  - maybe a class for parameter (to abstract Adjustment)
 
-CloSlider:
+Slider:
   - good graphic
-  - support CloModeLearn
 
 ICloContainer:
   - define the interface
@@ -21,9 +20,16 @@ CloArea:
   - toggle fullscreen
   - resize the area
   - move the area
-  - a moved widget doesnt overlap other widget
+  - a moved widget doesnt overlap another widget
 
 CloCollapsable:
-  - move the area - DONE
   - support rename
   - support mode slime
+
+
+DONE
+  - create an helper class witch draw text, etc... using cairo - done [CairoUtils]
+  - add CloModeLearn - done
+  - add a generic interface to set_value/get_value (port?) -done
+  - support CloModeLearn - done
+  - move the area - DONE
