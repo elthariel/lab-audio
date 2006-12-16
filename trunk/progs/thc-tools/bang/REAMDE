@@ -1,0 +1,24 @@
+################
+README for bang.
+###############
+
+Bang is a collection of script that generates images ranges for use
+with libthc widgets collection.
+
+Requirements :
+
+- Perl
+- Image Magick
+- perlmagick
+
+Use :
+
+    ./fader.pl size_x size_y
+
+
+
+Notes :
+
+More options will be added in future version of this package.
+the style of the images will be greatly improved.
+potar.pl for rotary is coming soon.y
