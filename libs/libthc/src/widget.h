@@ -41,13 +41,18 @@ namespace Thc {
 
   typedef shared_ptr<Adjustment> Param;
   typedef shared_ptr<xmlpp::Node> Skins;
-  //typedef shared_ptr<std::vector<shared_ptr<Gdk::PixBuf> > > ImageCollection;
+  typedef shared_ptr<std::vector<shared_ptr<Gdk::Pixbuf> > > ImageCollection;
   
   //all widget should support this interface
   class IWidget {
   public:
-    inline IWidget(shared_ptr<xmlpp::Node> node):m_config(node), m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
-    inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
+    inline IWidget(Skins node = Skins(), ImageCollection images = ImageCollection())
+      : m_config(node),
+        m_images(images),
+        m_mode(ModeNormal),
+        m_supported_mode(ModeNormal) {}
+     
+    //inline IWidget(): m_mode(ModeNormal), m_supported_mode(ModeNormal) {}
   
   //## Parameters ##
   public:
@@ -93,7 +98,7 @@ namespace Thc {
     //the skin configuration
     Skins m_config;
     //image collection associated with the skin
-    //shared_ptr<imagecollection> m_images;
+    ImageCollection m_images;
 };
 
 
