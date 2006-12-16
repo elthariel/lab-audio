@@ -30,11 +30,14 @@ namespace Thc {
 
 class Slider : public Gtk::DrawingArea, public IWidget {
 public:
-  //Slider(Config& xmlconfig);
+  //constructor taking a xml dom as parameter
+  Slider(shared_ptr<xmlpp::Node> node);
+  //constructor for vectorial mode
   Slider(float min = 0, float max = 10, float value = 0, bool integer = false, bool logarithmic = false, bool horizontal = true);
- 
-  //ICloWidget
-  void on_mode_change();
+  //constructor for images mode
+  //Slider(float min = 0, float max = 10, float value = 0, imagename...);
+  //constructor for 2image mode
+  
 
 protected:
   bool on_expose_event(GdkEventExpose* event);
@@ -42,12 +45,18 @@ protected:
   bool on_button_press_event(GdkEventButton* event);
   bool on_scroll_event(GdkEventScroll* event);
   
-//  int draw_digit(Cairo::RefPtr<Cairo::Context>& cc, char digit);
-//  void draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::string& str,
-//                   float x, float y);
+  void draw_vector(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
+  void draw_images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
+  void draw_2images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
+												  
+  //IWidget
+  void on_mode_change();
+
+  //should be elsewhere maybe into Thc::Parameter
   double map_to_adj(double knob);
   double map_to_knob(double adj);
   
+private:
   int m_click_offset;
   float m_value_offset;
   float m_red, m_green, m_blue;
