@@ -28,6 +28,7 @@
 #include <boost/shared_ptr.hpp>
 #include <libxml++/libxml++.h>
 
+//TODO: replace shared_ptr byg Glib::RefPtr
 namespace Thc {
 
   using boost::shared_ptr;
@@ -39,28 +40,28 @@ namespace Thc {
     ModeConnect = 4
   };
   
-  class _Skin {
+  class Skin {
   public:
-    typedef shared_ptr<xmlpp::Node> Xml;
-    typedef shared_ptr<std::vector<shared_ptr<Gdk::Pixbuf> > > Images;
+    typedef shared_ptr<xmlpp::Node> RefXml;
+    typedef shared_ptr<std::vector<Glib::RefPtr<Gdk::Pixbuf> > > RefImages;
     
-    inline _Skin(Xml node = Xml(), Images images = Images()): m_xml(node), m_images(images) {}
+    inline Skin(RefXml node = RefXml(), RefImages images = RefImages()): m_xml(node), m_images(images) {}
     //inline _Skin(const _Skin& skin) { m_xml = skin.m_xml; m_images = skin.m_images; }
         
       //the skin configuration
-    Xml m_xml;
+    RefXml m_xml;
     //image collection associated with the skin
-    Images m_images;
+    RefImages m_images;
 
   };
-  typedef boost::shared_ptr<_Skin> Skin;
+  typedef boost::shared_ptr<Skin> RefSkin;
 
   //all widget should support this interface
   class IWidget {
   public:
     typedef shared_ptr<Adjustment> Param;
   
-    inline IWidget(Skin skin = Skin())
+    inline IWidget(RefSkin skin = RefSkin())
       : m_skin(skin),
         m_mode(ModeNormal),
         m_supported_mode(ModeNormal) {}
@@ -86,8 +87,9 @@ namespace Thc {
   public:
     //TODO: add the image collection parameter
     //a skin is just a xmlnode, and an image collection
-    inline void set_skin(const Skin &skin)
+    inline void set_skin(const RefSkin &skin)
       { m_skin = skin; on_skin_change(); signal_mode_change(); }
+    inline int image_count()const { return m_skin->m_images->size(); }
   protected:
     virtual void on_skin_change() {};
     sigc::signal<void> signal_skin_change;
@@ -102,7 +104,7 @@ namespace Thc {
     int m_supported_mode;
 
     //the current skin config
-    Skin m_skin;    
+    RefSkin m_skin;    
 };
 
 
