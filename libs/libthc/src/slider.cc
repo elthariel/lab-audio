@@ -41,7 +41,7 @@ Slider::Slider(const RefSkin &skin)
     m_step(0),
     m_horizontal(true) {
   
-  int i = 0;
+ /* int i = 0;
   shared_ptr<std::vector<Glib::RefPtr<Gdk::Pixbuf> > > images(new std::vector<Glib::RefPtr<Gdk::Pixbuf> >());
  
   m_skin = RefSkin(new Skin(Skin::RefXml(), images));
@@ -50,7 +50,7 @@ Slider::Slider(const RefSkin &skin)
     snprintf(imgfile, 2000, "te/vu%ir.png", i);
     Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_file(imgfile));
     m_skin->m_images->push_back(pixbuf);
-  }
+  }*/
 //parse the xml, to know what we should draw
 //    shared_ptr<xmlpp::Node> child(node->get_children('').front());
 }
@@ -82,7 +82,7 @@ Slider::Slider(float min, float max, float value, bool integer, bool logarithmic
   m_skin = RefSkin(new Skin(Skin::RefXml(), images));
   for (i = 0; i <= 32; i++) {
     char imgfile[2000];
-    snprintf(imgfile, 2000, "te/vu%ir.png", i);
+    snprintf(imgfile, 2000, "../skins/mixxx/vu%ir.png", i);
     Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_file(imgfile));
     m_skin->m_images->push_back(pixbuf);
   }
