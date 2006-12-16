@@ -61,7 +61,7 @@ int main (int argc, char *argv[]) {
   Gtk::HBox hbox;
   
   slider = new Thc::Slider();
-  slider2 = new Thc::Slider(0, 10, 0, false, false, false);
+  slider2 = new Thc::Slider(0, 10, 5, false, false, false);
   //slider3 = new Thc::Slider(0, 0, 100, false, false, false);
   window.add(vbox);
   vbox.pack_start(hbox);

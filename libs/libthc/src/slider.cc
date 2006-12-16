@@ -34,12 +34,23 @@ namespace Thc {
 using namespace std;
 
 
-Slider::Slider(Skin skin)
+Slider::Slider(const RefSkin &skin)
   : IWidget(skin),
     m_integer(true),
     m_logarithmic(false),
     m_step(0),
     m_horizontal(true) {
+  
+  int i = 0;
+  shared_ptr<std::vector<Glib::RefPtr<Gdk::Pixbuf> > > images(new std::vector<Glib::RefPtr<Gdk::Pixbuf> >());
+ 
+  m_skin = RefSkin(new Skin(Skin::RefXml(), images));
+  for (i = 0; i <= 32; i++) {
+    char imgfile[2000];
+    snprintf(imgfile, 2000, "te/vu%ir.png", i);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_file(imgfile));
+    m_skin->m_images->push_back(pixbuf);
+  }
 //parse the xml, to know what we should draw
 //    shared_ptr<xmlpp::Node> child(node->get_children('').front());
 }
@@ -64,6 +75,18 @@ Slider::Slider(float min, float max, float value, bool integer, bool logarithmic
   value = (value < min ? min : value);
   value = (value > max ? max : value);
   m_params[0]->set_value(value);
+  
+    int i = 0;
+  shared_ptr<std::vector<Glib::RefPtr<Gdk::Pixbuf> > > images(new std::vector<Glib::RefPtr<Gdk::Pixbuf> >());
+ 
+  m_skin = RefSkin(new Skin(Skin::RefXml(), images));
+  for (i = 0; i <= 32; i++) {
+    char imgfile[2000];
+    snprintf(imgfile, 2000, "te/vu%ir.png", i);
+    Glib::RefPtr<Gdk::Pixbuf> pixbuf(Gdk::Pixbuf::create_from_file(imgfile));
+    m_skin->m_images->push_back(pixbuf);
+  }
+  
 }
 
 void Slider::on_mode_change() {
@@ -105,9 +128,16 @@ void Slider::draw_vector(GdkEventExpose* event,
 void Slider::draw_images(GdkEventExpose* event, 
 												 Glib::RefPtr<Gdk::GC> gc, 
 												 Cairo::RefPtr<Cairo::Context> cc) {
-  //Glib::RefPtr<Gdk::PixBuf> image = Gdk::PixBuf::create_from_file("myimage.png");
-  //image->render_to_drawable(get_window(), get_style()->get_black_gc(), 0, 0, 100, 80,
-  //                          image->get_width(), image->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+  float value;
+  
+	value = m_params[0]->get_value();
+  if (m_integer)
+    value = floor(value + 0.5);
+  value = (value - m_params[0]->get_lower()) * (image_count()-1) / (m_params[0]->get_upper() - m_params[0]->get_lower());
+  Glib::RefPtr<Gdk::Pixbuf> image = (*(m_skin->m_images))[(int)value];
+  if (image)  //deprecated
+    image->render_to_drawable(get_window(), gc, 0, 0, 0, 0,
+                              image->get_width(), image->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
 }
 
 void Slider::draw_2images(GdkEventExpose* event, 
@@ -125,7 +155,8 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
   if (m_mode == ModeNormal) {
-  	draw_vector(event, gc, cc);
+  	//draw_vector(event, gc, cc);
+  	draw_images(event, gc, cc);
   } else if (m_mode == ModeConnect) {
   	cc->move_to(0, 0);
   	cc->line_to(event->area.width, event->area.height);

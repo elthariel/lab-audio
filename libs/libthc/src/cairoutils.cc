@@ -158,3 +158,9 @@ void CairoUtils::draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::strin
     cc->move_to(x + xoffset, y);
   }
 }
+
+void CairoUtils::draw_port(Cairo::RefPtr<Cairo::Context>& cc, float x, float y) {
+}
+
+void CairoUtils::draw_ports(Cairo::RefPtr<Cairo::Context>& cc) {
+}
