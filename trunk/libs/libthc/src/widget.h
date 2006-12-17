@@ -26,7 +26,9 @@
 #include <gtkmm.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include <libxml++/libxml++.h>
+//#include <libxml++/libxml++.h>
+
+#include "skin.h"
 
 //TODO: replace shared_ptr byg Glib::RefPtr
 namespace Thc {
@@ -40,43 +42,28 @@ namespace Thc {
     ModeConnect = 4
   };
   
-  class Skin {
-  public:
-    typedef shared_ptr<xmlpp::Node> RefXml;
-    typedef shared_ptr<std::vector<Glib::RefPtr<Gdk::Pixbuf> > > RefImages;
-    
-    inline Skin(RefXml node = RefXml(), RefImages images = RefImages()): m_xml(node), m_images(images) {}
-    //inline _Skin(const _Skin& skin) { m_xml = skin.m_xml; m_images = skin.m_images; }
-        
-      //the skin configuration
-    RefXml m_xml;
-    //image collection associated with the skin
-    RefImages m_images;
-
-  };
-  typedef boost::shared_ptr<Skin> RefSkin;
-
   //all widget should support this interface
   class IWidget {
   public:
     typedef shared_ptr<Adjustment> Param;
   
-    inline IWidget(RefSkin skin = RefSkin())
+    inline IWidget(Skin::RefSkin skin = Skin::RefSkin())
       : m_skin(skin),
         m_mode(ModeNormal),
-        m_supported_mode(ModeNormal) {}
+        m_supported_mode(ModeNormal & ModeConnect) {}
 
   //## Parameters ##
   public:
 	  inline int count_param()const { return m_params.size(); }
-	  inline Param& get_param(int id) { return m_params[id]; }
+	  inline Param& get_param(const Glib::ustring& name) { return m_params[name]; }
   protected:
- 	  inline void add_param(double value, double min, double max) { m_params.push_back(Param(new Adjustment(value, min, max))); }
+ 	  inline void add_param(const Glib::ustring& name, double value, double min, double max) { m_params[name] = (Param(new Adjustment(value, min, max))); }
 		
 
   //## Widget Mode ##
   public:
     inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); signal_mode_change(); }
+    inline WidgetMode get_mode()const { return m_mode; }
     inline int get_supported_mode()const { return m_supported_mode; }
     inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
   protected:
@@ -87,24 +74,24 @@ namespace Thc {
   public:
     //TODO: add the image collection parameter
     //a skin is just a xmlnode, and an image collection
-    inline void set_skin(const RefSkin &skin)
-      { m_skin = skin; on_skin_change(); signal_mode_change(); }
-    inline int image_count()const { return m_skin->m_images->size(); }
+    inline void set_skin(const Skin::RefSkin &skin) { m_skin = skin; on_skin_change(); signal_skin_change(); }
+    inline Skin::RefSkin get_skin()const { return m_skin; }
+    
   protected:
     virtual void on_skin_change() {};
     sigc::signal<void> signal_skin_change;
 
   //## Data ##
-  protected:
+  private:
     //all parameters
-    std::vector<Param> m_params;
+    std::map<Glib::ustring, Param> m_params;
     
     //the current mode, and all supported mode
     WidgetMode m_mode;
     int m_supported_mode;
 
     //the current skin config
-    RefSkin m_skin;    
+    Skin::RefSkin m_skin;
 };
 
 

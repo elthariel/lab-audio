@@ -18,6 +18,7 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libthc.la
 
 libthc_la_SOURCES = \
+    skin.cc \
 	slider.cc
 #	CloExpander.cpp \
 #	shapereditor.cpp \
@@ -37,6 +38,7 @@ libthcincludedir = $(includedir)/thc
 
 libthcinclude_HEADERS = \
 	thc.h \
+	skin.h \
 	widget.h \
 	slider.h
 
