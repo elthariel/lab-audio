@@ -18,14 +18,14 @@ AM_CFLAGS =\
 bin_PROGRAMS = thcmeter
 
 thcmeter_SOURCES = \
-	main.cc \
-	../src/slider.cc
+	main.cc
+
 
 
 thcmeter_LDADD = $(PACKAGE_LIBS)
-#thcmeter_DEPENDENCIES = ../../../libs/client/libingenclient.a
+thcmeter_DEPENDENCIES = ../src/.libs/libthc.la
 #thcmeter_CXXFLAGS = -DMONOLITHIC_INGENUITY -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -I../../ingenuity -I../../../common -I../../../libs -I../../../libs/client -DPKGDATADIR=\"$(pkgdatadir)\"
-#thcmeter_LDADD += -lingenclient -lingen
+thcmeter_LDADD += ../src/.libs/libthc.la
 #thcmeter_LDFLAGS = -L../../../libs/client/.libs -L../../../libs/engine/.libs
 
 #EXTRA_DIST = $(glade_DATA)
