@@ -26,7 +26,7 @@
 
 namespace Thc {
   Image::Ref Image::create_image(const Glib::ustring &name) {
-    return Ref(Gdk::Pixbuf::create_from_file(name.c_str()));
+    return Ref(Cairo::ImageSurface::create_from_png(name.c_str()));
   }
 
   Images::Ref Images::create_images(const Glib::ustring &name, int number) {
@@ -35,12 +35,10 @@ namespace Thc {
     Images::Ref images(new std::vector<Image::Ref>());
         
     if (i == -1) {
-      Image::Ref pixbuf(Gdk::Pixbuf::create_from_file(name));
-      images->push_back(pixbuf);
+      images->push_back(Image::create_image(name));
     } else for (i = 0; i <= number; i++) {
      snprintf(imgname, 2000, name.c_str(), i);
-     Image::Ref pixbuf(Gdk::Pixbuf::create_from_file(imgname));
-     images->push_back(pixbuf);
+     images->push_back(Image::create_image(imgname));
     }
     return images;
   }

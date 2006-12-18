@@ -32,7 +32,8 @@ namespace Thc {
 
   class Image {
   public:
-    typedef Glib::RefPtr<Gdk::Pixbuf> Ref;
+    //typedef Glib::RefPtr<Gdk::Pixbuf> Ref;
+    typedef Cairo::RefPtr<Cairo::ImageSurface> Ref;
     static Ref create_image(const Glib::ustring &name);
   };
 

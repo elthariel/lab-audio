@@ -39,14 +39,15 @@ public:
   Slider(Param::Ref param = Param::create_param(), bool horizontal = true);
  
   //constructor for images mode
-  Slider(Images::Ref images, Param::Ref param = Param::create_param(), bool horizontal = true);
+  Slider(Images::Ref images, Param::Ref param = Param::create_param(), bool horizontal = true, bool scale = false);
 
   //constructor for 2 images mode
   Slider(Image::Ref images_background,
          Image::Ref images_foreground,
          Param::Ref param = Param::create_param(),
          SliderType type = SliderForeground,
-         bool horizontal = true);
+         bool horizontal = true,
+         bool scale = false);
 
 protected:
   bool on_expose_event(GdkEventExpose* event);
@@ -54,9 +55,9 @@ protected:
   bool on_button_press_event(GdkEventButton* event);
   bool on_scroll_event(GdkEventScroll* event);
   
-  void draw_vector(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
-  void draw_images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
-  void draw_2images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);											
+  void draw_vector(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);
+  void draw_images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);
+  void draw_2images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);											
 
   void init();
 
@@ -67,10 +68,9 @@ protected:
 private:
   int m_click_offset;
   float m_value_offset;
-  //float m_red, m_green, m_blue;
-  //bool m_integer;
-  //bool m_logarithmic;
+
   bool m_horizontal;
+  bool m_scale;
   float m_step;
 
   SliderType m_type;
