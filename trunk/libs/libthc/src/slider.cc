@@ -49,12 +49,13 @@ Slider::Slider(Param::Ref param, bool horizontal)
 }
 
 //constructor for images mode
-Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal)
+Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal, bool scale)
   : ThcWidget(),
     m_images(images),
     m_param(param),
     m_horizontal(horizontal),
-    m_type(SliderAll) {
+    m_type(SliderAll),
+    m_scale(scale) {
   init();
   Image::Ref img = ((*images)[0]);
   if (img)
@@ -66,13 +67,15 @@ Slider::Slider(Image::Ref image_background,
                Image::Ref image_foreground,
                Param::Ref param,
                SliderType type,
-               bool horizontal)
+               bool horizontal,
+               bool scale)
   : ThcWidget(),
     m_image_background(image_background),
     m_image_foreground(image_foreground),
     m_param(param),
     m_type(type),
-    m_horizontal(horizontal) {
+    m_horizontal(horizontal),
+    m_scale(scale) {
   init();
   if (image_background)
     set_size_request(image_background->get_width(), image_background->get_height());  
@@ -92,15 +95,12 @@ void Slider::init() {
 
 //draw the slider with cairo
 void Slider::draw_vector(GdkEventExpose* event, 
-						 Glib::RefPtr<Gdk::GC> gc, 
 						 Cairo::RefPtr<Cairo::Context> cc) {
   float value = m_param->get_value();
   Gtk::Allocation allocation = get_allocation();
   const int width = allocation.get_width();
   const int height = allocation.get_height();
-  
 
-  
   cc->rectangle(0, 0, width, height);
   cc->stroke();
   if (m_horizontal) {
@@ -129,30 +129,57 @@ void Slider::draw_vector(GdkEventExpose* event,
   cc->stroke();
 }
 
-void Slider::draw_images(GdkEventExpose* event, 
-						 Glib::RefPtr<Gdk::GC> gc, 
+void Slider::draw_images(GdkEventExpose* event,  
 						 Cairo::RefPtr<Cairo::Context> cc) {
   float value = m_param->get_value();
+  double w, h;
 
   value = (value - m_param->get_lower()) * (m_images->size()-1) / (m_param->get_upper() - m_param->get_lower());
-  Glib::RefPtr<Gdk::Pixbuf> image = (*m_images)[(int)value];
-  if (image)  //deprecated, need clipping, need scale, etc...
-    image->render_to_drawable(get_window(), gc, 0, 0, 0, 0, image->get_width(), image->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
+
+  Image::Ref image = (*m_images)[(int) value];
+  if (!image)
+    return;
+  w = image->get_width();
+  h = image->get_height();
+
+  if (m_scale)
+    cc->scale ((double)get_allocation().get_width()/w, (double)get_allocation().get_height()/h);
+  cc->set_source(image, 0, 0);
+  cc->paint();
+  cc->stroke();
 }
 
 //background/handle
 //background/foreground
 void Slider::draw_2images(GdkEventExpose* event, 
-						  Glib::RefPtr<Gdk::GC> gc, 
 						  Cairo::RefPtr<Cairo::Context> cc) {
-												  
+  double w, h;
+
+  if (!m_image_background)
+    return;
+  w = m_image_background->get_width();
+  h = m_image_background->get_height();
+  if (m_scale)
+    cc->scale ((double)get_allocation().get_width()/w, (double)get_allocation().get_height()/h);
+  cc->set_source(m_image_background, 0, 0);
+  cc->paint();
+  cc->stroke();
+  
+  if (!m_image_foreground)
+    return;
+  cc->set_source(m_image_foreground, 0, 0);
+  if (SliderMode == ModeHandle) {
+  
+  } else {
+  
+  }					  
 }
 												  
 
 bool Slider::on_expose_event(GdkEventExpose* event) {
   
   Glib::RefPtr<Gdk::Window> win = get_window();
-  Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(win);
+//  Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(win);
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
 
   //clip to what really need to be redrawn
@@ -162,9 +189,9 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
   if (get_mode() == ModeNormal) {
   	if (m_type == SliderVector)
-  	  draw_vector(event, gc, cc);
+  	  draw_vector(event, cc);
   	else if (m_type == SliderAll)
-  	  draw_images(event, gc, cc);
+  	  draw_images(event, cc);
   } else if (get_mode() == ModeConnect) {
     draw_ports(get_allocation(), cc);
   }

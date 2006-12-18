@@ -67,9 +67,9 @@ int main (int argc, char *argv[]) {
   Gtk::HBox hbox;
   Gtk::HBox hbox2;
   Slider *slider;
-  Slider slider2(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false);
+  Slider slider2(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false, true);
   Slider slider3(Thc::Images::create_images("../skins/mixxx/poti_%i.png", 12), Param::create_param(), true);
-  Slider slider4(Thc::Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false);
+  Slider slider4(Thc::Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false, true);
   Slider slider5(Thc::Images::create_images("../skins/mixxx/vu%ir.png", 32), Param::create_param(), false);
   Slider slider6(Param::create_param(), false);
 
