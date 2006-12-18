@@ -154,6 +154,7 @@ void Slider::draw_images(GdkEventExpose* event,
 void Slider::draw_2images(GdkEventExpose* event, 
 						  Cairo::RefPtr<Cairo::Context> cc) {
   double w, h;
+  float value = m_param->get_value();
 
   if (!m_image_background)
     return;
@@ -167,12 +168,22 @@ void Slider::draw_2images(GdkEventExpose* event,
   
   if (!m_image_foreground)
     return;
-  cc->set_source(m_image_foreground, 0, 0);
-  if (SliderMode == ModeHandle) {
-  
-  } else {
-  
-  }					  
+  if (m_type == SliderHandle) {
+    //draw the handle
+    if (m_horizontal) {
+      value = (value - m_param->get_lower()) 
+              * (w - m_image_foreground->get_width())//(m_images->size()-1) 
+              / (m_param->get_upper() - m_param->get_lower());
+      cc->set_source(m_image_foreground, value, 0);
+    } else {
+      value = (value - m_param->get_lower()) 
+              * (h - m_image_foreground->get_height())//(m_images->size()-1) 
+              / (m_param->get_upper() - m_param->get_lower());
+      cc->set_source(m_image_foreground, 0, value);
+    }
+    cc->paint();
+    cc->stroke();
+  }
 }
 												  
 
@@ -192,6 +203,8 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   	  draw_vector(event, cc);
   	else if (m_type == SliderAll)
   	  draw_images(event, cc);
+  	else
+  	  draw_2images(event, cc);
   } else if (get_mode() == ModeConnect) {
     draw_ports(get_allocation(), cc);
   }
