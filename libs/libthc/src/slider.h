@@ -28,7 +28,7 @@
 
 namespace Thc {
 
-class Slider : public Gtk::DrawingArea, public IWidget {
+class Slider : public Gtk::DrawingArea, public ThcWidget {
 public:
   enum SliderType { SliderAll, SliderForeground, SliderHandle, SliderVector };
   
@@ -56,10 +56,7 @@ protected:
   
   void draw_vector(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
   void draw_images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
-  void draw_2images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);
-												  
-  //IWidget
-  void on_mode_change();
+  void draw_2images(GdkEventExpose* event, Glib::RefPtr<Gdk::GC> gc, Cairo::RefPtr<Cairo::Context> cc);											
 
   void init();
 
@@ -70,9 +67,9 @@ protected:
 private:
   int m_click_offset;
   float m_value_offset;
-  float m_red, m_green, m_blue;
-  bool m_integer;
-  bool m_logarithmic;
+  //float m_red, m_green, m_blue;
+  //bool m_integer;
+  //bool m_logarithmic;
   bool m_horizontal;
   float m_step;
 
@@ -80,7 +77,6 @@ private:
   Param::Ref m_param;
   Skin::RefImage m_image_background;
   Skin::RefImage m_image_foreground;
-  Skin::RefImage m_image_handler;
   Skin::RefImages m_images;
 };
 
