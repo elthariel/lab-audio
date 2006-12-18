@@ -32,41 +32,59 @@
 namespace Thc {
 
 using namespace std;
-
-
-Slider::Slider(const Skin::RefSkin &skin)
+  
+         
+Slider::Slider(Skin::Ref skin, Param::Ref param)
   : IWidget(skin),
-    m_integer(true),
-    m_logarithmic(false),
-    m_step(0),
-    m_horizontal(true) {
+    m_param(param) {
+  init();
 }
 
-Slider::Slider(float min, float max, float value, bool integer, bool logarithmic, bool horizontal)
-  : m_integer(integer),
-    m_logarithmic(logarithmic),
-    m_step(0),
+Slider::Slider(Param::Ref param, bool horizontal)
+  : IWidget(),
+    m_param(param),
+    m_horizontal(horizontal),
+    m_type(SliderVector) {
+  init();
+}
+
+//constructor for images mode
+Slider::Slider(Skin::RefImages images, Param::Ref param, bool horizontal)
+  : IWidget(),
+    m_images(images),
+    m_param(param),
+    m_horizontal(horizontal),
+    m_type(SliderAll) {
+  init();
+}
+
+//constructor for 2 images mode
+Slider::Slider(Skin::RefImage image_background,
+               Skin::RefImage image_foreground,
+               Param::Ref param,
+               SliderType type,
+               bool horizontal)
+  : IWidget(),
+    m_image_background(image_background),
+    m_param(param),
+    m_type(type),
     m_horizontal(horizontal) {
-  //add_supported_mode(ModeConnect);
-  add_param("x", min, min, max);
+  init();
+  if (m_type == SliderHandle)
+    m_image_handler = image_foreground;
+  else
+    m_image_foreground = image_foreground;
+}
+       
+void Slider::init() {
+  set_param("x", m_param);
+  m_param->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
+  add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
+  m_step = 1.0 / (m_param->get_upper() - m_param->get_lower());
   if (m_horizontal)
     set_size_request(64, 32);
   else
-    set_size_request(32, 64);
-  add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
-  get_param("x")->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
-  if (m_integer)
-    m_step = 1.0 / (max - min);
-  else
-    m_step = 1.0 / 30;
-  value = (value < min ? min : value);
-  value = (value > max ? max : value);
-  get_param("x")->set_value(value);
-
-  Skin::RefSkin skin = Skin::create_skin();
-  m_images_all = "../skins/bang/fader-%i.png";
-  skin->set_images(m_images_all, Skin::create_images(m_images_all, 127));
-  set_skin(skin);
+    set_size_request(32, 64);  
 }
 
 void Slider::on_mode_change() {
@@ -77,7 +95,7 @@ void Slider::on_mode_change() {
 void Slider::draw_vector(GdkEventExpose* event, 
 						 Glib::RefPtr<Gdk::GC> gc, 
 						 Cairo::RefPtr<Cairo::Context> cc) {
-  float value = get_param("x")->get_value();
+  float value = m_param->get_value();
 	
   cc->move_to(event->area.x,event->area.y);
   cc->line_to(event->area.x,event->area.height);
@@ -90,13 +108,13 @@ void Slider::draw_vector(GdkEventExpose* event,
   if (m_horizontal) {
     cc->move_to(0, (event->area.height) / 2);
     cc->line_to(event->area.width, (event->area.height) / 2);
-    value = (value - get_param("x")->get_lower()) * (event->area.width - 3) / (get_param("x")->get_upper() - get_param("x")->get_lower());
+    value = (value - m_param->get_lower()) * (event->area.width - 3) / (m_param->get_upper() - m_param->get_lower());
     cc->move_to((int)value + 2, 2);
     cc->line_to((int)value + 2, event->area.height - 2);
   } else {
     cc->move_to(event->area.width / 2, 0);
     cc->line_to(event->area.width / 2, event->area.height);
-    value = (value - get_param("x")->get_lower()) * (event->area.height - 3) / (get_param("x")->get_upper() - get_param("x")->get_lower());
+    value = (value - m_param->get_lower()) * (event->area.height - 3) / (m_param->get_upper() - m_param->get_lower());
     cc->move_to(2, (int)value + 2);
     cc->line_to(event->area.width - 2, (int)value + 2);
   }
@@ -106,11 +124,11 @@ void Slider::draw_vector(GdkEventExpose* event,
 void Slider::draw_images(GdkEventExpose* event, 
 						 Glib::RefPtr<Gdk::GC> gc, 
 						 Cairo::RefPtr<Cairo::Context> cc) {
-  float value = get_param("x")->get_value();
+  float value = m_param->get_value();
   if (m_integer)
     value = floor(value + 0.5);
-  value = (value - get_param("x")->get_lower()) * (get_skin()->get_images_count(m_images_all)-1) / (get_param("x")->get_upper() - get_param("x")->get_lower());
-  Glib::RefPtr<Gdk::Pixbuf> image = get_skin()->get_images(m_images_all, (int)value);
+  value = (value - m_param->get_lower()) * (m_images->size()-1) / (m_param->get_upper() - m_param->get_lower());
+  Glib::RefPtr<Gdk::Pixbuf> image = (*m_images)[(int)value];
   if (image)  //deprecated, need clipping, need scale, etc...
     image->render_to_drawable(get_window(), gc, 0, 0, 0, 0, image->get_width(), image->get_height(), Gdk::RGB_DITHER_NONE, 0, 0);
 }
@@ -132,8 +150,10 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
   if (get_mode() == ModeNormal) {
-  	//draw_vector(event, gc, cc);
-  	draw_images(event, gc, cc);
+  	if (m_type == SliderVector)
+  	  draw_vector(event, gc, cc);
+  	else if (m_type == SliderAll)
+  	  draw_images(event, gc, cc);
   } else if (get_mode() == ModeConnect) {
   	cc->move_to(0, 0);
   	cc->line_to(event->area.width, event->area.height);
@@ -156,7 +176,7 @@ bool Slider::on_motion_notify_event(GdkEventMotion* event) {
     value = m_value_offset + ((m_click_offset - event->y) / scale);
   value = value < 0 ? 0 : value;
   value = value > 1 ? 1 : value;
-  get_param("x")->set_value(map_to_adj(value));
+  m_param->set_value(map_to_adj(value));
   return true;
 }
 
@@ -165,7 +185,7 @@ bool Slider::on_button_press_event(GdkEventButton* event) {
     m_click_offset = (int)event->x;
   else
     m_click_offset = (int)event->y;
-  m_value_offset = map_to_knob(get_param("x")->get_value());
+  m_value_offset = map_to_knob(m_param->get_value());
   return true;
 }
 
@@ -174,16 +194,16 @@ bool Slider::on_scroll_event(GdkEventScroll* event) {
   if (event->state & GDK_SHIFT_MASK && !m_integer)
     step *= 0.01;
   if (event->direction == GDK_SCROLL_UP)
-    get_param("x")->set_value(map_to_adj(map_to_knob(get_param("x")->get_value()) + step));
+    m_param->set_value(map_to_adj(map_to_knob(m_param->get_value()) + step));
   else if (event->direction == GDK_SCROLL_DOWN)
-    get_param("x")->set_value(map_to_adj(map_to_knob(get_param("x")->get_value()) - step));
+    m_param->set_value(map_to_adj(map_to_knob(m_param->get_value()) - step));
   return true;
 }
 
 //TODO REMOVE
 double Slider::map_to_adj(double knob) {
-  double a = get_param("x")->get_lower();
-  double b = get_param("x")->get_upper();
+  double a = m_param->get_lower();
+  double b = m_param->get_upper();
   knob = knob < 0 ? 0 : knob;
   knob = knob > 1 ? 1 : knob;
   if (m_logarithmic)
@@ -193,8 +213,8 @@ double Slider::map_to_adj(double knob) {
 }
 
 double Slider::map_to_knob(double adj) {
-  double a = get_param("x")->get_lower();
-  double b = get_param("x")->get_upper();
+  double a = m_param->get_lower();
+  double b = m_param->get_upper();
   adj = adj < a ? a : adj;
   adj = adj > b ? b : adj;
   if (m_logarithmic)

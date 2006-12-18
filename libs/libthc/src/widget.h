@@ -29,8 +29,8 @@
 //#include <libxml++/libxml++.h>
 
 #include "skin.h"
+#include "param.h"
 
-//TODO: replace shared_ptr byg Glib::RefPtr
 namespace Thc {
 
   using boost::shared_ptr;
@@ -45,9 +45,8 @@ namespace Thc {
   //all widget should support this interface
   class IWidget {
   public:
-    typedef shared_ptr<Adjustment> Param;
   
-    inline IWidget(Skin::RefSkin skin = Skin::RefSkin())
+    inline IWidget(Skin::Ref skin = Skin::Ref())
       : m_skin(skin),
         m_mode(ModeNormal),
         m_supported_mode(ModeNormal & ModeConnect) {}
@@ -55,9 +54,9 @@ namespace Thc {
   //## Parameters ##
   public:
 	  inline int count_param()const { return m_params.size(); }
-	  inline Param& get_param(const Glib::ustring& name) { return m_params[name]; }
+	  inline Param::Ref get_param(const Glib::ustring& name) { return m_params[name]; }
   protected:
- 	  inline void add_param(const Glib::ustring& name, double value, double min, double max) { m_params[name] = (Param(new Adjustment(value, min, max))); }
+ 	  inline void set_param(const Glib::ustring& name, Param::Ref param) { m_params[name] = param; }
 		
 
   //## Widget Mode ##
@@ -65,8 +64,8 @@ namespace Thc {
     inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); signal_mode_change(); }
     inline WidgetMode get_mode()const { return m_mode; }
     inline int get_supported_mode()const { return m_supported_mode; }
-    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
   protected:
+    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
     virtual void on_mode_change() {};
     sigc::signal<void> signal_mode_change;
 
@@ -74,8 +73,8 @@ namespace Thc {
   public:
     //TODO: add the image collection parameter
     //a skin is just a xmlnode, and an image collection
-    inline void set_skin(const Skin::RefSkin &skin) { m_skin = skin; on_skin_change(); signal_skin_change(); }
-    inline Skin::RefSkin get_skin()const { return m_skin; }
+    inline void set_skin(const Skin::Ref &skin) { m_skin = skin; on_skin_change(); signal_skin_change(); }
+    inline Skin::Ref get_skin()const { return m_skin; }
     
   protected:
     virtual void on_skin_change() {};
@@ -84,14 +83,14 @@ namespace Thc {
   //## Data ##
   private:
     //all parameters
-    std::map<Glib::ustring, Param> m_params;
+    std::map<Glib::ustring, Param::Ref> m_params;
     
     //the current mode, and all supported mode
     WidgetMode m_mode;
     int m_supported_mode;
 
     //the current skin config
-    Skin::RefSkin m_skin;
+    Skin::Ref m_skin;
 };
 
 

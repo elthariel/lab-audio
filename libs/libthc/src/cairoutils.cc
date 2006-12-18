@@ -160,7 +160,14 @@ void CairoUtils::draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::strin
 }
 
 void CairoUtils::draw_port(Cairo::RefPtr<Cairo::Context>& cc, float x, float y) {
+  cc->move_to(x, y);
+  cc->line_to(x, y + 5);
+  cc->line_to(x + 5, y + 5);
+  cc->line_to(x + 5, y);
+  cc->line_to(x, y);
 }
 
 void CairoUtils::draw_ports(Cairo::RefPtr<Cairo::Context>& cc) {
+
 }
+

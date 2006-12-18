@@ -36,10 +36,10 @@ namespace Thc {
     typedef Glib::RefPtr<Gdk::Pixbuf> RefImage;    
     typedef boost::shared_ptr<std::vector<RefImage> > RefImages;
     typedef std::map<Glib::ustring, RefImages> ImagesCollection;
-    typedef boost::shared_ptr<Skin> RefSkin;
+    typedef boost::shared_ptr<Skin> Ref;
 
     static RefImages create_images(const Glib::ustring &name, int number = -1);    
-    static RefSkin create_skin(RefXml node = RefXml(), ImagesCollection images = ImagesCollection());
+    static Ref create_skin(RefXml node = RefXml(), ImagesCollection images = ImagesCollection());
 
     inline void set_images(const Glib::ustring &name, RefImages images) { m_images[name] = images; }
     inline RefImage get_images(const Glib::ustring &name, int number = 0) { return (*(m_images[name]))[number]; }

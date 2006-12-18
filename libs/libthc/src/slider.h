@@ -30,14 +30,23 @@ namespace Thc {
 
 class Slider : public Gtk::DrawingArea, public IWidget {
 public:
-  //constructor taking a xml dom as parameter
-  Slider(const Skin::RefSkin &skin);
-  //constructor for vectorial mode
-  Slider(float min = 0, float max = 10, float value = 0, bool integer = false, bool logarithmic = false, bool horizontal = true);
-  //constructor for images mode
-  //Slider(float min = 0, float max = 10, float value = 0, imagename...);
-  //constructor for 2image mode
+  enum SliderType { SliderAll, SliderForeground, SliderHandle, SliderVector };
   
+  //constructor taking a xml dom as parameter
+  Slider(Skin::Ref skin, Param::Ref param = Param::create_param());
+
+  //constructor for vectorial mode
+  Slider(Param::Ref param = Param::create_param(), bool horizontal = true);
+ 
+  //constructor for images mode
+  Slider(Skin::RefImages images, Param::Ref param = Param::create_param(), bool horizontal = true);
+
+  //constructor for 2 images mode
+  Slider(Skin::RefImage images_background,
+         Skin::RefImage images_foreground,
+         Param::Ref param = Param::create_param(),
+         SliderType type = SliderForeground,
+         bool horizontal = true);
 
 protected:
   bool on_expose_event(GdkEventExpose* event);
@@ -52,6 +61,8 @@ protected:
   //IWidget
   void on_mode_change();
 
+  void init();
+
   //should be elsewhere maybe into Thc::Parameter
   double map_to_adj(double knob);
   double map_to_knob(double adj);
@@ -65,10 +76,12 @@ private:
   bool m_horizontal;
   float m_step;
 
-  Glib::ustring m_images_all;
-  Glib::ustring m_images_background;
-  Glib::ustring m_images_foreground;
-  Glib::ustring m_images_handle;
+  SliderType m_type;
+  Param::Ref m_param;
+  Skin::RefImage m_image_background;
+  Skin::RefImage m_image_foreground;
+  Skin::RefImage m_image_handler;
+  Skin::RefImages m_images;
 };
 
 
