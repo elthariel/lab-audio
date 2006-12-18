@@ -48,17 +48,30 @@ void connect_mode() {
   ModeManager::instance()->set_mode("test", ModeConnect);
 }
 
+void normal2_mode() {
+  ModeManager::instance()->set_mode("test2", ModeNormal);
+}
+
+void connect2_mode() {
+  ModeManager::instance()->set_mode("test2", ModeConnect);
+}
   
 int main (int argc, char *argv[]) {  
   Gtk::Main gtkmain (argc, argv);
   Gtk::Window window;
   Gtk::Button btn_normal("Normal");
   Gtk::Button btn_connect("Connect");
+  Gtk::Button btn_normal2("Normal2");
+  Gtk::Button btn_connect2("Connect2");
   Gtk::VBox vbox;
   Gtk::HBox hbox;
+  Gtk::HBox hbox2;
   Slider *slider;
   Slider slider2(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false);
-  Slider slider3;
+  Slider slider3(Thc::Images::create_images("../skins/mixxx/poti_%i.png", 12), Param::create_param(), true);
+  Slider slider4(Thc::Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false);
+  Slider slider5(Thc::Images::create_images("../skins/mixxx/vu%ir.png", 32), Param::create_param(), false);
+  Slider slider6(Param::create_param(), false);
 
   
   SkinManager::instanciate();
@@ -72,17 +85,28 @@ int main (int argc, char *argv[]) {
   ModeManager::instance()->add_widget("test", slider);
   ModeManager::instance()->add_widget("test", slider2);
   ModeManager::instance()->add_widget("test", slider3);
+  ModeManager::instance()->add_widget("test2", slider4);
+  ModeManager::instance()->add_widget("test2", slider5);
+  ModeManager::instance()->add_widget("test2", slider6);
   
   window.add(vbox);
   vbox.pack_start(hbox);
   hbox.pack_start(btn_normal);
   hbox.pack_start(btn_connect);
-  vbox.pack_start(*slider);
-  vbox.pack_start(slider2);
-  vbox.pack_start(slider3);
+  hbox.pack_start(btn_normal2);
+  hbox.pack_start(btn_connect2);
+  vbox.pack_start(hbox2);
+  hbox2.pack_start(*slider);
+  hbox2.pack_start(slider2);
+  hbox2.pack_start(slider3);
+  hbox2.pack_start(slider4);
+  hbox2.pack_start(slider5);
+  hbox2.pack_start(slider6);
   
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
+  btn_connect2.signal_clicked().connect(sigc::ptr_fun(&connect2_mode));
+  btn_normal2.signal_clicked().connect(sigc::ptr_fun(&normal2_mode));
     
   window.show_all();
   gtkmain.run (window);

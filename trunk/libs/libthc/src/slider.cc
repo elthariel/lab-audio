@@ -56,6 +56,9 @@ Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal)
     m_horizontal(horizontal),
     m_type(SliderAll) {
   init();
+  Image::Ref img = ((*images)[0]);
+  if (img)
+    set_size_request(img->get_width(), img->get_height());
 }
 
 //constructor for 2 images mode
@@ -71,6 +74,8 @@ Slider::Slider(Image::Ref image_background,
     m_type(type),
     m_horizontal(horizontal) {
   init();
+  if (image_background)
+    set_size_request(image_background->get_width(), image_background->get_height());  
 }
        
 void Slider::init() {
@@ -96,24 +101,30 @@ void Slider::draw_vector(GdkEventExpose* event,
   
 
   
-  cc->move_to(0, 0);
-  cc->line_to(0, height);
-  cc->line_to(width, height);
-  cc->line_to(width, 0);
-  cc->line_to(0, 0);
-
+  cc->rectangle(0, 0, width, height);
+  cc->stroke();
   if (m_horizontal) {
     cc->move_to(0, height / 2);
     cc->line_to(width, height / 2);
-    value = (value - m_param->get_lower()) * (width - 3) / (m_param->get_upper() - m_param->get_lower());
-    cc->move_to((int)value + 2, 2);
-    cc->line_to((int)value + 2, height - 2);
+    cc->stroke();
+    value = (value - m_param->get_lower()) * (width - 2 - 10) / (m_param->get_upper() - m_param->get_lower());
+    cc->save();
+    cc->set_source_rgb(0.3, 1.0, 0.0);
+    cc->rectangle((int)value + 1, 1, 10, height - 2);
+    cc->fill();
+    cc->restore();
+    cc->stroke();
   } else {
     cc->move_to(width / 2, 0);
     cc->line_to(width / 2, height);
-    value = (value - m_param->get_lower()) * (height - 3) / (m_param->get_upper() - m_param->get_lower());
-    cc->move_to(2, (int)value + 2);
-    cc->line_to(width - 2, (int)value + 2);
+    value = (value - m_param->get_lower()) * (height - 2 - 10) / (m_param->get_upper() - m_param->get_lower());
+    cc->stroke();
+    cc->save();
+    cc->set_source_rgb(0.3, 1.0, 0.0);
+    cc->rectangle(1, (int)value + 1, width - 2, 10);
+    cc->fill();
+    cc->restore();
+    cc->stroke();
   }
   cc->stroke();
 }
