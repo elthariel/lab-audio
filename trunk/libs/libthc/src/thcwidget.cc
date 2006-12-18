@@ -16,42 +16,39 @@
 
 
 //
-// Class: SkinManager
+// Class: ThcWidget
+//
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
-
-#ifndef _SKINMANAGER_H_
-#define _SKINMANAGER_H_
-
-#include <map>
-#include <vector>
-#include <gtkmm.h>
-#include "ithcwidget.h"
-#include "skin.h"
+#include "thcwidget.h"
+#include "cairoutils.h"
 
 namespace Thc {
-
-  class SkinManager {
-  public:
-    inline static void instanciate() { if (!m_skin_manager) m_skin_manager = new SkinManager(); }
-    inline static SkinManager *instance() { return m_skin_manager; }
-
-/*    void load_all_skins();
-    void add_path(const Glib::ustring &name);
-    remove_path(const Glib::ustring &name);
-    Skin::Ref get_skin(const Glib::ustring& name);
- */   
-  protected:
-    SkinManager() {};
-
-  private:
-    std::vector<Glib::ustring> m_paths;
-    std::map<Glib::ustring, Skin::Ref> m_skins;
-    static SkinManager *m_skin_manager;
-  };
   
-} //namespace Thc
+  ThcWidget::ThcWidget(Skin::Ref skin)
+    : m_skin(skin),
+      m_mode(ModeNormal),
+      m_supported_mode(ModeNormal & ModeConnect) {
+  }
+  
+  ThcWidget::~ThcWidget() {
+    if (ModeManager::instance())
+      ModeManager::instance()->remove_widget(this);
+  }
+  
+  void ThcWidget::draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc) {
+    int x = 2, y = 2;
+    const int width = allocation.get_width();
+    const int height = allocation.get_height();
+  
+    cc->rectangle(0, 0, width, height);  
+    cc->stroke();  
+    for (int i = 0; i < get_param_count(); i++) {
+      CairoUtils::draw_port(cc, x, y);
+      x += 15;
+    }
+  }
 
-#endif //_SKINMANAGER_H_
+}
 

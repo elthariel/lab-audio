@@ -27,27 +27,29 @@
 #include <map>
 #include <vector>
 #include <gtkmm.h>
-#include "widget.h"
+#include "ithcwidget.h"
 
 namespace Thc {
-
-  //regroup widget by group
-  //allow to toggle their mode (Connect/Normal)
+  
   class ModeManager {
   public:
-    //add_widget(const Glib::ustring &group, IWidget *widget);
-    //track this automaticaly (signal when destroy or something like that)
-    //remove_widget(IWidget *widget);
-    //toggle_mode(const Glib::ustring &group, WidgetMode mode);
+    typedef std::vector<IThcWidget *> Vector;
+    typedef std::map<Glib::ustring, Vector> Map;
+    
+    void add_widget(const Glib::ustring &group, IThcWidget *widget);
+    void add_widget(const Glib::ustring &group, IThcWidget &widget);
+    void remove_widget(IThcWidget *widget);
+    void remove_widget(IThcWidget &widget);
+    void set_mode(const Glib::ustring &group, WidgetMode mode);
   
     inline static void instanciate() { if (!m_mode_manager) m_mode_manager = new ModeManager(); }
-    inline static ModeManager& instance() { return *m_mode_manager; }
+    inline static ModeManager *instance() { return m_mode_manager; }
   protected:
     ModeManager() {};
     
   private:
     static ModeManager *m_mode_manager;
-    std::map<Glib::ustring, std::vector<IThcWidget *> > m_group;
+    Map m_group;
     //list
   };
 }

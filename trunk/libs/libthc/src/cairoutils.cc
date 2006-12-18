@@ -25,6 +25,8 @@
 #include <cairomm/cairomm.h>
 #include "cairoutils.h"
 
+namespace Thc {
+
 int CairoUtils::draw_digit(Cairo::RefPtr<Cairo::Context>& cc, char digit) {
   cc->save();
   cc->set_source_rgb(0.7, 0.9, 1.0);
@@ -160,14 +162,19 @@ void CairoUtils::draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::strin
 }
 
 void CairoUtils::draw_port(Cairo::RefPtr<Cairo::Context>& cc, float x, float y) {
-  cc->move_to(x, y);
-  cc->line_to(x, y + 5);
-  cc->line_to(x + 5, y + 5);
-  cc->line_to(x + 5, y);
-  cc->line_to(x, y);
+  const int height = 10, width = 10;
+  
+  cc->save();
+  cc->set_source_rgb(1.0, 1.0, 0.0);
+
+  cc->translate(x+5, y+5);
+  cc->scale(width / 2.0, height / 2.0);
+  cc->arc(0.0, 0.0, 1.0, 0.0, 2.0 * M_PI);
+  cc->fill_preserve();
+  cc->restore();
+  cc->stroke();
+
 }
 
-void CairoUtils::draw_ports(Cairo::RefPtr<Cairo::Context>& cc) {
 
 }
-

@@ -39,17 +39,13 @@
 #include "../src/thc.h"
 
 using namespace Thc;
-Slider *slider, *slider2;
-
 
 void normal_mode() {
-  slider->set_mode(Thc::ModeNormal);
-  slider2->set_mode(Thc::ModeNormal);
+  ModeManager::instance()->set_mode("test", ModeNormal);
 }
 
 void connect_mode() {
-  slider->set_mode(Thc::ModeConnect);
-  slider2->set_mode(Thc::ModeConnect);
+  ModeManager::instance()->set_mode("test", ModeConnect);
 }
 
   
@@ -60,24 +56,37 @@ int main (int argc, char *argv[]) {
   Gtk::Button btn_connect("Connect");
   Gtk::VBox vbox;
   Gtk::HBox hbox;
+  Slider *slider;
+  Slider slider2(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false);
+  Slider slider3;
+
   
   SkinManager::instanciate();
   ModeManager::instanciate();
   
   slider = new Slider();
-  slider2 = new Slider(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false);
+  ModeManager::instance()->add_widget("test", slider);
+  delete slider;
+  slider = new Slider();
+  
+  ModeManager::instance()->add_widget("test", slider);
+  ModeManager::instance()->add_widget("test", slider2);
+  ModeManager::instance()->add_widget("test", slider3);
+  
   window.add(vbox);
   vbox.pack_start(hbox);
   hbox.pack_start(btn_normal);
   hbox.pack_start(btn_connect);
   vbox.pack_start(*slider);
-  vbox.pack_start(*slider2);
+  vbox.pack_start(slider2);
+  vbox.pack_start(slider3);
   
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
     
   window.show_all();
   gtkmain.run (window);
+  delete slider;
   return 0;
 }
 

@@ -16,42 +16,45 @@
 
 
 //
-// Class: SkinManager
+// Class: IThcWidget
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _SKINMANAGER_H_
-#define _SKINMANAGER_H_
+#ifndef _ITHCWIDGET_H_
+#define _ITHCWIDGET_H_
 
-#include <map>
-#include <vector>
-#include <gtkmm.h>
-#include "ithcwidget.h"
 #include "skin.h"
+#include "param.h"
 
 namespace Thc {
 
-  class SkinManager {
-  public:
-    inline static void instanciate() { if (!m_skin_manager) m_skin_manager = new SkinManager(); }
-    inline static SkinManager *instance() { return m_skin_manager; }
-
-/*    void load_all_skins();
-    void add_path(const Glib::ustring &name);
-    remove_path(const Glib::ustring &name);
-    Skin::Ref get_skin(const Glib::ustring& name);
- */   
-  protected:
-    SkinManager() {};
-
-  private:
-    std::vector<Glib::ustring> m_paths;
-    std::map<Glib::ustring, Skin::Ref> m_skins;
-    static SkinManager *m_skin_manager;
+  enum WidgetMode {
+    ModeNormal = 1,
+    ModeSlime = 2,
+    ModeConnect = 4
   };
   
-} //namespace Thc
+  class IThcWidget {
+  //## Parameters ##
+  public:
+	virtual int get_param_count()const = 0;
+	virtual Param::Ref get_param(const Glib::ustring& name) = 0;
+		
+  //## Widget Mode ##
+  public:
+    virtual void set_mode(WidgetMode mode) = 0;
+    virtual WidgetMode get_mode()const = 0;
+    virtual int get_supported_mode()const = 0;
+    virtual sigc::signal<void>& signal_mode_change() = 0;
 
-#endif //_SKINMANAGER_H_
+  //## Skin ##
+  public:
+    virtual void set_skin(const Skin::Ref &skin) = 0;
+    virtual Skin::Ref get_skin()const = 0;
+    virtual sigc::signal<void>& signal_skin_change() = 0;
+  };
+}
+  
+#endif
 
