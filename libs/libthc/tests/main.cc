@@ -72,6 +72,12 @@ int main (int argc, char *argv[]) {
   Slider slider4(Thc::Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false, true);
   Slider slider5(Thc::Images::create_images("../skins/mixxx/vu%ir.png", 32), Param::create_param(), false);
   Slider slider6(Param::create_param(), false);
+  Slider slider7(Thc::Image::create_image("../skins/mixxx/slider_back_horiz.png"),
+  				 Thc::Image::create_image("../skins/mixxx/slider_handle_horiz.png"),
+  				 Param::create_param(), Thc::Slider::SliderHandle, true, false);
+  Slider slider8(Thc::Image::create_image("../skins/mixxx/slider_back_vert.png"),
+  				 Thc::Image::create_image("../skins/mixxx/slider_handle_vert.png"),
+  				 Param::create_param(), Thc::Slider::SliderHandle, false, true);
 
   
   SkinManager::instanciate();
@@ -88,6 +94,8 @@ int main (int argc, char *argv[]) {
   ModeManager::instance()->add_widget("test2", slider4);
   ModeManager::instance()->add_widget("test2", slider5);
   ModeManager::instance()->add_widget("test2", slider6);
+  ModeManager::instance()->add_widget("test2", slider7);
+  ModeManager::instance()->add_widget("test2", slider8);
   
   window.add(vbox);
   vbox.pack_start(hbox);
@@ -102,6 +110,8 @@ int main (int argc, char *argv[]) {
   hbox2.pack_start(slider4);
   hbox2.pack_start(slider5);
   hbox2.pack_start(slider6);
+  hbox2.pack_start(slider7);
+  hbox2.pack_start(slider8);
   
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
