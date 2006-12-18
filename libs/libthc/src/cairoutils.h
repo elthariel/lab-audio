@@ -33,7 +33,6 @@ namespace Thc {
     static int draw_digit(Cairo::RefPtr<Cairo::Context>& cc, char digit);
     static void draw_string(Cairo::RefPtr<Cairo::Context>& cc, const std::string& str, float x, float y);
     static void draw_port(Cairo::RefPtr<Cairo::Context>& cc, float x, float y);
-    static void draw_ports(Cairo::RefPtr<Cairo::Context>& cc);
   };
 
 }//namespace Thc

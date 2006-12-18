@@ -26,7 +26,7 @@
 //#include "CloExpander.h"
 #include "param.h"
 #include "skin.h"
-#include "widget.h"
+#include "thcwidget.h"
 #include "skinmanager.h"
 #include "modemanager.h"
 #include "slider.h"

@@ -20,21 +20,17 @@ lib_LTLIBRARIES = libthc.la
 libthc_la_SOURCES = \
     skin.cc \
     param.cc \
+    thcwidget.cc \
     skinmanager.cc \
 	modemanager.cc \
+	cairoutils.cc \
 	slider.cc
-#	CloExpander.cpp \
-#	shapereditor.cpp \
-#	keyboard.cpp \
-#	envelopeeditor.cpp \
-#	vgknob.cpp \
-#	pdeditor.cpp
 
 libthc_la_LDFLAGS =
 
 libthc_la_LIBADD = $(PACKAGE_LIBS)
 
-EXTRA_DIST = $(glade_DATA)
+#EXTRA_DIST = $(glade_DATA)
 
 
 libthcincludedir = $(includedir)/thc
@@ -43,17 +39,12 @@ libthcinclude_HEADERS = \
 	thc.h \
 	skin.h \
 	param.h \
-	widget.h \
+	ithcwidget.h \
+	thcwidget.h \
 	skinmanager.h \
 	modemanager.h \
+	cairoutils.h \
 	slider.h
-
-#	CloExpander.h \
-#	shapereditor.hpp \
-#	keyboard.hpp \
-#	envelopeeditor.hpp \
-#	vgknob.hpp \
-#	pdeditor.hpp
 	
 	
 	

@@ -21,50 +21,24 @@
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _WIDGET_H_
-#define _WIDGET_H_
+#ifndef _THCWIDGET_H_
+#define _THCWIDGET_H_
 #include <gtkmm.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
 //#include <libxml++/libxml++.h>
-
+#include "ithcwidget.h"
 #include "skin.h"
 #include "param.h"
+#include "modemanager.h"
+
 
 namespace Thc {
  
-  enum WidgetMode {
-    ModeNormal = 1,
-    ModeSlime = 2,
-    ModeConnect = 4
-  };
-  
-  class IThcWidget {
-  //## Parameters ##
-  public:
-	inline virtual int get_param_count()const = 0;
-	inline virtual Param::Ref get_param(const Glib::ustring& name) = 0;
-		
-  //## Widget Mode ##
-  public:
-    inline virtual void set_mode(WidgetMode mode) = 0;
-    inline virtual WidgetMode get_mode()const = 0;
-    inline virtual int get_supported_mode()const = 0;
-    inline virtual sigc::signal<void>& signal_mode_change() = 0;
-
-  //## Skin ##
-  public:
-    inline virtual void set_skin(const Skin::Ref &skin) = 0;
-    inline virtual Skin::Ref get_skin()const = 0;
-    inline virtual sigc::signal<void>& signal_skin_change() = 0;
-  };
-  
   class ThcWidget: public IThcWidget {
   public:
-    inline ThcWidget(Skin::Ref skin = Skin::Ref())
-      : m_skin(skin),
-        m_mode(ModeNormal),
-        m_supported_mode(ModeNormal & ModeConnect) {}
+    ThcWidget(Skin::Ref skin = Skin::Ref());
+    ~ThcWidget();
 
   public:
 	inline int get_param_count()const { return m_params.size(); }
@@ -80,6 +54,7 @@ namespace Thc {
   protected:
     inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
     virtual void on_mode_change() {};
+    void draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc);
 
   public:
     inline void set_skin(const Skin::Ref &skin) { m_skin = skin; on_skin_change(); m_signal_skin_change(); }

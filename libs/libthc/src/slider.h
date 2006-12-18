@@ -24,7 +24,7 @@
 #ifndef _SLIDER_H_
 #define _SLIDER_H_
 #include <gtkmm.h>
-#include "widget.h"
+#include "thcwidget.h"
 
 namespace Thc {
 

@@ -26,5 +26,38 @@
 
 namespace Thc {
   ModeManager* ModeManager::m_mode_manager = 0;
+  
+  void ModeManager::add_widget(const Glib::ustring &group, IThcWidget &widget) {
+    add_widget(group, &widget);
+  }
+
+  void ModeManager::add_widget(const Glib::ustring &group, IThcWidget *widget) {
+    m_group[group].push_back(widget);
+  }
+
+  void ModeManager::remove_widget(IThcWidget &widget) {
+    remove_widget(&widget);
+  }
+  
+  void ModeManager::remove_widget(IThcWidget *widget){
+    Map::iterator itmap;
+    for (itmap = m_group.begin(); itmap != m_group.end(); itmap++) {
+      Vector::iterator it = find((*itmap).second.begin(), (*itmap).second.end(), widget);
+      if (it != (*itmap).second.end()) {
+        (*itmap).second.erase(it);
+      }
+    }
+  }
+  
+  void ModeManager::set_mode(const Glib::ustring &group, WidgetMode mode) {
+    Vector &vector = m_group[group];
+    Vector::iterator it;
+
+	for (it = vector.begin(); it != vector.end(); it++) {
+	  if (*it != NULL)
+	    (*it)->set_mode(mode);
+	}
+  }
+  
 }
 
