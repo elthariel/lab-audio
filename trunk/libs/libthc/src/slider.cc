@@ -35,13 +35,13 @@ using namespace std;
   
          
 Slider::Slider(Skin::Ref skin, Param::Ref param)
-  : IWidget(skin),
+  : ThcWidget(skin),
     m_param(param) {
   init();
 }
 
 Slider::Slider(Param::Ref param, bool horizontal)
-  : IWidget(),
+  : ThcWidget(),
     m_param(param),
     m_horizontal(horizontal),
     m_type(SliderVector) {
@@ -50,7 +50,7 @@ Slider::Slider(Param::Ref param, bool horizontal)
 
 //constructor for images mode
 Slider::Slider(Skin::RefImages images, Param::Ref param, bool horizontal)
-  : IWidget(),
+  : ThcWidget(),
     m_images(images),
     m_param(param),
     m_horizontal(horizontal),
@@ -64,31 +64,25 @@ Slider::Slider(Skin::RefImage image_background,
                Param::Ref param,
                SliderType type,
                bool horizontal)
-  : IWidget(),
+  : ThcWidget(),
     m_image_background(image_background),
+    m_image_foreground(image_foreground),
     m_param(param),
     m_type(type),
     m_horizontal(horizontal) {
   init();
-  if (m_type == SliderHandle)
-    m_image_handler = image_foreground;
-  else
-    m_image_foreground = image_foreground;
 }
        
 void Slider::init() {
   set_param("x", m_param);
   m_param->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
+  signal_mode_change().connect(mem_fun(*this, &Slider::queue_draw));
   add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
   m_step = 1.0 / (m_param->get_upper() - m_param->get_lower());
   if (m_horizontal)
     set_size_request(64, 32);
   else
     set_size_request(32, 64);  
-}
-
-void Slider::on_mode_change() {
-  queue_draw();
 }
 
 //draw the slider with cairo
@@ -103,8 +97,8 @@ void Slider::draw_vector(GdkEventExpose* event,
   cc->line_to(event->area.width,event->area.y);
   cc->line_to(event->area.x,event->area.y);
 
-  if (m_integer)
-    value = floor(value + 0.5);
+  /*if (m_integer)
+    value = floor(value + 0.5);*/
   if (m_horizontal) {
     cc->move_to(0, (event->area.height) / 2);
     cc->line_to(event->area.width, (event->area.height) / 2);
@@ -125,8 +119,8 @@ void Slider::draw_images(GdkEventExpose* event,
 						 Glib::RefPtr<Gdk::GC> gc, 
 						 Cairo::RefPtr<Cairo::Context> cc) {
   float value = m_param->get_value();
-  if (m_integer)
-    value = floor(value + 0.5);
+  /*if (m_integer)
+    value = floor(value + 0.5);*/
   value = (value - m_param->get_lower()) * (m_images->size()-1) / (m_param->get_upper() - m_param->get_lower());
   Glib::RefPtr<Gdk::Pixbuf> image = (*m_images)[(int)value];
   if (image)  //deprecated, need clipping, need scale, etc...
@@ -191,7 +185,7 @@ bool Slider::on_button_press_event(GdkEventButton* event) {
 
 bool Slider::on_scroll_event(GdkEventScroll* event) {
   double step = m_step;
-  if (event->state & GDK_SHIFT_MASK && !m_integer)
+  if (event->state & GDK_SHIFT_MASK /*&& !m_integer*/)
     step *= 0.01;
   if (event->direction == GDK_SCROLL_UP)
     m_param->set_value(map_to_adj(map_to_knob(m_param->get_value()) + step));
@@ -206,9 +200,9 @@ double Slider::map_to_adj(double knob) {
   double b = m_param->get_upper();
   knob = knob < 0 ? 0 : knob;
   knob = knob > 1 ? 1 : knob;
-  if (m_logarithmic)
+/*  if (m_logarithmic)
     return a * pow(b / a, knob);
-  else
+  else*/
     return a + knob * (b - a);
 }
 
@@ -217,9 +211,9 @@ double Slider::map_to_knob(double adj) {
   double b = m_param->get_upper();
   adj = adj < a ? a : adj;
   adj = adj > b ? b : adj;
-  if (m_logarithmic)
+/*  if (m_logarithmic)
     return log(adj / a) / log(b / a);
-  else
+  else*/
     return (adj - a) / (b - a);
 }
 

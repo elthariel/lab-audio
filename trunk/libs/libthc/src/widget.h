@@ -32,102 +32,71 @@
 #include "param.h"
 
 namespace Thc {
-
-  using boost::shared_ptr;
-  using Gtk::Adjustment;
-  
+ 
   enum WidgetMode {
     ModeNormal = 1,
     ModeSlime = 2,
     ModeConnect = 4
   };
   
-  //all widget should support this interface
-  class IWidget {
+  class IThcWidget {
+  //## Parameters ##
   public:
+	inline virtual int count_param()const = 0;
+	inline virtual Param::Ref get_param(const Glib::ustring& name) = 0;
+		
+  //## Widget Mode ##
+  public:
+    inline virtual void set_mode(WidgetMode mode) = 0;
+    inline virtual WidgetMode get_mode()const = 0;
+    inline virtual int get_supported_mode()const = 0;
+    inline virtual sigc::signal<void>& signal_mode_change() = 0;
+
+  //## Skin ##
+  public:
+    inline virtual void set_skin(const Skin::Ref &skin) = 0;
+    inline virtual Skin::Ref get_skin()const = 0;
+    inline virtual sigc::signal<void>& signal_skin_change() = 0;
+  };
   
-    inline IWidget(Skin::Ref skin = Skin::Ref())
+  class ThcWidget: public IThcWidget {
+  public:
+    inline ThcWidget(Skin::Ref skin = Skin::Ref())
       : m_skin(skin),
         m_mode(ModeNormal),
         m_supported_mode(ModeNormal & ModeConnect) {}
 
-  //## Parameters ##
   public:
-	  inline int count_param()const { return m_params.size(); }
-	  inline Param::Ref get_param(const Glib::ustring& name) { return m_params[name]; }
+	inline int count_param()const { return m_params.size(); }
+	inline Param::Ref get_param(const Glib::ustring& name) { return m_params[name]; }
   protected:
- 	  inline void set_param(const Glib::ustring& name, Param::Ref param) { m_params[name] = param; }
+ 	inline void set_param(const Glib::ustring& name, Param::Ref param) { m_params[name] = param; }
 		
-
-  //## Widget Mode ##
   public:
-    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); signal_mode_change(); }
+    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); m_signal_mode_change(); }
     inline WidgetMode get_mode()const { return m_mode; }
     inline int get_supported_mode()const { return m_supported_mode; }
+    inline sigc::signal<void>& signal_mode_change() { return m_signal_mode_change; }
   protected:
     inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
     virtual void on_mode_change() {};
-    sigc::signal<void> signal_mode_change;
 
-  //## Skin ##
   public:
-    //TODO: add the image collection parameter
-    //a skin is just a xmlnode, and an image collection
-    inline void set_skin(const Skin::Ref &skin) { m_skin = skin; on_skin_change(); signal_skin_change(); }
+    inline void set_skin(const Skin::Ref &skin) { m_skin = skin; on_skin_change(); m_signal_skin_change(); }
     inline Skin::Ref get_skin()const { return m_skin; }
-    
+    inline sigc::signal<void>& signal_skin_change() { return m_signal_skin_change; }
   protected:
     virtual void on_skin_change() {};
-    sigc::signal<void> signal_skin_change;
 
-  //## Data ##
   private:
-    //all parameters
     std::map<Glib::ustring, Param::Ref> m_params;
-    
-    //the current mode, and all supported mode
     WidgetMode m_mode;
     int m_supported_mode;
-
-    //the current skin config
+    sigc::signal<void> m_signal_mode_change;
+    sigc::signal<void> m_signal_skin_change;
     Skin::Ref m_skin;
 };
 
-
-/*
-  //One Parameter
-  class Parameter {
-  public:
-    void set_value(void* new_value) { value = new_value; }
-    double get_value() { return value; }
-    
-  protected:
-  
-  private:
-    //value_changed signal
-    Gtk::Adjustment m_adj;
-  };
-
-
-  template <class T> 
-  class Parameter {
-  public:
-    Parameter(float min, float max);
-    inline void set_value(T& value) { m_value = value; }
-    inline T& get_value()const { return m_value; }
-    inline Gtk::Adjustment& get_adjustment()const { return m_adj; }
-  protected:
-  
-  private:
-    //value_changed signal
-    T m_value;
-    Gtk::Adjustment m_adj;
-  };*/
-
-
-
-
-
-}
+} //namespace Thc
 
 #endif

@@ -3,12 +3,14 @@ TODO
 General:
   - add draw_ports and draw_port to CairoUtils
 
-IWidget:
-  - better skin supporte
-  - maybe a class for parameter (to abstract Adjustment)
+IThcWidget:
+  
 
 Slider:
-  - good graphic
+  - stretch image
+  - two image mode
+  - read parameter from xmlnode (imagelist, slidertype, color, ..)
+  - use color
 
 ICloContainer:
   - define the interface
@@ -26,10 +28,14 @@ CloCollapsable:
   - support rename
   - support mode slime
 
-
 DONE
   - create an helper class witch draw text, etc... using cairo - done [CairoUtils]
   - add CloModeLearn - done
   - add a generic interface to set_value/get_value (port?) -done
   - support CloModeLearn - done
   - move the area - DONE
+  - better skin support - DONE
+  - maybe a class for parameter (to abstract Adjustment) - DONE
+  - split the pure interface and the helper function. (IWidget is abstract)
+    => class Widget: public IWidget {};
+    => class Slider: public Widget {};

@@ -62,7 +62,6 @@ int main (int argc, char *argv[]) {
   
   slider = new Thc::Slider();
   slider2 = new Thc::Slider(Thc::Skin::create_images("../skins/bang/fader-%i.png", 127), Thc::Param::create_param(), false);
-  //slider3 = new Thc::Slider(0, 0, 100, false, false, false);
   window.add(vbox);
   vbox.pack_start(hbox);
   hbox.pack_start(btn_normal);

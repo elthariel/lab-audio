@@ -16,37 +16,33 @@
 
 
 //
-// Class: Param
+// Class: ModeManager
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _PARAM_H_
-#define _PARAM_H_
-#include <gtkmm.h>
-#include <vector>
-#include <boost/shared_ptr.hpp>
+#ifndef _MODEMANAGER_H_
+#define _MODEMANAGER_H_
 
 namespace Thc {
 
-  //warper around Gtk::Adjustment
-  class Param {
+  //regroup widget by group
+  //allow to toggle their mode (Connect/Normal)
+  class ModeManager: {
   public:
-	Param(double min = 0., double max = 10., double value = 5.): m_adj(value, min, max) {}
-    typedef boost::shared_ptr<Param> Ref;
-    
-    inline Glib::SignalProxy0<void> signal_value_changed() { return m_adj.signal_value_changed(); };
-    inline double get_value() { return m_adj.get_value(); }
-    inline void set_value(double value) { return m_adj.set_value(value); }
-    inline double get_lower() { return m_adj.get_lower(); }
-    inline double get_upper() { return m_adj.get_upper(); }
-    
-    static Ref create_param(double min = 0., double max = 10., double value = 5.);
+    //add_widget(const Glib::ustring &group, Widget::Ref widget);
+    //toggle_mode(const Glib::ustring &group, WidgetMode mode);
+  
+    inline static void instanciate() { if (!m_mode_manager) m_mode_manager = new ModeManager(); }
+    inline static ModeManager& instance() { return m_mode_manager; }
+  protected:
+    ModeManager() {};
     
   private:
-    Gtk::Adjustment m_adj;
+    static ModeManager m_mode_manager;
+    //list
   };
-  
 }
 
 #endif
+

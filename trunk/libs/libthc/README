@@ -1,8 +1,38 @@
+IThcWidget:
+  - common abstract interface to all widget
+  - set_mode/get_mode/get_supported_mode
+  - set_param/get_param
+  - set_skin/get_skin
+  - signal_mode_change()/signal_skin_change()
+  
+ThcWidget:
+  - implementation of IThcWidget (all widget should derive from ThcWidget, not IThcWidget)
+  - a widget must contains Param::Ref variables members for each parameter: Param::Ref m_memberparam;
+  - each widget should register its parameters: set_param("param_name", m_memberparam);
+  
+Param
+  - type: Param::Ref
+  - create one with Param::Ref skin = Param::create_skin();
+  - a param is a value controled by a widget
 
-IWidget : interface to all the widget
-   void set_mode()  : change the widget mode ModeNormal|ModeSlime|ModeConnect)
-   CloWidget::CloWidgetMode get_supported_mode() : return the list of all supported mode for a widget
+Skin: 
+  - type: Skin::Ref
+  - create one with Skin::Ref skin = Skin::create_skin();
+  - a skin is a xmlnode and a set of images defining the skin of one widget
+  
+ModeManager: 
+  - singleton that toggle the mode(connect/normal) of groups of widgets
 
+SkinManager:
+  - singleton that contain all Skin instance (all xml + images need to skin widget)
+
+
+
+
+
+
+
+=============
 
 CloWidget::Slider : a simple slider
 CloWidget::Area : a container who re-arange his child
