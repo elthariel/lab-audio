@@ -39,11 +39,11 @@ public:
   Slider(Param::Ref param = Param::create_param(), bool horizontal = true);
  
   //constructor for images mode
-  Slider(Skin::RefImages images, Param::Ref param = Param::create_param(), bool horizontal = true);
+  Slider(Images::Ref images, Param::Ref param = Param::create_param(), bool horizontal = true);
 
   //constructor for 2 images mode
-  Slider(Skin::RefImage images_background,
-         Skin::RefImage images_foreground,
+  Slider(Image::Ref images_background,
+         Image::Ref images_foreground,
          Param::Ref param = Param::create_param(),
          SliderType type = SliderForeground,
          bool horizontal = true);
@@ -75,9 +75,9 @@ private:
 
   SliderType m_type;
   Param::Ref m_param;
-  Skin::RefImage m_image_background;
-  Skin::RefImage m_image_foreground;
-  Skin::RefImages m_images;
+  Image::Ref m_image_background;
+  Image::Ref m_image_foreground;
+  Images::Ref m_images;
 };
 
 

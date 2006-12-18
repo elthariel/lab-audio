@@ -22,34 +22,31 @@
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-//#include <iostream>
-//#include <string>
-//#include <cairomm/cairomm.h>
-
 #include "skin.h"
 
-
 namespace Thc {
+  Image::Ref Image::create_image(const Glib::ustring &name) {
+    return Ref(Gdk::Pixbuf::create_from_file(name.c_str()));
+  }
 
-  //TODO: use ustring not snprintf
-  Skin::RefImages Skin::create_images(const Glib::ustring &name, int number) {
+  Images::Ref Images::create_images(const Glib::ustring &name, int number) {
     int i = 0;
     char imgname[2000];
-    RefImages images(new std::vector<RefImage>());
-     
+    Images::Ref images(new std::vector<Image::Ref>());
+        
     if (i == -1) {
-      RefImage pixbuf(Gdk::Pixbuf::create_from_file(name));
+      Image::Ref pixbuf(Gdk::Pixbuf::create_from_file(name));
       images->push_back(pixbuf);
     } else for (i = 0; i <= number; i++) {
-  	  snprintf(imgname, 2000, name.c_str(), i);
-      RefImage pixbuf(Gdk::Pixbuf::create_from_file(imgname));
-      images->push_back(pixbuf);
+     snprintf(imgname, 2000, name.c_str(), i);
+     Image::Ref pixbuf(Gdk::Pixbuf::create_from_file(imgname));
+     images->push_back(pixbuf);
     }
     return images;
   }
-    
-  Skin::Ref Skin::create_skin(RefXml node, ImagesCollection images) {
-    return Ref(new Skin(node, images)); 
+
+  Skin::Ref Skin::create_skin(Xml::Ref node) {
+    return Ref(new Skin(node)); 
   }
   
 }

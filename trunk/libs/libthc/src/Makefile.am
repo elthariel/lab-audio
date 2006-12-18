@@ -20,6 +20,8 @@ lib_LTLIBRARIES = libthc.la
 libthc_la_SOURCES = \
     skin.cc \
     param.cc \
+    skinmanager.cc \
+	modemanager.cc \
 	slider.cc
 #	CloExpander.cpp \
 #	shapereditor.cpp \
@@ -42,6 +44,8 @@ libthcinclude_HEADERS = \
 	skin.h \
 	param.h \
 	widget.h \
+	skinmanager.h \
+	modemanager.h \
 	slider.h
 
 #	CloExpander.h \

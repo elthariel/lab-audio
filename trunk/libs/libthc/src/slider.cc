@@ -49,7 +49,7 @@ Slider::Slider(Param::Ref param, bool horizontal)
 }
 
 //constructor for images mode
-Slider::Slider(Skin::RefImages images, Param::Ref param, bool horizontal)
+Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal)
   : ThcWidget(),
     m_images(images),
     m_param(param),
@@ -59,8 +59,8 @@ Slider::Slider(Skin::RefImages images, Param::Ref param, bool horizontal)
 }
 
 //constructor for 2 images mode
-Slider::Slider(Skin::RefImage image_background,
-               Skin::RefImage image_foreground,
+Slider::Slider(Image::Ref image_background,
+               Image::Ref image_foreground,
                Param::Ref param,
                SliderType type,
                bool horizontal)

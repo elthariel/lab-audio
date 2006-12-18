@@ -4,7 +4,14 @@ General:
   - add draw_ports and draw_port to CairoUtils
 
 IThcWidget:
-  
+
+ModeManager:
+  - autoremove destroyed widget
+  - implement
+
+SkinManager:
+  - implement
+  - define the xml format
 
 Slider:
   - stretch image

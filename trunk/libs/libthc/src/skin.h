@@ -30,30 +30,43 @@
 
 namespace Thc {
 
+  class Image {
+  public:
+    typedef Glib::RefPtr<Gdk::Pixbuf> Ref;
+    static Ref create_image(const Glib::ustring &name);
+  };
+
+  class Images {
+  public:
+    typedef boost::shared_ptr<std::vector<Image::Ref> > Ref;
+    static Ref create_images(const Glib::ustring &name, int number = -1);
+  };
+  
+  class Xml {
+  public:
+    typedef boost::shared_ptr<xmlpp::Node> Ref;    
+  };
+  
   class Skin {
   public:
-    typedef boost::shared_ptr<xmlpp::Node> RefXml;
-    typedef Glib::RefPtr<Gdk::Pixbuf> RefImage;    
-    typedef boost::shared_ptr<std::vector<RefImage> > RefImages;
-    typedef std::map<Glib::ustring, RefImages> ImagesCollection;
     typedef boost::shared_ptr<Skin> Ref;
+    static Ref create_skin(Xml::Ref node = Xml::Ref());
 
-    static RefImages create_images(const Glib::ustring &name, int number = -1);    
-    static Ref create_skin(RefXml node = RefXml(), ImagesCollection images = ImagesCollection());
-
-    inline void set_images(const Glib::ustring &name, RefImages images) { m_images[name] = images; }
-    inline RefImage get_images(const Glib::ustring &name, int number = 0) { return (*(m_images[name]))[number]; }
+    inline void set_images(const Glib::ustring &name, Images::Ref images) { m_images[name] = images; }
+    inline Image::Ref get_image(const Glib::ustring &name, int number = 0) { return (*(m_images[name]))[number]; }
+    inline Images::Ref get_images(const Glib::ustring &name) { return m_images[name]; }
     inline int get_images_count(const Glib::ustring &name) { return m_images[name]->size(); }
     
-    inline void set_xml(RefXml xml) { m_xml = xml; };
-    inline RefXml get_xml() { return m_xml; };
+    inline void set_xml(Xml::Ref xml) { m_xml = xml; };
+    inline Xml::Ref get_xml() { return m_xml; };
 
   protected:
     //to create a skin use create_skin();
-    inline Skin(RefXml node = RefXml(), ImagesCollection images = ImagesCollection()): m_xml(node), m_images(images) {}
+    inline Skin(Xml::Ref node = Xml::Ref()): m_xml(node) {}
+    void load_images_from_xml();
     
-    RefXml m_xml;
-    ImagesCollection m_images;
+    Xml::Ref m_xml;
+    std::map<Glib::ustring, Images::Ref> m_images;
   };  
 }
 
