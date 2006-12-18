@@ -32,14 +32,15 @@ namespace Thc {
 
   class Image {
   public:
-    //typedef Glib::RefPtr<Gdk::Pixbuf> Ref;
     typedef Cairo::RefPtr<Cairo::ImageSurface> Ref;
+    //throw Cairo::logic_error on file not found
     static Ref create_image(const Glib::ustring &name);
   };
 
   class Images {
   public:
     typedef boost::shared_ptr<std::vector<Image::Ref> > Ref;
+    //throw Cairo::logic_error on file not found
     static Ref create_images(const Glib::ustring &name, int number = -1);
   };
   
