@@ -17,40 +17,14 @@
 
 //
 // Class: ModeManager
+//
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _MODEMANAGER_H_
-#define _MODEMANAGER_H_
-
-#include <map>
-#include <vector>
-#include <gtkmm.h>
-#include "widget.h"
+#include "modemanager.h"
 
 namespace Thc {
-
-  //regroup widget by group
-  //allow to toggle their mode (Connect/Normal)
-  class ModeManager {
-  public:
-    //add_widget(const Glib::ustring &group, IWidget *widget);
-    //track this automaticaly (signal when destroy or something like that)
-    //remove_widget(IWidget *widget);
-    //toggle_mode(const Glib::ustring &group, WidgetMode mode);
-  
-    inline static void instanciate() { if (!m_mode_manager) m_mode_manager = new ModeManager(); }
-    inline static ModeManager& instance() { return *m_mode_manager; }
-  protected:
-    ModeManager() {};
-    
-  private:
-    static ModeManager *m_mode_manager;
-    std::map<Glib::ustring, std::vector<IThcWidget *> > m_group;
-    //list
-  };
+  ModeManager* ModeManager::m_mode_manager = 0;
 }
-
-#endif
 

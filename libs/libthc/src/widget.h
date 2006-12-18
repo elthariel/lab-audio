@@ -42,7 +42,7 @@ namespace Thc {
   class IThcWidget {
   //## Parameters ##
   public:
-	inline virtual int count_param()const = 0;
+	inline virtual int get_param_count()const = 0;
 	inline virtual Param::Ref get_param(const Glib::ustring& name) = 0;
 		
   //## Widget Mode ##
@@ -67,7 +67,7 @@ namespace Thc {
         m_supported_mode(ModeNormal & ModeConnect) {}
 
   public:
-	inline int count_param()const { return m_params.size(); }
+	inline int get_param_count()const { return m_params.size(); }
 	inline Param::Ref get_param(const Glib::ustring& name) { return m_params[name]; }
   protected:
  	inline void set_param(const Glib::ustring& name, Param::Ref param) { m_params[name] = param; }

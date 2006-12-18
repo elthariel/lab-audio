@@ -16,41 +16,42 @@
 
 
 //
-// Class: ModeManager
+// Class: SkinManager
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _MODEMANAGER_H_
-#define _MODEMANAGER_H_
+#ifndef _SKINMANAGER_H_
+#define _SKINMANAGER_H_
 
 #include <map>
 #include <vector>
 #include <gtkmm.h>
 #include "widget.h"
+#include "skin.h"
 
 namespace Thc {
 
-  //regroup widget by group
-  //allow to toggle their mode (Connect/Normal)
-  class ModeManager {
+  class SkinManager {
   public:
-    //add_widget(const Glib::ustring &group, IWidget *widget);
-    //track this automaticaly (signal when destroy or something like that)
-    //remove_widget(IWidget *widget);
-    //toggle_mode(const Glib::ustring &group, WidgetMode mode);
-  
-    inline static void instanciate() { if (!m_mode_manager) m_mode_manager = new ModeManager(); }
-    inline static ModeManager& instance() { return *m_mode_manager; }
-  protected:
-    ModeManager() {};
-    
-  private:
-    static ModeManager *m_mode_manager;
-    std::map<Glib::ustring, std::vector<IThcWidget *> > m_group;
-    //list
-  };
-}
+    inline static void instanciate() { if (!m_skin_manager) m_skin_manager = new SkinManager(); }
+    inline static SkinManager& instance() { return *m_skin_manager; }
 
-#endif
+/*    void load_all_skins();
+    void add_path(const Glib::ustring &name);
+    remove_path(const Glib::ustring &name);
+    Skin::Ref get_skin(const Glib::ustring& name);
+ */   
+  protected:
+    SkinManager() {};
+
+  private:
+    std::vector<Glib::ustring> m_paths;
+    std::map<Glib::ustring, Skin::Ref> m_skins;
+    static SkinManager *m_skin_manager;
+  };
+  
+} //namespace Thc
+
+#endif //_SKINMANAGER_H_
 

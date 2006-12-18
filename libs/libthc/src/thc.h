@@ -1,4 +1,4 @@
-/*
+#/*
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
@@ -24,8 +24,12 @@
 #define _THC_H_
 
 //#include "CloExpander.h"
-#include "slider.h"
+#include "param.h"
+#include "skin.h"
 #include "widget.h"
+#include "skinmanager.h"
+#include "modemanager.h"
+#include "slider.h"
 //stolen from ll-plugins
 //#include "shapereditor.hpp"
 //#include "keyboard.hpp"

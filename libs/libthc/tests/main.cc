@@ -38,7 +38,8 @@
 #include <gtkmm.h>
 #include "../src/thc.h"
 
-Thc::Slider *slider, *slider2;
+using namespace Thc;
+Slider *slider, *slider2;
 
 
 void normal_mode() {
@@ -60,8 +61,11 @@ int main (int argc, char *argv[]) {
   Gtk::VBox vbox;
   Gtk::HBox hbox;
   
-  slider = new Thc::Slider();
-  slider2 = new Thc::Slider(Thc::Skin::create_images("../skins/bang/fader-%i.png", 127), Thc::Param::create_param(), false);
+  SkinManager::instanciate();
+  ModeManager::instanciate();
+  
+  slider = new Slider();
+  slider2 = new Slider(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false);
   window.add(vbox);
   vbox.pack_start(hbox);
   hbox.pack_start(btn_normal);
