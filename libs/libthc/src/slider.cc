@@ -34,30 +34,34 @@ namespace Thc {
 using namespace std;
   
          
-Slider::Slider(Skin::Ref skin, Param::Ref param)
+Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
   : ThcWidget(skin),
-    m_param(param) {
+    m_param(param),
+    m_scale(scale),
+    m_infinite(infinite) {
   init();
   if (skin)
     on_skin_change();
 }
 
-Slider::Slider(Param::Ref param, bool horizontal)
+Slider::Slider(Param::Ref param, bool horizontal, bool infinite)
   : ThcWidget(),
     m_param(param),
     m_horizontal(horizontal),
-    m_type(SliderVector) {
+    m_type(SliderVector),
+    m_infinite(infinite) {
   init();
 }
 
 //constructor for images mode
-Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal, bool scale)
+Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal, bool scale, bool infinite)
   : ThcWidget(),
     m_images(images),
     m_param(param),
     m_horizontal(horizontal),
     m_type(SliderAll),
-    m_scale(scale) {
+    m_scale(scale),
+    m_infinite(infinite) {
   init();
   Image::Ref img = ((*images)[0]);
   if (img)
@@ -70,31 +74,40 @@ Slider::Slider(Image::Ref image_background,
                Param::Ref param,
                SliderType type,
                bool horizontal,
-               bool scale)
+               bool scale,
+               bool infinite)
   : ThcWidget(),
     m_image_background(image_background),
     m_image_foreground(image_foreground),
     m_param(param),
     m_type(type),
     m_horizontal(horizontal),
-    m_scale(scale) {
+    m_scale(scale),
+    m_infinite(infinite) {
   init();
   if (image_background)
     set_size_request(image_background->get_width(), image_background->get_height());  
 }
 
+Slider::SliderType text2type(const Glib::ustring &str) {
+  if (str == "all")
+    return Slider::SliderAll;
+  else if (str == "handle")
+    return Slider::SliderHandle;
+  else if (str == "foreground")
+    return Slider::SliderForeground;
+  else
+    return Slider::SliderVector;
+}
+
 void Slider::on_skin_change() {
-  printf("skin change\n");
   if (!get_skin())
     return;
   m_images = get_skin()->get_images("all");
   m_image_background = get_skin()->get_image("background");
   m_image_foreground = get_skin()->get_image("foreground");
   m_horizontal = get_skin()->get_bool_attribute("horizontal");
-  m_scale = get_skin()->get_bool_attribute("scale");
-  m_type = SliderAll;
-//  m_infinite = m_skin->get_bool_attribute("infinite");
-  //m_type =
+  m_type = text2type(get_skin()->get_attribute("type"));
 }
      
 void Slider::init() {
