@@ -45,6 +45,11 @@ void connect2_mode() {
   
 int main (int argc, char *argv[]) {  
   Gtk::Main gtkmain (argc, argv);
+  
+  SkinManager::instanciate();
+  ModeManager::instanciate();
+  SkinManager::instance()->load_skin("../skins/ctaf-skin.xml");
+
   Gtk::Window window;
   Gtk::Button btn_normal("Normal");
   Gtk::Button btn_connect("Connect");
@@ -71,10 +76,15 @@ int main (int argc, char *argv[]) {
   				 Thc::Slider::SliderHandle,
   				 false,
   				 true);
+  Skin::Ref skin = Thc::SkinManager::instance()->get_skin("slider/crossfader-full");
+  if (skin)
+    printf("youpi un skin\n");
+  else
+    printf("fuck pas de skin\n");
+  Slider slider9(skin);
 
-  
-  SkinManager::instanciate();
-  ModeManager::instanciate();
+    
+
   
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
@@ -89,6 +99,7 @@ int main (int argc, char *argv[]) {
   ModeManager::instance()->add_widget("test2", slider6);
   ModeManager::instance()->add_widget("test2", slider7);
   ModeManager::instance()->add_widget("test2", slider8);
+  ModeManager::instance()->add_widget("test2", slider9);
   
   window.add(vbox);
   vbox.pack_start(hbox);
@@ -105,6 +116,7 @@ int main (int argc, char *argv[]) {
   hbox2.pack_start(slider6);
   hbox2.pack_start(slider7);
   hbox2.pack_start(slider8);
+  hbox2.pack_start(slider9);
   
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));

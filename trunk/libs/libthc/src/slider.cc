@@ -38,6 +38,8 @@ Slider::Slider(Skin::Ref skin, Param::Ref param)
   : ThcWidget(skin),
     m_param(param) {
   init();
+  if (skin)
+    on_skin_change();
 }
 
 Slider::Slider(Param::Ref param, bool horizontal)
@@ -80,11 +82,26 @@ Slider::Slider(Image::Ref image_background,
   if (image_background)
     set_size_request(image_background->get_width(), image_background->get_height());  
 }
-       
+
+void Slider::on_skin_change() {
+  printf("skin change\n");
+  if (!get_skin())
+    return;
+  m_images = get_skin()->get_images("all");
+  m_image_background = get_skin()->get_image("background");
+  m_image_foreground = get_skin()->get_image("foreground");
+  m_horizontal = get_skin()->get_bool_attribute("horizontal");
+  m_scale = get_skin()->get_bool_attribute("scale");
+  m_type = SliderAll;
+//  m_infinite = m_skin->get_bool_attribute("infinite");
+  //m_type =
+}
+     
 void Slider::init() {
   set_param("x", m_param);
   m_param->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
   signal_mode_change().connect(mem_fun(*this, &Slider::queue_draw));
+  signal_skin_change().connect(mem_fun(*this, &Slider::on_skin_change));
   add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
   m_step = 1.0 / (m_param->get_upper() - m_param->get_lower());
   if (m_horizontal)
@@ -168,8 +185,8 @@ void Slider::draw_2images(GdkEventExpose* event,
   
   if (!m_image_foreground)
     return;
+  //draw the handle
   if (m_type == SliderHandle) {
-    //draw the handle
     if (m_horizontal) {
       value = (value - m_param->get_lower()) 
               * (w - m_image_foreground->get_width())//(m_images->size()-1) 
@@ -190,10 +207,9 @@ void Slider::draw_2images(GdkEventExpose* event,
 bool Slider::on_expose_event(GdkEventExpose* event) {
   
   Glib::RefPtr<Gdk::Window> win = get_window();
-//  Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(win);
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
 
-  //clip to what really need to be redrawn
+  //clip to what we really need to be redrawn
   cc->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
   cc->clip();
     

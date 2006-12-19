@@ -41,34 +41,61 @@ namespace Thc {
   public:
     typedef boost::shared_ptr<std::vector<Image::Ref> > Ref;
     //throw Cairo::logic_error on file not found
-    static Ref create_images(const Glib::ustring &name, int number = -1);
+    static Ref create_images(const Glib::ustring &name, int number);
+    static Ref create_images(const Glib::ustring &name);
   };
   
   class Xml {
   public:
-    typedef boost::shared_ptr<xmlpp::Node> Ref;    
+    //typedef boost::shared_ptr<xmlpp::Node> Ref;
+    typedef xmlpp::Node *Ptr;
+    Glib::ustring static extract_attribute(const Glib::ustring &name, Ptr node);
+  };
+  
+  class Color {
+  public:
+    typedef Color* Ptr;
+    double r;
+    double g;
+    double b;
+    double a;
   };
   
   class Skin {
   public:
     typedef boost::shared_ptr<Skin> Ref;
-    static Ref create_skin(Xml::Ref node = Xml::Ref());
+    typedef std::map<Glib::ustring, Images::Ref> ImagesList;
 
-    inline void set_images(const Glib::ustring &name, Images::Ref images) { m_images[name] = images; }
-    inline Image::Ref get_image(const Glib::ustring &name, int number = 0) { return (*(m_images[name]))[number]; }
+    static Ref create_skin(Xml::Ptr node = NULL);
+
+    //xml
+    inline Xml::Ptr get_xml() { return m_xml; };
+
+    //image
+    inline Image::Ref get_image(const Glib::ustring &name, int number = 0) {
+      if (m_images[name])
+        return (*(m_images[name]))[number];
+      else
+        return Image::Ref();
+    }
     inline Images::Ref get_images(const Glib::ustring &name) { return m_images[name]; }
     inline int get_images_count(const Glib::ustring &name) { return m_images[name]->size(); }
     
-    inline void set_xml(Xml::Ref xml) { m_xml = xml; };
-    inline Xml::Ref get_xml() { return m_xml; };
-
+    //color
+    Color::Ptr get_color(const Glib::ustring &name);
+    
+    //attribute
+    Glib::ustring get_attribute(const Glib::ustring &name);
+    bool get_bool_attribute(const Glib::ustring &name);
   protected:
     //to create a skin use create_skin();
-    inline Skin(Xml::Ref node = Xml::Ref()): m_xml(node) {}
+    //inline void set_xml(Xml::Ptr xml) { m_xml = xml; };
+    inline void set_images(const Glib::ustring &name, Images::Ref images) { m_images[name] = images; }
+    Skin(Xml::Ptr node = NULL);
     void load_images_from_xml();
     
-    Xml::Ref m_xml;
-    std::map<Glib::ustring, Images::Ref> m_images;
+    Xml::Ptr m_xml;
+    ImagesList m_images;
   };  
 }
 

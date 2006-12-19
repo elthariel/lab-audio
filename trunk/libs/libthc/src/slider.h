@@ -60,7 +60,8 @@ protected:
   void draw_2images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);											
 
   void init();
-
+  void on_skin_change();
+  
   //should be elsewhere maybe into Thc::Parameter
   double map_to_adj(double knob);
   double map_to_knob(double adj);

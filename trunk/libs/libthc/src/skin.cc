@@ -25,10 +25,13 @@
 #include "skin.h"
 
 namespace Thc {
+
+  //Image
   Image::Ref Image::create_image(const Glib::ustring &name) {
     return Ref(Cairo::ImageSurface::create_from_png(name.c_str()));
   }
 
+  //Images
   Images::Ref Images::create_images(const Glib::ustring &name, int number) {
     int i = 0;
     char imgname[2000];
@@ -43,9 +46,78 @@ namespace Thc {
     return images;
   }
 
-  Skin::Ref Skin::create_skin(Xml::Ref node) {
+  Images::Ref Images::create_images(const Glib::ustring &name) {
+    Images::Ref images(new std::vector<Image::Ref>());
+    images->push_back(Image::create_image(name));
+    return images;
+  }
+  
+  //Xml
+  Glib::ustring Xml::extract_attribute(const Glib::ustring &name, Ptr node) {
+    if (!node)
+      return "";
+    const xmlpp::Element* nodeelt = dynamic_cast<const xmlpp::Element*>(node);
+    if (!nodeelt)
+      return "";
+    const xmlpp::Element::AttributeList& attributes = nodeelt->get_attributes();
+    for(xmlpp::Element::AttributeList::const_iterator iter = attributes.begin(); iter != attributes.end(); ++iter){
+      const xmlpp::Attribute* attribute = *iter;
+      if (attribute->get_name() == name) {
+        return attribute->get_value();
+      }
+    }
+    return "";
+  }
+  
+  //Skin
+  Skin::Skin(Xml::Ptr node):m_xml(node) {
+    load_images_from_xml();
+  }
+
+  Skin::Ref Skin::create_skin(Xml::Ptr node) {
     return Ref(new Skin(node)); 
   }
   
+  Color::Ptr Skin::get_color(const Glib::ustring &name) {
+    if (!m_xml)
+      return 0;
+    xmlpp::Node::NodeList list = m_xml->get_children("color");
+    for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
+      
+    }
+    return 0;
+  }
+    
+  Glib::ustring Skin::get_attribute(const Glib::ustring &name) {
+    return Xml::extract_attribute(name, m_xml);
+  }
+  
+  bool Skin::get_bool_attribute(const Glib::ustring &name) {
+    return (Xml::extract_attribute(name, m_xml) == "true");
+  }
+
+  void Skin::load_images_from_xml() {
+    Glib::ustring name, path, count;
+    if (!m_xml)
+      return;
+    
+    xmlpp::Node::NodeList list = m_xml->get_children("images");
+    for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
+      name = Xml::extract_attribute("name", *iter);
+      path = Xml::extract_attribute("path", *iter);
+      count = Xml::extract_attribute("count", *iter);
+      if (name != "" && path != "" && count != "")
+        m_images[name] = Images::create_images(path, atoi(count.c_str()));
+    }
+    
+    xmlpp::Node::NodeList list2 = m_xml->get_children("image");
+    for(xmlpp::Node::NodeList::iterator iter = list2.begin(); iter != list2.end(); ++iter){
+      name = Xml::extract_attribute("name", *iter);
+      path = Xml::extract_attribute("path", *iter);
+      if (name != "" && path != "")
+        m_images[name] = Images::create_images(path);
+    }
+  }
+
 }
 
