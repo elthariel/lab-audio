@@ -1,18 +1,18 @@
 <thc>
-  <slider name="crossfader-full" type="all" orientation="horizontal">
-    <images name="all" count="127" path="mixxx/machin%i.png"/>
+  <slider name="crossfader-full" type="all" horizontal="true" scale="true">
+    <images name="all" count="127" path="../skins/bang/fader-%i.png"/>
   </slider>
   
   <slider name="crossfader-2state" type="foreground" orientation="horizontal">
-    <image name="background" patch="mixxx/crossfader-back.png"/>
-    <image name="foreground" patch="mixxx/crossfader-fore.png"/>
+    <image name="background" path="mixxx/crossfader-back.png"/>
+    <image name="foreground" path="mixxx/crossfader-fore.png"/>
   </slider>
-
+  
   <slider name="crossfader-handle" type="handle" orientation="horizontal">
-    <image name="background" patch="mixxx/crossfader-back.png"/>
-    <image name="handle" patch="mixxx/crossfader-handle.png"/>
+    <image name="background" path="mixxx/crossfader-back.png"/>
+    <image name="handle" path="mixxx/crossfader-handle.png"/>
   </slider>
-
+  
   <slider name="crossfader-vector" type="vector" orientation="horizontal">
   	<color name="background" value="0xFFFF00"/>  
   	<color name="foreground" value="0xFFFF00"/>  
@@ -20,7 +20,7 @@
   </slider>
   
   <button name="button">
-    <image name="background" patch="mixxx/crossfader-back.png"/>
-    <image name="foreground" patch="mixxx/crossfader-fore.png"/>
+    <image name="background" path="mixxx/crossfader-back.png"/>
+    <image name="foreground" path="mixxx/crossfader-fore.png"/>
   </button>
 </thc>

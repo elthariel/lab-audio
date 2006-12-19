@@ -36,18 +36,26 @@ namespace Thc {
   public:
     inline static void instanciate() { if (!m_skin_manager) m_skin_manager = new SkinManager(); }
     inline static SkinManager *instance() { return m_skin_manager; }
-
-/*    void load_all_skins();
+    //inline static Skin::Ref skin
+    
+    void load_all_skins();
+    bool load_skin(const Glib::ustring &name);
     void add_path(const Glib::ustring &name);
-    remove_path(const Glib::ustring &name);
-    Skin::Ref get_skin(const Glib::ustring& name);
- */   
+    void remove_path(const Glib::ustring &name);
+    inline Skin::Ref get_skin(const Glib::ustring& name) { return m_skins[name]; }
+   
   protected:
-    SkinManager() {};
+    SkinManager() { printf("init skin mng\n"); };
+    void parse_node(const Xml::Ptr node);
+    void parse_sub_node(const Xml::Ptr node);
 
   private:
-    std::vector<Glib::ustring> m_paths;
-    std::map<Glib::ustring, Skin::Ref> m_skins;
+    typedef std::vector<Glib::ustring> PathList;
+    typedef std::map<Glib::ustring, Skin::Ref> SkinMap;
+    typedef std::vector<boost::shared_ptr<xmlpp::DomParser> > ParserList;
+    PathList m_paths;
+    SkinMap m_skins;
+    ParserList m_parser;
     static SkinManager *m_skin_manager;
   };
   

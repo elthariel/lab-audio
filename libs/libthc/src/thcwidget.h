@@ -47,21 +47,21 @@ namespace Thc {
  	inline void set_param(const Glib::ustring& name, Param::Ref param) { m_params[name] = param; }
 		
   public:
-    inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); m_signal_mode_change(); }
+    inline void set_mode(WidgetMode mode) { m_mode = mode; m_signal_mode_change(); }
     inline WidgetMode get_mode()const { return m_mode; }
     inline int get_supported_mode()const { return m_supported_mode; }
     inline sigc::signal<void>& signal_mode_change() { return m_signal_mode_change; }
   protected:
     inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
-    virtual void on_mode_change() {};
+    //virtual void on_mode_change() {};
     void draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc);
 
   public:
-    inline void set_skin(const Skin::Ref &skin) { m_skin = skin; on_skin_change(); m_signal_skin_change(); }
+    inline void set_skin(const Skin::Ref &skin) { m_skin = skin; m_signal_skin_change(); }
     inline Skin::Ref get_skin()const { return m_skin; }
     inline sigc::signal<void>& signal_skin_change() { return m_signal_skin_change; }
   protected:
-    virtual void on_skin_change() {};
+    //virtual void on_skin_change() {  };
 
   private:
     std::map<Glib::ustring, Param::Ref> m_params;
