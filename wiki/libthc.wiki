@@ -12,38 +12,30 @@ Current widget:
 
 == General ==
   * better draw_ports
+  * allow to connect port
 
 == Slider ==
   * support infinite mode
   * support mouseover
+  * read parameter from Skin (imagelist, slidertype, color, ..)
+  * use color
+
+== Container ==
+  * autorearange widget
+  * support toggle fullscreen
+  * support always on top
+  * support moving widget
+
+== Collapsable ==
 
 == IThcWidget/ThcWidget ==
   * use a template parameter to use gtk::Widget internal
+    template <class T> ThcWidget {}, where T should be a Gtk::Widget variant
+    this would allow to access gtk::Widget internal, and then it would be possible to
+connect port between widget in a beautifull way
 
 == ModeManager ==
 
-SkinManager:
+== SkinManager ==
   * implement
   * define the xml format
-
-Slider:
-  - stretch image
-  - two image mode
-  - read parameter from xmlnode (imagelist, slidertype, color, ..)
-  - use color
-
-ICloContainer:
-  - define the interface
-  - list all child
-  - pass on_mode_change to all child
-
-CloArea:
-  - lock the area size
-  - toggle fullscreen
-  - resize the area
-  - move the area
-  - a moved widget doesnt overlap another widget
-
-CloCollapsable:
-  - support rename
-  - support mode slime
