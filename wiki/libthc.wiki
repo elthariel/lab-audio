@@ -1,0 +1,9 @@
+#summary libthc information
+
+= Introduction =
+libthc is a gtk widget library oriented torward audio
+
+= Details =
+Current widget:
+  - Slider
+
