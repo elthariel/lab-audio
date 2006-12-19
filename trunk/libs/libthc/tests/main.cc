@@ -76,14 +76,7 @@ int main (int argc, char *argv[]) {
   				 Thc::Slider::SliderHandle,
   				 false,
   				 true);
-  Skin::Ref skin = Thc::SkinManager::instance()->get_skin("slider/crossfader-full");
-  if (skin)
-    printf("youpi un skin\n");
-  else
-    printf("fuck pas de skin\n");
-  Slider slider9(skin);
-
-    
+  Slider slider9(Thc::SkinManager::instance()->get_skin("slider/crossfader-full"));
 
   
   slider = new Slider();
