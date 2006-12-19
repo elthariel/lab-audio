@@ -29,8 +29,8 @@ Current widget:
 == Collapsable ==
 
 == IThcWidget/ThcWidget ==
-  * use a template parameter to use gtk::Widget internal. `template <class T> ThcWidget
-{}`, where T should be a Gtk::Widget variant this would allow to access gtk::Widget
+  * use a template parameter to use gtk::Widget internal. template <class T> ThcWidget
+{}, where T should be a Gtk::Widget variant this would allow to access gtk::Widget
 internal, and then it would be possible to
 connect port between widget in a beautifull way
 
