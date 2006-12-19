@@ -54,7 +54,7 @@ namespace Thc {
     xmlpp::Node::NodeList list = node->get_children();
 
     if (node->get_name() != "thc")
-      throw new std::logic_error("The xml file doesnt contain a thc root node");
+      throw new std::logic_error("The xml file doesn't contain a thc root node");
 
     for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
       xmlpp::Node* childnode = *iter;

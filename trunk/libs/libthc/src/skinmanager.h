@@ -45,7 +45,7 @@ namespace Thc {
     inline Skin::Ref get_skin(const Glib::ustring& name) { return m_skins[name]; }
    
   protected:
-    SkinManager() { printf("init skin mng\n"); };
+    SkinManager() { };
     void parse_node(const Xml::Ptr node);
     void parse_sub_node(const Xml::Ptr node);
 

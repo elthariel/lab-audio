@@ -33,13 +33,17 @@ public:
   enum SliderType { SliderAll, SliderForeground, SliderHandle, SliderVector };
   
   //constructor taking a xml dom as parameter
-  Slider(Skin::Ref skin, Param::Ref param = Param::create_param());
+  Slider(Skin::Ref skin, Param::Ref param = Param::create_param(), bool scale = false, bool infinite = false);
 
   //constructor for vectorial mode
-  Slider(Param::Ref param = Param::create_param(), bool horizontal = true);
+  Slider(Param::Ref param = Param::create_param(), bool horizontal = true, bool infinite = false);
  
   //constructor for images mode
-  Slider(Images::Ref images, Param::Ref param = Param::create_param(), bool horizontal = true, bool scale = false);
+  Slider(Images::Ref images,
+         Param::Ref param = Param::create_param(),
+         bool horizontal = true,
+         bool scale = false,
+         bool infinite = false);
 
   //constructor for 2 images mode
   Slider(Image::Ref images_background,
@@ -47,7 +51,8 @@ public:
          Param::Ref param = Param::create_param(),
          SliderType type = SliderForeground,
          bool horizontal = true,
-         bool scale = false);
+         bool scale = false,
+         bool infinite = false);
 
 protected:
   bool on_expose_event(GdkEventExpose* event);
@@ -72,6 +77,7 @@ private:
 
   bool m_horizontal;
   bool m_scale;
+  bool m_infinite;
   float m_step;
 
   SliderType m_type;
