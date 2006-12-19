@@ -7,3 +7,43 @@ libthc is a gtk widget library oriented torward audio
 Current widget:
   - Slider
 
+
+= TODO =
+
+== General ==
+  * better draw_ports
+
+== Slider ==
+  * support infinite mode
+  * support mouseover
+
+== IThcWidget/ThcWidget ==
+  * use a template parameter to use gtk::Widget internal
+
+== ModeManager ==
+
+SkinManager:
+  * implement
+  * define the xml format
+
+Slider:
+  - stretch image
+  - two image mode
+  - read parameter from xmlnode (imagelist, slidertype, color, ..)
+  - use color
+
+ICloContainer:
+  - define the interface
+  - list all child
+  - pass on_mode_change to all child
+
+CloArea:
+  - lock the area size
+  - toggle fullscreen
+  - resize the area
+  - move the area
+  - a moved widget doesnt overlap another widget
+
+CloCollapsable:
+  - support rename
+  - support mode slime
