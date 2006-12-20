@@ -5,8 +5,14 @@ libthc is a gtk widget library oriented torward audio
 
 = Details =
 Current widget:
-  - Slider
+  * Slider
 
+= Dependencies =
+  * gtkmm
+  * libsigc++
+  * libxml++
+  * boost/shared_ptr
+  * boost/format
 
 = TODO =
 
@@ -37,6 +43,7 @@ Current widget:
   * support infinite mode
   * use Color::Ptr everywhere
   * rename or typedef Knob or something like that
+  * resize mouseover rect
 
 == Container ==
   * autorearange widget
@@ -45,6 +52,5 @@ Current widget:
   * support moving widget
 
 == Collapsable ==
-
 
 
