@@ -11,14 +11,32 @@ Current widget:
 = TODO =
 
 == General ==
-  * better draw_ports
-  * allow to connect port
+  * implement a better draw_ports
+  * implement popup window on draw_ports displaying connection and port name
+  * allow to connect port using drag'n'drop
+  * add WIDGETs: button, label, padXY, automation, keyboard, peak vu, wave visualisation, wave summary
+  * add CONTAINERs: Container, Collapsable
+  * write a doc
+  * regroup all audio wigdet already written for gtk that will fit the project
+  * optional: menu for ModeGroup/SkinManager  
+
+== IThcWidget/ThcWidget ==
+  * use a template parameter, ThcWidget will derive from the template parameter, allowing ThcWidget to use Gtk::Widget methods
+  * add a name to each port parameter
+  * autobind each param value change to queue_draw
+
+== Skin ==
+  * load_images on demand to reduce memory usage
+  
+== ModeManager ==
+
+== SkinManager ==
+  * load all skin found within a directory
 
 == Slider ==
   * support infinite mode
-  * support mouseover
-  * read parameter from Skin (imagelist, slidertype, color, ..)
-  * use color
+  * use Color::Ptr everywhere
+  * rename or typedef Knob or something like that
 
 == Container ==
   * autorearange widget
@@ -28,14 +46,5 @@ Current widget:
 
 == Collapsable ==
 
-== IThcWidget/ThcWidget ==
-  * use a template parameter to use gtk::Widget internal. template <class T> ThcWidget
-{}, where T should be a Gtk::Widget variant this would allow to access gtk::Widget
-internal, and then it would be possible to
-connect port between widget in a beautifull way
 
-== ModeManager ==
 
-== SkinManager ==
-  * implement
-  * define the xml format
