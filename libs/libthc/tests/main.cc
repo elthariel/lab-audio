@@ -48,7 +48,8 @@ int main (int argc, char *argv[]) {
   
   SkinManager::instanciate();
   ModeManager::instanciate();
-  SkinManager::instance()->load_skin("../skins/ctaf-skin.xml");
+  SkinManager::instance()->load_path("../skins");
+  //SkinManager::instance()->load_skin("../skins/ctaf-skin.xml");
 
   Gtk::Window window;
   Gtk::Button btn_normal("Normal");
