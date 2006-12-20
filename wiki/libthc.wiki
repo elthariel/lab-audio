@@ -11,7 +11,7 @@ Current widget:
   * gtkmm
   * libsigc++
   * libxml++
-  * 'boost/shared_ptr'
+  * `boost/shared_ptr`
   * boost/format
 
 = Doc =
