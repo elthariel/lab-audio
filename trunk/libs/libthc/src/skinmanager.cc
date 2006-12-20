@@ -31,8 +31,9 @@
 #include "skin.h"
 
 namespace Thc {
+
+  //singleton
   SkinManager* SkinManager::m_skin_manager = 0;
-  
   
   void SkinManager::parse_sub_node(const Xml::Ptr node, const Glib::ustring &path) {
     Glib::ustring name;
@@ -67,7 +68,25 @@ namespace Thc {
       }
     } 
   }
-
+  
+  bool SkinManager::load_skin(const Glib::ustring &name) {
+    try {
+      boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
+      //parser.set_validate();
+      parser->set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
+      parser->parse_file(name);
+      if(!(*parser))
+        return false;
+      m_parser.push_back(parser);
+      parse_node(parser->get_document()->get_root_node(), name);
+      return true;
+    } catch(const std::exception& ex) {
+      std::cerr << "error loading file:" << name << std::endl;
+      return false;
+    }
+    return false;
+  }
+  
   void SkinManager::load_path(const Glib::ustring &name) {
     using namespace boost::filesystem;
     const path dir_path(system_complete(path(name, native)));
@@ -89,25 +108,7 @@ namespace Thc {
       load_path(*it);
     }
   }
-  
-  bool SkinManager::load_skin(const Glib::ustring &name) {
-    try {
-      boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
-      //parser.set_validate();
-      parser->set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
-      parser->parse_file(name);
-      if(!(*parser))
-        return false;
-      m_parser.push_back(parser);
-      parse_node(parser->get_document()->get_root_node(), name);
-      return true;
-    } catch(const std::exception& ex) {
-      std::cerr << "error loading file:" << name << std::endl;
-      return false;
-    }
-    return false;
-  }
-  
+
   void SkinManager::add_path(const Glib::ustring &name) {
     m_paths.push_back(name);
   }

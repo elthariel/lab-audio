@@ -60,24 +60,24 @@ int main (int argc, char *argv[]) {
   Gtk::HBox hbox;
   Gtk::HBox hbox2;
   Slider *slider;
-  Slider slider2(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false, true);
-  Slider slider3(Thc::Images::create_images("../skins/mixxx/poti_%i.png", 12), Param::create_param(), true);
-  Slider slider4(Thc::Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false, true);
-  Slider slider5(Thc::Images::create_images("../skins/mixxx/vu%ir.png", 32), Param::create_param(), false);
+  Slider slider2(Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false, true);
+  Slider slider3(Images::create_images("../skins/mixxx/poti_%i.png", 12), Param::create_param(), true);
+  Slider slider4(Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false, true);
+  Slider slider5(Images::create_images("../skins/mixxx/vu%ir.png", 32), Param::create_param(), false);
   Slider slider6(Param::create_param(), false);
-  Slider slider7(Thc::Image::create_image("../skins/mixxx/slider_back_horiz.png"),
-  				 Thc::Image::create_image("../skins/mixxx/slider_handle_horiz.png"),
-  				 Param::create_param(),
-  				 Thc::Slider::SliderHandle,
-  				 true,
-  				 false);
-  Slider slider8(Thc::Image::create_image("../skins/mixxx/slider_back_vert.png"),
-  				 Thc::Image::create_image("../skins/mixxx/slider_handle_vert.png"),
-  				 Param::create_param(),
-  				 Thc::Slider::SliderHandle,
-  				 false,
-  				 true);
-  Slider slider9(Thc::SkinManager::instance()->get_skin("slider/crossfader-full"));
+  Slider slider7(Image::create_image("../skins/mixxx/slider_back_horiz.png"),
+  				       Image::create_image("../skins/mixxx/slider_handle_horiz.png"),
+  				       Param::create_param(),
+  				       Slider::SliderHandle,
+  				       true,
+  				       false);
+  Slider slider8(Image::create_image("../skins/mixxx/slider_back_vert.png"),
+  				       Image::create_image("../skins/mixxx/slider_handle_vert.png"),
+  				       Param::create_param(),
+  				       Slider::SliderHandle,
+  				       false,
+  				       true);
+  Slider slider9(SkinManager::instance()->get_skin("slider/crossfader-full"));
 
   
   slider = new Slider();
