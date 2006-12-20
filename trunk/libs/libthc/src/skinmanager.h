@@ -46,8 +46,8 @@ namespace Thc {
    
   protected:
     SkinManager() { };
-    void parse_node(const Xml::Ptr node);
-    void parse_sub_node(const Xml::Ptr node);
+    void parse_node(const Xml::Ptr node, const Glib::ustring &path);
+    void parse_sub_node(const Xml::Ptr node, const Glib::ustring &path);
 
   private:
     typedef std::vector<Glib::ustring> PathList;

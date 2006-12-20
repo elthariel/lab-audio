@@ -59,6 +59,8 @@ protected:
   bool on_motion_notify_event(GdkEventMotion* event);
   bool on_button_press_event(GdkEventButton* event);
   bool on_scroll_event(GdkEventScroll* event);
+  bool on_enter_notify_event (GdkEventCrossing* event);
+  bool on_leave_notify_event (GdkEventCrossing* event);
   
   void draw_vector(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);
   void draw_images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);

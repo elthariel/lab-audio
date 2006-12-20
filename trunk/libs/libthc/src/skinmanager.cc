@@ -32,7 +32,7 @@ namespace Thc {
   SkinManager* SkinManager::m_skin_manager = 0;
   
   
-  void SkinManager::parse_sub_node(const Xml::Ptr node) {
+  void SkinManager::parse_sub_node(const Xml::Ptr node, const Glib::ustring &path) {
     Glib::ustring name;
     const xmlpp::Element* nodeelt = dynamic_cast<const xmlpp::Element*>(node);
     if (!nodeelt)
@@ -44,12 +44,12 @@ namespace Thc {
       if (attribute->get_name() == "name") {
         name = node->get_name() + "/" + attribute->get_value();
         std::cout << "  Attribute " << name << std::endl;
-        m_skins[name] = Skin::create_skin(node);
+        m_skins[name] = Skin::create_skin(node, Glib::path_get_dirname(path));
       }
     }
   }
 
-  void SkinManager::parse_node(const Xml::Ptr node)
+  void SkinManager::parse_node(const Xml::Ptr node, const Glib::ustring &path)
   {
     xmlpp::Node::NodeList list = node->get_children();
 
@@ -61,7 +61,7 @@ namespace Thc {
       const xmlpp::TextNode* childnodetext = dynamic_cast<const xmlpp::TextNode*>(childnode);
       const xmlpp::Element* childnodeelt = dynamic_cast<const xmlpp::Element*>(childnode);
       if (!childnodetext || !childnodetext->is_white_space() && childnodeelt) {
-        parse_sub_node(*iter);
+        parse_sub_node(*iter, path);
       }
     } 
   }
@@ -74,17 +74,17 @@ namespace Thc {
   
   bool SkinManager::load_skin(const Glib::ustring &name) {
     try {
-//      boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
-      xmlpp::DomParser* parser = new xmlpp::DomParser();
+      boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
+//      xmlpp::DomParser* parser = new xmlpp::DomParser();
       //parser.set_validate();
       parser->set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
       parser->parse_file(name);
       if(!parser)
         return false;
-      const Xml::Ptr node = parser->get_document()->get_root_node(); //deleted by DomParser.
-      parse_node(node);
       //store the parser otherwhise the parser auto kill the dom when he his killed
-      //m_parser.push_back(parser);
+      m_parser.push_back(parser);
+      const Xml::Ptr node = parser->get_document()->get_root_node(); //deleted by DomParser.
+      parse_node(node, name);
       return true;
     } catch(const std::exception& ex) {
       std::cerr << "error loading file:" << name << std::endl;

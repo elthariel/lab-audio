@@ -1,6 +1,6 @@
-<thc>
+<thc name="stolen">
   <slider name="crossfader-full" type="all" horizontal="true" scale="true">
-    <images name="all" count="127" path="../skins/bang/fader-%i.png"/>
+    <images name="all" count="127" path="bang/fader-%i.png"/>
   </slider>
   
   <slider name="crossfader-2state" type="foreground" orientation="horizontal">

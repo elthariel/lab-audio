@@ -114,8 +114,13 @@ void Slider::init() {
   set_param("x", m_param);
   m_param->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
   signal_mode_change().connect(mem_fun(*this, &Slider::queue_draw));
-  signal_skin_change().connect(mem_fun(*this, &Slider::on_skin_change));
-  add_events(Gdk::EXPOSURE_MASK | Gdk::BUTTON1_MOTION_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::SCROLL_MASK);
+  //signal_skin_change().connect(mem_fun(*this, &Slider::on_skin_change));
+  add_events(Gdk::EXPOSURE_MASK |
+             Gdk::BUTTON1_MOTION_MASK | 
+             Gdk::BUTTON_PRESS_MASK | 
+             Gdk::SCROLL_MASK |
+             Gdk::ENTER_NOTIFY_MASK |
+             Gdk::LEAVE_NOTIFY_MASK);
   m_step = 1.0 / (m_param->get_upper() - m_param->get_lower());
   if (m_horizontal)
     set_size_request(64, 32);
@@ -274,6 +279,14 @@ bool Slider::on_scroll_event(GdkEventScroll* event) {
   else if (event->direction == GDK_SCROLL_DOWN)
     m_param->set_value(map_to_adj(map_to_knob(m_param->get_value()) - step));
   return true;
+}
+
+bool Slider::on_enter_notify_event(GdkEventCrossing* event) {
+  std::cout << "enter" << std::endl;
+}
+
+bool Slider::on_leave_notify_event(GdkEventCrossing* event) {
+  std::cout << "leave" << std::endl;
 }
 
 //TODO REMOVE
