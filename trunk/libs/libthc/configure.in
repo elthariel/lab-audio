@@ -7,11 +7,11 @@ AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
 
 AC_ISC_POSIX
-AC_PROG_CC
+//AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CXX
-AM_PROG_CC_STDC
-AC_HEADER_STDC
+//AM_PROG_CC_STDC
+//AC_HEADER_STDC
 
 
 
@@ -28,6 +28,18 @@ AM_GLIB_GNU_GETTEXT
 
 AM_PROG_LIBTOOL
 
+dnl BOOOOOOOOOOOOOOOOOOOOOSSSSSSSSSSSSSSSSSSSST
+AC_LANG_PUSH([C++])
+AC_CHECK_HEADERS([boost/filesystem/path.hpp],
+                  ,
+                 [AC_MSG_ERROR([You do not appear to have the Boost filesystem C++ library installed.])])
+
+AC_CHECK_HEADERS([boost/shared_ptr.hpp],
+                 ,
+                 [AC_MSG_ERROR([You do not appear to have the Boost shared_ptr C++ library installed.])])
+
+AC_LANG_POP([C++])
+AC_SUBST(BOOST_LIBS)
 
 
 PKG_CHECK_MODULES(PACKAGE, [gtkmm-2.4 libglademm-2.4 libxml++-2.6 sigc++-2.0])

@@ -22,6 +22,8 @@
 // Created on: Sun Dec  3 19:34:17 2006
 //
 #include <iostream>
+//#include <sstream>
+#include "boost/format.hpp"
 #include "skin.h"
 
 namespace Thc {
@@ -34,13 +36,15 @@ namespace Thc {
   //Images
   Images::Ref Images::create_images(const Glib::ustring &name, int number) {
     int i = 0;
-    char imgname[2000];
+    std::string imgname;
+    //char imgname[2000];
     Images::Ref images(new std::vector<Image::Ref>());
         
     if (i == -1) {
       images->push_back(Image::create_image(name));
     } else for (i = 0; i <= number; i++) {
-     snprintf(imgname, 2000, name.c_str(), i);
+     imgname = str(boost::format(name) % i);
+     //snprintf(imgname, 2000, name.c_str(), i);
      images->push_back(Image::create_image(imgname));
     }
     return images;

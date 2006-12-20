@@ -43,6 +43,7 @@ namespace Thc {
     void add_path(const Glib::ustring &name);
     void remove_path(const Glib::ustring &name);
     inline Skin::Ref get_skin(const Glib::ustring& name) { return m_skins[name]; }
+    void load_path(const Glib::ustring &name);
    
   protected:
     SkinManager() { };

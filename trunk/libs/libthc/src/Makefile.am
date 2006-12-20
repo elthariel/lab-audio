@@ -18,17 +18,17 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libthc.la
 
 libthc_la_SOURCES = \
-    skin.cc \
-    param.cc \
-    thcwidget.cc \
-    skinmanager.cc \
+  skin.cc \
+  param.cc \
+  thcwidget.cc \
+  skinmanager.cc \
 	modemanager.cc \
 	cairoutils.cc \
 	slider.cc
 
 libthc_la_LDFLAGS =
 
-libthc_la_LIBADD = $(PACKAGE_LIBS)
+libthc_la_LIBADD = $(PACKAGE_LIBS) -lboost_filesystem
 
 #EXTRA_DIST = $(glade_DATA)
 

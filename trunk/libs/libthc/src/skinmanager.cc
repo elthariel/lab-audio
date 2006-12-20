@@ -24,6 +24,8 @@
 
 #include <libxml++/libxml++.h>
 #include <iostream>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/convenience.hpp>
 
 #include "skinmanager.h"
 #include "skin.h"
@@ -66,25 +68,38 @@ namespace Thc {
     } 
   }
 
+  void SkinManager::load_path(const Glib::ustring &name) {
+    using namespace boost::filesystem;
+    const path dir_path(system_complete(path(name, native)));
+    directory_iterator itend;
+    directory_iterator it(dir_path);
+
+    if (!exists(dir_path))
+      return;
+    for (it; it != itend; ++it) {
+      if (!is_directory(*it) && extension(*it) == ".xml") {
+        load_skin(it->native_file_string());
+      }
+    }
+  }
+  
   void SkinManager::load_all_skins() {
     PathList::iterator it;
     for (it = m_paths.begin(); it != m_paths.end(); ++it) {
+      load_path(*it);
     }
   }
   
   bool SkinManager::load_skin(const Glib::ustring &name) {
     try {
       boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
-//      xmlpp::DomParser* parser = new xmlpp::DomParser();
       //parser.set_validate();
       parser->set_substitute_entities(); //We just want the text to be resolved/unescaped automatically.
       parser->parse_file(name);
-      if(!parser)
+      if(!(*parser))
         return false;
-      //store the parser otherwhise the parser auto kill the dom when he his killed
       m_parser.push_back(parser);
-      const Xml::Ptr node = parser->get_document()->get_root_node(); //deleted by DomParser.
-      parse_node(node, name);
+      parse_node(parser->get_document()->get_root_node(), name);
       return true;
     } catch(const std::exception& ex) {
       std::cerr << "error loading file:" << name << std::endl;
