@@ -21,7 +21,7 @@
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
-
+#include <iostream>
 #include "skin.h"
 
 namespace Thc {
@@ -70,12 +70,12 @@ namespace Thc {
   }
   
   //Skin
-  Skin::Skin(Xml::Ptr node):m_xml(node) {
-    load_images_from_xml();
+  Skin::Ref Skin::create_skin(Xml::Ptr node, const Glib::ustring &path) {
+    return Ref(new Skin(node, path)); 
   }
 
-  Skin::Ref Skin::create_skin(Xml::Ptr node) {
-    return Ref(new Skin(node)); 
+  Skin::Skin(Xml::Ptr node, const Glib::ustring &path):m_xml(node), m_path(path) {
+    load_images_from_xml();
   }
   
   Color::Ptr Skin::get_color(const Glib::ustring &name) {
@@ -98,24 +98,36 @@ namespace Thc {
 
   void Skin::load_images_from_xml() {
     Glib::ustring name, path, count;
+    xmlpp::Node::NodeList list;
+    
     if (!m_xml)
       return;
     
-    xmlpp::Node::NodeList list = m_xml->get_children("images");
+    list = m_xml->get_children("images");
     for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
       name = Xml::extract_attribute("name", *iter);
       path = Xml::extract_attribute("path", *iter);
       count = Xml::extract_attribute("count", *iter);
-      if (name != "" && path != "" && count != "")
-        m_images[name] = Images::create_images(path, atoi(count.c_str()));
+      if (name != "" && path != "" && count != "") {
+        try {
+          m_images[name] = Images::create_images(Glib::build_filename(m_path, path), atoi(count.c_str()));
+        } catch(const std::exception& ex) {
+          std::cerr << "error loading images(count=" << count << "): " << path << std::endl;
+        }
+      }
     }
     
-    xmlpp::Node::NodeList list2 = m_xml->get_children("image");
-    for(xmlpp::Node::NodeList::iterator iter = list2.begin(); iter != list2.end(); ++iter){
+    list = m_xml->get_children("image");
+    for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
       name = Xml::extract_attribute("name", *iter);
       path = Xml::extract_attribute("path", *iter);
-      if (name != "" && path != "")
-        m_images[name] = Images::create_images(path);
+      if (name != "" && path != "") {
+        try {
+          m_images[name] = Images::create_images(Glib::build_filename(m_path, path));
+        } catch(const std::exception& ex) {
+          std::cerr << "error loading image: " << path << std::endl;
+        }
+      }
     }
   }
 

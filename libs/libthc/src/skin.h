@@ -66,7 +66,7 @@ namespace Thc {
     typedef boost::shared_ptr<Skin> Ref;
     typedef std::map<Glib::ustring, Images::Ref> ImagesList;
 
-    static Ref create_skin(Xml::Ptr node = NULL);
+    static Ref create_skin(Xml::Ptr node = NULL, const Glib::ustring &path = "");
 
     //xml
     inline Xml::Ptr get_xml() { return m_xml; };
@@ -91,11 +91,12 @@ namespace Thc {
     //to create a skin use create_skin();
     //inline void set_xml(Xml::Ptr xml) { m_xml = xml; };
     inline void set_images(const Glib::ustring &name, Images::Ref images) { m_images[name] = images; }
-    Skin(Xml::Ptr node = NULL);
+    Skin(Xml::Ptr node = NULL, const Glib::ustring &path = "");
     void load_images_from_xml();
     
     Xml::Ptr m_xml;
     ImagesList m_images;
+    Glib::ustring m_path;
   };  
 }
 

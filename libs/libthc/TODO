@@ -10,13 +10,12 @@ ModeManager:
   - implement
 
 SkinManager:
-  - implement
-  - define the xml format
+
+Skin:
+  - load_images on demand to reduce memory usage
 
 Slider:
-  - stretch image
   - two image mode
-  - read parameter from xmlnode (imagelist, slidertype, color, ..)
   - use color
 
 ICloContainer:
