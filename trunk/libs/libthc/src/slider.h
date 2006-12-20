@@ -80,8 +80,12 @@ private:
   bool m_horizontal;
   bool m_scale;
   bool m_infinite;
+  bool m_mouseover;
   float m_step;
 
+  Color::Ptr m_color_mouseover;
+  Color::Ptr m_color_background;
+  Color::Ptr m_color_handle;
   SliderType m_type;
   Param::Ref m_param;
   Image::Ref m_image_background;

@@ -55,10 +55,16 @@ namespace Thc {
   class Color {
   public:
     typedef Color* Ptr;
-    double r;
-    double g;
-    double b;
-    double a;
+    inline static Ptr create_color(double r = 0.0, double g = 0.0, double b = 0.0, double a = 1.0) { return new Color(r,g,b,a); }
+    static Ptr create_color(Xml::Ptr node);
+    inline Color(double r = 0.0, double g = 0.0, double b = 0.0, double a = 1.0):m_r(r), m_g(g), m_b(b), m_a(a) {}
+    inline void set_destination(const Cairo::RefPtr<Cairo::Context> &cc) { cc->set_source_rgba(m_r, m_g, m_b, m_a); }
+
+  protected:
+    double m_r;
+    double m_g;
+    double m_b;
+    double m_a;
   };
   
   class Skin {

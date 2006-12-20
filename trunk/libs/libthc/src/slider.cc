@@ -114,7 +114,6 @@ void Slider::init() {
   set_param("x", m_param);
   m_param->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
   signal_mode_change().connect(mem_fun(*this, &Slider::queue_draw));
-  //signal_skin_change().connect(mem_fun(*this, &Slider::on_skin_change));
   add_events(Gdk::EXPOSURE_MASK |
              Gdk::BUTTON1_MOTION_MASK | 
              Gdk::BUTTON_PRESS_MASK | 
@@ -122,6 +121,7 @@ void Slider::init() {
              Gdk::ENTER_NOTIFY_MASK |
              Gdk::LEAVE_NOTIFY_MASK);
   m_step = 1.0 / (m_param->get_upper() - m_param->get_lower());
+  m_mouseover = false;
   if (m_horizontal)
     set_size_request(64, 32);
   else
@@ -136,7 +136,9 @@ void Slider::draw_vector(GdkEventExpose* event,
   const int width = allocation.get_width();
   const int height = allocation.get_height();
 
+  cc->set_source_rgb(1.0, 1.0, 1.0);
   cc->rectangle(0, 0, width, height);
+  cc->rectangle(1, 1, width - 2, height - 2);
   cc->stroke();
   if (m_horizontal) {
     cc->move_to(0, height / 2);
@@ -177,11 +179,13 @@ void Slider::draw_images(GdkEventExpose* event,
   w = image->get_width();
   h = image->get_height();
 
+  cc->save();
   if (m_scale)
     cc->scale ((double)get_allocation().get_width()/w, (double)get_allocation().get_height()/h);
   cc->set_source(image, 0, 0);
   cc->paint();
   cc->stroke();
+  cc->restore();
 }
 
 //background/handle
@@ -191,6 +195,7 @@ void Slider::draw_2images(GdkEventExpose* event,
   double w, h;
   float value = m_param->get_value();
 
+  cc->save();
   if (!m_image_background)
     return;
   w = m_image_background->get_width();
@@ -219,6 +224,7 @@ void Slider::draw_2images(GdkEventExpose* event,
     cc->paint();
     cc->stroke();
   }
+  cc->restore();
 }
 												  
 
@@ -241,6 +247,11 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   	  draw_2images(event, cc);
   } else if (get_mode() == ModeConnect) {
     draw_ports(get_allocation(), cc);
+  }
+  if (m_mouseover) {
+    cc->set_source_rgba(0.8, 0.8, 0.0, 0.5);
+    cc->rectangle(0, 0, get_allocation().get_width(), get_allocation().get_height());
+    cc->stroke();
   }
   return true;
 }
@@ -282,11 +293,13 @@ bool Slider::on_scroll_event(GdkEventScroll* event) {
 }
 
 bool Slider::on_enter_notify_event(GdkEventCrossing* event) {
-  std::cout << "enter" << std::endl;
+  m_mouseover = true;
+  queue_draw();
 }
 
 bool Slider::on_leave_notify_event(GdkEventCrossing* event) {
-  std::cout << "leave" << std::endl;
+  m_mouseover = false;
+  queue_draw();
 }
 
 //TODO REMOVE

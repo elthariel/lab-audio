@@ -69,6 +69,11 @@ namespace Thc {
     return "";
   }
   
+  Color::Ptr Color::create_color(Xml::Ptr node) {
+    Glib::ustring r, g, b, a;
+    return new Color();
+  }
+
   //Skin
   Skin::Ref Skin::create_skin(Xml::Ptr node, const Glib::ustring &path) {
     return Ref(new Skin(node, path)); 
@@ -83,7 +88,9 @@ namespace Thc {
       return 0;
     xmlpp::Node::NodeList list = m_xml->get_children("color");
     for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
-      
+      const xmlpp::Node* node = *iter;
+      //if (node->get_name() == name)
+      //  return Color::create_color(node);
     }
     return 0;
   }
