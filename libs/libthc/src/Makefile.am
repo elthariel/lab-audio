@@ -20,7 +20,6 @@ lib_LTLIBRARIES = libthc.la
 libthc_la_SOURCES = \
   skin.cc \
   param.cc \
-  thcwidget.cc \
   skinmanager.cc \
 	modemanager.cc \
 	cairoutils.cc \
@@ -41,6 +40,7 @@ libthcinclude_HEADERS = \
 	param.h \
 	ithcwidget.h \
 	thcwidget.h \
+	thcwidget.hxx \
 	skinmanager.h \
 	modemanager.h \
 	cairoutils.h \
