@@ -25,8 +25,34 @@
 #include "cairoutils.h"
 
 namespace Thc {
-  
 
+  template <class T>
+  ThcWidget<T>::ThcWidget(Skin::Ref skin)
+    : T(),
+      m_skin(skin),
+      m_mode(ModeNormal),
+      m_supported_mode(ModeNormal & ModeConnect) {
+  }
+  
+  template <class T>
+  ThcWidget<T>::~ThcWidget() {
+    if (ModeManager::instance())
+      ModeManager::instance()->remove_widget(this);
+  }
+  
+  template <class T>
+  void ThcWidget<T>::draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc) {
+    int x = 2, y = 2;
+    const int width = allocation.get_width();
+    const int height = allocation.get_height();
+  
+    cc->rectangle(0, 0, width, height);  
+    cc->stroke();  
+    for (int i = 0; i < get_param_count(); i++) {
+      CairoUtils::draw_port(cc, x, y);
+      x += 15;
+    }
+  }
 
 }
 
