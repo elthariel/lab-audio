@@ -31,14 +31,16 @@
 #include "skin.h"
 #include "param.h"
 #include "modemanager.h"
-
+#include "cairoutils.h"
 
 namespace Thc {
- 
-  class ThcWidget: public IThcWidget {
+  
+  template <class T>
+  class ThcWidget: public IThcWidget, public T {
   public:
+    //typedef typename T BaseClass;
     ThcWidget(Skin::Ref skin = Skin::Ref());
-    ~ThcWidget();
+    virtual ~ThcWidget();
 
   public:
 	inline int get_param_count()const { return m_params.size(); }
@@ -71,6 +73,36 @@ namespace Thc {
     sigc::signal<void> m_signal_skin_change;
     Skin::Ref m_skin;
 };
+
+
+  template <class T>
+  ThcWidget<T>::ThcWidget(Skin::Ref skin)
+    : T(),
+      m_skin(skin),
+      m_mode(ModeNormal),
+      m_supported_mode(ModeNormal & ModeConnect) {
+  }
+  
+  template <class T>
+  ThcWidget<T>::~ThcWidget() {
+    if (ModeManager::instance())
+      ModeManager::instance()->remove_widget(this);
+  }
+  
+  template <class T>
+  void ThcWidget<T>::draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc) {
+    int x = 2, y = 2;
+    const int width = allocation.get_width();
+    const int height = allocation.get_height();
+  
+    cc->rectangle(0, 0, width, height);  
+    cc->stroke();  
+    for (int i = 0; i < get_param_count(); i++) {
+      CairoUtils::draw_port(cc, x, y);
+      x += 15;
+    }
+  }
+
 
 } //namespace Thc
 

@@ -28,7 +28,7 @@
 
 namespace Thc {
 
-class Slider : public Gtk::DrawingArea, public ThcWidget {
+class Slider : public ThcWidget<Gtk::DrawingArea> {
 public:
   enum SliderType { SliderAll, SliderForeground, SliderHandle, SliderVector };
   
@@ -53,7 +53,7 @@ public:
          bool horizontal = true,
          bool scale = false,
          bool infinite = false);
-
+  ~Slider() {}
 protected:
   bool on_expose_event(GdkEventExpose* event);
   bool on_motion_notify_event(GdkEventMotion* event);
