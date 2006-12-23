@@ -26,29 +26,7 @@
 
 namespace Thc {
   
-  ThcWidget::ThcWidget(Skin::Ref skin)
-    : m_skin(skin),
-      m_mode(ModeNormal),
-      m_supported_mode(ModeNormal & ModeConnect) {
-  }
-  
-  ThcWidget::~ThcWidget() {
-    if (ModeManager::instance())
-      ModeManager::instance()->remove_widget(this);
-  }
-  
-  void ThcWidget::draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc) {
-    int x = 2, y = 2;
-    const int width = allocation.get_width();
-    const int height = allocation.get_height();
-  
-    cc->rectangle(0, 0, width, height);  
-    cc->stroke();  
-    for (int i = 0; i < get_param_count(); i++) {
-      CairoUtils::draw_port(cc, x, y);
-      x += 15;
-    }
-  }
+
 
 }
 

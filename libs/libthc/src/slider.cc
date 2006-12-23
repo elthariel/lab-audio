@@ -35,7 +35,7 @@ using namespace std;
   
          
 Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
-  : ThcWidget(skin),
+  : ThcWidget<Gtk::DrawingArea>(skin),
     m_param(param),
     m_scale(scale),
     m_infinite(infinite) {
@@ -45,7 +45,7 @@ Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
 }
 
 Slider::Slider(Param::Ref param, bool horizontal, bool infinite)
-  : ThcWidget(),
+  : ThcWidget<Gtk::DrawingArea>(),
     m_param(param),
     m_horizontal(horizontal),
     m_type(SliderVector),
@@ -55,7 +55,7 @@ Slider::Slider(Param::Ref param, bool horizontal, bool infinite)
 
 //constructor for images mode
 Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal, bool scale, bool infinite)
-  : ThcWidget(),
+  : ThcWidget<Gtk::DrawingArea>(),
     m_images(images),
     m_param(param),
     m_horizontal(horizontal),
@@ -76,7 +76,7 @@ Slider::Slider(Image::Ref image_background,
                bool horizontal,
                bool scale,
                bool infinite)
-  : ThcWidget(),
+  : ThcWidget<Gtk::DrawingArea>(),
     m_image_background(image_background),
     m_image_foreground(image_foreground),
     m_param(param),

@@ -40,7 +40,7 @@ namespace Thc {
   public:
 	virtual int get_param_count()const = 0;
 	virtual Param::Ref get_param(const Glib::ustring& name) = 0;
-		
+//	virtual ~IThcWidget() = {};
   //## Widget Mode ##
   public:
     virtual void set_mode(WidgetMode mode) = 0;
