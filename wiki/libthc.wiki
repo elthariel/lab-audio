@@ -1,4 +1,5 @@
 #summary libthc information
+#labels libthc,Phase-Implementation
 
 = Introduction =
 libthc is a gtk widget library oriented torward audio
