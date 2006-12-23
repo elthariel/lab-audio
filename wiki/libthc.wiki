@@ -6,18 +6,97 @@ libthc is a gtk widget library oriented torward audio
 = Details =
 Current widget:
   * Slider
+  * Label
+
+Current helper:
+  * SkinManager : store and share all Skin instance (and images)
+  * ModeManager : change the mode (connect/normal/slime) of each widget)
+  * WidgetManager : store and share each widget and his name
+  * OSCManager : allow communication between widget out-process
 
 = Dependencies =
   * gtkmm
   * libsigc++
   * libxml++
   * `boost/shared_ptr`
-  * boost/format
+Thc::  * boost/format
 
 = Doc =
 == Slider ==
+Parameter:
+  value : the value of the slider
+Extension:
+  parameter's dnd and paste/cut
+
+Mode:
+  all : use one image for each state
+  handle: use one image for the background, one for the handle
+  foreground: use one image for the background, one to display the foreground % value
+  vector: simple cairo mode
+Example:
+{{{
+  Thc::Slider slider2(Thc::Images::create_images("../skins/bang/fader-%i.png", 127), Thc::Param::create_param(), false, true);
+  Thc::Slider slider3(Thc::Images::create_images("../skins/mixxx/poti_%i.png", 12), Thc::Param::create_param(), true);
+  Thc::Slider slider4(Thc::Images::create_images("../skins/mixxx/vu%il.png", 32), Thc::Param::create_param(), false, true);
+  Thc::Slider slider5(Thc::Images::create_images("../skins/mixxx/vu%ir.png", 32), Thc::Param::create_param(), false);
+  Thc::Slider slider6(Thc::Param::create_param(), false);
+  Thc::Slider slider7(Thc::Image::create_image("../skins/mixxx/slider_back_horiz.png"),
+  				       Thc::Image::create_image("../skins/mixxx/slider_handle_horiz.png"),
+  				       Thc::Param::create_param(),
+  				       Thc::Slider::SliderHandle,
+  				       true,
+  				       false);
+  Slider slider8(Thc::Image::create_image("../skins/mixxx/slider_back_vert.png"),
+  				       Thc::Image::create_image("../skins/mixxx/slider_handle_vert.png"),
+  				       Thc::Param::create_param(),
+  				       Thc::Slider::SliderHandle,
+  				       false,
+  				       true);
+  Thc::Slider slider9(Thc::SkinManager::instance()->get_skin("slider/crossfader-full"));
+}}}
+
 == ModeManager ==
+  The skin manager allow to group widgets.
+  You can define group and toggle the mode of each separetely
+Example:
+{{{
+  Thc::ModeManager::instanciate();
+  Thc::Slider slider1, slider2;
+
+  Thc::ModeManager::instance()->add_widget("/group1", slider1);
+  Thc::ModeManager::instance()->add_widget("/group1", slider2);
+
+  Thc::ModeManager::instance()->set_mode("/group1", ModeNormal);
+  Thc::ModeManager::instance()->set_mode("/group1", ModeConnect);
+}}}
+  
 == SkinManager ==
+  The skin manager is used to provide skin support to all widget.
+  He store each skin instance.
+{{{
+  Thc::SkinManager::instanciate();
+  Thc::SkinManager::instance()->load_path("../skins");
+
+  Thc::Slider slider(Thc::SkinManager::instance()->get_skin("slider/crossfader-full"));
+}}}
+
+== WidgetManager ==
+  The WidgetManager
+Example:
+{{{
+  Thc::WidgetManager::instanciate();
+
+  Thc::WidgetManager::instance()->get_widget("/container0/collapsable2/Slider4");
+}}}
+
+== OSCManager ==
+  The OSCManager use the WidgetManager to dispatch message to widget. It use liblo to communicate between process, and internal call for inprocess communication
+ 
+Example:
+{{{
+  Thc::OSCManager::instanciate();  //that's all
+}}}
+
 
 = TODO =
 
@@ -42,6 +121,18 @@ Current widget:
 == ModeManager ==
 
 == SkinManager ==
+
+== OSCManager ==
+  * implement
+  * support dnd paste/cut between widget (of two differents process)
+  * support to connect to widget (of two differents process)
+
+== WidgetManager ==
+  * implement
+  * store the widget tree
+  * associate name to each widget instance
+  * used by OSCManager to dispatch message
+
 
 == Slider ==
   * support infinite mode
