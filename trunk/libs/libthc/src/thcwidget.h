@@ -26,12 +26,11 @@
 #include <gtkmm.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-//#include <libxml++/libxml++.h>
 #include "ithcwidget.h"
 #include "skin.h"
 #include "param.h"
 #include "modemanager.h"
-#include "cairoutils.h"
+
 
 namespace Thc {
   
