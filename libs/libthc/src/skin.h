@@ -23,7 +23,9 @@
 
 #ifndef _SKIN_H_
 #define _SKIN_H_
+
 #include <gtkmm.h>
+#include <cairomm/cairomm.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <libxml++/libxml++.h>
