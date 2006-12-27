@@ -42,7 +42,7 @@ AC_LANG_POP([C++])
 AC_SUBST(BOOST_LIBS)
 
 
-PKG_CHECK_MODULES(PACKAGE, [gtkmm-2.4 libglademm-2.4 libxml++-2.6 sigc++-2.0 cairomm-1.0])
+PKG_CHECK_MODULES(PACKAGE, [gtkmm-2.4 >= 2.9.0 libglademm-2.4 libxml++-2.6 sigc++-2.0 cairomm-1.0])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
