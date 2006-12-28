@@ -5,7 +5,7 @@
 // Login   <elthariel@free.fr>
 //
 // Started on  Thu Dec 14 00:04:57 2006 Elthariel
-// Last update Thu Dec 14 00:45:49 2006 Elthariel
+// Last update Tue Dec 19 05:22:17 2006 ballet
 //
 
 #include "skin.hpp"
@@ -34,7 +34,7 @@ class SEImgs : public SElement<STypeImgs>
   void                  build_imgs();
 
 public:
-  SEToggle(string a_element_name, string a_base_path);
+  SEImgs(string a_element_name, string a_base_path);
 
 	virtual Glib::RefPtr<Pixbuf> render(float *a_states,
                                       unsigned int a_state_count);
@@ -42,6 +42,10 @@ public:
 
 typedef SEImgs<2>       SEImgsToggle;
 typedef SEImgs<4>       SEImgsToggleAnim;
+
+/** Could be used as VU-Meter, Knob, etc.
+ *
+ */
 typedef SEImgs<127>     SEImgsSlider;
 
 

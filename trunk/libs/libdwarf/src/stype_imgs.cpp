@@ -29,7 +29,7 @@ void            append_int_to_string(string &str, unsigned int i)
       tmp.insert(0, i % 10 + '0');
       i /= 10;
     }
-  str += "_" += tmp;
+  str += "-" += tmp;
 }
 
 
@@ -53,3 +53,16 @@ SEImgs<p_state_count>::SEImgs(string a_element_name,
   build_imgs();
 }
 
+template <int p_state_count>
+Glib::RefPtr<Pixbuf>    SEImgs::render(float *a_states,
+                                       unsigned int a_state_count)
+{
+  unsigned int state;
+
+  if (a_state_count > 1)
+    {/* debug message*/}
+  if (*a_states > 1.0)
+    return m_imgs[127];
+  else
+    return m_imgs[(unsigned int)*a_states * 127];
+}

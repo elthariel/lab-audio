@@ -1,4 +1,4 @@
-#include <map>
+#include <hash_map>
 #include <string>
 #include <gdkmm.h>
 
@@ -16,10 +16,12 @@ class SElement
 public:
   SElement(string a_name);
 
-	virtual Glib::RefPtr<Pixbuf> render(float *a_states,
+	virtual Glib::RefPtr<Pixbuf>  render(float *a_states,
                                       unsigned int a_state_count) = 0;
+  virtual void                  get_name();
+  // Need to add xml conf members.
 };
-// <-- SERotary
+
 
 // <-- STypeImgs, STypeVector, STypeBase, STypeComputed
 class SType
@@ -36,30 +38,39 @@ public:
 };
 
 
-typedef cmap<char *, SElement *> _SEMap;
+typedef hash_map<string, SElement &> _SEMap;
 
 /** Represent the skin for a plugin. It allows you to register STypeX objects
  *  at runtime. It provides access to skin elements to the ui.
  */
-class SInstance
+class Skin : public SType
 {
-	/** Skin elements map.
-	*/
+	/** Skin elements map. */
 	_SEMap        m_emap;
 
 public:
-	SElement      *get_element(char *);
-	void          register_element(SElement *);
+	SElement      &get_element(string);
+	void          register_element(SElement &);
 
 };
 
-/* Will be implemented in middle-term; Unique instance which provides access
- * to all the skins in the process.
- */
+
+typedef hash_map<string, Skin &> _SMap;
+
 class SManager
 {
 	static SManager		*m_instance;
 	SManager();
+
+protected:
+  _SMap         *m_smap;
+
 public:
 	static SManager		*get_instance();
+
+	Skin          &get_element(string);
+	void          register_element(string , Skin &);
+
+  //Xml.
+  Skin          *create_from_file(string path)y;
 };
