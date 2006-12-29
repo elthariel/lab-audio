@@ -15,6 +15,7 @@ Current helper:
   * WidgetManager : store and share each widget and his name
   * OSCManager : allow communication between widget out-process
   * LearnManager : allow midi learn (merge with ModeManager)
+  * InputManager : take input from kbdz; dispatch to each widget
 
 = Dependencies =
   * gtkmm
@@ -137,7 +138,7 @@ Example:
   * associate name to each widget instance
   * used by OSCManager to dispatch message
 
-== LearnManager ==
+== LearnManager/InputManager ==
   * implement
   * allow midi/osc learn
   * use one signal
