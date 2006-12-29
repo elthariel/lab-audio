@@ -22,7 +22,9 @@ Current helper:
   * libsigc++
   * libxml++
   * `boost/shared_ptr`
-Thc::  * boost/format
+  * boost/format
+  * boost/filesystem
+  * libsvgr
 
 = Doc =
 == Slider ==
