@@ -31,8 +31,8 @@ namespace Thc {
 
   enum WidgetMode {
     ModeNormal = 1,
-    ModeSlime = 2,
-    ModeConnect = 4
+    ModeLearn = 2,
+    ModeConnect = 4,
   };
   
   class IThcWidget {
