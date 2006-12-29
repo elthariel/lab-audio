@@ -21,17 +21,23 @@
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
-#include "thcwidget.h"
+//#include "thcwidget.h"
 #include "cairoutils.h"
+#include "boost/format.hpp"
 
 namespace Thc {
 
+  //static int ThcWidget::m_widget_id = 0;
+  //static int widget_id = 0;
+  
   template <class T>
-  ThcWidget<T>::ThcWidget(Skin::Ref skin)
+  ThcWidget<T>::ThcWidget(const Glib::ustring &widget_name, Skin::Ref skin)
     : T(),
       m_skin(skin),
       m_mode(ModeNormal),
       m_supported_mode(ModeNormal & ModeConnect) {
+    m_widget_name = str(boost::format("/%s%d") % widget_name % widget_id);
+    ++widget_id;
   }
   
   template <class T>

@@ -35,7 +35,7 @@ using namespace std;
   
          
 Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
-  : ThcWidget<Gtk::DrawingArea>(skin),
+  : ThcWidget<Gtk::DrawingArea>("slider", skin),
     m_param(param),
     m_scale(scale),
     m_infinite(infinite) {
@@ -45,7 +45,7 @@ Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
 }
 
 Slider::Slider(Param::Ref param, bool horizontal, bool infinite)
-  : ThcWidget<Gtk::DrawingArea>(),
+  : ThcWidget<Gtk::DrawingArea>("slider"),
     m_param(param),
     m_horizontal(horizontal),
     m_type(SliderVector),
@@ -55,7 +55,7 @@ Slider::Slider(Param::Ref param, bool horizontal, bool infinite)
 
 //constructor for images mode
 Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal, bool scale, bool infinite)
-  : ThcWidget<Gtk::DrawingArea>(),
+  : ThcWidget<Gtk::DrawingArea>("slider"),
     m_images(images),
     m_param(param),
     m_horizontal(horizontal),
@@ -76,7 +76,7 @@ Slider::Slider(Image::Ref image_background,
                bool horizontal,
                bool scale,
                bool infinite)
-  : ThcWidget<Gtk::DrawingArea>(),
+  : ThcWidget<Gtk::DrawingArea>("slider"),
     m_image_background(image_background),
     m_image_foreground(image_foreground),
     m_param(param),
@@ -125,7 +125,8 @@ void Slider::init() {
   if (m_horizontal)
     set_size_request(64, 32);
   else
-    set_size_request(32, 64);  
+    set_size_request(32, 64);
+  std::cout << "widget name:" <<  get_name() << std::endl;  
 }
 
 //draw the slider with cairo
