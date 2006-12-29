@@ -34,11 +34,13 @@
 
 namespace Thc {
   
+  static int widget_id = 0;
+  
   template <class T>
   class ThcWidget: public IThcWidget, public T {
   public:
     //typedef typename T BaseClass;
-    ThcWidget(Skin::Ref skin = Skin::Ref());
+    ThcWidget(const Glib::ustring &widget_name = "unamed", Skin::Ref skin = Skin::Ref());
     virtual ~ThcWidget();
 
   public:
@@ -64,6 +66,8 @@ namespace Thc {
   protected:
     virtual void on_skin_change() {};
 
+  public:
+    inline const Glib::ustring &get_name()const { return m_widget_name; }
   private:
     std::map<Glib::ustring, Param::Ref> m_params;
     WidgetMode m_mode;
@@ -71,6 +75,8 @@ namespace Thc {
     sigc::signal<void> m_signal_mode_change;
     sigc::signal<void> m_signal_skin_change;
     Skin::Ref m_skin;
+    Glib::ustring m_widget_name;
+    int m_widget_id;
 };
 
 } //namespace Thc
