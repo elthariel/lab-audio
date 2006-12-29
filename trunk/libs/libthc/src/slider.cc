@@ -234,7 +234,7 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   Glib::RefPtr<Gdk::Window> win = get_window();
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
 
-  //clip to what we really need to be redrawn
+  //clip to what really need to be redrawn
   cc->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
   cc->clip();
     

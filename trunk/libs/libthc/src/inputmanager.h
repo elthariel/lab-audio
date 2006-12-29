@@ -16,13 +16,13 @@
 
 
 //
-// Class: WidgetManager
+// Class: InputManager
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
 
-#ifndef _WIDGETMANAGER_H_
-#define _WIDGETMANAGER_H_
+#ifndef _INPUTMANAGER_H_
+#define _INPUTMANAGER_H_
 
 #include <map>
 #include <vector>
@@ -32,32 +32,16 @@
 
 namespace Thc {
   
-  template <typename T>
-  class Singleton {
+  /**
+    - midi learn
+    - use kbdz
+    - 
+  */
+  class InputManager: {
   public:
-    typedef T typename;
-  
-    inline static void instanciate() { if (!m_ref) m_ref = new T(); }
-    inline static T *instance() { return m_ref; }
-
-  private:
-    virtual Singleton() {};
-    static T *m_ref;
-  };
-  
-  class WidgetManager: public Singleton<WidgetManager> {
-  public:
-    typedef std::vector<IThcWidget *> Vector;
-    typedef std::map<Glib::ustring, Vector> Map;
-  
-    //get_widget(const Glib::ustring &widget_name);
-    
-    //set_path(const Glib::ustring &widget_name, const Glib::ustring &path);
-    //get_path(const Glib::ustring &widget_name);
-    //inline get_path(const ThcWidget thc) { return get_path(thc->get_name()); }
-
-  // "/widget36" "/component1/component23/widget36"  
-//    typedef std::map<Glib::ustring, Glib::ustring> Map;
+    //set_learn(const Glib::ustring &group);
+    //signal_on_learn();    
+    //process_input()
   };
 }
 
