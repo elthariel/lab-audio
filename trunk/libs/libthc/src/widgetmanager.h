@@ -56,6 +56,11 @@ namespace Thc {
     //get_path(const Glib::ustring &widget_name);
     //inline get_path(const ThcWidget thc) { return get_path(thc->get_name()); }
 
+
+    //set_mode_connect
+    //set_mode_learn
+    //set_mode_normal
+
   // "/widget36" "/component1/component23/widget36"  
 //    typedef std::map<Glib::ustring, Glib::ustring> Map;
   };
