@@ -68,6 +68,10 @@ namespace Thc {
 
   public:
     inline const Glib::ustring &get_name()const { return m_widget_name; }
+    
+  //add
+  //pack_start
+  
   private:
     std::map<Glib::ustring, Param::Ref> m_params;
     WidgetMode m_mode;
