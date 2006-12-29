@@ -14,6 +14,7 @@ Current helper:
   * ModeManager : change the mode (connect/normal/slime) of each widget)
   * WidgetManager : store and share each widget and his name
   * OSCManager : allow communication between widget out-process
+  * LearnManager : allow midi learn (merge with ModeManager)
 
 = Dependencies =
   * gtkmm
@@ -131,10 +132,15 @@ Example:
 
 == WidgetManager ==
   * implement
-  * store the widget tree
+  * store as hashmap : [widget name] [shared_ptr<widget>, widget path]
   * associate name to each widget instance
   * used by OSCManager to dispatch message
 
+== LearnManager ==
+  * implement
+  * allow midi/osc learn
+  * use one signal
+  * could be merged with the ModeManager?
 
 == Slider ==
   * support infinite mode
