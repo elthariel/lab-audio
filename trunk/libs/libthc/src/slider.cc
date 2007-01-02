@@ -297,7 +297,7 @@ bool Slider::on_motion_notify_event(GdkEventMotion* event) {
   if (event->state & GDK_SHIFT_MASK)
     scale *= 200;
   if (m_horizontal)
-    value = m_value_offset + ((m_click_offset - event->x) / scale);
+    value = m_value_offset - ((m_click_offset - event->x) / scale);
   else
     value = m_value_offset + ((m_click_offset - event->y) / scale);
   value = value < 0 ? 0 : value;
