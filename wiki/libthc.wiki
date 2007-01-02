@@ -11,8 +11,8 @@ Current widget:
 
 Current helper:
   * SkinManager : store and share all Skin instance (and images)
-  * ModeManager : change the mode (connect/normal/slime) of each widget)
-  * WidgetManager : store and share each widget and his name
+  * ModeManager : change the mode (connect/normal/slime) of each widget
+  * WidgetManager : store and share each widget, his name, his path, allow to find them using regexp
   * OSCManager : allow communication between widget out-process
   * LearnManager : allow midi learn (merge with ModeManager)
   * InputManager : take input from kbdz; dispatch to each widget
@@ -104,13 +104,21 @@ Example:
 
 
 = TODO =
+== First Release Goal ==
+  * slider, knob, pad, port_matrix (simple input/output port display)
+  * midi learn
+  * dnd, copy/paste using XDND and xml
+  * dnd port
+  * balloon windows for each port
+  * define different kind of port, and virtual port (for plugins)
+
 
 == General ==
   * implement a better draw_ports
   * allow to connect port using drag'n'drop
   * add WIDGETs: button, label, padXY, automation, keyboard, peak vu, wave visualisation, wave summary
   * add CONTAINERs: Container, Collapsable
-  * write a doc
+  * write a doc/doxygen comment
   * regroup all audio wigdet already written for gtk that will fit in the project
   * optional: menu for ModeGroup/SkinManager  
 
@@ -149,7 +157,6 @@ Example:
   * support infinite mode
   * use Color::Ptr everywhere
   * rename or typedef Knob or something like that
-  * resize mouseover rect
 
 == Container ==
   * autorearange widget
