@@ -107,17 +107,14 @@ Example:
 
 == General ==
   * implement a better draw_ports
-  * implement popup window on draw_ports displaying connection and port name
   * allow to connect port using drag'n'drop
   * add WIDGETs: button, label, padXY, automation, keyboard, peak vu, wave visualisation, wave summary
   * add CONTAINERs: Container, Collapsable
   * write a doc
-  * regroup all audio wigdet already written for gtk that will fit the project
+  * regroup all audio wigdet already written for gtk that will fit in the project
   * optional: menu for ModeGroup/SkinManager  
 
 == IThcWidget/ThcWidget ==
-  * use specialisation for container/widget
-  * if WidgetManager is initialised define a name for each widget
   * add a name to each port parameter
   * autobind each param value change to queue_draw
   * display a balloon for each port
@@ -138,7 +135,9 @@ Example:
   * implement
   * store as hashmap : [widget name] [shared_ptr<widget>, widget path]
   * associate name to each widget instance
+  * allow regexp match ("/slider*"), ("/slider[1-9]"), etc..)
   * used by OSCManager to dispatch message
+  * used by the InputManager to dispatch message
 
 == LearnManager/InputManager ==
   * implement
