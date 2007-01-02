@@ -37,17 +37,15 @@ void connect_mode() {
 }
 
 void normal2_mode() {
-  //ModeManager::instance()->set_mode("test2", ModeNormal);
-  slider->set_skin(SkinManager::instance()->get_skin("slider/crossfader-handle-v"));
+  slider->set_skin(SkinManager::get_skin("slider/crossfader-handle-v"));
 }
 
 void connect2_mode() {
-  //ModeManager::instance()->set_mode("test2", ModeConnect);
-  slider->set_skin(SkinManager::instance()->get_skin("slider/crossfader-handle-h"));
+  slider->set_skin(SkinManager::get_skin("slider/crossfader-handle-h"));
 }
 
 void vector_mode() {
-  slider->set_skin(SkinManager::instance()->get_skin("slider/crossfader-vector-v"));
+  slider->set_skin(SkinManager::get_skin("slider/crossfader-vector-v"));
 }
     
 int main (int argc, char *argv[]) {  
@@ -86,7 +84,7 @@ int main (int argc, char *argv[]) {
   				       Slider::SliderHandle,
   				       false,
   				       true);
-  Slider slider9(SkinManager::instance()->get_skin("slider/crossfader-full"));
+  Slider slider9(SkinManager::get_skin("slider/crossfader-full"));
 
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
