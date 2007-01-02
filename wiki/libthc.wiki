@@ -112,6 +112,7 @@ Example:
   * balloon windows for each port
   * define different kind of port, and virtual port (for plugins)
   * find each widget which match with a regexp
+  * list all available skin for a widget
 
 == General ==
   * implement a better draw_ports
