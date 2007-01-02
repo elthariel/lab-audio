@@ -26,6 +26,7 @@
 #include "../src/thc.h"
 
 using namespace Thc;
+Slider *slider;
 
 void normal_mode() {
   ModeManager::instance()->set_mode("test", ModeNormal);
@@ -36,13 +37,19 @@ void connect_mode() {
 }
 
 void normal2_mode() {
-  ModeManager::instance()->set_mode("test2", ModeNormal);
+  //ModeManager::instance()->set_mode("test2", ModeNormal);
+  slider->set_skin(SkinManager::instance()->get_skin("slider/crossfader-handle-v"));
 }
 
 void connect2_mode() {
-  ModeManager::instance()->set_mode("test2", ModeConnect);
+  //ModeManager::instance()->set_mode("test2", ModeConnect);
+  slider->set_skin(SkinManager::instance()->get_skin("slider/crossfader-handle-h"));
 }
-  
+
+void vector_mode() {
+  slider->set_skin(SkinManager::instance()->get_skin("slider/crossfader-vector-v"));
+}
+    
 int main (int argc, char *argv[]) {  
   Gtk::Main gtkmain (argc, argv);
   
@@ -54,12 +61,14 @@ int main (int argc, char *argv[]) {
   Gtk::Window window;
   Gtk::Button btn_normal("Normal");
   Gtk::Button btn_connect("Connect");
-  Gtk::Button btn_normal2("Normal2");
-  Gtk::Button btn_connect2("Connect2");
+  Gtk::Button btn_normal2("Skin All h");
+  Gtk::Button btn_connect2("Skin All v");
+  Gtk::Button btn_normal3("Skin Vect");
+  
   Gtk::VBox vbox;
   Gtk::HBox hbox;
   Gtk::HBox hbox2;
-  Slider *slider;
+
   Slider slider2(Images::create_images("../skins/bang/fader-%i.png", 127), Param::create_param(), false, true);
   Slider slider3(Images::create_images("../skins/mixxx/poti_%i.png", 12), Param::create_param(), true);
   Slider slider4(Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false, true);
@@ -79,11 +88,10 @@ int main (int argc, char *argv[]) {
   				       true);
   Slider slider9(SkinManager::instance()->get_skin("slider/crossfader-full"));
 
-  
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
   delete slider;
-  slider = new Slider();
+  slider = new Slider(Param::create_param(), false, false, false);
   
   ModeManager::instance()->add_widget("test", slider);
   ModeManager::instance()->add_widget("test", slider2);
@@ -101,6 +109,7 @@ int main (int argc, char *argv[]) {
   hbox.pack_start(btn_connect);
   hbox.pack_start(btn_normal2);
   hbox.pack_start(btn_connect2);
+  hbox.pack_start(btn_normal3);
   vbox.pack_start(hbox2);
   hbox2.pack_start(*slider);
   hbox2.pack_start(slider2);
@@ -116,6 +125,7 @@ int main (int argc, char *argv[]) {
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
   btn_connect2.signal_clicked().connect(sigc::ptr_fun(&connect2_mode));
   btn_normal2.signal_clicked().connect(sigc::ptr_fun(&normal2_mode));
+  btn_normal3.signal_clicked().connect(sigc::ptr_fun(&vector_mode));
     
   window.show_all();
   gtkmain.run (window);

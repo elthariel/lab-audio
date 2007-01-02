@@ -44,12 +44,13 @@ Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
     on_skin_change();
 }
 
-Slider::Slider(Param::Ref param, bool horizontal, bool infinite)
+Slider::Slider(Param::Ref param, bool horizontal, bool scale, bool infinite)
   : ThcWidget<Gtk::DrawingArea>("slider"),
     m_param(param),
     m_horizontal(horizontal),
     m_type(SliderVector),
-    m_infinite(infinite) {
+    m_infinite(infinite),
+    m_scale(scale) {
   init();
 }
 
@@ -101,13 +102,34 @@ Slider::SliderType text2type(const Glib::ustring &str) {
 }
 
 void Slider::on_skin_change() {
+  Image::Ref img;
   if (!get_skin())
     return;
-  m_images = get_skin()->get_images("all");
-  m_image_background = get_skin()->get_image("background");
-  m_image_foreground = get_skin()->get_image("foreground");
+  m_type = text2type(get_skin()->get_attribute("render"));
   m_horizontal = get_skin()->get_bool_attribute("horizontal");
-  m_type = text2type(get_skin()->get_attribute("type"));
+  switch (m_type) {
+    case SliderVector:     
+      break;
+    case SliderAll:
+      m_images = get_skin()->get_images("all");
+      img = ((*m_images)[0]);
+      if (img)
+        set_size_request(img->get_width(), img->get_height());
+      break;
+    case SliderHandle:
+      m_image_background = get_skin()->get_image("background");
+      if (m_image_background)
+        set_size_request(m_image_background->get_width(), m_image_background->get_height());
+      m_image_foreground = get_skin()->get_image("handle");
+      break;
+    case SliderForeground:
+      m_image_background = get_skin()->get_image("background");
+      if (m_image_background)
+        set_size_request(m_image_background->get_width(), m_image_background->get_height());
+      m_image_foreground = get_skin()->get_image("foreground");
+      break;
+  }
+  queue_draw();
 }
      
 void Slider::init() {
@@ -134,9 +156,14 @@ void Slider::draw_vector(GdkEventExpose* event,
 						 Cairo::RefPtr<Cairo::Context> cc) {
   float value = m_param->get_value();
   Gtk::Allocation allocation = get_allocation();
-  const int width = allocation.get_width();
-  const int height = allocation.get_height();
-
+  int width;
+  int height;
+  if (m_scale) {
+    height = allocation.get_height();
+    width = allocation.get_width();
+  } else
+    get_size_request(width, height);
+  
   cc->set_source_rgb(1.0, 1.0, 1.0);
   cc->rectangle(0, 0, width, height);
   cc->rectangle(1, 1, width - 2, height - 2);
@@ -251,7 +278,13 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   }
   if (m_mouseover) {
     cc->set_source_rgba(0.8, 0.8, 0.0, 0.5);
-    cc->rectangle(0, 0, get_allocation().get_width(), get_allocation().get_height());
+    if (m_scale)
+      cc->rectangle(0, 0, get_allocation().get_width(), get_allocation().get_height());
+    else {
+      int h,w;
+      get_size_request(w, h);
+      cc->rectangle(0, 0, w, h);     
+    }
     cc->stroke();
   }
   return true;
