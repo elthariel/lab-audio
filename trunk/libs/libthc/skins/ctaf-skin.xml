@@ -1,25 +1,35 @@
 <thc name="stolen">
-  <slider name="crossfader-full" type="all" horizontal="true" scale="true">
+  <slider name="crossfader-full" render="all" horizontal="true" scale="true">
     <images name="all" count="127" path="bang/fader-%i.png"/>
   </slider>
   
-  <slider name="crossfader-2state" type="foreground" orientation="horizontal">
-    <image name="background" path="mixxx/crossfader-back.png"/>
+  <slider name="crossfader-2state" render="foreground" horizontal="true">
+    <image name="background" path="mixxx/slider_back_horiz.png"/>
     <image name="foreground" path="mixxx/crossfader-fore.png"/>
   </slider>
   
-  <slider name="crossfader-handle" type="handle" orientation="horizontal">
-    <image name="background" path="mixxx/crossfader-back.png"/>
-    <image name="handle" path="mixxx/crossfader-handle.png"/>
+  <slider name="crossfader-handle-h" render="handle" horizontal="true">
+    <image name="background" path="mixxx/slider_back_horiz.png"/>
+    <image name="handle" path="mixxx/slider_handle_horiz.png"/>
   </slider>
   
-  <slider name="crossfader-vector" type="vector" orientation="horizontal">
+  <slider name="crossfader-handle-v" render="handle" horizontal="false">
+    <image name="background" path="mixxx/slider_back_vert.png"/>
+    <image name="handle" path="mixxx/slider_handle_vert.png"/>
+  </slider>
+  
+  <slider name="crossfader-vector-h" render="vector" horizontal="true">
   	<color name="background" value="0xFFFF00"/>  
   	<color name="foreground" value="0xFFFF00"/>  
   	<color name="handle" value="0xFFFF00"/>  
   </slider>
   
-  <button name="button">
+  <slider name="crossfader-vector-v" render="vector" horizontal="false">
+  	<color name="background" value="0xFFFF00"/>  
+  	<color name="foreground" value="0xFFFF00"/>  
+  	<color name="handle" value="0xFFFF00"/>  
+  </slider> 
+  <button name="button" render="foreground">
     <image name="background" path="mixxx/crossfader-back.png"/>
     <image name="foreground" path="mixxx/crossfader-fore.png"/>
   </button>

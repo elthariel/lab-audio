@@ -36,7 +36,7 @@ public:
   Slider(Skin::Ref skin, Param::Ref param = Param::create_param(), bool scale = false, bool infinite = false);
 
   //constructor for vectorial mode
-  Slider(Param::Ref param = Param::create_param(), bool horizontal = true, bool infinite = false);
+  Slider(Param::Ref param = Param::create_param(), bool horizontal = true, bool scale = true, bool infinite = false);
  
   //constructor for images mode
   Slider(Images::Ref images,
@@ -91,6 +91,7 @@ private:
   Image::Ref m_image_background;
   Image::Ref m_image_foreground;
   Images::Ref m_images;
+  int m_h, m_w;
 };
 
 
