@@ -1,0 +1,5 @@
+Turntable
+
+-- simple mp3 player using libmad
+
+-- play/cue/pause
