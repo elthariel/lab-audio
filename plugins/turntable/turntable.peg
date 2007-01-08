@@ -1,5 +1,5 @@
-#ifndef myplugin_peg
-#define myplugin_peg
+#ifndef turntable_peg
+#define turntable_peg
 
 
 #ifndef PEG_STRUCT
@@ -32,4 +32,4 @@ static const peg_data_t peg_ports[] = {
 };
 
 
-#endif /* myplugin_peg */
+#endif /* turntable_peg */

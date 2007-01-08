@@ -3,7 +3,7 @@
 #include <gtkmm.h>
 
 #include "lv2gtk2gui.hpp"
-#include "myplugin.peg"
+#include "turntable.peg"
 
 
 using namespace std;

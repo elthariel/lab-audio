@@ -6,15 +6,15 @@ VERSION = 0.1.2
 LV2PEG = lv2peg
 
 # These files go into the bundle
-BUNDLE_FILES = manifest.ttl myplugin.ttl myplugin.so myplugin_gtk.so
+BUNDLE_FILES = manifest.ttl turntable.ttl turntable.so turntable_gtk.so
 
 # These are the source files for the plugin
-PLUGIN_SOURCES = myplugin.cpp lv2plugin.cpp
-PLUGIN_HEADERS = lv2plugin.hpp lv2.h lv2-miditype.h lv2-midifunctions.h myplugin.peg
+PLUGIN_SOURCES = turntable.cpp lv2plugin.cpp
+PLUGIN_HEADERS = lv2plugin.hpp lv2.h lv2-miditype.h lv2-midifunctions.h turntable.peg
 
 # These are the source files for the plugin GUI
-GUI_SOURCES = myplugin_gtk.cpp lv2gtk2gui.cpp
-GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h myplugin.peg
+GUI_SOURCES = turntable_gtk.cpp lv2gtk2gui.cpp
+GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h turntable.peg
 GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0`
 GUI_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0`
 
@@ -26,7 +26,7 @@ ALL_HEADERS = $(sort $(PLUGIN_HEADERS) $(GUI_HEADERS))
 
 
 # These files go into the distribution
-DIST_FILES = Makefile README COPYING.GPL COPYING.LGPL manifest.ttl myplugin.ttl $(ALL_SOURCES) $(ALL_HEADERS)
+DIST_FILES = Makefile README COPYING.GPL COPYING.LGPL manifest.ttl turntable.ttl $(ALL_SOURCES) $(ALL_HEADERS)
 
 
 
@@ -39,7 +39,7 @@ $(PLUGIN_NAME).lv2: $(BUNDLE_FILES)
 	cp $(BUNDLE_FILES) $(PLUGIN_NAME).lv2
 
 # The plugin module
-myplugin.so: $(PLUGIN_OBJECTS)
+turntable.so: $(PLUGIN_OBJECTS)
 	$(CXX) -shared -fPIC $(LDFLAGS) $(PLUGIN_OBJECTS) -o $@
 
 # All the object files for the plugin module
@@ -47,7 +47,7 @@ $(PLUGIN_OBJECTS): $(subst .o,.cpp,$@)
 	$(CXX) -c -o $@ -fPIC -DPIC $(CFLAGS) $(CXXFLAGS) $(subst .o,.cpp,$@)
 
 # The plugin GUI module
-myplugin_gtk.so: $(GUI_OBJECTS)
+turntable_gtk.so: $(GUI_OBJECTS)
 	$(CXX) -shared -fPIC $(GUI_OBJECTS) $(LDFLAGS) $(GUI_LDFLAGS) -o $@
 
 # All the object files for the GUI program
@@ -76,4 +76,4 @@ dist: $(DIST_FILES)
 
 # Remove all generated files
 clean:
-	rm -rf $(PLUGIN_NAME).lv2 myplugin.so myplugin_gtk.so $(ALL_SOURCES:.cpp=.dep) $(ALL_SOURCES:.cpp=.o)
+	rm -rf $(PLUGIN_NAME).lv2 turntable.so turntable_gtk.so $(ALL_SOURCES:.cpp=.dep) $(ALL_SOURCES:.cpp=.o)
