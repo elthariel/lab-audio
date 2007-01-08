@@ -39,7 +39,7 @@ $(PLUGIN_NAME).lv2: $(BUNDLE_FILES)
 	cp $(BUNDLE_FILES) $(PLUGIN_NAME).lv2
 
 # The plugin module
-turntable.so: $(PLUGIN_OBJECTS)
+$(PLUGIN_NAME).so: $(PLUGIN_OBJECTS)
 	$(CXX) -shared -fPIC $(LDFLAGS) $(PLUGIN_OBJECTS) -o $@
 
 # All the object files for the plugin module
@@ -47,7 +47,7 @@ $(PLUGIN_OBJECTS): $(subst .o,.cpp,$@)
 	$(CXX) -c -o $@ -fPIC -DPIC $(CFLAGS) $(CXXFLAGS) $(subst .o,.cpp,$@)
 
 # The plugin GUI module
-turntable_gtk.so: $(GUI_OBJECTS)
+$(PLUGIN_NAME)_gtk.so: $(GUI_OBJECTS)
 	$(CXX) -shared -fPIC $(GUI_OBJECTS) $(LDFLAGS) $(GUI_LDFLAGS) -o $@
 
 # All the object files for the GUI program
@@ -73,6 +73,10 @@ dist: $(DIST_FILES)
 	tar c $(PLUGIN_NAME)-$(VERSION) > $(PLUGIN_NAME)-$(VERSION).tar
 	bzip2 $(PLUGIN_NAME)-$(VERSION).tar
 	rm -rf $(PLUGIN_NAME)-$(VERSION)
+
+#install the plugin
+install: $(PLUGIN_NAME).lv2
+	cp -rf $(PLUGIN_NAME).lv2 /usr/lib/lv2
 
 # Remove all generated files
 clean:
