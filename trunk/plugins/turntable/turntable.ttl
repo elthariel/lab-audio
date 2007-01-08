@@ -7,7 +7,7 @@
   a lv2:Plugin;
   doap:name "Turntable";
   doap:licence <http://usefulinc.com/doap/licenses/gpl>;
-  ll:gtk2Gui <myplugin_gtk.so>;
+  ll:gtk2Gui <turntable_gtk.so>;
   ll:pegName "peg";
 
   lv2:port [
