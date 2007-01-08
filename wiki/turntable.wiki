@@ -6,6 +6,8 @@
   * compile jack > 102.6 (with jackmidi)
   * do symlink in debian or ubuntu for jack (otherwise jack apps wont work with the new jack)
   * compile the plugin
+  * sudo ./install.sh to install it under /usr/lib/lv2
+
 
 = Test =
 to test it:
