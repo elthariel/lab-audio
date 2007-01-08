@@ -3,9 +3,9 @@
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.
 
-<http://lab-audio.googlecode.com/files/turntable>
+<http://lab-audio.googlecode.com/svn/trunk/plugins/turntable>
   a lv2:Plugin;
-  doap:name "My Plugin";
+  doap:name "Turntable";
   doap:licence <http://usefulinc.com/doap/licenses/gpl>;
   ll:gtk2Gui <myplugin_gtk.so>;
   ll:pegName "peg";
