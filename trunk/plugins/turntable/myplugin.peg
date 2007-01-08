@@ -14,9 +14,9 @@ typedef struct {
 } peg_data_t;
 #endif
 
-/* <http://lab-audio.googlecode.com/files/turntable> */
+/* <http://lab-audio.googlecode.com/svn/trunk/plugins/turntable> */
 
-static const char peg_uri[] = "http://lab-audio.googlecode.com/files/turntable";
+static const char peg_uri[] = "http://lab-audio.googlecode.com/svn/trunk/plugins/turntable";
 
 enum peg_port_enum {
   peg_midi,
