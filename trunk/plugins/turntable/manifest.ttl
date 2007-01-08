@@ -1,0 +1,7 @@
+@prefix lv2:  <http://lv2plug.in/ontology#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+
+<http://lab-audio.googlecode.com/files/turntable>
+  lv2:binary <myplugin.so>;
+  rdfs:seeAlso <myplugin.ttl>.
+
