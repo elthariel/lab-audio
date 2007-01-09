@@ -1,2 +1,17 @@
+to compile:
+make
+
+to install:
+sudo ./install
+
 to test:
 elven http://lab-audio.googlecode.com/svn/trunk/plugins/turntable
+
+
+use extension:
+  - lv2gtkui
+  - lv2instrument
+
+use:
+  - gtkmm
+  - lv2peg (from ll-plugins)
