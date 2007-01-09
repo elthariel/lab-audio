@@ -1,8 +1,8 @@
-#summary turntable lv2 plugins
+#summary turntable lv2 plugin
 #labels plugins
 
 = Compilation =
-  * compile ll-plugins from gna.org, to get lv2peg and elven
+  * compile ll-plugins from http://savannah.nongnu.org/projects/ll-plugins/, to get lv2peg and elven
   * compile jack > 102.6 (with jackmidi)
   * do symlink in debian or ubuntu for jack (otherwise jack apps wont work with the new jack)
   * compile the plugin
