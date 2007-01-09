@@ -3,7 +3,6 @@
 #include <gtkmm.h>
 
 #include "lv2gtk2gui.hpp"
-#include "playlist_model.h"
 #include "tracklist.peg"
 
 
@@ -11,100 +10,94 @@ using namespace std;
 using namespace Gtk;
 using namespace sigc;
 
+class ModelColumns : public Gtk::TreeModel::ColumnRecord {
+public:
+  ModelColumns() {
+    add(m_col_name);
+    add(m_col_size);
+    add(m_col_bpm);
+  }
+  Gtk::TreeModelColumn<Glib::ustring> m_col_name;
+  Gtk::TreeModelColumn<long> m_col_size;
+  Gtk::TreeModelColumn<int> m_col_bpm;
+};
 
 class MyPluginGUI : public LV2GTK2GUI {
 public:
 
   MyPluginGUI(LV2Controller& ctrl, const std::string& URI,
-              const std::string& bundle_path, Widget*& widget)
-    : m_scale(peg_ports[peg_gain].min, peg_ports[peg_gain].max, 0.01),
-      m_label("plok") {
-    //widget = &m_scale;
+              const std::string& bundle_path, Widget*& widget) {
     widget = &m_notebook;
     m_notebook.append_page(m_filechooser, "file chooser");
-    m_notebook.append_page(m_listview1, "playlist 1");
-    m_notebook.append_page(m_listview2, "playlist 2");
-    m_notebook.append_page(m_label, "label");
-    /*m_scale.signal_value_changed().
-      connect(compose(bind<0>(mem_fun(ctrl, &LV2Controller::set_control), peg_gain),
-                      mem_fun(m_scale, &HScale::get_value)));
-    m_scale.set_size_request(200, 50);*/
-    std::list<Gtk::TargetEntry> listTargets;
-    listTargets.push_back(Gtk::TargetEntry("TEXT"));
-    listTargets.push_back(Gtk::TargetEntry("STRING"));
-    listTargets.push_back(Gtk::TargetEntry("text/plain"));
-    listTargets.push_back(Gtk::TargetEntry("text/uri-list"));
-    m_listview1.drag_dest_set(listTargets);
-		m_listview1.drag_dest_add_uri_targets();
 
-		m_label.drag_dest_set(listTargets);
-		m_label.drag_dest_add_uri_targets();
-
-    m_label.signal_drag_data_received().connect( sigc::mem_fun(*this, &MyPluginGUI::on_label_drop_drag_data_received) );
-		m_listview1.signal_drag_data_received().connect( sigc::mem_fun(*this, &MyPluginGUI::on_label_drop_drag_data_received) );
-
-		m_refTreeModel = PlaylistModel::create();
-		m_listview1.set_model(m_refTreeModel);
-		m_listview1.enable_model_drag_source();
-		m_listview1.enable_model_drag_dest();
+    m_targetlist.push_back(Gtk::TargetEntry("text/uri-list"));
+    add_playlist("hardcore");
+    add_playlist("speedcore");
+    add_playlist("splitter-core");
 		//Fill the TreeView's model
-		Gtk::TreeModel::Row row = *(m_refTreeModel->append());
+	/*	Gtk::TreeModel::Row row = *(m_refTreeModel->append());
 		row[m_refTreeModel->m_columns.m_col_id] = 1;
 		row[m_refTreeModel->m_columns.m_col_name] = "Billy Bob";
 		row[m_refTreeModel->m_columns.m_col_draggable] = true;
 		row[m_refTreeModel->m_columns.m_col_receivesdrags] = true;
+  */
+  }
 
-		row = *(m_refTreeModel->append());
-		row[m_refTreeModel->m_columns.m_col_id] = 2;
-		row[m_refTreeModel->m_columns.m_col_name] = "Joey Jojo";
-		row[m_refTreeModel->m_columns.m_col_draggable] = true;
-		row[m_refTreeModel->m_columns.m_col_receivesdrags] = true;
+  void add_playlist(const Glib::ustring &name) {
+		TreeView* treeview;
+		Glib::RefPtr<Gtk::ListStore> ref_treemodel;
 
-		row = *(m_refTreeModel->append());
-		row[m_refTreeModel->m_columns.m_col_id] = 3;
-		row[m_refTreeModel->m_columns.m_col_name] = "Rob McRoberts";
-		row[m_refTreeModel->m_columns.m_col_draggable] = true;
-		row[m_refTreeModel->m_columns.m_col_receivesdrags] = true;
+		treeview = new TreeView();
 
-		//Add the TreeView's view columns:
-		m_listview1.append_column("ID", m_refTreeModel->m_columns.m_col_id); //This number will be shown with the default numeric formatting.
-		m_listview1.append_column("Name", m_refTreeModel->m_columns.m_col_name);
-		m_listview1.append_column("ID", m_refTreeModel->m_columns.m_col_draggable); //This number will be shown with the default numeric formatting.
-		m_listview1.append_column("Name", m_refTreeModel->m_columns.m_col_receivesdrags);
+    ref_treemodel = Gtk::ListStore::create(m_columns);
+    treeview->set_model(ref_treemodel);
 
-		for(guint i = 0; i < 2; i++) {
-			Gtk::TreeView::Column* pColumn = m_listview1.get_column(i);
+    treeview->drag_dest_set(m_targetlist);
+		treeview->drag_dest_add_uri_targets();
+		treeview->signal_drag_data_received().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received), ref_treemodel));
+
+		treeview->append_column("Name", m_columns.m_col_name);
+		treeview->append_column("Size", m_columns.m_col_size); //This number will be shown with the default numeric formatting.
+		treeview->append_column("Bpm", m_columns.m_col_bpm);
+		for(guint i = 0; i < 3; i++) {
+			Gtk::TreeView::Column* pColumn = treeview->get_column(i);
 			pColumn->set_reorderable();
+		}
+    m_playlists.push_back(make_pair(treeview, ref_treemodel));
+    m_notebook.append_page(*treeview, name);
+  }
+
+  void on_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context,
+  															  int,
+  															  int,
+  															  const Gtk::SelectionData& selection_data,
+  															  guint,
+  															  guint time,
+  															  Glib::RefPtr<Gtk::ListStore> ref_treemodel) {
+    if (selection_data.get_data()) {
+      std::vector<Glib::ustring> targets = selection_data.get_uris();
+      if (! targets.empty()) {
+      	for (std::vector<Glib::ustring>::iterator it(targets.begin()); it != targets.end(); ++it) {
+				  try {
+//				  	std::cout << "item: " << *it << std::endl;
+				  	Gtk::TreeModel::Row row = *(ref_treemodel->append());
+						row[m_columns.m_col_name] = *it;
+						row[m_columns.m_col_size] = 300;
+						row[m_columns.m_col_bpm] = 300;
+						} catch (const std::exception& ex) {
+						g_warning("Error while getting file info for path %s: %s", it->c_str(), ex.what());
+					}
+				}
+			}
 		}
   }
 
-  void on_button_drag_data_get(const Glib::RefPtr<Gdk::DragContext>&, Gtk::SelectionData& selection_data, guint, guint){
-    std::cout << "drag" << std::endl;
-    selection_data.set(selection_data.get_target(), 8 /* 8 bits format */, (const guchar*)"I'm Data!", 9 /* the length of I'm Data! in bytes */);
-  }
-
-  void on_label_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int, int, const Gtk::SelectionData& selection_data, guint, guint time) {
-    std::cout << "drop" << std::endl;
-    /*if ((selection_data.get_length() >= 0) && (selection_data.get_format() == 8)) {
-      std::cout << "Received \"" << selection_data.get_data_as_string() << "\" in label " << std::endl;
-    }*/
-    //context->drag_finish(false, false, time);
-  }
-
-  void set_control(uint32_t port, float value) {
-    if (port == peg_gain)
-      m_scale.set_value(value);
-  }
-
 protected:
-  Glib::RefPtr<PlaylistModel> m_refTreeModel;
-
-  HScale m_scale;
+  ModelColumns m_columns;
+  std::list<Gtk::TargetEntry> m_targetlist;
   Notebook m_notebook;
   FileChooserWidget m_filechooser;
-  TreeView m_listview1;
-  TreeView m_listview2;
-  Label m_label;
+  std::vector<std::pair<TreeView*,Glib::RefPtr<Gtk::ListStore> > > m_playlists;
 };
 
 
