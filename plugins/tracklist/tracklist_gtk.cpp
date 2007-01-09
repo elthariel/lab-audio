@@ -34,13 +34,6 @@ public:
     add_playlist("hardcore");
     add_playlist("speedcore");
     add_playlist("splitter-core");
-		//Fill the TreeView's model
-	/*	Gtk::TreeModel::Row row = *(m_refTreeModel->append());
-		row[m_refTreeModel->m_columns.m_col_id] = 1;
-		row[m_refTreeModel->m_columns.m_col_name] = "Billy Bob";
-		row[m_refTreeModel->m_columns.m_col_draggable] = true;
-		row[m_refTreeModel->m_columns.m_col_receivesdrags] = true;
-  */
   }
 
   void add_playlist(const Glib::ustring &name) {

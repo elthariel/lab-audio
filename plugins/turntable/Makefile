@@ -9,8 +9,8 @@ LV2PEG = lv2peg
 BUNDLE_FILES = manifest.ttl turntable.ttl turntable.so turntable_gtk.so
 
 # These are the source files for the plugin
-PLUGIN_SOURCES = turntable.cpp lv2plugin.cpp
-PLUGIN_HEADERS = lv2plugin.hpp lv2.h lv2-miditype.h lv2-midifunctions.h turntable.peg
+PLUGIN_SOURCES = turntable.cpp lv2plugin.cpp lv2instrument.cpp
+PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h turntable.peg
 
 # These are the source files for the plugin GUI
 GUI_SOURCES = turntable_gtk.cpp lv2gtk2gui.cpp
@@ -31,6 +31,7 @@ DIST_FILES = Makefile README COPYING.GPL COPYING.LGPL manifest.ttl turntable.ttl
 
 
 # Rules start here
+all: $(PLUGIN_NAME).lv2
 
 # The main target - the LV2 plugin bundle
 $(PLUGIN_NAME).lv2: $(BUNDLE_FILES)

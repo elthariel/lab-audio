@@ -21,7 +21,8 @@
 ****************************************************************************/
 
 #include <cmath>
-
+#include <iostream>
+#include "lv2instrument.hpp"
 #include "lv2plugin.hpp"
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
@@ -29,13 +30,13 @@
 
 
 /** This is the class that contains all the code and data for the plugin. */
-class MyPlugin : public LV2Plugin {
+class MyPlugin : public LV2Instrument {
 public:
 
   /** The first parameter is the sample rate, the second is the path to the
       LV2 bundle, the third is the host features supported by this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Plugin(peg_n_ports),
+    : LV2Instrument(peg_n_ports),
       m_phase(0),
       m_increment(0),
       m_invrate(1.0 / rate) {
@@ -56,8 +57,7 @@ public:
     uint32_t then;
 
     while (now < sample_count) {
-      then = uint32_t(lv2midi_get_event(&midi, &event_time,
-                                        &event_size, &event));
+      then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
       for (uint32_t i = now; i < then; ++i) {
         p<float>(peg_output)[i] = std::sin(m_phase) * *p<float>(peg_gain);
         m_phase += m_increment;
@@ -68,6 +68,11 @@ public:
         // Is the event a Note On?
         if (event[0] == 0x90) {
           int key = event[1];
+          switch(key) {
+          	case 42: pause(); break;
+          	case 43: cue(); break;
+          	case 44: play(); break;
+          }
           double frequency = 8.1758 * pow(2.0, key / 12.0);
           m_increment = m_invrate * 2 * M_PI * frequency;
         }
@@ -80,16 +85,33 @@ public:
 
   }
 
+    /** Arbitrary configuration function without RT constraints. */
+  char* configure(const char* key, const char* value) {
+  	std::cout << "configure name: key=" << key << " filename=" << value << std::endl;
+  	return 0;
+  }
+
+  /** Function for loading data from external files. */
+  char* set_file(const char* key, const char* filename) {
+  	std::cout << "set file name: key=" << key << " filename=" << filename << std::endl;
+  	return 0;
+  }
+
+
   void load_file(const std::string& path) {
+  	std::cout << "load" << std::endl;
   }
 
   void pause() {
+  	std::cout << "pause" << std::endl;
   }
 
   void play() {
+  	std::cout << "play" << std::endl;
   }
 
   void cue() {
+  	std::cout << "cue" << std::endl;
   }
 
 protected:
@@ -107,5 +129,5 @@ protected:
 // function definition.
 void initialise() __attribute__((constructor));
 void initialise() {
-  register_lv2<MyPlugin>(peg_uri);
+  register_lv2_inst<MyPlugin>(peg_uri);
 }

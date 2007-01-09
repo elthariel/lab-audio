@@ -8,6 +8,7 @@
   doap:name "Turntable";
   doap:licence <http://usefulinc.com/doap/licenses/gpl>;
   ll:gtk2Gui <turntable_gtk.so>;
+  lv2:requiredHostFeature ll:instrument-ext;
   ll:pegName "peg";
 
   lv2:port [
