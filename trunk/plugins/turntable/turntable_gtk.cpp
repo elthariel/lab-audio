@@ -35,6 +35,11 @@ public:
     m_scale.set_size_request(200, 50);
   }
 
+  //when a trigger button is clicked
+  void button_clicked(int index) {
+
+  }
+
   void set_control(uint32_t port, float value) {
     if (port == peg_gain)
       m_scale.set_value(value);

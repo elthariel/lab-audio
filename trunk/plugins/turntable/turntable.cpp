@@ -80,8 +80,22 @@ public:
 
   }
 
-protected:
+  void load_file(const std::string& path) {
+  }
 
+  void pause() {
+  }
+
+  void play() {
+  }
+
+  void cue() {
+  }
+
+protected:
+  std::string m_filepath;
+  unsigned long m_length;
+  unsigned long m_pos;
   double m_phase;
   double m_increment;
   double m_invrate;
