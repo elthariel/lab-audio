@@ -35,56 +35,11 @@ public:
   /** The first parameter is the sample rate, the second is the path to the
       LV2 bundle, the third is the host features supported by this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Plugin(peg_n_ports),
-      m_phase(0),
-      m_increment(0),
-      m_invrate(1.0 / rate) {
-
-  }
-
-  /** The run() callback. This is the function that gets called by the host
-      when it wants to run the plugin. The parameter is the number of sample
-      frames to process. */
-  void run(uint32_t sample_count) {
-
-    LV2_MIDIState midi = { p<LV2_MIDI>(peg_midi), sample_count, 0 };
-
-    double event_time;
-    uint32_t event_size;
-    unsigned char* event;
-    uint32_t now = 0;
-    uint32_t then;
-
-    while (now < sample_count) {
-      then = uint32_t(lv2midi_get_event(&midi, &event_time,
-                                        &event_size, &event));
-      for (uint32_t i = now; i < then; ++i) {
-        p<float>(peg_output)[i] = std::sin(m_phase) * *p<float>(peg_gain);
-        m_phase += m_increment;
-      }
-
-      if (then < sample_count) {
-
-        // Is the event a Note On?
-        if (event[0] == 0x90) {
-          int key = event[1];
-          double frequency = 8.1758 * pow(2.0, key / 12.0);
-          m_increment = m_invrate * 2 * M_PI * frequency;
-        }
-
-      }
-
-      now = then;
-      lv2midi_step(&midi);
-    }
+    : LV2Plugin(peg_n_ports) {
 
   }
 
 protected:
-
-  double m_phase;
-  double m_increment;
-  double m_invrate;
 
 };
 
