@@ -29,43 +29,48 @@
 
 class ffmpeg {
 public:
-  ffmpeg();
+	ffmpeg();
 	static void ffmpeg_init();
 
-  bool load_file(const Glib::ustring &str);
+  //load an mp3 and reset all variable
+	bool load_file(const Glib::ustring &str);
 
-  //return the length in sec
-  int get_sec_length();
+	//return the length in sec
+	int get_sec_length();
 
-  //return the pos in sec
-  int get_sec_pos();
+	//return the pos in sec
+	int get_sec_pos();
 
-  //return the length of the song
-  int get_length();
+	//return the length of the song
+	int get_length();
 
   //return the current pos in the song
-  int get_pos();
+	int get_pos();
 
   //seek
-  bool seek(unsigned long long seek_pos);
+	bool seek(unsigned long long seek_pos);
 
   //process the buffer, update pos
   //return true, if its the last buffer, feel with 0
-  bool process(float *buffer_l, float *buffer_r, int samplecount);
+	bool process(float *buffer_l, float *buffer_r, int samplecount);
+
+protected:
+  //read one paquet from ffmpeg
+	bool readpaquet();
 
 private:
-	int channels;
-	unsigned long filelength;
-	AVFormatContext *pFormatCtx;
-  AVInputFormat *iformat;
-	int audioStream;
-	AVCodecContext *pCodecCtx;
-	AVCodec *pCodec;
-	AVFrame *pFrame;
-	AVPacket packet;
-	volatile int bufferOffset;
-  volatile int bufferSize;
-  double buffer[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+	int m_channels;
+	unsigned long m_filelength;
+	AVFormatContext *m_formatctx;
+  AVInputFormat *m_iformat;
+	int m_audiostream;
+	AVCodecContext *m_codecctx;
+	AVCodec *m_codec;
+	AVFrame *m_frame;
+	AVPacket m_packet;
+	volatile int m_bufferoffset;
+  volatile int m_buffersize;
+  float m_buffer[AVCODEC_MAX_AUDIO_FRAME_SIZE];
 };
 
 

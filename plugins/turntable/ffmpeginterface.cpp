@@ -34,73 +34,77 @@ static void ffmpeg::ffmpeg_init()
 	}
 }
 
+ffmpeg::ffmpeg() {
+	m_packet.data = NULL;
+}
 
 bool ffmpeg::load_file(const Glib::ustring &str) {
-	int            i;
 	AVFormatParameters param;
 
-	packet.data = NULL;
-	bufferOffset = 0;
-	bufferSize = 0;
-	memset(buffer, 0, AVCODEC_MAX_AUDIO_FRAME_SIZE);
-	FFmpegInit();
+  if (m_paquet.data != NULL)
+  	av_free_packet(&m_packet);
+	m_packet.data = NULL;
+	m_bufferoffset = 0;
+	m_buffersize = 0;
+	memset(m_buffer, 0, AVCODEC_MAX_AUDIO_FRAME_SIZE);
+	ffmpeg_init();
 
 	/* initialize param to something so av_open_input_file works for raw */
 	memset(&param, 0, sizeof(AVFormatParameters));
 	param.channels = 2;
 	param.sample_rate = 44100;
 
-	iformat = av_find_input_format(fname);
+	iformat = av_find_input_format(str.c_str());
 	// Open audio file
-	if(av_open_input_file(&pFormatCtx, fname, iformat, 0, &param)!=0) {
-		std::cout << "av_open_input_file: cannot open" << fname << std::endl;
-		return;
+	if(av_open_input_file(&m_formatctx, fname, m_iformat, 0, &param)!=0) {
+		std::cerr << "av_open_input_file: cannot open" << str << std::endl;
+		return false;
 		}
 
 	// Retrieve stream information
-	if(av_find_stream_info(pFormatCtx)<0) {
-		std::cout << "av_find_stream_info: cannot open " << fname << std::endl;
-		return;
+	if(av_find_stream_info(m_formatctx)<0) {
+		std::cerr << "av_find_stream_info: cannot open " << str << std::endl;
+		return false;
 	}
 
 	//debug only
-	dump_format(pFormatCtx, 0, fname, false);
+	dump_format(m_formatctx, 0, str.c_str(), false);
 
 	// Find the first video stream
-	audioStream=-1;
-	for(i=0; i<pFormatCtx->nb_streams; i++)
-		if(pFormatCtx->streams[i]->codec->codec_type==CODEC_TYPE_AUDIO) {
-			audioStream=i;
+	m_audiostream=-1;
+	for(int i=0; i<m_formatctx->nb_streams; i++)
+		if(m_formatctx->streams[i]->codec->codec_type == CODEC_TYPE_AUDIO) {
+			m_audiostream = i;
 			break;
 		}
-	if(audioStream==-1) {
-		std::cout << "cannot find an audio stream: cannot open" << fname << std::endl;
-		return;
+	if(audioStream == -1) {
+		std::cerr << "cannot find an audio stream: cannot open" << str << std::endl;
+		return false;
 	}
 
 	// Get a pointer to the codec context for the video stream
-	pCodecCtx=pFormatCtx->streams[audioStream]->codec;
+	m_codecctx=m_formatctx->streams[m_audiostream]->codec;
 
 	// Find the decoder for the audio stream
-	if(!(pCodec=avcodec_find_decoder(pCodecCtx->codec_id))) {
-		std::cout << "cannot find a decoder for " << fname << std::endl;
-		return;
+	if(!(m_codec=avcodec_find_decoder(m_codecctx->codec_id))) {
+		std::cerr << "cannot find a decoder for " << str << std::endl;
+		return false;
 	}
 
 	//avcodec_open is not thread safe
 //		lock();
-	if(avcodec_open(pCodecCtx, pCodec)<0) {
-		std::cout << "avcodec: cannot open " << fname << std::endl;
-		return;
+	if(avcodec_open(m_codecctx, m_codec)<0) {
+		std::cerr << "avcodec: cannot open " << str << std::endl;
+		return false;
 	}
 //		unlock();
 
-	pFrame=avcodec_alloc_frame();
-	channels = pCodecCtx->channels;
+	m_frame=avcodec_alloc_frame();
+	m_channels = pCodecCtx->channels;
 
-	if(channels > 2){
-		std::cout << "ffmpeg: No support for more than 2 channels!" << std::endl;
-		return;
+	if(m_channels > 2){
+		std::cerr << "ffmpeg: No support for more than 2 channels!" << std::endl;
+		return false;
 	}
 }
 
@@ -117,60 +121,46 @@ bool ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 }
 
 
+bool ffmpeg::readpaquet(){
+	char *dst;
+	unsigned char *src;
+	int ret = 0;
+	int readsize = 0;
+	int inputsize = 0;
+	int tries = 0;
 
-  void init(char *fname = "/shared/mp3/speed.mp3") {
-
-		//filelength = (long int) ((double)pFormatCtx->duration * 2 / AV_TIME_BASE * SRATE);
-  }
-
-	bool readInput(){
-		char *dst;
-		unsigned char *src;
-		int ret = 0;
-		int readsize = 0;
-		int inputsize = 0;
-			int tries = 0;
-		//DEBUG
-		bufferSize = 0;
-		bufferOffset = 0;
-		memset(buffer, 0, AVCODEC_MAX_AUDIO_FRAME_SIZE);
-		while (av_read_packet(pFormatCtx, &packet)>0) {
-			if (packet.stream_index==audioStream){
-				dst = (char *)buffer;
-				src = packet.data;
-				inputsize = 0;
-				readsize = 0;
-				//qDebug("ffmpeg: before avcodec_decode_audio packet.size(%d)", packet.size);
-				tries = 0;
-				do {
-					ret = avcodec_decode_audio(pCodecCtx, (int16_t *)dst, &readsize, src, packet.size - inputsize);
-					if (readsize == 0)
-					{
-						tries++;
-						//qDebug("ffmpeg: skip frame, decoded readsize = 0");
-						break;
-					}
-					if (ret <= 0)
-					{
-						tries++;
-						//qDebug("ffmpeg: skip frame, decoded ret = 0");
-						if (tries > 3) break;
-						continue;
-					}
-					//qDebug("0:%d 1:%d 2:%d -- 3:%d 4:%d 5:%d 6:%d", dst[1], dst[45], dst[100], dst[readsize-1], dst[readsize], dst[readsize/2-1], dst[readsize/2]);
-					dst += readsize;
-					bufferSize += readsize;
-					src += ret;
-					inputsize += ret;
-					//qDebug("ffmpeg: loop buffersize(%d), readsize(%d) ret(%d) psize(%d)", bufferSize, readsize, ret, packet.size);
-				} while (inputsize < packet.size);
-				//qDebug("ffmpeg: after avcodec_decode_audio outsize(%d) - ret(%d)", bufferSize, ret);
-				if (bufferSize != 0)
-					return true;
-
-			}
-			//debug
-			av_free_packet(&packet);
+	//DEBUG
+	m_buffersize = 0;
+	m_bufferoffset = 0;
+	//memset(buffer, 0, AVCODEC_MAX_AUDIO_FRAME_SIZE);
+	while (av_read_packet(m_formatctx, &m_packet)>0) {
+		if (m_packet.stream_index==m_audiostream) {
+			dst = (char *)buffer;
+			src = packet.data;
+			inputsize = 0;
+			readsize = 0;
+			//qDebug("ffmpeg: before avcodec_decode_audio packet.size(%d)", packet.size);
+			tries = 0;
+			do {
+				ret = avcodec_decode_audio(m_codecctx, (int16_t *)dst, &readsize, src, m_packet.size - inputsize);
+				if (readsize == 0) {
+					//tries++;
+					break;
+				}
+				if (ret <= 0) {
+					tries++;
+  				if (tries > 3) break;
+	  				continue;
+				}
+				dst += readsize;
+				m_buffersize += readsize;
+				src += ret;
+				inputsize += ret;
+			} while (inputsize < packet.size);
+			if (m_buffersize != 0)
+				return true;
 		}
-		return false;
+		av_free_packet(&m_packet);
 	}
+	return false;
+}
