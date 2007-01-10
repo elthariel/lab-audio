@@ -29,6 +29,8 @@
 #include "turntable.peg"
 
 
+
+
 /** This is the class that contains all the code and data for the plugin. */
 class MyPlugin : public LV2Instrument {
 public:
@@ -59,7 +61,7 @@ public:
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
       for (uint32_t i = now; i < then; ++i) {
-        p<float>(peg_output)[i] = std::sin(m_phase) * *p<float>(peg_gain);
+        p<float>(peg_output_l)[i] = std::sin(m_phase) * *p<float>(peg_gain);
         m_phase += m_increment;
       }
 
@@ -78,7 +80,6 @@ public:
         }
 
       }
-
       now = then;
       lv2midi_step(&midi);
     }
@@ -114,6 +115,8 @@ public:
   	std::cout << "cue" << std::endl;
   }
 
+
+
 protected:
   std::string m_filepath;
   unsigned long m_length;
@@ -121,7 +124,6 @@ protected:
   double m_phase;
   double m_increment;
   double m_invrate;
-
 };
 
 

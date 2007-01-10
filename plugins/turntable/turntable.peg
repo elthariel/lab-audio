@@ -24,7 +24,8 @@ enum peg_port_enum {
   peg_play,
   peg_pause,
   peg_cue,
-  peg_output,
+  peg_output_l,
+  peg_output_r,
   peg_n_ports
 };
 
@@ -34,6 +35,7 @@ static const peg_data_t peg_ports[] = {
   { 0, 1, 0, 1, 0, 0 }, 
   { 0, 1, 0, 1, 0, 0 }, 
   { 0, 1, 0, 1, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
   { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
 };
 
