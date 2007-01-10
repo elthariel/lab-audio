@@ -70,8 +70,16 @@
     a lv2:AudioRateOutputPort;
     lv2:datatype lv2:float;
     lv2:index 5;
-    lv2:symbol "output";
-    lv2:name "Output";
+    lv2:symbol "output_l";
+    lv2:name "Output_l";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 6;
+    lv2:symbol "output_r";
+    lv2:name "Output_r";
   ].
 
 
