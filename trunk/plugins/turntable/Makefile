@@ -9,8 +9,10 @@ LV2PEG = lv2peg
 BUNDLE_FILES = manifest.ttl turntable.ttl turntable.so turntable_gtk.so
 
 # These are the source files for the plugin
-PLUGIN_SOURCES = turntable.cpp lv2plugin.cpp lv2instrument.cpp
-PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h turntable.peg
+PLUGIN_SOURCES = turntable.cpp lv2plugin.cpp lv2instrument.cpp ffmpeginterface.cpp
+PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h turntable.peg ffmpeginterface.h
+PLUGIN_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libavcodec libavformat`
+PLUGIN_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0 libavcodec libavformat`
 
 # These are the source files for the plugin GUI
 GUI_SOURCES = turntable_gtk.cpp lv2gtk2gui.cpp
@@ -41,11 +43,11 @@ $(PLUGIN_NAME).lv2: $(BUNDLE_FILES)
 
 # The plugin module
 $(PLUGIN_NAME).so: $(PLUGIN_OBJECTS)
-	$(CXX) -shared -fPIC $(LDFLAGS) $(PLUGIN_OBJECTS) -o $@
+	$(CXX) -shared -fPIC $(LDFLAGS) $(PLUGIN_OBJECTS) $(PLUGIN_LDFLAGS) -o $@
 
 # All the object files for the plugin module
 $(PLUGIN_OBJECTS): $(subst .o,.cpp,$@)
-	$(CXX) -c -o $@ -fPIC -DPIC $(CFLAGS) $(CXXFLAGS) $(subst .o,.cpp,$@)
+	$(CXX) -c -o $@ -fPIC -DPIC $(CFLAGS) $(CXXFLAGS) $(PLUGIN_CFLAGS) $(subst .o,.cpp,$@)
 
 # The plugin GUI module
 $(PLUGIN_NAME)_gtk.so: $(GUI_OBJECTS)

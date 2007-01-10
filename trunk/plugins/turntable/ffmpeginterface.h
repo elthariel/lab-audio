@@ -26,12 +26,14 @@
 
 #include <ffmpeg/avcodec.h>
 #include <ffmpeg/avformat.h>
+#include <gtkmm.h>
 
 class ffmpeg {
 public:
 	ffmpeg();
 	static void ffmpeg_init();
 
+  void close();
   //load an mp3 and reset all variable
 	bool load_file(const Glib::ustring &str);
 
@@ -52,7 +54,9 @@ public:
 
   //process the buffer, update pos
   //return true, if its the last buffer, feel with 0
-	bool process(float *buffer_l, float *buffer_r, int samplecount);
+	int process(float *buffer_l, float *buffer_r, int samplecount);
+//	int process(float *buffer, int samplecount);
+//	int process_mono(float *buffer, int samplecount);
 
 protected:
   //read one paquet from ffmpeg
