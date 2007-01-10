@@ -5,7 +5,7 @@ to install:
 sudo ./install
 
 to test:
-elven http://lab-audio.googlecode.com/svn/trunk/plugins/turntable
+elven http://lab-audio.googlecode.com/svn/trunk/plugins/tronsonator
 
 
 use extension:

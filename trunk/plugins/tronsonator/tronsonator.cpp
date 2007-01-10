@@ -26,7 +26,6 @@
 #include "lv2plugin.hpp"
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
-#include "tronsonator.peg"
 
 
 /** This is the class that contains all the code and data for the plugin. */
@@ -61,7 +60,7 @@ public:
         if (event[0] == 0x90) {
           int key = event[1];
           switch(key) {
-          	case 42: pause(); break;
+          	case 42: s(); break;
           	case 43: cue(); break;
           	case 44: play(); break;
           }
@@ -72,41 +71,8 @@ public:
     }
   }
 
-    /** Arbitrary configuration function without RT constraints. */
-  char* configure(const char* key, const char* value) {
-  	std::cout << "configure name: key=" << key << " filename=" << value << std::endl;
-  	return 0;
-  }
-
-  /** Function for loading data from external files. */
-  char* set_file(const char* key, const char* filename) {
-  	std::cout << "set file name: key=" << key << " filename=" << filename << std::endl;
-  	return 0;
-  }
-
-
-  void load_file(const std::string& path) {
-  	std::cout << "load" << std::endl;
-  	m_ffmpeg.load_file(path);
-  }
-
-  void pause() {
-  	std::cout << "pause" << std::endl;
-  }
-
-  void play() {
-  	std::cout << "play" << std::endl;
-  }
-
-  void cue() {
-  	std::cout << "cue" << std::endl;
-  }
-
-
-
 protected:
-  std::string m_filepath;
-  ffmpeg m_ffmpeg;
+
 };
 
 
@@ -114,5 +80,5 @@ protected:
 // function definition.
 void initialise() __attribute__((constructor));
 void initialise() {
-  register_lv2_inst<MyPlugin>(peg_uri);
+  register_lv2<MyPlugin>(peg_uri);
 }

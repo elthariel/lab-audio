@@ -19,11 +19,10 @@ public:
               const std::string& bundle_path,
               Widget*& widget)
     : m_ctrl(ctrl),
-      m_btn_load_track("load track"),
-      m_btn_pause("pause"),
-      m_btn_play("play"),
-      m_btn_cue("cue") {
+      m_btn_headphone_l("h"),
+      m_btn_headphone_r("h") {
     widget = &m_hbox;
+    m_hbox.pack_start(m_hbox);
     m_hbox.pack_start(m_btn_load_track);
     m_hbox.pack_start(m_btn_pause);
     m_hbox.pack_start(m_btn_play);
@@ -41,10 +40,8 @@ public:
   }
 
   //when a trigger button is clicked
-  void button_load_clicked() {
+  void button_headphone() {
   	std::cout << "gtk: loading" << std::endl;
-    m_ctrl.set_file("file", "/tamere/mp3/SPEEEEEEEEEEEEDCORE");
-    m_ctrl.configure("file", "/tamere/mp3/SPEEEEEEEEEEEEDCORE");
   }
 
   //when a trigger button is clicked
@@ -56,34 +53,24 @@ public:
     m_ctrl.send_midi(peg_midi, 3, data_off);
   }
 
-  void on_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context,
-  															  int,
-  															  int,
-  															  const Gtk::SelectionData& selection_data,
-  															  guint,
-  															  guint time) {
-    if (selection_data.get_data()) {
-      std::vector<Glib::ustring> targets = selection_data.get_uris();
-      if (! targets.empty()) {
-      	for (std::vector<Glib::ustring>::iterator it(targets.begin()); it != targets.end(); ++it) {
-				  try {
-						m_ctrl.configure("file", *it);
-						} catch (const std::exception& ex) {
-						g_warning("Error while getting file info for path %s: %s", it->c_str(), ex.what());
-					}
-				}
-			}
-		}
-  }
-
 protected:
-  std::list<Gtk::TargetEntry> m_targetlist;
   LV2Controller &m_ctrl;
   HBox m_hbox;
-  Button m_btn_load_track;
-  Button m_btn_pause;
-  Button m_btn_play;
-  Button m_btn_cue;
+  VBox m_vbox;
+  HScale m_slider1;
+  HScale m_slider2;
+  HScale m_slider3;
+  Hscale m_slider4;
+  HScale m_crossfader;
+  Button m_cross_l1;
+  Button m_cross_r1;
+  Button m_cross_l2;
+  Button m_cross_r2;
+  Button m_cross_l3;
+  Button m_cross_r3;
+  Button m_cross_l4;
+  Button m_cross_r4;
+
 };
 
 
