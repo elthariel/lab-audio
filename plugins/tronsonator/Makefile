@@ -6,7 +6,7 @@ VERSION = 0.1.2
 LV2PEG = lv2peg
 
 # These files go into the bundle
-BUNDLE_FILES = manifest.ttl tracklist.ttl tracklist.so tracklist_gtk.so
+BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so
 
 # These are the source files for the plugin
 PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp
