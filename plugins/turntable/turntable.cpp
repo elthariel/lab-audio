@@ -27,7 +27,7 @@
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
 #include "turntable.peg"
-
+#include "ffmpeginterface.h"
 
 /** This is the class that contains all the code and data for the plugin. */
 class MyPlugin : public LV2Instrument {
@@ -36,10 +36,7 @@ public:
   /** The first parameter is the sample rate, the second is the path to the
       LV2 bundle, the third is the host features supported by this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Instrument(peg_n_ports),
-      m_phase(0),
-      m_increment(0),
-      m_invrate(1.0 / rate) {
+    : LV2Instrument(peg_n_ports) {
 
   }
 
@@ -47,9 +44,7 @@ public:
       when it wants to run the plugin. The parameter is the number of sample
       frames to process. */
   void run(uint32_t sample_count) {
-
     LV2_MIDIState midi = { p<LV2_MIDI>(peg_midi), sample_count, 0 };
-
     double event_time;
     uint32_t event_size;
     unsigned char* event;
@@ -58,13 +53,10 @@ public:
 
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
-      for (uint32_t i = now; i < then; ++i) {
-        p<float>(peg_output_l)[i] = std::sin(m_phase) * *p<float>(peg_gain);
-        m_phase += m_increment;
-      }
+
+      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), then - now);
 
       if (then < sample_count) {
-
         // Is the event a Note On?
         if (event[0] == 0x90) {
           int key = event[1];
@@ -73,15 +65,11 @@ public:
           	case 43: cue(); break;
           	case 44: play(); break;
           }
-          double frequency = 8.1758 * pow(2.0, key / 12.0);
-          m_increment = m_invrate * 2 * M_PI * frequency;
         }
-
       }
       now = then;
       lv2midi_step(&midi);
     }
-
   }
 
     /** Arbitrary configuration function without RT constraints. */
@@ -99,6 +87,7 @@ public:
 
   void load_file(const std::string& path) {
   	std::cout << "load" << std::endl;
+  	m_ffmpeg.load_file(path);
   }
 
   void pause() {
@@ -117,11 +106,7 @@ public:
 
 protected:
   std::string m_filepath;
-  unsigned long m_length;
-  unsigned long m_pos;
-  double m_phase;
-  double m_increment;
-  double m_invrate;
+  ffmpeg m_ffmpeg;
 };
 
 

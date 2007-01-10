@@ -21,27 +21,30 @@
 // Created by: GESTES Cedric <goctaf@gmail.com>
 // Created on: Sun Dec  3 19:34:17 2006
 //
-
+#include <iostream>
 #include "ffmpeginterface.h"
 
 static bool ffmpeginit = false;
-static void ffmpeg::ffmpeg_init()
+
+void ffmpeg::ffmpeg_init()
 {
 	if (!ffmpeginit) {
 		av_register_all();
-		av_log_set_callback(LibavcodecCallback);
 		ffmpeginit = true;
 	}
 }
 
 ffmpeg::ffmpeg() {
 	m_packet.data = NULL;
+	m_frame = NULL;
+	m_codecctx = NULL;
+	m_formatctx = NULL;
 }
 
 bool ffmpeg::load_file(const Glib::ustring &str) {
 	AVFormatParameters param;
 
-  if (m_paquet.data != NULL)
+  if (m_packet.data != NULL)
   	av_free_packet(&m_packet);
 	m_packet.data = NULL;
 	m_bufferoffset = 0;
@@ -54,9 +57,9 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 	param.channels = 2;
 	param.sample_rate = 44100;
 
-	iformat = av_find_input_format(str.c_str());
+	m_iformat = av_find_input_format(str.c_str());
 	// Open audio file
-	if(av_open_input_file(&m_formatctx, fname, m_iformat, 0, &param)!=0) {
+	if(av_open_input_file(&m_formatctx, str.c_str(), m_iformat, 0, &param)!=0) {
 		std::cerr << "av_open_input_file: cannot open" << str << std::endl;
 		return false;
 		}
@@ -77,7 +80,7 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 			m_audiostream = i;
 			break;
 		}
-	if(audioStream == -1) {
+	if(m_audiostream == -1) {
 		std::cerr << "cannot find an audio stream: cannot open" << str << std::endl;
 		return false;
 	}
@@ -100,12 +103,27 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 //		unlock();
 
 	m_frame=avcodec_alloc_frame();
-	m_channels = pCodecCtx->channels;
+	m_channels = m_codecctx->channels;
 
 	if(m_channels > 2){
 		std::cerr << "ffmpeg: No support for more than 2 channels!" << std::endl;
 		return false;
 	}
+}
+
+void ffmpeg::close() {
+	if (m_frame)
+	  av_free(m_frame);
+
+	// Close the codec
+	//lock();
+	if (m_codecctx)
+	  avcodec_close(m_codecctx);
+	//unlock();
+
+	// Close the file
+	if (m_formatctx)
+	  av_close_input_file(m_formatctx);
 }
 
 int ffmpeg::get_length() {
@@ -117,7 +135,34 @@ int ffmpeg::get_pos() {
 bool ffmpeg::seek(unsigned long long seek_pos) {
 }
 
-bool ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
+int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
+	char *dest = (char *) destination;
+	char *src = NULL;
+	int index = 0;
+	int outsize = 0;
+	int needed = samplecount*2;//*channels;
+
+	//copy previous buffer
+	src = (char *)m_buffer;
+	src += m_bufferoffset;
+	while (needed > 0) {
+		if (m_bufferoffset < m_buffersize) {
+			index = m_buffersize - m_bufferoffset > needed ? needed : m_buffersize - m_bufferoffset;
+			memcpy((char *)dest, (char *)(src), index);
+			src += index;
+			dest += index;
+			needed -= index;
+			m_bufferoffset += index;
+			outsize += index;
+		}
+		if (needed > 0 && (m_buffersize - m_bufferoffset <= 0)) {
+			m_bufferoffset = 0;
+			readpaquet();
+			src = (char*)m_buffer;
+			src += m_bufferoffset;
+		}
+	}
+	return (outsize/2);
 }
 
 
@@ -135,11 +180,10 @@ bool ffmpeg::readpaquet(){
 	//memset(buffer, 0, AVCODEC_MAX_AUDIO_FRAME_SIZE);
 	while (av_read_packet(m_formatctx, &m_packet)>0) {
 		if (m_packet.stream_index==m_audiostream) {
-			dst = (char *)buffer;
-			src = packet.data;
+			dst = (char *)m_buffer;
+			src = m_packet.data;
 			inputsize = 0;
 			readsize = 0;
-			//qDebug("ffmpeg: before avcodec_decode_audio packet.size(%d)", packet.size);
 			tries = 0;
 			do {
 				ret = avcodec_decode_audio(m_codecctx, (int16_t *)dst, &readsize, src, m_packet.size - inputsize);
@@ -156,7 +200,7 @@ bool ffmpeg::readpaquet(){
 				m_buffersize += readsize;
 				src += ret;
 				inputsize += ret;
-			} while (inputsize < packet.size);
+			} while (inputsize < m_packet.size);
 			if (m_buffersize != 0)
 				return true;
 		}
