@@ -29,8 +29,6 @@
 #include "turntable.peg"
 
 
-
-
 /** This is the class that contains all the code and data for the plugin. */
 class MyPlugin : public LV2Instrument {
 public:
