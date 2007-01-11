@@ -22,20 +22,20 @@
 
 #include <cmath>
 #include <iostream>
-#include "lv2instrument.hpp"
+//#include "lv2instrument.hpp"
 #include "lv2plugin.hpp"
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
-
+#include "tronsonator.peg"
 
 /** This is the class that contains all the code and data for the plugin. */
-class MyPlugin : public LV2Instrument {
+class MyPlugin : public LV2Plugin {
 public:
 
   /** The first parameter is the sample rate, the second is the path to the
       LV2 bundle, the third is the host features supported by this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Instrument(peg_n_ports) {
+    : LV2Plugin(peg_n_ports) {
 
   }
 
@@ -53,18 +53,17 @@ public:
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
 
-      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), then - now);
 
       if (then < sample_count) {
         // Is the event a Note On?
         if (event[0] == 0x90) {
           int key = event[1];
-          switch(key) {
+/*          switch(key) {
           	case 42: s(); break;
           	case 43: cue(); break;
           	case 44: play(); break;
           }
-        }
+ */       }
       }
       now = then;
       lv2midi_step(&midi);

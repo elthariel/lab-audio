@@ -5,10 +5,9 @@
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/tronsonator>
   a lv2:Plugin;
-  doap:name "Turntable";
+  doap:name "Tronsonator mixer";
   doap:licence <http://usefulinc.com/doap/licenses/gpl>;
-  ll:gtk2Gui <turntable_gtk.so>;
-  lv2:requiredHostFeature ll:instrument-ext;
+  ll:gtk2Gui <tronsonator_gtk.so>;
   ll:pegName "peg";
 
   lv2:port [
