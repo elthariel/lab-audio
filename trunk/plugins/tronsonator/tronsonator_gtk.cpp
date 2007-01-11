@@ -19,24 +19,50 @@ public:
               const std::string& bundle_path,
               Widget*& widget)
     : m_ctrl(ctrl),
-      m_btn_headphone_l("h"),
-      m_btn_headphone_r("h") {
-    widget = &m_hbox;
-    m_hbox.pack_start(m_hbox);
-    m_hbox.pack_start(m_btn_load_track);
-    m_hbox.pack_start(m_btn_pause);
-    m_hbox.pack_start(m_btn_play);
-    m_hbox.pack_start(m_btn_cue);
+      m_cross_l1("<"),
+  		m_cross_r1(">"),
+  		m_cross_l2("<"),
+  		m_cross_r2(">"),
+  		m_cross_l3("<"),
+  		m_cross_r3(">"),
+  		m_cross_l4("<"),
+  		m_cross_r4(">"),
+      m_btn_headphone_1("h"),
+      m_btn_headphone_2("h"),
+      m_btn_headphone_3("h"),
+      m_btn_headphone_4("h") {
+    VBox *vbox;
+    widget = &m_vbox;
+    m_vbox.pack_start(m_hbox);
+    vbox = new VBox();
+    m_hbox.pack_start(*vbox);
+    vbox->pack_start(m_btn_headphone_1);
+    vbox->pack_start(m_slider1);
+    vbox->pack_start(m_cross_l1);
+    vbox->pack_start(m_cross_r1);
 
-    m_targetlist.push_back(Gtk::TargetEntry("text/uri-list"));
-    m_btn_load_track.drag_dest_set(m_targetlist);
-		m_btn_load_track.drag_dest_add_uri_targets();
-		m_btn_load_track.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_load_track.signal_clicked().connect(sigc::mem_fun(*this, &MyPluginGUI::button_load_clicked));
+    vbox = new VBox();
+    m_hbox.pack_start(*vbox);
+    vbox->pack_start(m_btn_headphone_2);
+    vbox->pack_start(m_slider2);
+    vbox->pack_start(m_cross_l2);
+    vbox->pack_start(m_cross_r2);
 
-		m_btn_pause.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 42));
-		m_btn_cue.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 43));
-		m_btn_play.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 44));
+    vbox = new VBox();
+    m_hbox.pack_start(*vbox);
+    vbox->pack_start(m_btn_headphone_3);
+    vbox->pack_start(m_slider3);
+    vbox->pack_start(m_cross_l3);
+    vbox->pack_start(m_cross_r3);
+
+    vbox = new VBox();
+    m_hbox.pack_start(*vbox);
+    vbox->pack_start(m_btn_headphone_4);
+    vbox->pack_start(m_slider4);
+    vbox->pack_start(m_cross_l4);
+    vbox->pack_start(m_cross_r4);
+
+    m_vbox.pack_start(m_crossfader);
   }
 
   //when a trigger button is clicked
@@ -60,7 +86,7 @@ protected:
   HScale m_slider1;
   HScale m_slider2;
   HScale m_slider3;
-  Hscale m_slider4;
+  HScale m_slider4;
   HScale m_crossfader;
   Button m_cross_l1;
   Button m_cross_r1;
@@ -70,7 +96,10 @@ protected:
   Button m_cross_r3;
   Button m_cross_l4;
   Button m_cross_r4;
-
+  Button m_btn_headphone_1;
+  Button m_btn_headphone_2;
+  Button m_btn_headphone_3;
+  Button m_btn_headphone_4;
 };
 
 

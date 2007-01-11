@@ -2,6 +2,6 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/tronsonator>
-  lv2:binary <turntable.so>;
-  rdfs:seeAlso <turntable.ttl>.
+  lv2:binary <tronsonator.so>;
+  rdfs:seeAlso <tronsonator.ttl>.
 
