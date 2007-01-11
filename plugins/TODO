@@ -1,18 +1,20 @@
-turntable:
+soulrider:
   - implement ffmpeg class and use it
   - add a wave summary/ maybe a seekbar first
   - add a wave display
   - use traktor III stripe
-  - pitch
+  - pitch/ timestreching
   - implement a beatsmasher :-)
   - add tempo detection code from mixxx or djplay (I love GPL)
 
 
-tracklist:
+butinator:
   - drop from playlist
   - save/load of playlist
   - a toolbar to add/remove/load_from_pls
 
-djmixer:
-  - code it!
+tronsonator:
+  - use libthc (define Thc::Button)
+  - implement the engine
+
 
