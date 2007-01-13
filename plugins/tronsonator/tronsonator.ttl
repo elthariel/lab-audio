@@ -17,68 +17,160 @@
     lv2:symbol "midi";
     lv2:name "MIDI";
   ],
-
-  [
-    a lv2:ControlRateInputPort;
+  [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
     lv2:index 1;
-    lv2:symbol "gain";
-    lv2:name "Gain";
+    lv2:symbol "gain_1";
+    lv2:name "Gain 1";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0.5;
+  ],
+  [ a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 2;
+    lv2:symbol "gain_2";
+    lv2:name "Gain 2";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0.5;
+  ],
+  [ a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 3;
+    lv2:symbol "gain_3";
+    lv2:name "Gain 3";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0.5;
+  ],
+  [ a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 4;
+    lv2:symbol "gain_4";
+    lv2:name "Gain 4";
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
   ],
 
-  [
-    a lv2:ControlRateInputPort;
-    lv2:datatype lv2:float;
-    lv2:index 2;
-    lv2:symbol "play";
-    lv2:name "Play";
-    lv2:minimum 0;
-    lv2:maximum 1;
-    lv2:default 0;
-    lv2:portHint lv2:toggled;
-  ],
-
-  [
-    a lv2:ControlRateInputPort;
-    lv2:datatype lv2:float;
-    lv2:index 3;
-    lv2:symbol "pause";
-    lv2:name "Pause";
-    lv2:minimum 0;
-    lv2:maximum 1;
-    lv2:default 0;
-    lv2:portHint lv2:toggled;
-  ],
-
-  [
-    a lv2:ControlRateInputPort;
-    lv2:datatype lv2:float;
-    lv2:index 4;
-    lv2:symbol "cue";
-    lv2:name "Cue";
-    lv2:minimum 0;
-    lv2:maximum 1;
-    lv2:default 0;
-    lv2:portHint lv2:toggled;
-  ],
-
-  [
-    a lv2:AudioRateOutputPort;
+  [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
     lv2:index 5;
-    lv2:symbol "output_l";
-    lv2:name "Output_l";
+    lv2:symbol "headphone_1";
+    lv2:name "Headphone 1";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:portHint lv2:toggled;
   ],
-
-  [
-    a lv2:AudioRateOutputPort;
+  [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
     lv2:index 6;
+    lv2:symbol "headphone_2";
+    lv2:name "Headphone 2";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:portHint lv2:toggled;
+  ],
+  [ a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 7;
+    lv2:symbol "headphone_3";
+    lv2:name "Headphone 3";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:portHint lv2:toggled;
+  ],
+  [ a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 8;
+    lv2:symbol "headphone_4";
+    lv2:name "Headphone 4";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0;
+    lv2:portHint lv2:toggled;
+  ],
+
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 9;
+    lv2:symbol "input_l1";
+    lv2:name "Input_l1";
+  ],
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 10;
+    lv2:symbol "input_r1";
+    lv2:name "Input_r1";
+  ],
+
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 11;
+    lv2:symbol "input_l2";
+    lv2:name "Input_l2";
+  ],
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 12;
+    lv2:symbol "input_r2";
+    lv2:name "Input_r2";
+  ],
+
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 13;
+    lv2:symbol "input_l3";
+    lv2:name "Input_l3";
+  ],
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 14;
+    lv2:symbol "input_r3";
+    lv2:name "Input_r3";
+  ],
+
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 15;
+    lv2:symbol "input_l4";
+    lv2:name "Input_l4";
+  ],
+  [ a lv2:AudioRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 16;
+    lv2:symbol "input_r4";
+    lv2:name "Input_r4";
+  ],
+
+  [ a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 17;
+    lv2:symbol "output_l";
+    lv2:name "Left Output";
+  ],
+  [ a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 17;
     lv2:symbol "output_r";
-    lv2:name "Output_r";
+    lv2:name "Right Output";
+  ],
+
+  [ a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 18;
+    lv2:symbol "headphone_l";
+    lv2:name "Left Headphone";
+  ],
+  [ a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 19;
+    lv2:symbol "headphone_r";
+    lv2:name "Right Headphone";
   ].
 
 

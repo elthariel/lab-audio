@@ -43,31 +43,34 @@ public:
       when it wants to run the plugin. The parameter is the number of sample
       frames to process. */
   void run(uint32_t sample_count) {
-    LV2_MIDIState midi = { p<LV2_MIDI>(peg_midi), sample_count, 0 };
-    double event_time;
-    uint32_t event_size;
-    unsigned char* event;
-    uint32_t now = 0;
-    uint32_t then;
+		while (sample_count) {
+			p<float>(peg_output_l)[sample_count] = p<float>(peg_input_l1)[sample_count] +
+																						 p<float>(peg_input_l2)[sample_count] +
+																						 p<float>(peg_input_l3)[sample_count] +
+																						 p<float>(peg_input_l4)[sample_count];
+			p<float>(peg_output_r)[sample_count] = p<float>(peg_input_r1)[sample_count] +
+																						 p<float>(peg_input_r2)[sample_count] +
+																						 p<float>(peg_input_r3)[sample_count] +
+																						 p<float>(peg_input_r4)[sample_count];
+			if (p<bool>(peg_headphone_1)) {
+				p<float>(peg_headphone_l)[sample_count] = p<float>(peg_input_l1)[sample_count];
+				p<float>(peg_headphone_r)[sample_count] = p<float>(peg_input_r1)[sample_count];
+			}
+			if (p<bool>(peg_headphone_2)) {
+				p<float>(peg_headphone_l)[sample_count] += p<float>(peg_input_l2)[sample_count];
+				p<float>(peg_headphone_r)[sample_count] += p<float>(peg_input_r2)[sample_count];
+			}
+			if (p<bool>(peg_headphone_3)) {
+				p<float>(peg_headphone_l)[sample_count] += p<float>(peg_input_l3)[sample_count];
+				p<float>(peg_headphone_r)[sample_count] += p<float>(peg_input_r3)[sample_count];
+			}
+			if (p<bool>(peg_headphone_4)) {
+				p<float>(peg_headphone_l)[sample_count] += p<float>(peg_input_l4)[sample_count];
+				p<float>(peg_headphone_r)[sample_count] += p<float>(peg_input_r4)[sample_count];
+			}
 
-    while (now < sample_count) {
-      then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
-
-
-      if (then < sample_count) {
-        // Is the event a Note On?
-        if (event[0] == 0x90) {
-          int key = event[1];
-/*          switch(key) {
-          	case 42: s(); break;
-          	case 43: cue(); break;
-          	case 44: play(); break;
-          }
- */       }
-      }
-      now = then;
-      lv2midi_step(&midi);
-    }
+		  sample_count--;
+		}
   }
 
 protected:
