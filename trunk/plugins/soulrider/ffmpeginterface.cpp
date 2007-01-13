@@ -13,8 +13,6 @@
  *  along with this program; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-
-
 //
 // Class: ffmpeg
 //
@@ -135,8 +133,23 @@ int ffmpeg::get_pos() {
 bool ffmpeg::seek(unsigned long long seek_pos) {
 }
 
+void ffmpeg::copy(char *input, char *buffer_l, char *buffer_r, int sz) {
+  int j = 0,k = 0;
+  for (int i = 0; i < sz; ++i) {
+  	if ((i % 2) || (i % 4)) {
+  	  std::cout << "copy i=" << i << std::endl;
+  	  ((char *)buffer_r)[j] = input[i];
+  	  ++j;
+  	} else {
+  	  ((char *)buffer_l)[k] = input[i];
+  	  ++k;
+  	}
+  }
+}
+
 int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
-	char *dest = (char *) destination;
+	char *dest_l = (char *) buffer_l;
+	char *dest_r = (char *) buffer_r;
 	char *src = NULL;
 	int index = 0;
 	int outsize = 0;
@@ -148,9 +161,11 @@ int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 	while (needed > 0) {
 		if (m_bufferoffset < m_buffersize) {
 			index = m_buffersize - m_bufferoffset > needed ? needed : m_buffersize - m_bufferoffset;
-			memcpy((char *)dest, (char *)(src), index);
+			//memcpy((char *)dest, (char *)(src), index);
+			copy(src, dest_l, dest_r, index);
 			src += index;
-			dest += index;
+			dest_l += index/2;
+			dest_r += index/2;
 			needed -= index;
 			m_bufferoffset += index;
 			outsize += index;

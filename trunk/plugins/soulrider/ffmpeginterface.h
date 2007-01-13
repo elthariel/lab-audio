@@ -61,6 +61,7 @@ public:
 protected:
   //read one paquet from ffmpeg
 	bool readpaquet();
+	void copy(char *input, char *buffer_l, char *buffer_r, int sz);
 
 private:
 	int m_channels;

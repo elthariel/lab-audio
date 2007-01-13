@@ -54,7 +54,7 @@ public:
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
 
-      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), then - now);
+      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), (then - now));
 
       if (then < sample_count) {
         // Is the event a Note On?
