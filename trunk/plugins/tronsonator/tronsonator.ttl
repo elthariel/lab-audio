@@ -155,20 +155,20 @@
   ],
   [ a lv2:AudioRateOutputPort;
     lv2:datatype lv2:float;
-    lv2:index 17;
+    lv2:index 18;
     lv2:symbol "output_r";
     lv2:name "Right Output";
   ],
 
   [ a lv2:AudioRateOutputPort;
     lv2:datatype lv2:float;
-    lv2:index 18;
+    lv2:index 19;
     lv2:symbol "headphone_l";
     lv2:name "Left Headphone";
   ],
   [ a lv2:AudioRateOutputPort;
     lv2:datatype lv2:float;
-    lv2:index 19;
+    lv2:index 20;
     lv2:symbol "headphone_r";
     lv2:name "Right Headphone";
   ].
