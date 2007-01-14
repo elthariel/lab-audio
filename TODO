@@ -4,14 +4,11 @@ Clochette:
   - implement add_port/remove/...
   - one patch = one window
   - basic function to connect port (when you click on a port you get a menu)
-
-  - implement drag'n'drop for lv2
   - load/save patch
   - load/save GUI information with metadata
   - create a plugin for each controlable GUI element
 
 libthc:
-  - full skin support (xml)
   - Plugin : socket like, to embed gtk ui
   - drawport/drawports
 
@@ -20,15 +17,11 @@ Ingen:
   - Add code to manage plugins ui
 
 lv2turntable:
-  - stole code from madjack
-  - UI: Slider(crossfader), peak volume with slider (stole from jackmixer)
-  - use dnd extension
+  - fix ffmpeg
 
 lv2crossfader:
-  - control: crossfader, volume, plf, plf mix, plf volume 
-  - UI: peak volume / wave display / Text / Button
+  - fix gain and volume
 
 lv2collection:
-  - control: treeview/filelist/playlist
-  - use dnd extension
-  
+  - store/load collection
+
