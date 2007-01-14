@@ -64,7 +64,6 @@ int             lo_avahi_init(lo_server s)
     fprintf(stderr, "Unable to create client %s \n",
             avahi_strerror(avahi_error));
     //    lo_throw(s, -42, "Failed to create avahi client object\n", NULL);
-
   return (0);
 }
 
@@ -74,8 +73,10 @@ void            lo_avahi_callback(AvahiClient *ac,
   lo_server     s;
 
   s = (lo_server)userdata;
+
   if (ac)
     {
+    	s->av_client = ac;
       switch (state)
         {
         case AVAHI_CLIENT_S_RUNNING:
@@ -83,8 +84,7 @@ void            lo_avahi_callback(AvahiClient *ac,
           if (!s->av_group){
             if (lo_avahi_create_service(s))
               {
-                fprintf(stderr,
-                        "AVAHI_CLIENT_S_RUNNING, unable to create service\n");
+                fprintf(stderr, "AVAHI_CLIENT_S_RUNNING, unable to create service\n");
                 if (s->av_group)
                   avahi_entry_group_reset(s->av_group);
               }
@@ -137,11 +137,12 @@ int             lo_avahi_create_service(lo_server s)
 
           return (-1);
         }
+
       ret = avahi_entry_group_add_service(s->av_group,
                                           AVAHI_IF_UNSPEC, //send on all if.
                                           AVAHI_PROTO_UNSPEC, //with all proto
                                           0,
-                                          "OSC test",            //May need fixme.
+                                          "OSCtest",            //May need fixme.
                                           "_osc._udp",
                                           0, 0, s->port,
                                           "a test txt", NULL);
