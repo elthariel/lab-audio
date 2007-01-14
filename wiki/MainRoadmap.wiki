@@ -8,17 +8,26 @@
 
 ==Administrative==
 ===ForeWord===
-  * Definition of the projects. [done]
-  * Prepare a presentation.  [partially done]
-  * Get a date with school's head.  [we are trying]
+  * Definition of the projects. *done*
+  * Prepare a presentation.  *done*
+  * Prepare a fancy presentation. *hum*
+  * Get a date with school's head.  *we are trying*
 
 ===First step===
 
 ==Perfect Linux based Studio==
 ===0.2===
-  * Skinnable & flexible widget library.
+Premiere version utilisable.
+
   * 
+  *
+ 
+===0.4===
+  * Skinnable & flexible widget library. *open*
 
 ==Perfet Embedded Linux based hardware==
+
+
+
 
 
