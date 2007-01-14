@@ -8,9 +8,9 @@
 
 ==Administrative==
 ===ForeWord===
-  * Definition of the projects.
-  * Prepare a presentation.
-  * Get a date with school's head.
+  * Definition of the projects. [done]
+  * Prepare a presentation.  [partially done]
+  * Get a date with school's head.  [we are trying]
 
 ===First step===
 
@@ -20,6 +20,5 @@
   * 
 
 ==Perfet Embedded Linux based hardware==
-
 
 
