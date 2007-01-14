@@ -1,10 +1,7 @@
 #summary ctaf todo-list
 
-  * start turntable and crossfader based on madjack (without GUI)
+  * fix soolrider
   * update clochette to use param from lv2 and libthc
   * make the osc server for libthc
   * wait for kbdz to send osc message
-  * add gui to turntable and crossfader
-  * create tracklist lv2
-  * support dnd between turntable and tracklist (add support into libthc)
   * MIX baby !!
