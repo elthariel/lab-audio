@@ -1,0 +1,25 @@
+#summary Describes the global roadmap of the EpiT{a,ech} schools audio laboratory project.
+#labels Featured
+
+= Introduction =
+
+
+= Roadmap =
+
+==Administrative==
+===ForeWord===
+  * Definition of the projects.
+  * Prepare a presentation.
+  * Get a date with school's head.
+
+===First step===
+
+==Perfect Linux based Studio==
+===0.2===
+  * Skinnable & flexible widget library.
+  * 
+
+==Perfet Embedded Linux based hardware==
+
+
+
