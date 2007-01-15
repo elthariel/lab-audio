@@ -34,8 +34,7 @@ Premiere version utilisable.
     * basic support for kbdz
 
 ==Perfet Embedded Linux based hardware==
-
-
+  * implement a hardware beatsmasher to win lot's of money
 
 
 
