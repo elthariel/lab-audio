@@ -11,7 +11,7 @@
   * Definition of the projects. *done*
   * Prepare a presentation.  *done*
   * Prepare a fancy presentation. *hum*
-  * Get a date with school's head.  *we are trying*
+  * Get a date with school's head.  *done*
 
 ===First step===
 
@@ -19,11 +19,19 @@
 ===0.2===
 Premiere version utilisable.
 
-  * 
-  *
+  * basic soulrider/tronsonator/butinator lv2 plugins to create a dj mixer
+    * soulrider: open a file, cue/play/pause/pitch (with a gui)
+    * tronsonator: 4 channels mixer with GUI that use libthc
+    * butinator: allow drag'n'drop of mp3 on soulrider (no playlist feature available)
  
 ===0.4===
   * Skinnable & flexible widget library. *open*
+  * ingen/frontend :
+    * find a name for the front-end
+    * support lv2gtk2gui/midi/instrument extension in ingen
+    * allow to connect and to add plugins
+    * embeded lv2 gui
+    * basic support for kbdz
 
 ==Perfet Embedded Linux based hardware==
 
