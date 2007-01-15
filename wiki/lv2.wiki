@@ -1,0 +1,46 @@
+#summary draft
+
+= Extension =
+be carefull, the lv2 spec, and those extension are not stable nor beta.
+
+=== lv2midi ===
+add a timestamped midi data type to lv2 port
+
+=== lv2gtk2gui ===
+embedable gui extension using gtk, communication between the engine and the host is defined by the host. The gui is a separated library
+
+=== dynparams ===
+allow to have add/remove port at runtime
+
+=== instrument ===
+allow to exchange datas and files.
+the host is responsible to store file into the project directory, and or to copy the file from one computer to another
+
+= Plugins =
+
+== Input ==
+===Klaviatur===
+a midi keyboard
+===Trylobyte===
+a midi matrix sequencer
+===Trylobeat===
+a midi drum sequencer
+
+===Butinator===
+a playlist editor (to use with soulrider)
+
+== Instruments ==
+===soulrider===
+a virtual turntable with pitch/loop
+
+===Azr3===
+===euphoria===
+===sineshaper===
+
+== Effect ==
+===tronsonator===
+a 4 channels dj mixer with a crossfader, gain and volume for each channel
+
+
+
+
