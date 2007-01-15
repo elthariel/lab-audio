@@ -26,7 +26,7 @@
 #include "lv2plugin.hpp"
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
-#include "turntable.peg"
+#include "soulrider.peg"
 #include "ffmpeginterface.h"
 
 /** This is the class that contains all the code and data for the plugin. */

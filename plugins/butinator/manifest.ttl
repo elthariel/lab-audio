@@ -1,7 +1,7 @@
 @prefix lv2:  <http://lv2plug.in/ontology#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 
-<http://lab-audio.googlecode.com/svn/trunk/plugins/tracklist>
-  lv2:binary <tracklist.so>;
-  rdfs:seeAlso <tracklist.ttl>.
+<http://lab-audio.googlecode.com/svn/trunk/plugins/butinator>
+  lv2:binary <butinator.so>;
+  rdfs:seeAlso <butinator.ttl>.
 

@@ -1,22 +1,22 @@
 # The name and version of your plugin - edit these (at least the name)
-PLUGIN_NAME = turntable
+PLUGIN_NAME = soulrider
 VERSION = 0.1.2
 
 # The lv2peg program - edit if it's not in your path
 LV2PEG = lv2peg
 
 # These files go into the bundle
-BUNDLE_FILES = manifest.ttl turntable.ttl turntable.so turntable_gtk.so
+BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so
 
 # These are the source files for the plugin
-PLUGIN_SOURCES = turntable.cpp lv2plugin.cpp lv2instrument.cpp ffmpeginterface.cpp
-PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h turntable.peg ffmpeginterface.h
+PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp ffmpeginterface.cpp
+PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h $(PLUGIN_NAME).peg ffmpeginterface.h
 PLUGIN_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libavcodec libavformat`
 PLUGIN_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0 libavcodec libavformat`
 
 # These are the source files for the plugin GUI
-GUI_SOURCES = turntable_gtk.cpp lv2gtk2gui.cpp
-GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h turntable.peg
+GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
+GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h $(PLUGIN_NAME).peg
 GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0`
 GUI_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0`
 
@@ -28,7 +28,7 @@ ALL_HEADERS = $(sort $(PLUGIN_HEADERS) $(GUI_HEADERS))
 
 
 # These files go into the distribution
-DIST_FILES = Makefile README COPYING.GPL COPYING.LGPL manifest.ttl turntable.ttl $(ALL_SOURCES) $(ALL_HEADERS)
+DIST_FILES = Makefile README COPYING.GPL COPYING.LGPL manifest.ttl $(PLUGIN_NAME).ttl $(ALL_SOURCES) $(ALL_HEADERS)
 
 
 
@@ -83,4 +83,4 @@ install: $(PLUGIN_NAME).lv2
 
 # Remove all generated files
 clean:
-	rm -rf $(PLUGIN_NAME).lv2 turntable.so turntable_gtk.so $(ALL_SOURCES:.cpp=.dep) $(ALL_SOURCES:.cpp=.o)
+	rm -rf $(PLUGIN_NAME).lv2 $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so $(ALL_SOURCES:.cpp=.dep) $(ALL_SOURCES:.cpp=.o)

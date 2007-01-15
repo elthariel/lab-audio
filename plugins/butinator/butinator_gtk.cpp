@@ -3,7 +3,7 @@
 #include <gtkmm.h>
 
 #include "lv2gtk2gui.hpp"
-#include "tracklist.peg"
+#include "butinator.peg"
 
 
 using namespace std;

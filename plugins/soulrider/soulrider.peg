@@ -1,5 +1,5 @@
-#ifndef turntable_peg
-#define turntable_peg
+#ifndef soulrider_peg
+#define soulrider_peg
 
 
 #ifndef PEG_STRUCT
@@ -14,9 +14,9 @@ typedef struct {
 } peg_data_t;
 #endif
 
-/* <http://lab-audio.googlecode.com/svn/trunk/plugins/turntable> */
+/* <http://lab-audio.googlecode.com/svn/trunk/plugins/soulrider> */
 
-static const char peg_uri[] = "http://lab-audio.googlecode.com/svn/trunk/plugins/turntable";
+static const char peg_uri[] = "http://lab-audio.googlecode.com/svn/trunk/plugins/soulrider";
 
 enum peg_port_enum {
   peg_midi,
@@ -40,4 +40,4 @@ static const peg_data_t peg_ports[] = {
 };
 
 
-#endif /* turntable_peg */
+#endif /* soulrider_peg */
