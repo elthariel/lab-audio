@@ -3,13 +3,20 @@
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.
 
-<http://lab-audio.googlecode.com/svn/trunk/plugins/tracklist>
+<http://lab-audio.googlecode.com/svn/trunk/plugins/butinator>
   a lv2:Plugin;
   doap:name "A tracklist";
   doap:licence <http://usefulinc.com/doap/licenses/gpl>;
-  ll:gtk2Gui <tracklist_gtk.so>;
+  ll:gtk2Gui <butinator_gtk.so>;
   ll:pegName "peg";
-
+  lv2:port [
+    a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 0;
+    lv2:symbol "nothing";
+    lv2:name "nothing";
+    lv2:minimum 0;
+    lv2:maximum 1;
+    lv2:default 0.5;
+  ]
 .
-
-

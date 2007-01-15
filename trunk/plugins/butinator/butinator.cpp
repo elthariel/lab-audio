@@ -25,7 +25,7 @@
 #include "lv2plugin.hpp"
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
-#include "tracklist.peg"
+#include "butinator.peg"
 
 
 /** This is the class that contains all the code and data for the plugin. */

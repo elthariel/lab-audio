@@ -3,7 +3,7 @@
 #include <gtkmm.h>
 
 #include "lv2gtk2gui.hpp"
-#include "turntable.peg"
+#include "soulrider.peg"
 
 
 using namespace std;
