@@ -155,6 +155,8 @@ int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 	int outsize = 0;
 	int needed = samplecount*2;//*channels;
 
+  if (m_packet.data == NULL)
+  	return 0;
 	//copy previous buffer
 	src = (char *)m_buffer;
 	src += m_bufferoffset;
