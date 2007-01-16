@@ -37,6 +37,7 @@ ffmpeg::ffmpeg() {
 	m_frame = NULL;
 	m_codecctx = NULL;
 	m_formatctx = NULL;
+	m_loaded = false;
 }
 
 bool ffmpeg::load_file(const Glib::ustring &str) {
@@ -107,6 +108,7 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 		std::cerr << "ffmpeg: No support for more than 2 channels!" << std::endl;
 		return false;
 	}
+	m_loaded = true;
 }
 
 void ffmpeg::close() {
@@ -122,6 +124,7 @@ void ffmpeg::close() {
 	// Close the file
 	if (m_formatctx)
 	  av_close_input_file(m_formatctx);
+	m_loaded = false;
 }
 
 int ffmpeg::get_length() {
@@ -133,15 +136,18 @@ int ffmpeg::get_pos() {
 bool ffmpeg::seek(unsigned long long seek_pos) {
 }
 
-void ffmpeg::copy(char *input, char *buffer_l, char *buffer_r, int sz) {
+
+
+void ffmpeg::copy(short int *input, float *buffer_l, float *buffer_r, int sz) {
   int j = 0,k = 0;
+  float res;
+
   for (int i = 0; i < sz; ++i) {
-  	if ((i % 2) || (i % 4)) {
-  	  std::cout << "copy i=" << i << std::endl;
-  	  ((char *)buffer_r)[j] = input[i];
+  	if (i % 2) {
+  	  buffer_r[j] = (float)input[i];// / (float)SHRT_MAX;
   	  ++j;
   	} else {
-  	  ((char *)buffer_l)[k] = input[i];
+  	  buffer_l[k] = (float)input[i];// / (float)SHRT_MAX;
   	  ++k;
   	}
   }
@@ -155,8 +161,9 @@ int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 	int outsize = 0;
 	int needed = samplecount*2;//*channels;
 
-  if (m_packet.data == NULL)
+  if (!m_loaded)
   	return 0;
+  //std::cout << "process(" << samplecount << ")" << std::endl;
 	//copy previous buffer
 	src = (char *)m_buffer;
 	src += m_bufferoffset;
@@ -164,7 +171,7 @@ int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 		if (m_bufferoffset < m_buffersize) {
 			index = m_buffersize - m_bufferoffset > needed ? needed : m_buffersize - m_bufferoffset;
 			//memcpy((char *)dest, (char *)(src), index);
-			copy(src, dest_l, dest_r, index);
+			copy((short int *)src, (float *)dest_l, (float *)dest_r, index/2);
 			src += index;
 			dest_l += index/2;
 			dest_r += index/2;
