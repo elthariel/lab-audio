@@ -61,10 +61,11 @@ public:
 protected:
   //read one paquet from ffmpeg
 	bool readpaquet();
-	void copy(char *input, char *buffer_l, char *buffer_r, int sz);
-
+	//void copy(char *input, char *buffer_l, char *buffer_r, int sz);
+	void copy(short int *input, float *buffer_l, float *buffer_r, int sz);
 private:
 	int m_channels;
+	bool m_loaded;
 	unsigned long m_filelength;
 	AVFormatContext *m_formatctx;
   AVInputFormat *m_iformat;

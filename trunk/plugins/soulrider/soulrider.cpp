@@ -81,6 +81,8 @@ public:
   /** Function for loading data from external files. */
   char* set_file(const char* key, const char* filename) {
   	std::cout << "set file name: key=" << key << " filename=" << filename << std::endl;
+  	std::cout << "Loading: /shared/mp3/speed.mp3" << std::endl;
+  	m_ffmpeg.load_file("/shared/mp3/speed.mp3");
   	return 0;
   }
 
