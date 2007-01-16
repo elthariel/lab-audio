@@ -21,9 +21,9 @@ the host is responsible to store file into the project directory, and or to copy
 == Input ==
 ===Klaviatur===
 a midi keyboard
-===Trylobyte===
+===Trilobyte===
 a midi matrix sequencer
-===Trylobeat===
+===Trilobeat===
 a midi drum sequencer
 
 ===Butinator===
@@ -40,7 +40,20 @@ a virtual turntable with pitch/loop
 == Effect ==
 ===tronsonator===
 a 4 channels dj mixer with a crossfader, gain and volume for each channel
+===arpeggiator===
+midi arpeggiator
+===phase-distortion-osc===
+phase distortion oscilator
 
-
-
+== Misc ==
+===math-functions===
+math functions as lv2 plugins, for audio and control port
+===math-constants===
+math constants like pi pi/2, ...
+===control2midi===
+control value sent over a midi output port
+===audio_identity===
+output=input
+===midi_identity===
+output=input
 
