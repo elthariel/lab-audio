@@ -1,0 +1,20 @@
+#summary OSC learning protocol
+#labels Featured
+
+= Introduction =
+
+This page is a Draft for a OSC-based protocol which will allow, in the first hand, independant programs to query  a list of the OSC parameters that application supports. In other hand, it will allow a single program to manage the so appreciated 'Learn' feature for all the application that supports this protocol.
+
+= Details =
+
+==Pameters querying==
+A special message is sent to the OSC application, with a return address. The application must send back a list of all the available path, with some mapping hints for each to the return address.
+
+==Learn==
+A new type of zeroconf service is defined, like "_osc._udp._learn". Then the application query avahi/bonjour/... services to find a service of this type. Each time a button is clicked, a fader is moved, and so on, the application sends an OSC message to the learn service containing the address of the concerned parameter (osc://1.2.3.4:42/mixer2/pan5) and some mapping hints (trigger, note, CC, etc). So the learn application can know which parameter is going to be learned, he can listen on all the devices he's monitoring (most of time he will monitor all the devices) and then map the first event it receives with the last address who was sent to him via the learn protocol.
+
+==Implementation==
+It will be implemented as a patch for liblo or as another library using liblo.
+
+
+
