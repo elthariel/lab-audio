@@ -1,4 +1,4 @@
-#summary OSC learning protocol
+#summary ODL : Osc Discovery And Learn protocol
 #labels Featured
 
 = Introduction =
