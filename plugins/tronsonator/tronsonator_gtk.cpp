@@ -4,7 +4,8 @@
 
 #include "lv2gtk2gui.hpp"
 #include "tronsonator.peg"
-
+#include <thc/thc.h>
+#include <thc/skinmanager.h>
 
 using namespace std;
 using namespace Gtk;
@@ -31,38 +32,49 @@ public:
       m_btn_headphone_2("h"),
       m_btn_headphone_3("h"),
       m_btn_headphone_4("h") {
+
+		Thc::SkinManager::instanciate();
+		m_slider1 = new Thc::Slider(Thc::Param::create_param(), false);
+		m_slider2 = new Thc::Slider(Thc::Param::create_param(), false);
+		m_slider3 = new Thc::Slider(Thc::Param::create_param(), false);
+		m_slider4 = new Thc::Slider(Thc::Param::create_param(), false);
+		m_crossfader = new Thc::Slider(Thc::Param::create_param(), true);
     VBox *vbox;
     widget = &m_vbox;
     m_vbox.pack_start(m_hbox);
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_1);
-    vbox->pack_start(m_slider1);
-    vbox->pack_start(m_cross_l1);
-    vbox->pack_start(m_cross_r1);
+    vbox->pack_start(*m_slider1);
+    vbox->pack_start(m_hbox1);
+    m_hbox1.pack_start(m_cross_l1);
+    m_hbox1.pack_start(m_cross_r1);
 
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_2);
-    vbox->pack_start(m_slider2);
-    vbox->pack_start(m_cross_l2);
-    vbox->pack_start(m_cross_r2);
+    vbox->pack_start(*m_slider2);
+    vbox->pack_start(m_hbox2);
+    m_hbox2.pack_start(m_cross_l2);
+    m_hbox2.pack_start(m_cross_r2);
 
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_3);
-    vbox->pack_start(m_slider3);
-    vbox->pack_start(m_cross_l3);
-    vbox->pack_start(m_cross_r3);
+    vbox->pack_start(*m_slider3);
+    vbox->pack_start(m_hbox3);
+    m_hbox3.pack_start(m_cross_l3);
+    m_hbox3.pack_start(m_cross_r3);
 
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_4);
-    vbox->pack_start(m_slider4);
-    vbox->pack_start(m_cross_l4);
-    vbox->pack_start(m_cross_r4);
+    vbox->pack_start(*m_slider4);
+    vbox->pack_start(m_hbox4);
+    m_hbox4.pack_start(m_cross_l4);
+    m_hbox4.pack_start(m_cross_r4);
 
-    m_vbox.pack_start(m_crossfader);
+    m_vbox.pack_start(*m_crossfader);
   }
 
   //when a trigger button is clicked
@@ -78,28 +90,47 @@ public:
     m_ctrl.send_midi(peg_midi, 3, data_on);
     m_ctrl.send_midi(peg_midi, 3, data_off);
   }
+  ~MyPluginGUI() {
+  	delete m_slider1;
+  	delete m_slider2;
+  	delete m_slider3;
+  	delete m_slider4;
+  	delete m_crossfader;
+  }
 
 protected:
   LV2Controller &m_ctrl;
   HBox m_hbox;
+  HBox m_hbox1;
+  HBox m_hbox2;
+  HBox m_hbox3;
+  HBox m_hbox4;
   VBox m_vbox;
-  HScale m_slider1;
-  HScale m_slider2;
-  HScale m_slider3;
-  HScale m_slider4;
-  HScale m_crossfader;
-  Button m_cross_l1;
-  Button m_cross_r1;
-  Button m_cross_l2;
-  Button m_cross_r2;
-  Button m_cross_l3;
-  Button m_cross_r3;
-  Button m_cross_l4;
-  Button m_cross_r4;
-  Button m_btn_headphone_1;
-  Button m_btn_headphone_2;
-  Button m_btn_headphone_3;
-  Button m_btn_headphone_4;
+  Thc::Slider *m_slider1;
+  Thc::Slider *m_slider2;
+  Thc::Slider *m_slider3;
+  Thc::Slider *m_slider4;
+  Thc::Slider *m_gain1;
+  Thc::Slider *m_gain2;
+  Thc::Slider *m_gain3;
+  Thc::Slider *m_gain4;
+  Thc::Slider *m_bal1;
+  Thc::Slider *m_bal2;
+  Thc::Slider *m_bal3;
+  Thc::Slider *m_bal4;
+  Thc::Slider *m_crossfader;
+  ToggleButton m_cross_l1;
+  ToggleButton m_cross_r1;
+  ToggleButton m_cross_l2;
+  ToggleButton m_cross_r2;
+  ToggleButton m_cross_l3;
+  ToggleButton m_cross_r3;
+  ToggleButton m_cross_l4;
+  ToggleButton m_cross_r4;
+  ToggleButton m_btn_headphone_1;
+  ToggleButton m_btn_headphone_2;
+  ToggleButton m_btn_headphone_3;
+  ToggleButton m_btn_headphone_4;
 };
 
 

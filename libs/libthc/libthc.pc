@@ -3,8 +3,9 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
-Name: CloWidget
+Name: Thc
 Version: 0.0.1
 Description: A C++ GTKMM GUI Library
-Libs: -lclowidget
-Cflags: -I${includedir}
+Libs: -lthc -lxml++-2.6 -lxml2 -lglibmm-2.4 -lgobject-2.0 -lsigc-2.0 -lglib-2.0
+Cflags: -I${includedir} -I${includedir}/libxml++-2.6 -I${libdir}/libxml++-2.6/include -I${includedir}/libxml2 -I${includedir}/glibmm-2.4 -I${libdir}/glibmm-2.4/include -I${includedir}/sigc++-2.0 -I${libdir}/sigc++-2.0/include -I${includedir}/glib-2.0 -I${libdir}/glib-2.0/include
+
