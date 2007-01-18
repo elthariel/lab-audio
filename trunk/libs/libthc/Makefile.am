@@ -3,6 +3,10 @@
 
 SUBDIRS = src po tests
 
+#libthcskindir = ${prefix}/share/thc/skins
+#libthcskin_DATA = \
+#	skins
+
 libthcdocdir = ${prefix}/doc/libthc
 libthcdoc_DATA = \
 	README\
@@ -11,7 +15,7 @@ libthcdoc_DATA = \
 	ChangeLog\
 	INSTALL\
 	NEWS
-	
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libthc.pc
 

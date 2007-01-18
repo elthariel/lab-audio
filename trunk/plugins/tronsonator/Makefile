@@ -15,8 +15,8 @@ PLUGIN_HEADERS = lv2plugin.hpp lv2.h lv2-miditype.h lv2-midifunctions.h $(PLUGIN
 # These are the source files for the plugin GUI
 GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
 GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h $(PLUGIN_NAME).peg
-GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0`
-GUI_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0`
+GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libthc`
+GUI_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0 libthc`
 
 # Derived variables - do not edit
 PLUGIN_OBJECTS = $(subst .cpp,.o,$(PLUGIN_SOURCES))
