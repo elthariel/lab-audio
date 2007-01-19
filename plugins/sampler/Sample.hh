@@ -2,7 +2,7 @@
 ** Sample.hh
 ** Login : <elthariel@localhost.localdomain>
 ** Started on  Thu Jan 11 04:09:37 2007 Elthariel
-** $Id$
+** Part of Promethee
 **
 ** Copyright (C) 2007 Elthariel
 ** This program is free software; you can redistribute it and/or modify
@@ -23,42 +23,57 @@
 #ifndef   	SAMPLE_HH_
 # define   	SAMPLE_HH_
 
+#include <string>
 #include <sndfile.h>
 
 #include "Envelop.hh"
+#include "frequencytable.hpp"
 
-#define                 SAMPLER_POLY            32;
+#define                 SAMPLER_POLY            32
 
 struct SmpVoice
 {
+  SmpVoice();
   bool                  activated;
-  double                freq;
-  double                pos;
+  char                  freq;
+  char                  vel;
+  double                pos;    // pos in sample into the wav
+  unsigned int          pos_rel; // pos in sample into the stream, relative to the start
+  // time of this voice.
 };
-
 
 
 class Sample
 {
-private:
-  unsigned int          m_sr; //Sample rate.
-
-  double                *data;
-  SF_INFO               info;
-  SmpVoice              voices[SAMPLER_POLY];
-
-  void                  load_data(SNDFILE *);
-  void                  play_voice(unsigned int, unsigned int, double *);
-
 public:
   Sample(Sample &smp);
-  Sample(string, unsigned int);
+  Sample(std::string, unsigned int);
   //  Sample(int);
 
+  typedef float         sample_t;
 
-  void                  render(unsigned int, double *);
+  void                  render(unsigned int, sample_t *, sample_t *);
 
+  void                  note_on(char note_num, char velocity);
+  void                  note_off(char note_num, char velocity);
+  
+private:
+  // Internal data;
+  unsigned int          m_sr; //Sample rate.
 
+  sample_t              *data;
+  SF_INFO               info;
+  SmpVoice              voices[SAMPLER_POLY];
+  static FrequencyTable freq_table;
+
+  //User config
+  EnvSwitch             &amp_env;
+
+  char                  m_root_note;
+
+  void                  load_data(SNDFILE *); //called by the constructor to load the sample.
+  void                  play_voice(unsigned int, unsigned int, sample_t *, sample_t *);
+  inline sample_t       &s(unsigned char a_chan, unsigned int a_pos);
 };
 
 
