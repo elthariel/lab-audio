@@ -29,19 +29,30 @@
 
 #include "skinmanager.h"
 #include "skin.h"
+#include "../config.h"
 
 namespace Thc {
 
   //singleton
   SkinManager* SkinManager::m_skin_manager = 0;
-  
+
+  void SkinManager::instanciate() {
+  	if (!m_skin_manager) {
+  		Glib::ustring stdpath = THCDATA_DIR;
+  		stdpath += "/skins";
+  		m_skin_manager = new SkinManager();
+  		m_skin_manager->add_path(stdpath);
+  		std::cout << "path: " << stdpath << std::endl;
+  	}
+  }
+
   void SkinManager::parse_sub_node(const Xml::Ptr node, const Glib::ustring &path) {
     Glib::ustring name;
     const xmlpp::Element* nodeelt = dynamic_cast<const xmlpp::Element*>(node);
     if (!nodeelt)
       return;
     const xmlpp::Element::AttributeList& attributes = nodeelt->get_attributes();
-    
+
     for(xmlpp::Element::AttributeList::const_iterator iter = attributes.begin(); iter != attributes.end(); ++iter){
       const xmlpp::Attribute* attribute = *iter;
       if (attribute->get_name() == "name") {
@@ -66,9 +77,9 @@ namespace Thc {
       if (!childnodetext || !childnodetext->is_white_space() && childnodeelt) {
         parse_sub_node(*iter, path);
       }
-    } 
+    }
   }
-  
+
   bool SkinManager::load_skin(const Glib::ustring &name) {
     try {
       boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
@@ -86,7 +97,7 @@ namespace Thc {
     }
     return false;
   }
-  
+
   void SkinManager::load_path(const Glib::ustring &name) {
     using namespace boost::filesystem;
     const path dir_path(system_complete(path(name, native)));
@@ -101,7 +112,7 @@ namespace Thc {
       }
     }
   }
-  
+
   void SkinManager::load_all_skins() {
     PathList::iterator it;
     for (it = m_paths.begin(); it != m_paths.end(); ++it) {
@@ -112,12 +123,12 @@ namespace Thc {
   void SkinManager::add_path(const Glib::ustring &name) {
     m_paths.push_back(name);
   }
-  
+
   void SkinManager::remove_path(const Glib::ustring &name) {
     std::vector<Glib::ustring>::iterator it = std::find(m_paths.begin(), m_paths.end(), name);
     if (it != m_paths.end())
       m_paths.erase(it);
   }
-  
+
 }
 

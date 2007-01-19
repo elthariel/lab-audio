@@ -30,7 +30,7 @@
 #include "skinmanager.h"
 #include "modemanager.h"
 #include "slider.h"
-#include "waveview.h"
+//#include "waveview.h"
 //stolen from ll-plugins
 //#include "shapereditor.hpp"
 //#include "keyboard.hpp"

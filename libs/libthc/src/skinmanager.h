@@ -34,17 +34,17 @@ namespace Thc {
 
   class SkinManager {
   public:
-    inline static void instanciate() { if (!m_skin_manager) m_skin_manager = new SkinManager(); }
+    static void instanciate();
     inline static SkinManager *instance() { instanciate(); return m_skin_manager; }
-    
+
     static Skin::Ref get_skin(const Glib::ustring& name) { return instance()->do_get_skin(name); }
-    
+
     void load_all_skins();
     bool load_skin(const Glib::ustring &name);
     void add_path(const Glib::ustring &name);
     void remove_path(const Glib::ustring &name);
     void load_path(const Glib::ustring &name);
-   
+
   protected:
     SkinManager() { };
     inline Skin::Ref do_get_skin(const Glib::ustring& name) { return m_skins[name]; }
@@ -60,7 +60,7 @@ namespace Thc {
     ParserList m_parser;
     static SkinManager *m_skin_manager;
   };
-  
+
 } //namespace Thc
 
 #endif //_SKINMANAGER_H_

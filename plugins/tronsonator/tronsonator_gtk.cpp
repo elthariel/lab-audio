@@ -34,11 +34,12 @@ public:
       m_btn_headphone_4("h") {
 
 		Thc::SkinManager::instanciate();
-		m_slider1 = new Thc::Slider(Thc::Param::create_param(), false);
-		m_slider2 = new Thc::Slider(Thc::Param::create_param(), false);
-		m_slider3 = new Thc::Slider(Thc::Param::create_param(), false);
-		m_slider4 = new Thc::Slider(Thc::Param::create_param(), false);
-		m_crossfader = new Thc::Slider(Thc::Param::create_param(), true);
+		Thc::SkinManager::instance()->load_all_skins();
+		m_slider1 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
+		m_slider2 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
+		m_slider3 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
+		m_slider4 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
+		m_crossfader = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-handle-h"));
     VBox *vbox;
     widget = &m_vbox;
     m_vbox.pack_start(m_hbox);
