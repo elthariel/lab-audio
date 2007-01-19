@@ -57,13 +57,12 @@ int             lo_avahi_init(lo_server s)
   if (!(s->av_simple_poll = avahi_simple_poll_new()))
     lo_throw(s, -42, "Failed to create avahi simple_poll object\n", NULL);
   s->av_client = avahi_client_new(avahi_simple_poll_get(s->av_simple_poll),
-                                  0,//AVAHI_CLIENT_NO_FAIL,
+                                  AVAHI_CLIENT_NO_FAIL,
                                   &lo_avahi_callback, (void *)s,
                                   &avahi_error);
   if (!s->av_client)
-    fprintf(stderr, "Unable to create client %s \n",
-            avahi_strerror(avahi_error));
-    //    lo_throw(s, -42, "Failed to create avahi client object\n", NULL);
+    lo_throw(s, -42, avahi_strerror(avahi_error), NULL);
+
   return (0);
 }
 
@@ -86,7 +85,10 @@ void            lo_avahi_callback(AvahiClient *ac,
               {
                 fprintf(stderr, "AVAHI_CLIENT_S_RUNNING, unable to create service\n");
                 if (s->av_group)
-                  avahi_entry_group_reset(s->av_group);
+                  {
+                    avahi_entry_group_reset(s->av_group);
+                    s->av_group = 0;
+                  }
               }
           }
           break;
