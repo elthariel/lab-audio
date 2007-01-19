@@ -139,12 +139,10 @@ static void thread_func(void *data)
 
     // Run a loop of avahi client main loop.
     // FIXME restart or exit avahi client
-    //    fprintf(stderr, "loop tag \n");
     if ((ret = avahi_simple_poll_iterate(st->s->av_simple_poll, 0)) != 0)
       {
         lo_throw(st->s, ret, "Avahi client loop exited", NULL);
       }
-    fflush(0);
   }
   st->done = 1;
 
