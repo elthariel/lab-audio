@@ -108,29 +108,29 @@ void                    Sample::play_voice(unsigned int voice_number,
       if (voices[voice_number].pos == 0.0)
         {
           cout << "Beginning of the sample" << endl;
-          outL[i] = s(0,0);
+          outL[i] += s(0,0);
           if (info.channels == 1)
-            outR[i] = s(0,0);
+            outR[i] += s(0,0);
           else
-            outR[i] = s(0,0);
+            outR[i] += s(0,0);
         }
       else
         {
           tmp = (unsigned int)voices[voice_number].pos;
-          outL[i] = (s(0,tmp) * (voices[voice_number].pos - tmp)
+          outL[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
                       + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
-          //outL[i] *= amp_env(voices[voice_number].pos_rel);
+          outL[i] *= amp_env(voices[voice_number].pos_rel);
           if (info.channels == 1)
             {
-              outR[i] = (s(0,tmp) * (voices[voice_number].pos - tmp)
+              outR[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
                           + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
         	}
           else
             {
-              outR[i] = (s(1,tmp) * (voices[voice_number].pos - tmp)
+              outR[i] += (s(1,tmp) * (voices[voice_number].pos - tmp)
                           + s(1, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
             }
-		  //outR[i] *= amp_env(voices[voice_number].pos_rel);	
+		  outR[i] *= amp_env(voices[voice_number].pos_rel);	
         }
       voices[voice_number].pos_rel++;
       voices[voice_number].pos += sample_ratio;

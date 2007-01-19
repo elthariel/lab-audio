@@ -1,0 +1,35 @@
+Todo for Promethee sampler
+
+Legend:
+- : not open task
++ : open task
+* : done task
+
+## Sample class
+   * basic sampler
+   - normalize
+   - reverse
+   - fine pitch
+   - delay
+   - arp
+   - Filter support
+   - Filters
+     - simple and fast lp.
+     - 2-pole LP, HP, BP
+     - 4-pole LP, HP, BP
+     - ?notch
+   - Envelops
+     * EnvSwitcher, EnvDecay, EnvHold
+     - End Dahdsr
+
+## Promethee
+
+## Promethee GUI
+   * GUI Base.
+   - Envelopview
+   - WaveView
+   - gain, pitch
+   - filter view and/or filter sliders
+
+## Long term ideas
+   - Time stretching
