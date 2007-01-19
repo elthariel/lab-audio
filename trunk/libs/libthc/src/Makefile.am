@@ -23,8 +23,7 @@ libthc_la_SOURCES = \
   skinmanager.cc \
 	modemanager.cc \
 	cairoutils.cc \
-	slider.cc \
-	waveview.cc
+	slider.cc
 
 libthc_la_LDFLAGS =
 
@@ -45,9 +44,7 @@ libthcinclude_HEADERS = \
 	skinmanager.h \
 	modemanager.h \
 	cairoutils.h \
-	slider.h \
-	waveview.h
-
+	slider.h
 
 
 

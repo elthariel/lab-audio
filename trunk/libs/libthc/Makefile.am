@@ -1,11 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ## Created by Anjuta
 
-SUBDIRS = src po tests
-
-#libthcskindir = ${prefix}/share/thc/skins
-#libthcskin_DATA = \
-#	skins
+SUBDIRS = src tests skins
 
 libthcdocdir = ${prefix}/doc/libthc
 libthcdoc_DATA = \

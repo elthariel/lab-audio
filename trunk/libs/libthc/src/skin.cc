@@ -38,7 +38,7 @@ namespace Thc {
     int i = 0;
     std::string imgname;
     Images::Ref images(new std::vector<Image::Ref>());
-        
+
     if (i == -1) {
       images->push_back(Image::create_image(name));
     } else for (i = 0; i <= number; i++) {
@@ -53,7 +53,7 @@ namespace Thc {
     images->push_back(Image::create_image(name));
     return images;
   }
-  
+
   //Xml
   Glib::ustring Xml::extract_attribute(const Glib::ustring &name, Ptr node) {
     if (!node)
@@ -70,7 +70,7 @@ namespace Thc {
     }
     return "";
   }
-  
+
   Color::Ptr Color::create_color(Xml::Ptr node) {
     Glib::ustring r, g, b, a;
     return new Color();
@@ -78,13 +78,13 @@ namespace Thc {
 
   //Skin
   Skin::Ref Skin::create_skin(Xml::Ptr node, const Glib::ustring &path) {
-    return Ref(new Skin(node, path)); 
+    return Ref(new Skin(node, path));
   }
 
   Skin::Skin(Xml::Ptr node, const Glib::ustring &path):m_xml(node), m_path(path) {
     load_images_from_xml();
   }
-  
+
   Color::Ptr Skin::get_color(const Glib::ustring &name) {
     if (!m_xml)
       return 0;
@@ -96,11 +96,11 @@ namespace Thc {
     }
     return 0;
   }
-    
+
   Glib::ustring Skin::get_attribute(const Glib::ustring &name) {
     return Xml::extract_attribute(name, m_xml);
   }
-  
+
   bool Skin::get_bool_attribute(const Glib::ustring &name) {
     return (Xml::extract_attribute(name, m_xml) == "true");
   }
@@ -108,10 +108,10 @@ namespace Thc {
   void Skin::load_images_from_xml() {
     Glib::ustring name, path, count;
     xmlpp::Node::NodeList list;
-    
+
     if (!m_xml)
       return;
-    
+
     list = m_xml->get_children("images");
     for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
       name = Xml::extract_attribute("name", *iter);
@@ -125,7 +125,7 @@ namespace Thc {
         }
       }
     }
-    
+
     list = m_xml->get_children("image");
     for(xmlpp::Node::NodeList::iterator iter = list.begin(); iter != list.end(); ++iter){
       name = Xml::extract_attribute("name", *iter);
