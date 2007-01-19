@@ -31,7 +31,8 @@ using namespace std;
 
 
 EnvD::EnvD(unsigned int sample_rate, unsigned int tempo)
-  m_bpm(tempo), m_sr(sample_rate), m_decay(2.0)
+  : m_bpm(tempo), m_sr(sample_rate), m_decay(2.0),
+  	Envelop(sample_rate, tempo)
 {
   //FIXME may be the wrong formula.
   m_beat_length = (60.0 / m_bpm) * m_sr;
@@ -52,7 +53,7 @@ double                  EnvD::operator()(unsigned int position)
   double                res;
   double                pos_sec;
 
-  pos_sec = position * (1.0 / sample_rate);
+  pos_sec = position * (1.0 / m_sr);
   res = pos_sec * m_a;
   return (res);
 }
@@ -62,6 +63,13 @@ void                    EnvD::set_decay(double decay)
   //FIXME do bound check
   m_decay = decay;
   compute_a();
+}
+
+void                    EnvD::set_coefs(double *coefs,
+                                        unsigned int coef_count)
+{
+  if (coef_count)
+    set_decay(coefs[0]);
 }
 
 
@@ -76,7 +84,7 @@ EnvH::EnvH(unsigned int sample_rate, unsigned int tempo)
   m_beat_length = (60.0 / tempo) * m_sr;
 }
 
-virtual double          EnvH::operator()(unsigned int x)
+double          		EnvH::operator()(unsigned int x)
 {
   if (x < (m_hold * m_beat_length))
     return (1.0);
@@ -89,6 +97,14 @@ void                    EnvH::set_hold(double hold)
   m_hold = hold;
 }
 
+void                    EnvH::set_coefs(double *coefs,
+                                        unsigned int coef_count)
+{
+  if (coef_count)
+    set_hold(coefs[0]);
+}
+
+
 //////////////////////////////////////////////////////////////////////
 //////////////////////// EnvDahdsr ///////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -98,7 +114,8 @@ void                    EnvH::set_hold(double hold)
 //////////////////////////////////////////////////////////////////////
 
 EnvSwitch::EnvSwitch(unsigned int sample_rate, unsigned int tempo)
-  : m_bpm(tempo), m_sr(sample_rate), m_current_env(-1)
+  : m_bpm(tempo), m_sr(sample_rate), m_current_env(-1),
+  	Envelop(sample_rate, tempo)
 {
 }
 
@@ -110,6 +127,7 @@ void                    EnvSwitch::set_envelop(int env)
     }
 }
 
+// pos < 0 -> next free offset, if pos exist, the item at that pos will be replaced.
 unsigned int            EnvSwitch::add_envelop(Envelop *env, int position)
 {
   unsigned int          actual_position;
@@ -127,7 +145,8 @@ unsigned int            EnvSwitch::add_envelop(Envelop *env, int position)
 
   if (replacing)
     delete m_envs[position];
-  m_envs[actual_position] = env;
+  cout << "actual position " << actual_position << endl;
+  m_envs.push_back(env);
 
   return (actual_position);
 }
@@ -140,8 +159,23 @@ double                  EnvSwitch::operator()(unsigned int env_pos)
     return ((*m_envs[m_current_env])(env_pos));
 }
 
-void                    EnvSwitch::set_coefs(double *,
+void                    EnvSwitch::set_coefs(double *coefs,
                                              unsigned int coef_count)
 {
+  if (m_current_env >= 0)
+    {
+      m_envs[m_current_env]->set_coefs(coefs, coef_count);
+    }
+}
 
+EnvSwitch               *EnvSwitch::create_switch_full(unsigned int sample_rate,
+                                                       unsigned int tempo)
+{
+  EnvSwitch             *esw;
+
+  esw = new EnvSwitch(sample_rate, tempo);
+  esw->add_envelop(new EnvD(sample_rate, tempo));
+  esw->add_envelop(new EnvH(sample_rate, tempo));
+
+  return esw;
 }

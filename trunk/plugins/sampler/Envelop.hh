@@ -27,9 +27,11 @@
 
 class Envelop
 {
+protected:
   Envelop(){}
 
 public:
+  virtual ~Envelop(){}
   Envelop(unsigned int, unsigned int){} //sample_rate, tempo
 
   virtual double                operator()(unsigned int) = 0;
@@ -38,12 +40,13 @@ public:
 
 };
 
+//FIXME add destructor
 class EnvSwitch : public Envelop
 {
   unsigned int          m_bpm;
   unsigned int          m_sr;
   int                   m_current_env;
-  vector<Envelop *>     m_envs;
+  std::vector<Envelop *> m_envs;
 
 public:
   EnvSwitch(unsigned int, unsigned int);
@@ -69,10 +72,13 @@ class EnvD : public Envelop
   unsigned int                  m_beat_length; //beat length in sample
 
   void                          compute_a();
+  void							set_decay(double);
 public:
   EnvD(unsigned int, unsigned int);
 
   virtual double                operator()(unsigned int);
+  virtual void                  set_coefs(double *coefs,
+                                          unsigned int coef_count = 1);
 };
 
 class EnvH : public Envelop
@@ -82,11 +88,14 @@ class EnvH : public Envelop
 
   double                        m_hold;         //hold time in beat
   unsigned int                  m_beat_length; //beat length in sample
-
+  
+  void							set_hold(double);
 public:
   EnvH(unsigned int, unsigned int);
 
   virtual double                operator()(unsigned int);
+  virtual void                  set_coefs(double *coefs,
+                                          unsigned int coef_count = 1);
 
 };
 
@@ -102,6 +111,8 @@ public:
   EnvDahdsr(unsigned int, unsigned int);
 
   virtual double                operator()(unsigned int);
+  virtual void                  set_coefs(double *coefs,
+                                          unsigned int coef_count = 1);
 };
 */
 
