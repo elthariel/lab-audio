@@ -42,9 +42,16 @@ enum sedit_vbox {
 class SampleEdit : public Gtk::VBox
 {
 public:
-  SampleEdit();
+  SampleEdit(LV2Controller& ctrl);
+
+  void                  set_vol(double);
+  void                  set_pan(double);
+  void                  set_pitch(double);
+  void                  set_root(double);
 
 protected:
+  LV2Controller&        m_ctrl;
+
   Gtk::HBox             m_vbox[sedit_n_hbox];
   Gtk::VBox             m_vbox_main[4];
   Gtk::Label            m_lbl_main[4];
