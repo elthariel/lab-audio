@@ -1,5 +1,5 @@
 /*
-** WaView.cc
+** WaveView.cc
 ** Login : <elthariel@elthariel-desktop>
 ** Started on  Tue Jan 16 03:15:27 2007 Nahlwe
 ** $Id$
@@ -21,14 +21,14 @@
 */
 
 #include <iostream>
-#include "WaView.hh"
+#include "waveview.h"
 
-WaView::WaView()
+WaveView::WaveView()
   :data(0), data_size(0), channels(0)
 {
 }
 
-bool                    WaView::on_expose_event(GdkEventExpose* event)
+bool                    WaveView::on_expose_event(GdkEventExpose* event)
 {
   Cairo::RefPtr<Cairo::Context>         cc;
   unsigned int                          mono_frames;
@@ -53,6 +53,9 @@ bool                    WaView::on_expose_event(GdkEventExpose* event)
   float w_ratio = ((float) mono_frames) / width;
 
   cc->set_line_width(1.0);
+   cc->set_line_cap(Cairo::LINE_CAP_ROUND);
+  //LINE_CAP_ROUND
+  //LINE_CAP_SQUARE
   cc->set_source_rgb(1.0, 0.0, 0.0);
 
   cc->move_to(0, (height / 2) * (data[0] + 1.0));
@@ -75,7 +78,7 @@ bool                    WaView::on_expose_event(GdkEventExpose* event)
   return (true);
 }
 
-void                    WaView::set_data(sample_t *d, unsigned int size,
+void                    WaveView::set_data(sample_t *d, unsigned int size,
                                          unsigned char chan)
 {
   data = d;
