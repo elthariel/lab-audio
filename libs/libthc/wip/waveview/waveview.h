@@ -1,5 +1,5 @@
 /*
-** WaView.hh
+** WaveView.hh
 ** Login : <elthariel@elthariel-desktop>
 ** Started on  Tue Jan 16 03:15:27 2007 Nahlwe
 ** $Id$
@@ -25,20 +25,32 @@
 
 #include <gtkmm.h>
 
-typedef float                   sample_t;
-
-class WaView : public Gtk::DrawingArea
+class WaveView : public Gtk::DrawingArea
 {
+public:
+  WaveView();
+
+  typedef float                 sample_t;
+  virtual bool                  on_expose_event(GdkEventExpose* event);
+  //  void                          render_data(sample_t *, unsigned int);
+  void                          set_data(sample_t *, unsigned int, unsigned char);
+
+private:
   sample_t                      *data;
   unsigned int                  data_size;
   unsigned char                 channels;
 
-public:
-  WaView();
-
-  virtual bool                  on_expose_event(GdkEventExpose* event);
-  //  void                          render_data(sample_t *, unsigned int);
-  void                          set_data(sample_t *, unsigned int, unsigned char);
 };
+
+/*
+void            set_sample_window(int size);
+void            set_scroll_ref(double percent_of_window);
+void            set_scroll_pos_abs(double pos_in_sample);
+void            set_scroll_pos_rel(double pos_in_percent);
+void            set_scroll_pos_offset(double offset in sample);
+
+void            load_raw();
+void            load_stripe();
+ */
 
 #endif	    /* !WAVIEW_HH_ */
