@@ -37,19 +37,23 @@ namespace Thc {
     static void instanciate();
     inline static SkinManager *instance() { instanciate(); return m_skin_manager; }
 
-    static Skin::Ref get_skin(const Glib::ustring& name) { return instance()->do_get_skin(name); }
-
-    void load_all_skins();
-    bool load_skin(const Glib::ustring &name);
-    void add_path(const Glib::ustring &name);
-    void remove_path(const Glib::ustring &name);
-    void load_path(const Glib::ustring &name);
+    static Skin::Ref get_skin(const Glib::ustring& name) { instanciate(); return instance()->do_get_skin(name); }
+    static void load_all_skins() { instanciate(); instance()->do_load_all_skins(); }
+    static bool load_skin(const Glib::ustring &name){ instanciate(); return instance()->do_load_skin(name); }
+    //static void add_path(const Glib::ustring &name);
+    //static void remove_path(const Glib::ustring &name);
+    static void load_path(const Glib::ustring &name){ instanciate(); instance()->do_load_path(name); }
 
   protected:
     SkinManager() { };
     inline Skin::Ref do_get_skin(const Glib::ustring& name) { return m_skins[name]; }
     void parse_node(const Xml::Ptr node, const Glib::ustring &path);
     void parse_sub_node(const Xml::Ptr node, const Glib::ustring &path);
+    void do_load_all_skins();
+    bool do_load_skin(const Glib::ustring &name);
+    void do_add_path(const Glib::ustring &name);
+    void do_remove_path(const Glib::ustring &name);
+    void do_load_path(const Glib::ustring &name);
 
   private:
     typedef std::vector<Glib::ustring> PathList;

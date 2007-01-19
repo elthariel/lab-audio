@@ -44,29 +44,31 @@ public:
       frames to process. */
   void run(uint32_t sample_count) {
 		while (sample_count) {
-			p<float>(peg_output_l)[sample_count] = p<float>(peg_input_l1)[sample_count] +
-																						 p<float>(peg_input_l2)[sample_count] +
-																						 p<float>(peg_input_l3)[sample_count] +
-																						 p<float>(peg_input_l4)[sample_count];
-			p<float>(peg_output_r)[sample_count] = p<float>(peg_input_r1)[sample_count] +
-																						 p<float>(peg_input_r2)[sample_count] +
-																						 p<float>(peg_input_r3)[sample_count] +
-																						 p<float>(peg_input_r4)[sample_count];
-			if (p<bool>(peg_headphone_1)) {
-				p<float>(peg_headphone_l)[sample_count] = p<float>(peg_input_l1)[sample_count];
-				p<float>(peg_headphone_r)[sample_count] = p<float>(peg_input_r1)[sample_count];
+			p(peg_output_l)[sample_count] = p(peg_input_l1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1) +
+																			p(peg_input_l2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2) +
+																			p(peg_input_l3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3) +
+																			p(peg_input_l4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
+			p(peg_output_r)[sample_count] = p(peg_input_r1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1) +
+																			p(peg_input_r2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2) +
+																			p(peg_input_r3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3) +
+																			p(peg_input_r4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
+			p(peg_headphone_l)[sample_count] = 0;
+			p(peg_headphone_r)[sample_count] = 0;
+			if (*p(peg_headphone_1)) {
+				p(peg_headphone_l)[sample_count] = p(peg_input_l1)[sample_count] * *p(peg_gain_1);
+				p(peg_headphone_r)[sample_count] = p(peg_input_r1)[sample_count] * *p(peg_gain_1);
 			}
-			if (p<bool>(peg_headphone_2)) {
-				p<float>(peg_headphone_l)[sample_count] += p<float>(peg_input_l2)[sample_count];
-				p<float>(peg_headphone_r)[sample_count] += p<float>(peg_input_r2)[sample_count];
+			if (*p(peg_headphone_2)) {
+				p(peg_headphone_l)[sample_count] += p(peg_input_l2)[sample_count] * *p(peg_gain_2);
+				p(peg_headphone_r)[sample_count] += p(peg_input_r2)[sample_count] * *p(peg_gain_2);
 			}
-			if (p<bool>(peg_headphone_3)) {
-				p<float>(peg_headphone_l)[sample_count] += p<float>(peg_input_l3)[sample_count];
-				p<float>(peg_headphone_r)[sample_count] += p<float>(peg_input_r3)[sample_count];
+			if (*p(peg_headphone_3)) {
+				p(peg_headphone_l)[sample_count] += p(peg_input_l3)[sample_count] * *p(peg_gain_3);
+				p(peg_headphone_r)[sample_count] += p(peg_input_r3)[sample_count] * *p(peg_gain_3);
 			}
-			if (p<bool>(peg_headphone_4)) {
-				p<float>(peg_headphone_l)[sample_count] += p<float>(peg_input_l4)[sample_count];
-				p<float>(peg_headphone_r)[sample_count] += p<float>(peg_input_r4)[sample_count];
+			if (*p(peg_headphone_4)) {
+				p(peg_headphone_l)[sample_count] += p(peg_input_l4)[sample_count] * *p(peg_gain_4);
+				p(peg_headphone_r)[sample_count] += p(peg_input_r4)[sample_count] * *p(peg_gain_4);
 			}
 
 		  sample_count--;
