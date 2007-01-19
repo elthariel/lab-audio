@@ -20,7 +20,7 @@ bin_PROGRAMS = thcmeter
 thcmeter_SOURCES = \
 	main.cc
 
-thcmeter_LDADD = $(PACKAGE_LIBS)
+thcmeter_LDADD = $(PACKAGE_LIBS) -lsndfile
 thcmeter_DEPENDENCIES = ../src/libthc.la
 #thcmeter_CXXFLAGS = -DMONOLITHIC_INGENUITY -DGTK_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -I../../ingenuity -I../../../common -I../../../libs -I../../../libs/client -DPKGDATADIR=\"$(pkgdatadir)\"
 thcmeter_LDADD += ../src/libthc.la

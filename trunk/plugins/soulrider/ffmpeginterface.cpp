@@ -38,6 +38,7 @@ ffmpeg::ffmpeg() {
 	m_codecctx = NULL;
 	m_formatctx = NULL;
 	m_loaded = false;
+	std::cout << sizeof(short int) << " -- " << sizeof(short) << std::endl;
 }
 
 bool ffmpeg::load_file(const Glib::ustring &str) {
@@ -136,7 +137,21 @@ int ffmpeg::get_pos() {
 bool ffmpeg::seek(unsigned long long seek_pos) {
 }
 
+#define compose_16le(ptr) \
+	((((*((ptr)+1)+128)&0xff) << 8)+*(ptr))
 
+#define compose_16be(ptr) \
+	((((*(ptr)+128)&0xff) << 8)+*((ptr)+1))
+
+#define conv_16_float(x) \
+	((float)((x)-32768)/32768.0)
+
+#define convert_16le_float(x) conv_16_float(compose_16le(&(x)))
+#define convert_16be_float(x) conv_16_float(compose_16be(&(x)))
+
+float old_convert_mono_16le_float(unsigned char *from) {
+	return conv_16_float(compose_16le(from));
+}
 
 void ffmpeg::copy(short int *input, float *buffer_l, float *buffer_r, int sz) {
   int j = 0,k = 0;
@@ -144,10 +159,10 @@ void ffmpeg::copy(short int *input, float *buffer_l, float *buffer_r, int sz) {
 
   for (int i = 0; i < sz; ++i) {
   	if (i % 2) {
-  	  buffer_r[j] = (float)input[i];// / (float)SHRT_MAX;
+  	  buffer_r[j] = (float)input[i] / (float)0xFFFF; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
   	  ++j;
   	} else {
-  	  buffer_l[k] = (float)input[i];// / (float)SHRT_MAX;
+  	  buffer_l[k] = (float)input[i] / (float)0xFFFF; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
   	  ++k;
   	}
   }

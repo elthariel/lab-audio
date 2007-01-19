@@ -24,9 +24,11 @@
 
 #include <gtkmm.h>
 #include "../src/thc.h"
-
+#include <sndfile.h>
+#include <iostream>
 using namespace Thc;
 Slider *slider;
+WaveView *wview1;
 
 void normal_mode() {
   ModeManager::instance()->set_mode("test", ModeNormal);
@@ -47,10 +49,62 @@ void connect2_mode() {
 void vector_mode() {
   slider->set_skin(SkinManager::get_skin("slider/crossfader-vector-v"));
 }
-    
-int main (int argc, char *argv[]) {  
+void load_sample() {
+  Gtk::FileChooserDialog dialog("Choose a sample", Gtk::FILE_CHOOSER_ACTION_OPEN);
+  //dialog.set_transient_for(win);
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+  Gtk::FileFilter filter_samples;
+  filter_samples.set_name("Audio sample Files");
+  filter_samples.add_pattern("*.wav");
+  filter_samples.add_pattern("*.aiff");
+  dialog.add_filter(filter_samples);
+
+  std::cout << "diaglo.run" << std::endl;
+  int result = dialog.run();
+  std::cout << "after diaglo.run" << std::endl;
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {
+      SF_INFO           sfinfo;
+      SNDFILE           *sndf;
+      WaveView::sample_t          *samples;
+
+      std::cout << "Open clicked." << std::endl;
+      std::string filename = dialog.get_filename();
+      std::cout << "File selected: " <<  filename << std::endl;
+
+      sndf = sf_open(filename.c_str(), SFM_READ, &sfinfo);
+      if (sndf)
+        {
+          samples = new WaveView::sample_t[sfinfo.frames];
+          sf_readf_float(sndf, samples, sfinfo.frames);
+          wview1->set_data(samples, sfinfo.frames, sfinfo.channels);
+        }
+      break;
+    }
+    case(Gtk::RESPONSE_CANCEL):
+    {
+      std::cout << "Cancel clicked." << std::endl;
+      break;
+    }
+    default:
+    {
+      std::cout << "Unexpected button clicked." << std::endl;
+      break;
+    }
+  }
+}
+
+int main (int argc, char *argv[]) {
   Gtk::Main gtkmain (argc, argv);
-  
+
   SkinManager::instanciate();
   ModeManager::instanciate();
   SkinManager::instance()->load_path("../skins");
@@ -62,7 +116,8 @@ int main (int argc, char *argv[]) {
   Gtk::Button btn_normal2("Skin All h");
   Gtk::Button btn_connect2("Skin All v");
   Gtk::Button btn_normal3("Skin Vect");
-  
+  Gtk::Button btn_loadsample("Load a Sample");
+
   Gtk::VBox vbox;
   Gtk::HBox hbox;
   Gtk::HBox hbox2;
@@ -85,12 +140,12 @@ int main (int argc, char *argv[]) {
   				       false,
   				       true);
   Slider slider9(SkinManager::get_skin("slider/crossfader-full"));
-
+  wview1 = new WaveView();
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
   delete slider;
   slider = new Slider(Param::create_param(), false, false, false);
-  
+
   ModeManager::instance()->add_widget("test", slider);
   ModeManager::instance()->add_widget("test", slider2);
   ModeManager::instance()->add_widget("test", slider3);
@@ -100,9 +155,10 @@ int main (int argc, char *argv[]) {
   ModeManager::instance()->add_widget("test2", slider7);
   ModeManager::instance()->add_widget("test2", slider8);
   ModeManager::instance()->add_widget("test2", slider9);
-  
+
   window.add(vbox);
   vbox.pack_start(hbox);
+  hbox.pack_start(btn_loadsample);
   hbox.pack_start(btn_normal);
   hbox.pack_start(btn_connect);
   hbox.pack_start(btn_normal2);
@@ -118,13 +174,16 @@ int main (int argc, char *argv[]) {
   hbox2.pack_start(slider7);
   hbox2.pack_start(slider8);
   hbox2.pack_start(slider9);
-  
+
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));
   btn_connect2.signal_clicked().connect(sigc::ptr_fun(&connect2_mode));
   btn_normal2.signal_clicked().connect(sigc::ptr_fun(&normal2_mode));
   btn_normal3.signal_clicked().connect(sigc::ptr_fun(&vector_mode));
-    
+  btn_loadsample.signal_clicked().connect(sigc::ptr_fun(&load_sample));
+
+  vbox.pack_start(*wview1);
+
   window.show_all();
   gtkmain.run (window);
   delete slider;
