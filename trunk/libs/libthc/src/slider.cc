@@ -32,8 +32,8 @@
 namespace Thc {
 
 using namespace std;
-  
-         
+
+
 Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
   : ThcWidget<Gtk::DrawingArea>("slider", skin),
     m_param(param),
@@ -87,7 +87,7 @@ Slider::Slider(Image::Ref image_background,
     m_infinite(infinite) {
   init();
   if (image_background)
-    set_size_request(image_background->get_width(), image_background->get_height());  
+    set_size_request(image_background->get_width(), image_background->get_height());
 }
 
 Slider::SliderType text2type(const Glib::ustring &str) {
@@ -108,7 +108,7 @@ void Slider::on_skin_change() {
   m_type = text2type(get_skin()->get_attribute("render"));
   m_horizontal = get_skin()->get_bool_attribute("horizontal");
   switch (m_type) {
-    case SliderVector:     
+    case SliderVector:
       break;
     case SliderAll:
       m_images = get_skin()->get_images("all");
@@ -131,14 +131,14 @@ void Slider::on_skin_change() {
   }
   queue_draw();
 }
-     
+
 void Slider::init() {
   set_param("x", m_param);
   m_param->signal_value_changed().connect(mem_fun(*this, &Slider::queue_draw));
   signal_mode_change().connect(mem_fun(*this, &Slider::queue_draw));
   add_events(Gdk::EXPOSURE_MASK |
-             Gdk::BUTTON1_MOTION_MASK | 
-             Gdk::BUTTON_PRESS_MASK | 
+             Gdk::BUTTON1_MOTION_MASK |
+             Gdk::BUTTON_PRESS_MASK |
              Gdk::SCROLL_MASK |
              Gdk::ENTER_NOTIFY_MASK |
              Gdk::LEAVE_NOTIFY_MASK);
@@ -148,11 +148,11 @@ void Slider::init() {
     set_size_request(64, 32);
   else
     set_size_request(32, 64);
-  std::cout << "widget name:" <<  get_name() << std::endl;  
+//  std::cout << "widget name:" <<  get_name() << std::endl;
 }
 
 //draw the slider with cairo
-void Slider::draw_vector(GdkEventExpose* event, 
+void Slider::draw_vector(GdkEventExpose* event,
 						 Cairo::RefPtr<Cairo::Context> cc) {
   float value = m_param->get_value();
   Gtk::Allocation allocation = get_allocation();
@@ -163,7 +163,7 @@ void Slider::draw_vector(GdkEventExpose* event,
     width = allocation.get_width();
   } else
     get_size_request(width, height);
-  
+
   cc->set_source_rgb(1.0, 1.0, 1.0);
   cc->rectangle(0, 0, width, height);
   cc->rectangle(1, 1, width - 2, height - 2);
@@ -194,7 +194,7 @@ void Slider::draw_vector(GdkEventExpose* event,
   cc->stroke();
 }
 
-void Slider::draw_images(GdkEventExpose* event,  
+void Slider::draw_images(GdkEventExpose* event,
 						 Cairo::RefPtr<Cairo::Context> cc) {
   float value = m_param->get_value();
   double w, h;
@@ -218,7 +218,7 @@ void Slider::draw_images(GdkEventExpose* event,
 
 //background/handle
 //background/foreground
-void Slider::draw_2images(GdkEventExpose* event, 
+void Slider::draw_2images(GdkEventExpose* event,
 						  Cairo::RefPtr<Cairo::Context> cc) {
   double w, h;
   float value = m_param->get_value();
@@ -233,19 +233,19 @@ void Slider::draw_2images(GdkEventExpose* event,
   cc->set_source(m_image_background, 0, 0);
   cc->paint();
   cc->stroke();
-  
+
   if (!m_image_foreground)
     return;
   //draw the handle
   if (m_type == SliderHandle) {
     if (m_horizontal) {
-      value = (value - m_param->get_lower()) 
-              * (w - m_image_foreground->get_width())//(m_images->size()-1) 
+      value = (value - m_param->get_lower())
+              * (w - m_image_foreground->get_width())//(m_images->size()-1)
               / (m_param->get_upper() - m_param->get_lower());
       cc->set_source(m_image_foreground, value, 0);
     } else {
-      value = (value - m_param->get_lower()) 
-              * (h - m_image_foreground->get_height())//(m_images->size()-1) 
+      value = (value - m_param->get_lower())
+              * (h - m_image_foreground->get_height())//(m_images->size()-1)
               / (m_param->get_upper() - m_param->get_lower());
       cc->set_source(m_image_foreground, 0, value);
     }
@@ -254,17 +254,17 @@ void Slider::draw_2images(GdkEventExpose* event,
   }
   cc->restore();
 }
-												  
+
 
 bool Slider::on_expose_event(GdkEventExpose* event) {
-  
+
   Glib::RefPtr<Gdk::Window> win = get_window();
   Cairo::RefPtr<Cairo::Context> cc = win->create_cairo_context();
 
   //clip to what really need to be redrawn
   cc->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
   cc->clip();
-    
+
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
   if (get_mode() == ModeNormal) {
   	if (m_type == SliderVector)
@@ -283,7 +283,7 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
     else {
       int h,w;
       get_size_request(w, h);
-      cc->rectangle(0, 0, w, h);     
+      cc->rectangle(0, 0, w, h);
     }
     cc->stroke();
   }
@@ -293,7 +293,7 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
 bool Slider::on_motion_notify_event(GdkEventMotion* event) {
   float scale = 200;
   float value;
-  
+
   if (event->state & GDK_SHIFT_MASK)
     scale *= 200;
   if (m_horizontal)

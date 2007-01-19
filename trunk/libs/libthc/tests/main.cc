@@ -54,7 +54,6 @@ void vector_mode() {
 int main (int argc, char *argv[]) {
   Gtk::Main gtkmain (argc, argv);
 
-  SkinManager::instanciate();
   ModeManager::instanciate();
  // SkinManager::instance()->add_path("../skins");
   SkinManager::instance()->load_all_skins();

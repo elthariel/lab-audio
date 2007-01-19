@@ -10,7 +10,14 @@
 using namespace std;
 using namespace Gtk;
 using namespace sigc;
+using namespace Thc;
 
+
+Param::Ref create_param(int port) {
+	return Param::create_param(peg_ports[port].min,
+														 peg_ports[port].max,
+														 peg_ports[port].default_value);
+}
 
 class MyPluginGUI : public LV2GTK2GUI {
 public:
@@ -31,22 +38,25 @@ public:
       m_btn_headphone_1("h"),
       m_btn_headphone_2("h"),
       m_btn_headphone_3("h"),
-      m_btn_headphone_4("h") {
-
-		Thc::SkinManager::instanciate();
-		Thc::SkinManager::instance()->load_all_skins();
-		m_slider1 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
-		m_slider2 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
-		m_slider3 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
-		m_slider4 = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-full"));
-		m_crossfader = new Thc::Slider(Thc::SkinManager::get_skin("slider/crossfader-handle-h"));
+      m_btn_headphone_4("h"),
+      m_gain1(create_param(peg_gain_1)),
+      m_gain2(create_param(peg_gain_2)),
+      m_gain3(create_param(peg_gain_3)),
+      m_gain4(create_param(peg_gain_4)),
+      m_slider1(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_1), true),
+			m_slider2(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_2), true),
+			m_slider3(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_3), true),
+			m_slider4(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_4), true),
+			m_crossfader(SkinManager::get_skin("slider/crossfader-handle-h"), create_param(peg_crossfader), true) {
     VBox *vbox;
     widget = &m_vbox;
     m_vbox.pack_start(m_hbox);
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_1);
-    vbox->pack_start(*m_slider1);
+    vbox->pack_start(m_bal1);
+    vbox->pack_start(m_gain1);
+    vbox->pack_start(m_slider1);
     vbox->pack_start(m_hbox1);
     m_hbox1.pack_start(m_cross_l1);
     m_hbox1.pack_start(m_cross_r1);
@@ -54,7 +64,9 @@ public:
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_2);
-    vbox->pack_start(*m_slider2);
+    vbox->pack_start(m_bal2);
+    vbox->pack_start(m_gain2);
+    vbox->pack_start(m_slider2);
     vbox->pack_start(m_hbox2);
     m_hbox2.pack_start(m_cross_l2);
     m_hbox2.pack_start(m_cross_r2);
@@ -62,7 +74,9 @@ public:
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_3);
-    vbox->pack_start(*m_slider3);
+    vbox->pack_start(m_bal3);
+    vbox->pack_start(m_gain3);
+    vbox->pack_start(m_slider3);
     vbox->pack_start(m_hbox3);
     m_hbox3.pack_start(m_cross_l3);
     m_hbox3.pack_start(m_cross_r3);
@@ -70,14 +84,39 @@ public:
     vbox = new VBox();
     m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_4);
-    vbox->pack_start(*m_slider4);
+    vbox->pack_start(m_bal4);
+    vbox->pack_start(m_gain4);
+    vbox->pack_start(m_slider4);
     vbox->pack_start(m_hbox4);
     m_hbox4.pack_start(m_cross_l4);
     m_hbox4.pack_start(m_cross_r4);
 
-    m_vbox.pack_start(*m_crossfader);
-  }
+    m_vbox.pack_start(m_crossfader);
 
+		bind_param(m_gain1.get_param("x"), peg_gain_1);
+		bind_param(m_gain2.get_param("x"), peg_gain_2);
+		bind_param(m_gain3.get_param("x"), peg_gain_3);
+		bind_param(m_gain4.get_param("x"), peg_gain_4);
+    bind_param(m_slider1.get_param("x"), peg_volume_1);
+    bind_param(m_slider2.get_param("x"), peg_volume_2);
+    bind_param(m_slider3.get_param("x"), peg_volume_3);
+    bind_param(m_slider4.get_param("x"), peg_volume_4);
+    bind_param(m_crossfader.get_param("x"), peg_crossfader);
+    bind_param2(m_btn_headphone_1, peg_headphone_1);
+    bind_param2(m_btn_headphone_2, peg_headphone_2);
+    bind_param2(m_btn_headphone_3, peg_headphone_3);
+    bind_param2(m_btn_headphone_4, peg_headphone_4);
+  }
+  void bind_param(Thc::Param::Ref param, int port) {
+  	param->signal_value_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control), port),
+                            mem_fun(*param, &Thc::Param::get_value)));
+  }
+  void bind_param2(Gtk::ToggleButton& param, int port) {
+  	param.signal_toggled().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control), port),
+                            mem_fun(param, &ToggleButton::get_active)));
+  }
   //when a trigger button is clicked
   void button_headphone() {
   	std::cout << "gtk: loading" << std::endl;
@@ -91,13 +130,6 @@ public:
     m_ctrl.send_midi(peg_midi, 3, data_on);
     m_ctrl.send_midi(peg_midi, 3, data_off);
   }
-  ~MyPluginGUI() {
-  	delete m_slider1;
-  	delete m_slider2;
-  	delete m_slider3;
-  	delete m_slider4;
-  	delete m_crossfader;
-  }
 
 protected:
   LV2Controller &m_ctrl;
@@ -107,19 +139,19 @@ protected:
   HBox m_hbox3;
   HBox m_hbox4;
   VBox m_vbox;
-  Thc::Slider *m_slider1;
-  Thc::Slider *m_slider2;
-  Thc::Slider *m_slider3;
-  Thc::Slider *m_slider4;
-  Thc::Slider *m_gain1;
-  Thc::Slider *m_gain2;
-  Thc::Slider *m_gain3;
-  Thc::Slider *m_gain4;
-  Thc::Slider *m_bal1;
-  Thc::Slider *m_bal2;
-  Thc::Slider *m_bal3;
-  Thc::Slider *m_bal4;
-  Thc::Slider *m_crossfader;
+  Thc::Slider m_slider1;
+  Thc::Slider m_slider2;
+  Thc::Slider m_slider3;
+  Thc::Slider m_slider4;
+  Thc::Slider m_gain1;
+  Thc::Slider m_gain2;
+  Thc::Slider m_gain3;
+  Thc::Slider m_gain4;
+  Thc::Slider m_bal1;
+  Thc::Slider m_bal2;
+  Thc::Slider m_bal3;
+  Thc::Slider m_bal4;
+  Thc::Slider m_crossfader;
   ToggleButton m_cross_l1;
   ToggleButton m_cross_r1;
   ToggleButton m_cross_l2;

@@ -41,7 +41,7 @@ namespace Thc {
   		Glib::ustring stdpath = THCDATA_DIR;
   		stdpath += "/skins";
   		m_skin_manager = new SkinManager();
-  		m_skin_manager->add_path(stdpath);
+  		m_skin_manager->load_path(stdpath);
   		std::cout << "path: " << stdpath << std::endl;
   	}
   }
@@ -57,7 +57,7 @@ namespace Thc {
       const xmlpp::Attribute* attribute = *iter;
       if (attribute->get_name() == "name") {
         name = node->get_name() + "/" + attribute->get_value();
-        std::cout << "  Attribute " << name << std::endl;
+        //std::cout << "  Attribute " << name << std::endl;
         m_skins[name] = Skin::create_skin(node, Glib::path_get_dirname(path));
       }
     }
@@ -80,7 +80,7 @@ namespace Thc {
     }
   }
 
-  bool SkinManager::load_skin(const Glib::ustring &name) {
+  bool SkinManager::do_load_skin(const Glib::ustring &name) {
     try {
       boost::shared_ptr<xmlpp::DomParser> parser(new xmlpp::DomParser());
       //parser.set_validate();
@@ -98,7 +98,7 @@ namespace Thc {
     return false;
   }
 
-  void SkinManager::load_path(const Glib::ustring &name) {
+  void SkinManager::do_load_path(const Glib::ustring &name) {
     using namespace boost::filesystem;
     const path dir_path(system_complete(path(name, native)));
     directory_iterator itend;
@@ -113,18 +113,18 @@ namespace Thc {
     }
   }
 
-  void SkinManager::load_all_skins() {
+  void SkinManager::do_load_all_skins() {
     PathList::iterator it;
     for (it = m_paths.begin(); it != m_paths.end(); ++it) {
       load_path(*it);
     }
   }
 
-  void SkinManager::add_path(const Glib::ustring &name) {
+  void SkinManager::do_add_path(const Glib::ustring &name) {
     m_paths.push_back(name);
   }
 
-  void SkinManager::remove_path(const Glib::ustring &name) {
+  void SkinManager::do_remove_path(const Glib::ustring &name) {
     std::vector<Glib::ustring>::iterator it = std::find(m_paths.begin(), m_paths.end(), name);
     if (it != m_paths.end())
       m_paths.erase(it);
