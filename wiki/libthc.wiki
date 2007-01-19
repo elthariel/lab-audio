@@ -122,6 +122,7 @@ Example:
   * write a doc/doxygen comment
   * regroup all audio wigdet already written for gtk that will fit in the project
   * optional: menu for ModeGroup/SkinManager  
+  * dont segfault when file not found
 
 == IThcWidget/ThcWidget ==
   * add a name to each port parameter
