@@ -42,15 +42,16 @@ enum sedit_vbox {
 class SampleEdit : public Gtk::VBox
 {
 public:
-  SampleEdit(LV2Controller& ctrl);
+  SampleEdit(LV2Controller& ctrl, unsigned int sample_id = 0);
 
-  void                  set_vol(double);
-  void                  set_pan(double);
-  void                  set_pitch(double);
-  void                  set_root(double);
+  void                  set_vol(Gtk::ScrollType, double);
+  void                  set_pan(Gtk::ScrollType, double);
+  void                  set_pitch(Gtk::ScrollType, double);
+  void                  set_root(Gtk::ScrollType, double);
 
 protected:
   LV2Controller&        m_ctrl;
+  unsigned int          m_sample_id;
 
   Gtk::HBox             m_vbox[sedit_n_hbox];
   Gtk::VBox             m_vbox_main[4];
@@ -63,6 +64,8 @@ protected:
   Gtk::VScale           m_main_scale_pan;
   Gtk::VScale           m_main_scale_pitch;
   Gtk::VScale           m_main_scale_root;
+
+  void                  set_sample_id(unsigned int);
 };
 
 class PrometheeGUI : public LV2GTK2GUI
@@ -78,7 +81,7 @@ protected:
   LV2Controller         &m_ctrl;
 
   Gtk::Notebook         m_smp_notebook;
-  SampleEdit            m_smp_edit[SAMPLES_COUNT];
+  std::vector<SampleEdit *> m_smp_edit;
   //  Label             m_smp_label[SAMPLES_COUNT];
 };
 
