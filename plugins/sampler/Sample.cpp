@@ -35,14 +35,16 @@ SmpVoice::SmpVoice()
 }
 
 /*
- * Sample class implementation 
+ * Sample class implementation
  */
 
 FrequencyTable 			Sample::freq_table = FrequencyTable();
 
 Sample::Sample(string path, unsigned int sample_rate)
   : m_sr(sample_rate), m_root_note(50),
-    amp_env(*EnvSwitch::create_switch_full(sample_rate, 170))
+    amp_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
+    m_norm(false),
+    m_reverse(false)
 {
   SNDFILE       *file;
 
@@ -99,7 +101,7 @@ void                    Sample::play_voice(unsigned int voice_number,
   bool                  sample_end = false;
   int                   i = 0;
 
-  sample_ratio = m_sr / ((float)info.samplerate);
+  sample_ratio = m_sr / ((float)info.samplerate) + m_fine_pitch;
   sample_ratio *= 1 + freq_table[voices[voice_number].freq] - freq_table[m_root_note];
 
   //cout << "Play a voice : " << sample_ratio << "" << endl;
@@ -124,13 +126,13 @@ void                    Sample::play_voice(unsigned int voice_number,
             {
               outR[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
                           + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
-        	}
+            }
           else
             {
               outR[i] += (s(1,tmp) * (voices[voice_number].pos - tmp)
                           + s(1, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
             }
-		  outR[i] *= amp_env(voices[voice_number].pos_rel);	
+          outR[i] *= amp_env(voices[voice_number].pos_rel);
         }
       voices[voice_number].pos_rel++;
       voices[voice_number].pos += sample_ratio;
@@ -139,8 +141,8 @@ void                    Sample::play_voice(unsigned int voice_number,
           voices[voice_number].activated = false;
           sample_end = true;
         }
-    //cout << "OutL \t" << outL[i] << "\tOutR \t" << outR[i] << endl;
-    i++;
+      //cout << "OutL \t" << outL[i] << "\tOutR \t" << outR[i] << endl;
+      i++;
     }
 }
 
@@ -149,19 +151,30 @@ void                    Sample::render(unsigned int sample_count,
 {
   int i;
 
-  for (int i = 0; i < sample_count; i++)
+  for (int i = 0; i < sample_count; i++) // clear audio buffer
   {
   		outL[i] = 0.0;
   		outR[i] = 0.0;
   }
-  
-  for (i = 0; i < SAMPLER_POLY; i++)
+
+  for (i = 0; i < SAMPLER_POLY; i++) // play sample voice
     {
       if (voices[i].activated)
         {
           play_voice(i, sample_count, outL, outR);
         }
     }
+
+  for (int i = 0; i < sample_count; i++) // Apply gain and pan
+  {
+  		outL[i] *= m_gain;
+  		outR[i] *= m_gain;
+      if (m_pan > 1.0)
+        outL[i] *= m_pan - 1.0;
+      else
+        outR[i] *= m_pan - 1.0;
+  }
+  apply_antialias_filter(sample_count, outL, outR);
 }
 
 void                    Sample::note_on(char note_num, char velocity)
@@ -205,4 +218,84 @@ void                    Sample::note_off(char note_num, char velocity)
 Sample::sample_t     	&Sample::s(unsigned char a_chan, unsigned int a_pos)
 {
   return (data[info.channels * a_pos + a_chan]);
+}
+
+void                  Sample::set_root_note(char root)
+{
+  if (root >= 0)
+    m_root_note = root;
+}
+
+void                  Sample::set_fine_pitch(double fine_pitch)
+{
+  m_fine_pitch = fine_pitch;
+}
+
+void                  Sample::set_gain(double gain)
+{
+  m_gain = gain;
+}
+
+void                  Sample::set_pan(double pan)
+{
+  m_pan = pan;
+}
+
+void                  Sample::apply_antialias_filter(unsigned int sample_count,
+                                                     sample_t *outL,
+                                                     sample_t *outR)
+{
+}
+
+void                  Sample::normalize()
+{
+  unsigned int i;
+  float max;
+
+  if (!m_norm)
+    {
+      for (i = 0; i < info.channels; i++)
+        {
+          if (data[i] > max)
+            max = data[i];
+        }
+      m_norm_factor = 1.0 / max;
+      for (i = 0; i < info.channels; i++)
+        {
+          data[i] *= m_norm_factor;
+        }
+      m_norm = true;
+    }
+  else
+    {
+      for (i = 0; i < info.channels; i++)
+        {
+          data[i] /= m_norm_factor;
+        }
+      m_norm = false;
+    }
+}
+
+void                    Sample::block_cpy(float *from, float *to)
+{
+  unsigned int          i;
+
+  for (i = 0; i < info.channels; i++)
+    to[i] = from[i];
+}
+
+void                    Sample::reverse()
+{
+  float                 *buf = new float[info.channels];
+  unsigned int          size = info.frames / info.channels;
+  unsigned int          i;
+
+  for (i = 0; i < (size / 2); i++)
+    {
+      block_cpy(data[i * info.channels], buf);
+      block_cpy(data[(size - i) * info.channels], data[i * info.channels]);
+      block_cpy(buf, data[(size - i) * info.channels]);
+    }
+  m_reverse = !m_reverse;
+
 }

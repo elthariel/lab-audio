@@ -2,34 +2,39 @@ Todo for Promethee sampler
 
 Legend:
 - : not open task
-+ : open task
++ : open task / untested
 * : done task
 
 ## Sample class
    * basic sampler
    - velocity support
-   - normalize
-   - reverse
-   - fine pitch
-   - delay
+   + normalize
+   + reverse
+   + fine pitch
+   - midi delay
    - arp
-   - Filter support
+   + Antialias filter?
+   + Filter support
    - Filters
      - simple and fast lp.
      - 2-pole LP, HP, BP
-     - 4-pole LP, HP, BP
+     + LP24
+     - BP24
+     - HP24
      - ?notch
+     - SVF
    - Envelops
      * EnvSwitcher, EnvDecay, EnvHold
      - End Dahdsr
 
 ## Promethee
+   - Know how to sync ui when connected to midi controller.
 
 ## Promethee GUI
    + GUI Base.
    - Envelopview
    - WaveView
-   + gain, pitch, pan, root
+   * gain, pitch, pan, root
    - filter view and/or filter sliders
 
 ## Long term idea(s)
