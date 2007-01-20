@@ -29,7 +29,7 @@ Legend:
    + GUI Base.
    - Envelopview
    - WaveView
-   - gain, pitch
+   + gain, pitch, pan, root
    - filter view and/or filter sliders
 
 ## Long term idea(s)

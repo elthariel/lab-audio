@@ -11,20 +11,226 @@
   lv2:requiredHostFeature ll:instrument-ext;
   ll:pegName "peg";
 
-  lv2:port [
+  lv2:port  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 0;
+    lv2:symbol "sample_0_outl";
+    lv2:name "Sample 1 L ";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 1;
+    lv2:symbol "sample_0_outr";
+    lv2:name "Sample 1 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 2;
+    lv2:symbol "sample_1_outl";
+    lv2:name "Sample 2 L";
+  ],
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 3;
+    lv2:symbol "sample_1_outr";
+    lv2:name "Sample 2 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 4;
+    lv2:symbol "sample_2_outl";
+    lv2:name "Sample 3 L";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 5;
+    lv2:symbol "sample_2_outr";
+    lv2:name "Sample 3 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 6;
+    lv2:symbol "sample_3_outl";
+    lv2:name "Sample 4 L";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 7;
+    lv2:symbol "sample_3_outr";
+    lv2:name "Sample 4 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 8;
+    lv2:symbol "sample_4_outl";
+    lv2:name "Sample 5 L";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 9;
+    lv2:symbol "sample_4_outr";
+    lv2:name "Sample 5 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 10;
+    lv2:symbol "sample_5_outl";
+    lv2:name "Sample 6 L";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 11;
+    lv2:symbol "sample_5_outr";
+    lv2:name "Sample 6 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 12;
+    lv2:symbol "sample_6_outl";
+    lv2:name "Sample 7 L";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 13;
+    lv2:symbol "sample_6_outr";
+    lv2:name "Sample 7 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 14;
+    lv2:symbol "sample_7_outl";
+    lv2:name "Sample 8 R";
+  ],
+
+  [
+    a lv2:AudioRateOutputPort;
+    lv2:datatype lv2:float;
+    lv2:index 15;
+    lv2:symbol "sample_7_outr";
+    lv2:name "Sample 8 R";
+  ],
+
+
+
+
+
+
+
+
+ [
     a lv2:ControlRateInputPort;
     lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-    lv2:index 0;
-    lv2:symbol "midi";
-    lv2:name "MIDI";
+    lv2:index 16;
+    lv2:symbol "midi_0";
+    lv2:name "MIDI sample 1";
   ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 17;
+    lv2:symbol "midi_1";
+    lv2:name "MIDI sample 2";
+  ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 18;
+    lv2:symbol "midi_2";
+    lv2:name "MIDI sample 3";
+  ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 19;
+    lv2:symbol "midi_3";
+    lv2:name "MIDI sample 4";
+  ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 20;
+    lv2:symbol "midi_4";
+    lv2:name "MIDI sample 5";
+  ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 21;
+    lv2:symbol "midi_5";
+    lv2:name "MIDI sample 6";
+  ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 22;
+    lv2:symbol "midi_6";
+    lv2:name "MIDI sample 7";
+  ],
+
+ [
+    a lv2:ControlRateInputPort;
+    lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
+    lv2:index 23;
+    lv2:symbol "midi_7";
+    lv2:name "MIDI sample 8";
+  ],
+
+
+
+
+
+
 
   [
     a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
-    lv2:index 1;
-    lv2:symbol "gain";
-    lv2:name "Gain";
+    lv2:index 24;
+    lv2:symbol "gain_0";
+    lv2:name "Gain 1";
+    lv2:minimum 0;
+    lv2:maximum 2;
+    lv2:default 1;
+  ],
+  [
+    a lv2:ControlRateInputPort;
+    lv2:datatype lv2:float;
+    lv2:index 25;
+    lv2:symbol "pan_0";
+    lv2:name "Pan 1";
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
@@ -33,29 +239,21 @@
   [
     a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
-    lv2:index 2;
-    lv2:symbol "play";
-    lv2:name "Play";
+    lv2:index 26;
+    lv2:symbol "pitch_0";
+    lv2:name "Fine pitch 1";
     lv2:minimum 0;
     lv2:maximum 1;
-    lv2:default 0;
-    lv2:portHint lv2:toggled;
+    lv2:default 0.5;
   ],
 
   [
-    a lv2:AudioRateOutputPort;
+    a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
-    lv2:index 3;
-    lv2:symbol "output_l";
-    lv2:name "Output_l";
-  ],
-
-  [
-    a lv2:AudioRateOutputPort;
-    lv2:datatype lv2:float;
-    lv2:index 4;
-    lv2:symbol "output_r";
-    lv2:name "Output_r";
+    lv2:index 27;
+    lv2:symbol "root_0";
+    lv2:name "Root Note 1";
+    lv2:minimum 0;
+    lv2:maximum 127;
+    lv2:default 63;
   ].
-
-
