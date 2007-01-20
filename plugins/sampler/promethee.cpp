@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:46:24 2007 Elthariel
-// Last update Sat Jan 20 10:23:28 2007 Nahlwe
+// Last update Sat Jan 20 22:51:28 2007 Nahlwe
 //
 
 #include <cmath>
@@ -48,17 +48,19 @@ char*                   Promethee::configure(const char* key,
 char*                   Promethee::set_file(const char* key,
                                             const char* filename)
 {
-  unsigned int          sample_id = (unsigned int)(key);
+  unsigned int          sample_id = key[0] - '0';
   string                file(filename);
 
-  cout << "Loading sample : " << file << endl;
   if (sample_id < SAMPLES_COUNT)
-    if (m_smp[sample_id])
-      delete m_smp[sample_id];
-    else
-      {
-        m_smp[sample_id] = new Sample(file, m_sample_rate);
-      }
+    {
+      cout << "Loading sample : " << file << endl;
+      if (m_smp[sample_id])
+        delete m_smp[sample_id];
+      else
+        {
+          m_smp[sample_id] = new Sample(file, m_sample_rate);
+        }
+    }
   return (0);
 }
 

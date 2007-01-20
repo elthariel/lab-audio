@@ -41,8 +41,9 @@ SmpVoice::SmpVoice()
 FrequencyTable 			Sample::freq_table = FrequencyTable();
 
 Sample::Sample(string path, unsigned int sample_rate)
-  : m_sr(sample_rate), m_root_note(50),
+  : m_sr(sample_rate),
     amp_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
+    m_root_note(63), m_fine_pitch(0.0), m_gain(1.0), m_pan(1.0),
     m_norm(false),
     m_reverse(false)
 {
@@ -63,7 +64,11 @@ Sample::Sample(string path, unsigned int sample_rate)
 Sample::Sample(Sample &smp)
   :m_sr(smp.m_sr), info(smp.info),
    amp_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
-   m_root_note(smp.m_root_note)
+   m_root_note(smp.m_root_note),
+   m_fine_pitch(smp.m_fine_pitch), m_gain(smp.m_gain), m_pan(smp.m_pan),
+   m_norm(smp.m_norm),
+   m_reverse(smp.m_reverse),
+   m_norm_factor(smp.m_norm_factor)
 {
   int           fcount = info.channels * info.frames;
 
@@ -102,7 +107,7 @@ void                    Sample::play_voice(unsigned int voice_number,
   int                   i = 0;
 
   sample_ratio = m_sr / ((float)info.samplerate) + m_fine_pitch;
-  sample_ratio *= 1 + freq_table[voices[voice_number].freq] - freq_table[m_root_note];
+  sample_ratio *= freq_table[voices[voice_number].freq] / freq_table[m_root_note];
 
   //cout << "Play a voice : " << sample_ratio << "" << endl;
   while ((i < sample_count) && !sample_end)
@@ -120,12 +125,12 @@ void                    Sample::play_voice(unsigned int voice_number,
         {
           tmp = (unsigned int)voices[voice_number].pos;
           outL[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
-                      + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
+                      + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp)));
           outL[i] *= amp_env(voices[voice_number].pos_rel);
           if (info.channels == 1)
             {
               outR[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
-                          + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
+                          + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp)));
             }
           else
             {
