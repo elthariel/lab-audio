@@ -31,6 +31,7 @@
 
 #define                 SAMPLER_POLY            32
 
+
 struct SmpVoice
 {
   SmpVoice();
@@ -56,24 +57,39 @@ public:
 
   void                  note_on(char note_num, char velocity);
   void                  note_off(char note_num, char velocity);
-  
+  void                  set_root_note(char root);
+  void                  set_fine_pitch(double fine_pitch);
+  void                  set_gain(double gain);
+  void                  set_pan(double pan);
+
 private:
   // Internal data;
   unsigned int          m_sr; //Sample rate.
 
   sample_t              *data;
   SF_INFO               info;
-  SmpVoice              voices[SAMPLER_POLY];
   static FrequencyTable freq_table;
 
   //User config
   EnvSwitch             &amp_env;
 
+  SmpVoice              voices[SAMPLER_POLY];
   char                  m_root_note;
+  double                m_fine_pitch;
+  double                m_gain;
+  double                m_pan;          //
+  float                 m_norm_factor;
+  bool                  m_norm;
+  bool                  m_reverse;
 
   void                  load_data(SNDFILE *); //called by the constructor to load the sample.
   void                  play_voice(unsigned int, unsigned int, sample_t *, sample_t *);
   inline sample_t       &s(unsigned char a_chan, unsigned int a_pos);
+  void                  apply_antialias_filter(unsigned int, sample_t *, sample_t *);
+  void                  normalize();
+  void                  reverse();
+  inline void           block_cpy(float *from, float *to);
+
 };
 
 

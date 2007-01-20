@@ -9,9 +9,11 @@ LV2PEG = lv2peg
 BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so
 
 # These are the source files for the plugin
-PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp Envelop.cpp Sample.cpp
-PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h \
-	$(PLUGIN_NAME).peg frequencytable.hpp Envelop.hh Sample.hh
+PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp \
+	Envelop.cpp Sample.cpp filter.cpp
+PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h \
+	lv2-midifunctions.h $(PLUGIN_NAME).peg frequencytable.hpp Envelop.hh \
+	Sample.hh filter.hh
 PLUGIN_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 sndfile`
 PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gtkmm-2.4 gthread-2.0 sndfile`
 

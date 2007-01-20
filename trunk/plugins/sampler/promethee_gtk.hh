@@ -31,6 +31,7 @@
 #define                 SAMPLES_COUNT 8
 
 enum sedit_vbox {
+  sedit_load,
   sedit_main,
   sedit_func,
   sedit_env,
@@ -44,16 +45,17 @@ class SampleEdit : public Gtk::VBox
 public:
   SampleEdit(LV2Controller& ctrl, unsigned int sample_id = 0);
 
-  void                  set_vol(Gtk::ScrollType, double);
-  void                  set_pan(Gtk::ScrollType, double);
-  void                  set_pitch(Gtk::ScrollType, double);
-  void                  set_root(Gtk::ScrollType, double);
+  bool                  set_vol(Gtk::ScrollType, double);
+  bool                  set_pan(Gtk::ScrollType, double);
+  bool                  set_pitch(Gtk::ScrollType, double);
+  bool                  set_root(Gtk::ScrollType, double);
 
+  void                  choose_sample();
 protected:
   LV2Controller&        m_ctrl;
   unsigned int          m_sample_id;
 
-  Gtk::HBox             m_vbox[sedit_n_hbox];
+  Gtk::HBox             m_hbox[sedit_n_hbox];
   Gtk::VBox             m_vbox_main[4];
   Gtk::Label            m_lbl_main[4];
   Gtk::Adjustment       m_main_adj_vol;
@@ -65,7 +67,16 @@ protected:
   Gtk::VScale           m_main_scale_pitch;
   Gtk::VScale           m_main_scale_root;
 
+  Gtk::Label            m_sample_path;
+  Gtk::Button           m_choose_sample;
+
   void                  set_sample_id(unsigned int);
+  void                  on_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context,
+                                                   int,
+                                                   int,
+                                                   const Gtk::SelectionData& selection_data,
+                                                   guint,
+                                                   guint time);
 };
 
 class PrometheeGUI : public LV2GTK2GUI
