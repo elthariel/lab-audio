@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:58:36 2007 Elthariel
-// Last update Sat Jan 20 12:02:43 2007 Nahlwe
+// Last update Sat Jan 20 23:08:08 2007 Nahlwe
 //
 
 #include <iostream>
@@ -32,6 +32,7 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
     m_main_scale_pan(m_main_adj_pan),
     m_main_scale_pitch(m_main_adj_pitch),
     m_main_scale_root(m_main_adj_root),
+    m_sample_path(" *-= Please load a sample =-*"),
     m_choose_sample(Stock::OPEN)
 {
   int i;
@@ -98,7 +99,7 @@ void SampleEdit::on_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>
                                             guint,
                                             guint time)
 {
-  if (selection_data.get_data())
+  /*  if (selection_data.get_data())
     {
       std::vector<Glib::ustring> targets = selection_data.get_uris();
       if (! targets.empty())
@@ -114,7 +115,7 @@ void SampleEdit::on_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>
               }
           }
         }
-    }
+        }*/
 }
 
 void                  SampleEdit::choose_sample()
@@ -140,10 +141,16 @@ void                  SampleEdit::choose_sample()
   {
     case(Gtk::RESPONSE_OK):
     {
-      std::cout << "Open clicked." << std::endl;
-      std::string filename = dialog.get_filename();
-      std::cout << "File selected: " <<  filename << std::endl;
-      m_ctrl.set_file((char *)m_sample_id, filename.c_str());
+      char c_chan[8];
+      c_chan[0] = m_sample_id + '0';
+      c_chan[1] = 0;
+      string channel;
+      channel = c_chan;
+      cout << "Open clicked." << endl;
+      string filename = dialog.get_filename();
+      cout << "File selected: " <<  filename << endl;
+      m_ctrl.set_file(channel, filename);
+      //      m_ctrl.set_file((char *)m_sample_id, filename.c_str());
       m_sample_path.set_label(filename);
       break;
     }

@@ -29,7 +29,7 @@ class Filter
 {
 public:
   Filter(unsigned int sample_rate);
-  virtual ~Filter();
+  virtual ~Filter(){}
 
   virtual void          set_cutoff(float cutoff);
   virtual void          set_res(float res);
@@ -45,7 +45,7 @@ class BesselLP24 : public Filter
 {
 public:
   BesselLP24(unsigned int sample_rate);
-  virtual ~BesselLP24();
+  virtual ~BesselLP24(){}
 
   virtual void          apply(unsigned int sample_count, float *outL, float *outR);
 protected:
