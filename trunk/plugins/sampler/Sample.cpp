@@ -292,9 +292,9 @@ void                    Sample::reverse()
 
   for (i = 0; i < (size / 2); i++)
     {
-      block_cpy(data[i * info.channels], buf);
-      block_cpy(data[(size - i) * info.channels], data[i * info.channels]);
-      block_cpy(buf, data[(size - i) * info.channels]);
+      block_cpy(&data[i * info.channels], buf);
+      block_cpy(&data[(size - i) * info.channels], &data[i * info.channels]);
+      block_cpy(buf, &data[(size - i) * info.channels]);
     }
   m_reverse = !m_reverse;
 

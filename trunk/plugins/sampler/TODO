@@ -15,7 +15,7 @@ Legend:
    - arp
    + Antialias filter?
    + Filter support
-   - Filters
+   + Filters
      - simple and fast lp.
      - 2-pole LP, HP, BP
      + LP24
