@@ -144,15 +144,18 @@ void ffmpeg::copy(short int *input, float *buffer_l, float *buffer_r, int sz) {
 
   for (int i = 0; i < sz; ++i) {
   	if (i % 2) {
-  	  buffer_r[j] = (float)input[i] / (float)0x8000; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
+  	  buffer_r[j] = input[i] / (float)0x8000; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
   	  ++j;
   	} else {
-  	  buffer_l[k] = (float)input[i] / (float)0x8000; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
+  	  buffer_l[k] = input[i] / (float)0x8000; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
   	  ++k;
   	}
   }
 }
 
+/*
+ * all index are char *based
+ */
 int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 	char *dest_l = (char *) buffer_l;
 	char *dest_r = (char *) buffer_r;

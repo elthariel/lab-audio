@@ -14,7 +14,7 @@ butinator:
   - a toolbar to add/remove/load_from_pls
 
 tronsonator:
-  - use libthc (define Thc::Button)
-  - implement the engine
+  - better UI
+  - implement pan
 
 

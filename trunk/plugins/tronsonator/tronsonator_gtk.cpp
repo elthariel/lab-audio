@@ -106,12 +106,12 @@ public:
     bind_param2(m_btn_headphone_2, peg_headphone_2);
     bind_param2(m_btn_headphone_3, peg_headphone_3);
     bind_param2(m_btn_headphone_4, peg_headphone_4);
-    bind_param3(m_cross_l1, m_cross_r1, 1, 2);
-    bind_param3(m_cross_l2, m_cross_r2, 1, 2);
-    bind_param3(m_cross_l3, m_cross_r3, 1, 2);
-    bind_param3(m_cross_l4, m_cross_r4, 1, 2);
-
+    bind_param3(m_cross_l1, m_cross_r1, peg_crossfader_ch_1);
+    bind_param3(m_cross_l2, m_cross_r2, peg_crossfader_ch_2);
+    bind_param3(m_cross_l3, m_cross_r3, peg_crossfader_ch_3);
+    bind_param3(m_cross_l4, m_cross_r4, peg_crossfader_ch_4);
   }
+
   void bind_param(Thc::Param::Ref param, int port) {
   	param->signal_value_changed().
     connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control), port),
@@ -124,20 +124,24 @@ public:
                             mem_fun(param, &ToggleButton::get_active)));
   }
 
-  void bind_param3(Gtk::ToggleButton& param1, Gtk::ToggleButton& param2, int port1, int port2) {
+  void bind_param3(Gtk::ToggleButton& param1, Gtk::ToggleButton& param2, int port) {
   	param1.signal_toggled().
-    connect(bind(mem_fun(*this, &MyPluginGUI::cross_toggle), &param1, &param2, port1, port2));
+    connect(bind(mem_fun(*this, &MyPluginGUI::cross_toggle), &param1, &param2, port, 1.0));
   	param2.signal_toggled().
-    connect(bind(mem_fun(*this, &MyPluginGUI::cross_toggle), &param2, &param1, port2, port1));
+    connect(bind(mem_fun(*this, &MyPluginGUI::cross_toggle), &param2, &param1, port, 2.0));
   }
 
-  void cross_toggle(Gtk::ToggleButton* param1, Gtk::ToggleButton* param2, int port1, int port2) {
+  void cross_toggle(Gtk::ToggleButton* param1, Gtk::ToggleButton* param2, int port, float val) {
   	bool active = param1->get_active();
   	//m_ctrl.set_control(port1, active);
   	if (param2->get_active() == active && active) {
   		param2->set_active(!active);
   		//m_ctrl.set_control(port2, !active);
   	}
+    if (active)
+      m_ctrl.set_control(port, val);
+    else
+      m_ctrl.set_control(port, 0.0);
   }
 
   //when a trigger button is clicked
