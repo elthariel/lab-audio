@@ -39,20 +39,88 @@ public:
 
   }
 
+
+  class StepFunc {
+    //step cant be changed at runtime, cause we wont want malloc when processing
+    StepFunc(int step) {
+      m_step = step;
+      //default init
+      m_tab = (double *)malloc(sizeof(double) * m_step);
+      for (int i = 0; i < m_step; ++i) {
+        m_tab[i] = (double)i / (double)m_step;
+      }
+    }
+    /* input = [ 0.0 - 1.0 ]
+     * output = euhh
+     * yes, this is an outrageous cast!
+     */
+    inline double get_value(double value)const {
+      return m_tab[(int)value * m_step];
+    }
+
+    inline void set_value(int step, double value) {
+      m_tab[step] = value;
+    }
+
+    inline int get_step_count()const {
+      return m_step;
+    }
+
+  private:
+    int m_step;
+    double *m_tab;
+  };
+
+  float crossfade(float cross, float left, float right) {
+    float cross_l = cross <= 0.5 ? 1.0 : 1.0 - (cross * 2.0 - 1.0);
+    float cross_r = cross >= 0.5 ? 1.0 : (cross * 2.0);
+    //return left * StepFunc(cross_l) + right * StepFunc(cross_r);
+    return left * cross_l + right * cross_r;
+  }
+
+
   /** The run() callback. This is the function that gets called by the host
       when it wants to run the plugin. The parameter is the number of sample
       frames to process. */
   void run(uint32_t sample_count) {
-		while (sample_count) {
-			p(peg_output_l)[sample_count] = p(peg_input_l1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1) +
-																			p(peg_input_l2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2) +
-																			p(peg_input_l3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3) +
-																			p(peg_input_l4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
-			p(peg_output_r)[sample_count] = p(peg_input_r1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1) +
-																			p(peg_input_r2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2) +
-																			p(peg_input_r3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3) +
-																			p(peg_input_r4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
-			p(peg_headphone_l)[sample_count] = 0;
+    float crossll, crosslr, crossrl, crossrr;
+    while (sample_count) {
+			crossll = 0.0;
+      crosslr = 0.0;
+      crossrl = 0.0;
+      crossrr = 0.0;
+      if (*p(peg_crossfader_ch_1) == 1) {
+        crossll += p(peg_input_l1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1);
+        crosslr += p(peg_input_r1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1);
+      } else if (*p(peg_crossfader_ch_1) == 2) {
+        crossrl += p(peg_input_l1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1);
+        crossrr += p(peg_input_r1)[sample_count] * *p(peg_gain_1) * *p(peg_volume_1);
+      }
+      if (*p(peg_crossfader_ch_2) == 1) {
+        crossll += p(peg_input_l2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2);
+        crosslr += p(peg_input_r2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2);
+      } else if (*p(peg_crossfader_ch_2) == 2) {
+        crossrl += p(peg_input_l2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2);
+        crossrr += p(peg_input_r2)[sample_count] * *p(peg_gain_2) * *p(peg_volume_2);
+      }
+      if (*p(peg_crossfader_ch_3) == 1) {
+        crossll += p(peg_input_l3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3);
+        crosslr += p(peg_input_r3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3);
+      } else if (*p(peg_crossfader_ch_3) == 2) {
+        crossrl += p(peg_input_l3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3);
+        crossrr += p(peg_input_r3)[sample_count] * *p(peg_gain_3) * *p(peg_volume_3);
+      }
+      if (*p(peg_crossfader_ch_4) == 1) {
+        crossll += p(peg_input_l4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
+        crosslr += p(peg_input_r4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
+      } else if (*p(peg_crossfader_ch_1) == 2) {
+        crossrl += p(peg_input_l4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
+        crossrr += p(peg_input_r4)[sample_count] * *p(peg_gain_4) * *p(peg_volume_4);
+      }
+      p(peg_output_l)[sample_count] = crossfade(peg_crossfader, crossll, crossrl);
+      p(peg_output_l)[sample_count] = crossfade(peg_crossfader, crosslr, crossrr);
+
+      p(peg_headphone_l)[sample_count] = 0;
 			p(peg_headphone_r)[sample_count] = 0;
 			if (*p(peg_headphone_1)) {
 				p(peg_headphone_l)[sample_count] = p(peg_input_l1)[sample_count] * *p(peg_gain_1);

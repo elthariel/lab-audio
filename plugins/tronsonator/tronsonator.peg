@@ -45,6 +45,10 @@ enum peg_port_enum {
   peg_volume_3,
   peg_volume_4,
   peg_crossfader,
+  peg_crossfader_ch_1,
+  peg_crossfader_ch_2,
+  peg_crossfader_ch_3,
+  peg_crossfader_ch_4,
   peg_n_ports
 };
 
@@ -75,6 +79,10 @@ static const peg_data_t peg_ports[] = {
   { 0, 1, 0.5, 0, 0, 0 }, 
   { 0, 1, 0.5, 0, 0, 0 }, 
   { 0, 1, 0.5, 0, 0, 0 }, 
+  { 0, 2, 0, 0, 0, 0 }, 
+  { 0, 2, 0, 0, 0, 0 }, 
+  { 0, 2, 0, 0, 0, 0 }, 
+  { 0, 2, 0, 0, 0, 0 }, 
 };
 
 
