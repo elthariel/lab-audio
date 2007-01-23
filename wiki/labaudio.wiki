@@ -1,4 +1,5 @@
 #summary One-sentence summary of this page.
+#labels Featured
 
 = Le but =
  * créer un pole de compétence dans le domaine de la musique/vidéo sous linux au seins de l'école
@@ -16,22 +17,21 @@
  * patchwork13
  * plugins lv2: 
    * promethee : sampler
-   * 10tau : distortion
+   * 10tau : distortion (waveshaper-like)
    * soulrider : simulation d'une platine vinyle
    * tronsonator : mixeur 4 voix avec eq et pré-écoute
-   * butinator: gestionnaire de playlist (utilisable avec soulrider)
+   * butinator: gestionnaire de playlist (utilisable avec soulrider, promethee)
  * libthc : library de widget audio interconnectable entre application
  * kbdz : gestion des entrées materielles
  * frontend ingen utilisant libthc, pour se construire son studio virtuel a l'aide de lv2
 
 == Materiels ==
  * machine embarquée inter connecté par le reseau
- * recherche en IHM avec ecran tactile/midibox
- * reactable
+ * recherche en IHM avec ecran tactile/midibox/reactable
 
 
 
-== Documentations ==
+== Links ==
  * http://www.jazzmutant.com
  * http://patchwork13.sourceforge.net
  * http://wired.epitech.net
