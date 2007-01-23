@@ -1,0 +1,41 @@
+#ifndef __tau_peg
+#define __tau_peg
+
+
+#ifndef PEG_STRUCT
+#define PEG_STRUCT
+typedef struct {
+  float min;
+  float max;
+  float default_value;
+  char toggled;
+  char integer;
+  char logarithmic;
+} peg_data_t;
+#endif
+
+/* <http://lab-audio.googlecode.com/svn/trunk/plugins/10tau> */
+
+static const char peg_uri[] = "http://lab-audio.googlecode.com/svn/trunk/plugins/10tau";
+
+enum peg_port_enum {
+  peg_param_1,
+  peg_param_2,
+  peg_output_l,
+  peg_output_r,
+  peg_input_l,
+  peg_input_r,
+  peg_n_ports
+};
+
+static const peg_data_t peg_ports[] = {
+  { 0, 1, 0.5, 0, 0, 0 }, 
+  { 0, 1, 0.5, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+};
+
+
+#endif /* __tau_peg */

@@ -33,7 +33,7 @@ public:
 
   virtual void          set_cutoff(float cutoff);
   virtual void          set_res(float res);
-  virtual void          apply(unsigned int sample_count, float *outL, float *outR) = 0;
+  virtual void          apply(float *out) = 0;
 protected:
 
   unsigned int          m_sr;
@@ -47,9 +47,14 @@ public:
   BesselLP24(unsigned int sample_rate);
   virtual ~BesselLP24(){}
 
-  virtual void          apply(unsigned int sample_count, float *outL, float *outR);
+  virtual void          apply(float *out);
+  virtual void          set_cutoff(float cutoff);
 protected:
-
+  float                 k, k2;
+  float                 a0, a1, a2, a3, a4;
+  float                 b0, b1, b2, b3, b4;
+  float                 s0, s1, s2, s3;
+  float                 input;
 };
 
 

@@ -28,6 +28,7 @@
 
 #include "Envelop.hh"
 #include "frequencytable.hpp"
+#include "filter.hh"
 
 #define                 SAMPLER_POLY            32
 
@@ -72,15 +73,18 @@ private:
 
   //User config
   EnvSwitch             &amp_env;
+  Filter                *m_antialias_filter_l;
+  Filter                *m_antialias_filter_r;
 
   SmpVoice              voices[SAMPLER_POLY];
   char                  m_root_note;
   double                m_fine_pitch;
   double                m_gain;
-  double                m_pan;          //
+  double                m_pan;
   float                 m_norm_factor;
   bool                  m_norm;
   bool                  m_reverse;
+  bool                  m_antialias;
 
   void                  load_data(SNDFILE *); //called by the constructor to load the sample.
   void                  play_voice(unsigned int, unsigned int, sample_t *, sample_t *);
