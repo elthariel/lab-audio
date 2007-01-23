@@ -55,6 +55,11 @@ Sample::Sample(string path, unsigned int sample_rate)
     {
       load_data(file);
       sf_close(file);
+      m_antialias_filter_l = new BesselLP24(sample_rate);
+      m_antialias_filter_l->set_cutoff(sample_rate / 2);
+      m_antialias_filter_r = new BesselLP24(sample_rate);
+      m_antialias_filter_r->set_cutoff(sample_rate / 2);
+      m_antialias = false;
     }
   else
     cerr << "Unable to open : " << path << endl;
@@ -77,6 +82,11 @@ Sample::Sample(Sample &smp)
     {
       data[i] = smp.data[i];
     }
+  m_antialias = smp.m_antialias;
+  m_antialias_filter_l = new BesselLP24(smp.m_sr);
+  *m_antialias_filter_l = *(smp.m_antialias_filter_l);
+  m_antialias_filter_r = new BesselLP24(smp.m_sr);
+  *m_antialias_filter_r = *(smp.m_antialias_filter_r);
 }
 
 void                    Sample::load_data(SNDFILE *file)
@@ -250,6 +260,14 @@ void                  Sample::apply_antialias_filter(unsigned int sample_count,
                                                      sample_t *outL,
                                                      sample_t *outR)
 {
+  if (m_antialias)
+    {
+      for (unsigned int i = 0; i < sample_count; i++)
+        {
+          m_antialias_filter_l->apply(&outL[i]);
+          m_antialias_filter_r->apply(&outR[i]);
+        }
+    }
 }
 
 void                  Sample::normalize()
@@ -302,5 +320,4 @@ void                    Sample::reverse()
       block_cpy(buf, &data[(size - i) * info.channels]);
     }
   m_reverse = !m_reverse;
-
 }

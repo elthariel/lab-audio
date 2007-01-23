@@ -48,53 +48,38 @@ void          Filter::set_res(float res)
  */
 
 BesselLP24::BesselLP24(unsigned int sample_rate)
-  : Filter(sample_rate)
+  : Filter(sample_rate),
+    s0(0.0), s1(0.0), s2(0.0), s3(0.0)
 {
 }
 
-void          BesselLP24::apply(unsigned int sample_count, float *outL, float *outR)
+void          BesselLP24::set_cutoff(float cutoff)
 {
-  float K  = tan(M_PI * m_cutoff / m_sr);
-  float K2 = K*K; // speed improvement
+  Filter::set_cutoff(cutoff);
 
-  float A0 =  ((((105*K + 105)*K + 45)*K + 10)*K + 1);
-  float A1 = -( ((420*K + 210)*K2        - 20)*K - 4);
-  float A2 = -(  (630*K2         - 90)*K2        + 6);
-  float A3 = -( ((420*K - 210)*K2        + 20)*K - 4);
-  float A4 = -((((105*K - 105)*K + 45)*K - 10)*K + 1);
+  k  = tan(M_PI * m_cutoff / m_sr);
+  k2 = k*k; // speed improvement
 
-  float B0 = 105*K2*K2;
-  float B1 = 420*K2*K2;
-  float B2 = 630*K2*K2;
-  float B3 = 420*K2*K2;
-  float B4 = 105*K2*K2;
+  a0 =  ((((105*k + 105)*k + 45)*k + 10)*k + 1);
+  a1 = -( ((420*k + 210)*k2        - 20)*k - 4);
+  a2 = -(  (630*k2         - 90)*k2        + 6);
+  a3 = -( ((420*k - 210)*k2        + 20)*k - 4);
+  a4 = -((((105*k2- 105)*k + 45)*k - 10)*k + 1);
 
-  //Per sample calculate:
-  float State0R = 0.0;
-  float State0L = 0.0;
-  float State1R = 0.0;
-  float State1L = 0.0;
-  float State2R = 0.0;
-  float State2L = 0.0;
-  float State3R = 0.0;
-  float State3L = 0.0;
-  float InputL, InputR;
-  for (unsigned int i = 0; i < sample_count; i++)
-    {
-      InputL = outL[i];
-      outL[i] = B0*InputL                + State0L;
-      State0L = B1*InputL + A1/A0*outL[i] + State1L;
-      State1L = B2*InputL + A2/A0*outL[i] + State2L;
-      State2L = B3*InputL + A3/A0*outL[i] + State3L;
-      State3L = B4*InputL + A4/A0*outL[i];
+  b0 = 105*k2*k2;
+  b1 = 420*k2*k2;
+  b2 = 630*k2*k2;
+  b3 = 420*k2*k2;
+  b4 = 105*k2*k2;
+}
 
-      InputR = outR[i];
-      outR[i] = B0*InputR                + State0R;
-      State0R = B1*InputR + A1/A0*outR[i] + State1R;
-      State1R = B2*InputR + A2/A0*outR[i] + State2R;
-      State2R = B3*InputR + A3/A0*outR[i] + State3R;
-      State3R = B4*InputR + A4/A0*outR[i];
-    }
-
+void          BesselLP24::apply(float *out)
+{
+  input = *out;
+  *out = b0 * input + s0;
+  s0 = b1*input + a1/a0*(*out) + s1;
+  s1 = b2*input + a2/a0*(*out) + s2;
+  s2 = b3*input + a3/a0*(*out) + s3;
+  s3 = b4*input + a4/a0*(*out);
   // FIXME For high speed substitude A1/A0 with A1' = A1/A0...
 }

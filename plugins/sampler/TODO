@@ -5,6 +5,11 @@ Legend:
 + : open task / untested
 * : done task
 
+## Bug
+   - note_off not working
+   - Low shelf is a no pass but noise filter :p
+   - pan not working
+
 ## Filters class.
    - simple and fast lp.
    - 2-pole LP, HP, BP
@@ -39,7 +44,9 @@ Legend:
    - WaveView
    * gain, pitch, pan, root
    - filter view and/or filter sliders
+   - antialias, reverse, normalize button.
 
 ## Long term idea(s)
    - Time stretching.
    - DynParam extension support.
+   - Beatmasher.
