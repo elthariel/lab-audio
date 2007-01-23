@@ -50,11 +50,15 @@ public:
     unsigned char* event;
     uint32_t now = 0;
     uint32_t then;
+		uint32_t outsz = 0;
+    outsz = m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), sample_count);
+		if (outsz != sample_count)
+			std::cout << "OUTsize(" << outsz << ") != samplecount(" << sample_count << ")" << std::endl;
 
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
+//      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), (then - now));
 
-      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), (then - now));
 
       if (then < sample_count) {
         // Is the event a Note On?
