@@ -6,20 +6,23 @@
  - développer des projets et logiciels innovant pour promouvoir le lab
 
 = Les projets =
+== Communications ==
+ * blog sur le développement audio sous linux
+
 == logiciels ==
- - wired
- - patchwork13
- - plugins lv2: 
-   - promethee : sampler
-   - 10tau : distortion
-   - soulrider : simulation d'une platine vinyle
-   - tronsonator : mixeur 4 voix avec eq et pré-écoute
-   - butinator: gestionnaire de playlist (utilisable avec soulrider)
- - libthc : library de widget audio interconnectable entre application
- - kbdz : gestion des entrées materielles
- - frontend ingen utilisant libthc, pour se construire son studio virtuel a l'aide de lv2
+ * wired
+ * patchwork13
+ * plugins lv2: 
+   * promethee : sampler
+   * 10tau : distortion
+   * soulrider : simulation d'une platine vinyle
+   * tronsonator : mixeur 4 voix avec eq et pré-écoute
+   * butinator: gestionnaire de playlist (utilisable avec soulrider)
+ * libthc : library de widget audio interconnectable entre application
+ * kbdz : gestion des entrées materielles
+ * frontend ingen utilisant libthc, pour se construire son studio virtuel a l'aide de lv2
 
 == Materiels ==
- - machine embarquée inter connecté par le reseau
- - recherche en IHM avec ecran tactile/midibox
- - reactable
+ * machine embarquée inter connecté par le reseau
+ * recherche en IHM avec ecran tactile/midibox
+ * reactable
