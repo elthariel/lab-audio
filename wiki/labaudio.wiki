@@ -1,9 +1,9 @@
 #summary One-sentence summary of this page.
 
 = Le but =
- - créer un pole de compétence dans le domaine de la musique/vidéo sous linux au seins de l'école
- - acquérir de la reconnaisse vis a vis des professionnels afin de trouver du travail dans le domaine
- - développer des projets et logiciels innovant pour promouvoir le lab
+ * créer un pole de compétence dans le domaine de la musique/vidéo sous linux au seins de l'école
+ * acquérir de la reconnaisse vis a vis des professionnels afin de trouver du travail dans le domaine
+ * développer des projets et logiciels innovant pour promouvoir le lab
 
 = Les projets =
 == Communications ==
