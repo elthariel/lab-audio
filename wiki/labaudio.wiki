@@ -33,3 +33,5 @@
 
 == Documentations ==
  * http://www.jazzmutant.com
+ * http://patchwork13.sourceforge.net
+ * http://wired.epitech.net
