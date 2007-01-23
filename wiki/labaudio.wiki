@@ -28,3 +28,8 @@
  * machine embarquée inter connecté par le reseau
  * recherche en IHM avec ecran tactile/midibox
  * reactable
+
+
+
+== Documentations ==
+ * http://www.jazzmutant.com
