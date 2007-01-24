@@ -68,11 +68,11 @@ public:
         if (event[0] == 0x90) {
           int key = event[1];
           switch(key) {
-          	case 42: pause();
+          	case 62: pause();
           		m_pause = !m_pause;
           		break;
-          	case 43: cue(); break;
-          	case 44: play(); break;
+          	case 63: cue(); break;
+          	case 42: play(); break;
           }
         }
       }
@@ -93,7 +93,6 @@ public:
 
     /** Arbitrary configuration function without RT constraints. */
   char* configure(const char* key, const char* value) {
-//  	std::cout << "configure name: key=" << key << " filename=" << value << std::endl;
   	return 0;
   }
 
@@ -105,20 +104,16 @@ public:
 
 
   void load_file(const std::string& path) {
-  	std::cout << "load" << std::endl;
   	m_ffmpeg.load_file(path);
   }
 
   void pause() {
-  	std::cout << "pause" << std::endl;
   }
 
   void play() {
-  	std::cout << "play" << std::endl;
   }
 
   void cue() {
-  	std::cout << "cue" << std::endl;
   }
 
 

@@ -49,17 +49,17 @@ public:
     m_btn_pause.drag_dest_set(m_targetlist);
 		m_btn_pause.drag_dest_add_uri_targets();
 		m_btn_pause.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_pause.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 42));
+		m_btn_pause.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 62));
 
     m_btn_cue.drag_dest_set(m_targetlist);
 		m_btn_cue.drag_dest_add_uri_targets();
 		m_btn_cue.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_cue.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 43));
+		m_btn_cue.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 63));
 
     m_btn_play.drag_dest_set(m_targetlist);
 		m_btn_play.drag_dest_add_uri_targets();
 		m_btn_play.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_play.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 44));
+		m_btn_play.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 42));
 		bind_param(m_scale, peg_pitch);
   }
 
@@ -96,7 +96,6 @@ public:
 
   //when a trigger button is clicked
   void button_clicked(int note) {
-    std::cout << "Note: " << note << std::endl;
     unsigned char data_on[3] = { 0x90, note, 127 };
     unsigned char data_off[3] = { 0x80, note, 0 };
     m_ctrl.send_midi(peg_midi, 3, data_on);

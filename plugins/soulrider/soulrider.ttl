@@ -2,6 +2,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.
+@prefix mm: <http://ll-plugins.nongnu.org/lv2/ext/midimap#>.
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/soulrider>
   a lv2:Plugin;
