@@ -36,8 +36,9 @@ public:
   /** The first parameter is the sample rate, the second is the path to the
       LV2 bundle, the third is the host features supported by this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Instrument(peg_n_ports) {
-
+    : LV2Instrument(peg_n_ports),
+    	m_ffmpeg(rate) {
+		m_pause = false;
   }
 
   /** The run() callback. This is the function that gets called by the host
@@ -51,14 +52,14 @@ public:
     uint32_t now = 0;
     uint32_t then;
 		uint32_t outsz = 0;
-    outsz = m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), sample_count);
-		for (int i = outsz; i < sample_count; ++ i) {
-			p<float>(peg_output_l)[i] = 0.;
-			p<float>(peg_output_r)[i] = 0.;
-		}
+		float *dest_l = p<float>(peg_output_l);
+		float *dest_r = p<float>(peg_output_r);
+
 
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
+      m_ffmpeg.set_rate(*p(peg_pitch));
+
 //      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), (then - now));
 
 
@@ -67,12 +68,24 @@ public:
         if (event[0] == 0x90) {
           int key = event[1];
           switch(key) {
-          	case 42: pause(); break;
+          	case 42: pause();
+          		m_pause = !m_pause;
+          		break;
           	case 43: cue(); break;
           	case 44: play(); break;
           }
         }
       }
+      if (m_pause)
+      	outsz = 0;
+      else
+      	outsz = m_ffmpeg.soundtouch(dest_l, dest_r, (then - now));
+    	for (int i = outsz; i < (then - now); ++ i) {
+				dest_l[i] = 0.;
+				dest_r[i] = 0.;
+			}
+			dest_l += (then - now);
+    	dest_r += (then - now);
       now = then;
       lv2midi_step(&midi);
     }
@@ -113,6 +126,7 @@ public:
 protected:
   std::string m_filepath;
   ffmpeg m_ffmpeg;
+  bool m_pause;
 };
 
 

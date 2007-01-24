@@ -60,8 +60,14 @@ public:
 		m_btn_play.drag_dest_add_uri_targets();
 		m_btn_play.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
 		m_btn_play.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 44));
+		bind_param(m_scale, peg_pitch);
   }
 
+	void bind_param(Gtk::Scale &param, int port) {
+  	param.signal_value_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control), port),
+                            mem_fun(param, &Scale::get_value)));
+  }
   //when a trigger button is clicked
   void button_load_clicked() {
 		Gtk::FileChooserDialog dialog("Choose a file to load", Gtk::FILE_CHOOSER_ACTION_OPEN);
