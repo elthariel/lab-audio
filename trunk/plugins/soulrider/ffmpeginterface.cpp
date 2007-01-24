@@ -32,7 +32,7 @@ void ffmpeg::ffmpeg_init()
 	}
 }
 
-ffmpeg::ffmpeg() {
+ffmpeg::ffmpeg(unsigned int samplerate) {
 	m_packet.data = NULL;
 	m_frame = NULL;
 	m_codecctx = NULL;
@@ -41,6 +41,7 @@ ffmpeg::ffmpeg() {
 	m_soundtouch.setChannels(2);
   m_soundtouch.setRate(1.);
   m_soundtouch.setTempo(1.);
+  m_soundtouch.setSampleRate(samplerate);
 }
 
 bool ffmpeg::load_file(const Glib::ustring &str) {
@@ -140,7 +141,7 @@ bool ffmpeg::seek(unsigned long long seek_pos) {
 }
 
 
-void ffmpeg::copy(short *input, float *buffer_l, float *buffer_r, int sz) {
+void ffmpeg::copys2ff(short *input, float *buffer_l, float *buffer_r, int sz) {
   int j = 0,k = 0;
   float res;
 
@@ -157,16 +158,64 @@ void ffmpeg::copy(short *input, float *buffer_l, float *buffer_r, int sz) {
   }
 }
 
-/*
- * receiveSamples
- * si trop petit:
- * readpacket => copy => putSamples
- * /
-void ffmpeg::soundtouch() {
-	m_soundtouch->putSamples((const soundtouch::SAMPLETYPE *)buffer_back, iLen);
-	m_soundtouch->receiveSamples(soundtouch::SAMPLETYPE *outBuffer, uint maxSamples);
+void ffmpeg::copys2f(short *input, float *buffer, int sz) {
+  for (int i = 0; i < sz; ++i) {
+  	buffer[i] = input[i];
+  	buffer[i] /= (float)SHRT_MAX;
+  }
 }
 
+void ffmpeg::copyf2ff(float *input, float *buffer_l, float *buffer_r, int sz) {
+  int j = 0,k = 0;
+  float res;
+
+  for (int i = 0; i < sz; ++i) {
+  	if (i % 2) {
+  	  buffer_r[j] = input[i];
+  	  ++j;
+  	} else {
+  	  buffer_l[k] = input[i];
+  	  ++k;
+  	}
+  }
+}
+
+bool ffmpeg::readsoundtouch() {
+	if (!readpaquet())
+		return false;
+	copys2f(m_buffer, m_buffer2, m_buffersize / 2);
+	m_soundtouch.putSamples((soundtouch::SAMPLETYPE*)m_buffer2, m_buffersize / 4);
+	return true;
+}
+
+int ffmpeg::soundtouch(float *buffer_l, float *buffer_r, int samplecount) {
+	float *dest_l = buffer_l;
+	float *dest_r = buffer_r;
+	char *src = NULL;
+	int index = 0;
+	int outsize = 0;
+	int tries = 0;
+	int needed = samplecount;//*channels
+
+  if (!m_loaded)
+  	return 0;
+
+	while (needed > 0) {
+		index = m_soundtouch.receiveSamples((soundtouch::SAMPLETYPE*)m_outbuffer, needed);
+		outsize += index;
+		copyf2ff(m_outbuffer, dest_l, dest_r, index * 2);
+		dest_l += index;
+		dest_r += index;
+		needed -= outsize;
+		if (needed > 0) {
+			readsoundtouch();
+			++tries;
+			if (tries > 10)
+			  break;
+		}
+	}
+	return (outsize);
+}
 
 /*
  * all index are char *based
@@ -187,7 +236,7 @@ int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 	while (needed > 0) {
 		if (m_bufferoffset < m_buffersize) {
 			index = m_buffersize - m_bufferoffset > needed ? needed : m_buffersize - m_bufferoffset;
-			copy((short *)src, (float *)dest_l, (float *)dest_r, index/2);
+			copys2ff((short *)src, (float *)dest_l, (float *)dest_r, index/2);
 			src += index;
 			dest_l += index/4;
 			dest_r += index/4;

@@ -27,11 +27,12 @@
 #include <ffmpeg/avcodec.h>
 #include <ffmpeg/avformat.h>
 #include <gtkmm.h>
+//#define INTEGER_SAMPLES
 #include "soundtouch/SoundTouch.h"
 
 class ffmpeg {
 public:
-	ffmpeg();
+	ffmpeg(unsigned int samplerate = 44100);
 	static void ffmpeg_init();
 
   void close();
@@ -58,12 +59,16 @@ public:
 	int process(float *buffer_l, float *buffer_r, int samplecount);
 //	int process(float *buffer, int samplecount);
 //	int process_mono(float *buffer, int samplecount);
-
+	inline void set_rate(float rate) { m_soundtouch.setRate(rate); }
+	int soundtouch(float *buffer_l, float *buffer_r, int samplecount);
 protected:
   //read one paquet from ffmpeg
 	bool readpaquet();
+	bool readsoundtouch();
 	//void copy(char *input, char *buffer_l, char *buffer_r, int sz);
-	void copy(short int *input, float *buffer_l, float *buffer_r, int sz);
+	void copys2ff(short *input, float *buffer_l, float *buffer_r, int sz);
+	void copys2f(short *input, float *buffer, int sz);
+	void copyf2ff(float *input, float *buffer_l, float *buffer_r, int sz);
 
 private:
 	int m_channels;
@@ -78,7 +83,9 @@ private:
 	AVPacket m_packet;
 	volatile int m_bufferoffset;
   volatile int m_buffersize;
-  float m_buffer[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+  short m_buffer[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+  float m_buffer2[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+  float m_outbuffer[AVCODEC_MAX_AUDIO_FRAME_SIZE];
   soundtouch::SoundTouch m_soundtouch;
 };
 
