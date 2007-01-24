@@ -38,6 +38,9 @@ ffmpeg::ffmpeg() {
 	m_codecctx = NULL;
 	m_formatctx = NULL;
 	m_loaded = false;
+	m_soundtouch.setChannels(2);
+  m_soundtouch.setRate(1.);
+  m_soundtouch.setTempo(1.);
 }
 
 bool ffmpeg::load_file(const Glib::ustring &str) {
@@ -144,55 +147,67 @@ void ffmpeg::copy(short *input, float *buffer_l, float *buffer_r, int sz) {
   for (int i = 0; i < sz; ++i) {
   	if (i % 2) {
   	  buffer_r[j] = input[i];
-  	  buffer_r[j] /= (float)SHRT_MAX; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
-  	  //buffer_r[j] /= 2.0;
+  	  buffer_r[j] /= (float)SHRT_MAX;
   	  ++j;
   	} else {
   	  buffer_l[k] = input[i];
-  	  buffer_l[k] /= (float)SHRT_MAX; //old_convert_mono_16le_float((unsigned char *)input[i]);// / (float)0x8000;// / (float)SHRT_MAX;
-  	  //buffer_l[k] /= 2.0;
+  	  buffer_l[k] /= (float)SHRT_MAX;
   	  ++k;
   	}
   }
 }
 
 /*
+ * receiveSamples
+ * si trop petit:
+ * readpacket => copy => putSamples
+ * /
+void ffmpeg::soundtouch() {
+	m_soundtouch->putSamples((const soundtouch::SAMPLETYPE *)buffer_back, iLen);
+	m_soundtouch->receiveSamples(soundtouch::SAMPLETYPE *outBuffer, uint maxSamples);
+}
+
+
+/*
  * all index are char *based
  */
 int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
-	char *dest_l = (char *) buffer_l;
-	char *dest_r = (char *) buffer_r;
+	float *dest_l = buffer_l;
+	float *dest_r = buffer_r;
 	char *src = NULL;
 	int index = 0;
 	int outsize = 0;
+	int tries = 0;
 	int needed = samplecount*2*2;//*channels*sizeof(short);
 
   if (!m_loaded)
   	return 0;
-  //std::cout << "process(" << samplecount << ")" << std::endl;
-	//copy previous buffer
 	src = (char *)m_buffer;
 	src += m_bufferoffset;
 	while (needed > 0) {
 		if (m_bufferoffset < m_buffersize) {
 			index = m_buffersize - m_bufferoffset > needed ? needed : m_buffersize - m_bufferoffset;
-			//memcpy((char *)dest, (char *)(src), index);
 			copy((short *)src, (float *)dest_l, (float *)dest_r, index/2);
 			src += index;
-			dest_l += index/2;
-			dest_r += index/2;
+			dest_l += index/4;
+			dest_r += index/4;
 			needed -= index;
 			m_bufferoffset += index;
 			outsize += index;
 		}
-		if (needed > 0/* && (m_buffersize - m_bufferoffset <= 0)*/) {
+		if (needed > 0) {
 			m_bufferoffset = 0;
 			readpaquet();
+			if (m_buffersize == 0) {
+			  ++tries;
+			  if (tries > 3)
+			  	break;
+			}
 			src = (char*)m_buffer;
 			src += m_bufferoffset;
 		}
 	}
-	return (outsize/2/2);
+	return (outsize/4);
 }
 
 
