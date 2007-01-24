@@ -1,12 +1,12 @@
 soulrider:
-  - implement ffmpeg class and use it
+  - seek (in ffmpeg interface)
+  - cleanup (ffmpeg interface)
+  - support for cue/instant cue/instant play
   - add a wave summary/ maybe a seekbar first
   - add a wave display
   - use traktor III stripe
-  - pitch/ timestreching
   - implement a beatsmasher :-) drrrrrryeah!
-  - add tempo detection code from mixxx or djplay (I love GPL)
-
+  - add tempo detection code from mixxx or djplay or soundtouch (I love GPL)
 
 butinator:
   - drop from playlist
@@ -16,5 +16,3 @@ butinator:
 tronsonator:
   - better UI
   - implement pan
-
-
