@@ -1,11 +1,11 @@
 #summary ODL : Osc Discovery And Learn protocol
-#labels Featured
+#labels Featured,Network
 
 = Introduction =
 
 This page is a Draft for a OSC-based protocol which will allow, in the first hand, independant programs to query  a list of the OSC parameters that application supports. In other hand, it will allow a single program to manage the so appreciated 'Learn' feature for all the application that supports this protocol.
 
-= Details =
+= Overview =
 
 ==Pameters querying==
 A special message is sent to the OSC application, with a return address. The application must send back a list of all the available path, with some mapping hints for each to the return address.
@@ -15,6 +15,84 @@ A new type of zeroconf service is defined, like "_osc._udp._learn". Then the app
 
 ==Implementation==
 It will be implemented as a patch for liblo or as another library using liblo.
+
+{{{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}}}
+
+= ODL request for comments (draft) =
+
+== Foreword ==
+
+=== Introduction ===
+
+ODL works on top of OSC, so you might consider reading http://www.cnmat.berkeley.edu/OpenSoundControl/OSC-spec.html if you're not familiar with OSC.
+
+Although it is not required, ODL can takes advantage of the ZeroConf protocol (http://www.zeroconf.org/), branded '_Bonjour_' by Apple. It is available on Apple, Windows (_Bonjour_), and most Linux/Unix distributions (_Avahi_).
+
+The ODL protocol is based on 'server-server' (peer-to-peer) architecture. It consists as 2 sets of OSC messages, one for discovery, the other for learn. The last part of this document contains recommendations about the use of zeroconf to improve simplicity of use for the final user.
+
+=== Conventions ===
+
+When describing an OSC message path, <FOO> will stand for the path of the foo osc server (osc://192.42.42.42:42042/ for example)
+
+When describing the format of an OSC message, the following conventions will be used :
+  * I, OSC's 32 bit int.
+  * T, OSC's time stamp.
+  * F, OSC's float.
+  * S, OSC's string.
+  * B, OSC's blob.
+So "TIIF" indicates a message containing in this order: a time stamp, 2 integers, and a float.
+
+== Discovery ==
+
+In this subsection, <Discover> and <Discovered> will stand respectively for the path of the server which tries to obtain the list of the supported messages and the server which is being queried for it's OSC message interface.
+
+This part of the protocol is made of the following queries and answer:
+
+ * Query : *<Discovered>/discover/list* : message format "S" : this OSC message is a string representing the path of the server & message to which send the message's list back.
+
+ * Answer : *<Discover>/some/path* : this path, including the hostname/address and port of the discovering server is submitted by the discovering server inside the preceding message. : message format "I ISS[S] [ISS[S]] ..." : the first int indicates the number of block  ('discovered' messages) this message includes. Each following block is made of 3 mandatory components and an optionnal one.
+
+== Learn ==
+
+== ZeroConf ==
+
+In order to allow all ODL software to find each others we highly recommend that you use the following types and subtypes of service when registering your OSC server on a ZeroConf server :
+ * Types of service :
+   * {{{"_osc._udp"}}} : UDP-based OSC server.
+   * {{{"_osc._tcp"}}} : TCP-based OSC server.
+ * Subtypes :
+   * {{{none}}} : simple OSC server.
+   * {{{"_learn"}}} : the OSC server is a learn server (it supports learn part of ODL).
+   * {{{"_discovery"}}} : the OSC server support the query mechanism.
+
+
+
 
 
 
