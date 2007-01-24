@@ -2,6 +2,8 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.
+@prefix mm: <http://ll-plugins.nongnu.org/lv2/ext/midimap#>.
+
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/tronsonator>
   a lv2:Plugin;
@@ -180,6 +182,10 @@
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
+    mm:defaultMidiController [
+      mm:controllerType mm:CC;
+      mm:controllerNumber 65;
+    ];
   ],
   [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
@@ -189,6 +195,10 @@
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
+    mm:defaultMidiController [
+      mm:controllerType mm:CC;
+      mm:controllerNumber 66;
+    ];
   ],
   [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
@@ -198,6 +208,10 @@
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
+    mm:defaultMidiController [
+      mm:controllerType mm:CC;
+      mm:controllerNumber 67;
+    ];
   ],
   [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
@@ -207,6 +221,10 @@
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
+        mm:defaultMidiController [
+      mm:controllerType mm:CC;
+      mm:controllerNumber 68;
+    ];
   ],
   [ a lv2:ControlRateInputPort;
     lv2:datatype lv2:float;
@@ -216,6 +234,10 @@
     lv2:minimum 0;
     lv2:maximum 1;
     lv2:default 0.5;
+    mm:defaultMidiController [
+      mm:controllerType mm:CC;
+      mm:controllerNumber 64;
+    ];
   ],
 
   [ a lv2:ControlRateInputPort;
