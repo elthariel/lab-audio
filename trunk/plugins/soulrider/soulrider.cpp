@@ -52,8 +52,10 @@ public:
     uint32_t then;
 		uint32_t outsz = 0;
     outsz = m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), sample_count);
-		if (outsz != sample_count)
-			std::cout << "OUTsize(" << outsz << ") != samplecount(" << sample_count << ")" << std::endl;
+		for (int i = outsz; i < sample_count; ++ i) {
+			p<float>(peg_output_l)[i] = 0.;
+			p<float>(peg_output_r)[i] = 0.;
+		}
 
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
@@ -78,15 +80,13 @@ public:
 
     /** Arbitrary configuration function without RT constraints. */
   char* configure(const char* key, const char* value) {
-  	std::cout << "configure name: key=" << key << " filename=" << value << std::endl;
+//  	std::cout << "configure name: key=" << key << " filename=" << value << std::endl;
   	return 0;
   }
 
   /** Function for loading data from external files. */
   char* set_file(const char* key, const char* filename) {
-  	std::cout << "set file name: key=" << key << " filename=" << filename << std::endl;
-  	std::cout << "Loading: /shared/mp3/speed.mp3" << std::endl;
-  	m_ffmpeg.load_file("/shared/mp3/speed.mp3");
+  	m_ffmpeg.load_file(filename);
   	return 0;
   }
 

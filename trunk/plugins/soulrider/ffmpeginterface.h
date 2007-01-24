@@ -27,6 +27,7 @@
 #include <ffmpeg/avcodec.h>
 #include <ffmpeg/avformat.h>
 #include <gtkmm.h>
+#include "soundtouch/SoundTouch.h"
 
 class ffmpeg {
 public:
@@ -63,6 +64,7 @@ protected:
 	bool readpaquet();
 	//void copy(char *input, char *buffer_l, char *buffer_r, int sz);
 	void copy(short int *input, float *buffer_l, float *buffer_r, int sz);
+
 private:
 	int m_channels;
 	bool m_loaded;
@@ -77,6 +79,7 @@ private:
 	volatile int m_bufferoffset;
   volatile int m_buffersize;
   float m_buffer[AVCODEC_MAX_AUDIO_FRAME_SIZE];
+  soundtouch::SoundTouch m_soundtouch;
 };
 
 

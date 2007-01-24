@@ -11,8 +11,8 @@ BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so $(PLUGIN_NAME)_
 # These are the source files for the plugin
 PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp ffmpeginterface.cpp
 PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h lv2-midifunctions.h $(PLUGIN_NAME).peg ffmpeginterface.h
-PLUGIN_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libavcodec libavformat`
-PLUGIN_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0 libavcodec libavformat`
+PLUGIN_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libavcodec libavformat libSoundTouch`
+PLUGIN_CFLAGS = `pkg-config --cflags gtkmm-2.4 gthread-2.0 libavcodec libavformat libSoundTouch`
 
 # These are the source files for the plugin GUI
 GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
