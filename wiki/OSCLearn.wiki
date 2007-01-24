@@ -85,5 +85,7 @@ In order to allow all ODL software to find each others we highly recommend that 
    * {{{"_discovery"}}} : the OSC server support the query mechanism.
 
 
+Please send me any suggestions and/or remarks by mail :
 
-
+Julien BALLET <elthariel <at> gmail <dot> com>
+L.A.E. (EPITA/EPITECH Audio Lab)
