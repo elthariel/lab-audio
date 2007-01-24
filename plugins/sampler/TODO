@@ -7,7 +7,7 @@ Legend:
 
 ## Bug
    - note_off not working
-   - Low shelf is a no pass but noise filter :p
+   - Low shelf is an anti-noise gate
    - pan not working
 
 ## Filters class.
