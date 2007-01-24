@@ -54,7 +54,7 @@ ODL works on top of OSC, so you might consider reading http://www.cnmat.berkeley
 
 Although it is not required, ODL can takes advantage of the ZeroConf protocol (http://www.zeroconf.org/), branded '_Bonjour_' by Apple. It is available on Apple, Windows (_Bonjour_), and most Linux/Unix distributions (_Avahi_).
 
-The ODL protocol is based on 'server-server' (peer-to-peer) architecture. It consists as 2 sets of OSC messages, one for discovery, the other for learn. The last part of this document contains recommendations about the use of zeroconf to improve simplicity of use for the final user.
+The ODL protocol is based on 'server-server' (peer-to-peer) architecture, for the learn part, and client-server architecture for the discovery. It consists as 2 sets of OSC messages, one for discovery, the other for learn. The last part of this document contains recommendations about the use of zeroconf to improve simplicity of use for the final user.
 
 === Conventions ===
 
@@ -76,7 +76,10 @@ This part of the protocol is made of the following queries and answer:
 
  * Query : *<Discovered>/discover/list* : message format "S" : this OSC message is a string representing the path of the server & message to which send the message's list back.
 
- * Answer : *<Discover>/some/path* : this path, including the hostname/address and port of the discovering server is submitted by the discovering server inside the preceding message. : message format "I ISS[S] [ISS[S]] ..." : the first int indicates the number of block  ('discovered' messages) this message includes. Each following block is made of 3 mandatory components and an optionnal one.
+ * Answer : *<Discover>/some/path* : this path, including the hostname/address and port of the discovering server is submitted by the discovering server inside the preceding message. : message format "I ISSS [[ISSS] ...]" : the first int indicates the number of block  ('discovered' messages) this message includes. Each following block is made of 3 mandatory components and an optionnal one.
+   * "Sss" : the first string is the path of the message, without the leading server address and port.
+   * "sSs" : the second string describes the format of the message in the same syntax as this document : I for int, T for timestamp, F for float, etc.
+   * "ssS" : a string to be displayed to the user which describe what the message controls.
 
 == Learn ==
 
@@ -90,7 +93,6 @@ In order to allow all ODL software to find each others we highly recommend that 
    * {{{none}}} : simple OSC server.
    * {{{"_learn"}}} : the OSC server is a learn server (it supports learn part of ODL).
    * {{{"_discovery"}}} : the OSC server support the query mechanism.
-
 
 
 
