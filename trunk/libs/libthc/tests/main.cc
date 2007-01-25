@@ -88,6 +88,7 @@ int main (int argc, char *argv[]) {
   				       false,
   				       true);
   Slider slider9(SkinManager::get_skin("slider/crossfader-full"));
+  Slider slider10(SkinManager::get_skin("slider/fader-h"));
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
   delete slider;
@@ -121,6 +122,7 @@ int main (int argc, char *argv[]) {
   hbox2.pack_start(slider7);
   hbox2.pack_start(slider8);
   hbox2.pack_start(slider9);
+  hbox2.pack_start(slider10);
 
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));

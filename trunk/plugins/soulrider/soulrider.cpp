@@ -1,4 +1,4 @@
-/****************************************************************************
+	/****************************************************************************
 
     myplugin.cpp - example file for writing LV2 plugins in C++
 
@@ -122,6 +122,8 @@ protected:
   std::string m_filepath;
   ffmpeg m_ffmpeg;
   bool m_pause;
+  unsigned long m_cue;
+  unsigned long m_filelength;
 };
 
 

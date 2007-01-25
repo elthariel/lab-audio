@@ -14,5 +14,7 @@ butinator:
   - a toolbar to add/remove/load_from_pls
 
 tronsonator:
+  - mix/volume for the headphone
   - better UI
   - implement pan
+  - unassigned channel output sound
