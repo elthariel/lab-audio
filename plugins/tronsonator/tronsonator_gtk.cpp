@@ -47,7 +47,7 @@ public:
 			m_slider2(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_2), true),
 			m_slider3(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_3), true),
 			m_slider4(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_4), true),
-			m_crossfader(SkinManager::get_skin("slider/crossfader-handle-h"), create_param(peg_crossfader), true) {
+			m_crossfader(SkinManager::get_skin("slider/fader-h"), create_param(peg_crossfader), true) {
     VBox *vbox;
     widget = &m_vbox;
     m_vbox.pack_start(m_hbox);

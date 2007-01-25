@@ -30,14 +30,16 @@ public:
       m_btn_cue("cue"),
       m_trackname("track: "),
       m_table(2, 3, true),
-      m_scale(peg_ports[peg_pitch].min, peg_ports[peg_pitch].max, 0.05) {
+      m_scale(peg_ports[peg_pitch].min, peg_ports[peg_pitch].max, 0.05),
+      m_scale_pos(peg_ports[peg_position].min, peg_ports[peg_position].max, 0.01) {
     widget = &m_vbox;
     m_vbox.pack_start(m_table);
     m_table.attach(m_btn_load_track, 0, 1, 0, 1);
     m_table.attach(m_btn_pause, 1, 2, 0, 1);
     m_table.attach(m_btn_play, 1, 2, 1, 2);
     m_table.attach(m_btn_cue, 0, 1, 1, 2);
-    m_table.attach(m_scale, 2, 3, 0, 2);
+    m_table.attach(m_scale, 2, 3, 0, 1);
+    m_table.attach(m_scale_pos, 2, 3, 1, 2);
     m_vbox.pack_start(m_trackname);
 
     m_targetlist.push_back(Gtk::TargetEntry("text/uri-list"));
@@ -140,6 +142,7 @@ protected:
   Button m_btn_play;
   Button m_btn_cue;
   HScale m_scale;
+  HScale m_scale_pos;
   Label m_trackname;
 };
 
