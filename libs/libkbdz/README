@@ -1,0 +1,37 @@
+##
+## README for libkbdz in /home/elthariel/code/lab-audio/libs/libkbdz
+##
+## Made by Nahlwe
+## Login   <elthariel@lse.epita.fr>
+##
+## Started on  Thu Jan 25 06:37:03 2007 Nahlwe
+## Last update Thu Jan 25 07:01:10 2007 Nahlwe
+##
+
+libkbdz is a library with allow you to develop event manager for
+various device type :
+  - Multiple keyboards
+  - Multiple mouses
+  - Joysticks
+  - Midi controllers
+  - Virtual controllers
+
+Via these format :
+  - linux evdev's
+  - Alsa seq
+  - Jack midi
+  - OSC
+
+It supports ODL (OSC Discovery and learn protocol) to build learn
+manager.
+
+
+It is developped to speed up the development of a graphical event
+manager (for 'desktop'sound stations) and of a daemon and command line
+tools equivalents (for embedded applications).
+
+
+## Design
+
+It will be implemented as a multithreaded library.  When all the basic
+work is done, SMP safety will be added
