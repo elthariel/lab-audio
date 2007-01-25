@@ -1,0 +1,6 @@
+<thc name="ttoine">
+  <slider name="fader-h" render="handle" horizontal="true">
+    <image name="background" path="ttoine/fader-h.png"/>
+    <image name="handle" path="mixxx/fader-handle-h.png"/>
+  </slider>
+</thc>
