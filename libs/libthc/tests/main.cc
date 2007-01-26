@@ -26,6 +26,11 @@
 #include "../src/thc.h"
 #include <sndfile.h>
 #include <iostream>
+#include "back-lol.xpm"
+using namespace std;
+using namespace Gtk;
+using namespace Gdk;
+using namespace Glib;
 using namespace Thc;
 Slider *slider;
 
@@ -75,24 +80,41 @@ int main (int argc, char *argv[]) {
   Slider slider4(Images::create_images("../skins/mixxx/vu%il.png", 32), Param::create_param(), false, true);
   Slider slider5(Images::create_images("../skins/mixxx/vu%ir.png", 32), Param::create_param(), false);
   Slider slider6(Param::create_param(), false);
-  Slider slider7(Image::create_image("../skins/mixxx/slider_back_horiz.png"),
-  				       Image::create_image("../skins/mixxx/slider_handle_horiz.png"),
+  Slider slider7(Thc::Image::create_image("../skins/mixxx/slider_back_horiz.png"),
+  				       Thc::Image::create_image("../skins/mixxx/slider_handle_horiz.png"),
   				       Param::create_param(),
   				       Slider::SliderHandle,
   				       true,
   				       false);
-  Slider slider8(Image::create_image("../skins/mixxx/slider_back_vert.png"),
-  				       Image::create_image("../skins/mixxx/slider_handle_vert.png"),
+  Slider slider8(Thc::Image::create_image("../skins/mixxx/slider_back_vert.png"),
+  				       Thc::Image::create_image("../skins/mixxx/slider_handle_vert.png"),
   				       Param::create_param(),
   				       Slider::SliderHandle,
   				       false,
   				       true);
   Slider slider9(SkinManager::get_skin("slider/crossfader-full"));
   Slider slider10(SkinManager::get_skin("slider/fader-h"));
+  Slider slider11(SkinManager::get_skin("slider/fader-v"));
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
   delete slider;
   slider = new Slider(Param::create_param(), false, false, false);
+
+  Gtk::Fixed m_fixed;
+	m_fixed.set_has_window(true);
+	RefPtr<Pixbuf> back = Pixbuf::create_from_xpm_data(back_lol_xpm);
+	m_fixed.set_size_request(back->get_width(), back->get_height());
+	RefPtr<Pixmap> pixmap = Pixmap::create(m_fixed.get_window(), back->get_width(), back->get_height());
+	RefPtr<Bitmap> bitmap;
+	back->render_pixmap_and_mask(pixmap, bitmap, 10);
+	RefPtr<Style> s = m_fixed.get_style()->copy();
+	s->set_bg_pixmap(STATE_NORMAL, pixmap);
+	s->set_bg_pixmap(STATE_ACTIVE, pixmap);
+	s->set_bg_pixmap(STATE_PRELIGHT, pixmap);
+	s->set_bg_pixmap(STATE_SELECTED, pixmap);
+	s->set_bg_pixmap(STATE_INSENSITIVE, pixmap);
+	m_fixed.set_style(s);
+
 
   ModeManager::instance()->add_widget("test", slider);
   ModeManager::instance()->add_widget("test", slider2);
@@ -104,7 +126,8 @@ int main (int argc, char *argv[]) {
   ModeManager::instance()->add_widget("test2", slider8);
   ModeManager::instance()->add_widget("test2", slider9);
 
-  window.add(vbox);
+  window.add(m_fixed);
+  m_fixed.put(vbox, 300, 0);
   vbox.pack_start(hbox);
   //hbox.pack_start(btn_loadsample);
   hbox.pack_start(btn_normal);
@@ -118,11 +141,12 @@ int main (int argc, char *argv[]) {
   hbox2.pack_start(slider3);
   hbox2.pack_start(slider4);
   hbox2.pack_start(slider5);
-  hbox2.pack_start(slider6);
   hbox2.pack_start(slider7);
   hbox2.pack_start(slider8);
   hbox2.pack_start(slider9);
-  hbox2.pack_start(slider10);
+	m_fixed.put(slider6, 0, 0);
+	m_fixed.put(slider11, 100, 0);
+	m_fixed.put(slider10, 200, 0);
 
   btn_connect.signal_clicked().connect(sigc::ptr_fun(&connect_mode));
   btn_normal.signal_clicked().connect(sigc::ptr_fun(&normal_mode));

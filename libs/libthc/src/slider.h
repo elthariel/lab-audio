@@ -28,16 +28,17 @@
 
 namespace Thc {
 
-class Slider : public ThcWidget<Gtk::DrawingArea> {
+class Slider : public ThcWidget<Gtk::Misc> {
+//class Slider : public ThcWidget<Gtk::EventBox>, Gtk:: {
 public:
   enum SliderType { SliderAll, SliderForeground, SliderHandle, SliderVector };
-  
+
   //constructor taking a xml dom as parameter
   Slider(Skin::Ref skin, Param::Ref param = Param::create_param(), bool scale = false, bool infinite = false);
 
   //constructor for vectorial mode
   Slider(Param::Ref param = Param::create_param(), bool horizontal = true, bool scale = true, bool infinite = false);
- 
+
   //constructor for images mode
   Slider(Images::Ref images,
          Param::Ref param = Param::create_param(),
@@ -61,18 +62,18 @@ protected:
   bool on_scroll_event(GdkEventScroll* event);
   bool on_enter_notify_event (GdkEventCrossing* event);
   bool on_leave_notify_event (GdkEventCrossing* event);
-  
+
   void draw_vector(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);
   void draw_images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);
-  void draw_2images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);											
+  void draw_2images(GdkEventExpose* event, Cairo::RefPtr<Cairo::Context> cc);
 
   void init();
   void on_skin_change();
-  
+
   //should be elsewhere maybe into Thc::Parameter
   double map_to_adj(double knob);
   double map_to_knob(double adj);
-  
+
 private:
   int m_click_offset;
   float m_value_offset;
