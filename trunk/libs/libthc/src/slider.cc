@@ -35,7 +35,7 @@ using namespace std;
 
 
 Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
-  : ThcWidget<Gtk::DrawingArea>("slider", skin),
+  : ThcWidget<BaseClass>("slider", skin),
     m_param(param),
     m_scale(scale),
     m_infinite(infinite) {
@@ -45,7 +45,7 @@ Slider::Slider(Skin::Ref skin, Param::Ref param, bool scale, bool infinite)
 }
 
 Slider::Slider(Param::Ref param, bool horizontal, bool scale, bool infinite)
-  : ThcWidget<Gtk::DrawingArea>("slider"),
+  : ThcWidget<BaseClass>("slider"),
     m_param(param),
     m_horizontal(horizontal),
     m_type(SliderVector),
@@ -56,7 +56,7 @@ Slider::Slider(Param::Ref param, bool horizontal, bool scale, bool infinite)
 
 //constructor for images mode
 Slider::Slider(Images::Ref images, Param::Ref param, bool horizontal, bool scale, bool infinite)
-  : ThcWidget<Gtk::DrawingArea>("slider"),
+  : ThcWidget<BaseClass>("slider"),
     m_images(images),
     m_param(param),
     m_horizontal(horizontal),
@@ -77,7 +77,7 @@ Slider::Slider(Image::Ref image_background,
                bool horizontal,
                bool scale,
                bool infinite)
-  : ThcWidget<Gtk::DrawingArea>("slider"),
+  : ThcWidget<BaseClass>("slider"),
     m_image_background(image_background),
     m_image_foreground(image_foreground),
     m_param(param),
@@ -149,6 +149,8 @@ void Slider::init() {
   else
     set_size_request(32, 64);
 //  std::cout << "widget name:" <<  get_name() << std::endl;
+  //set_has_window(false);
+
 }
 
 //draw the slider with cairo
@@ -224,6 +226,7 @@ void Slider::draw_2images(GdkEventExpose* event,
   float value = m_param->get_value();
 
   cc->save();
+  cc->set_operator(Cairo::OPERATOR_OVER);
   if (!m_image_background)
     return;
   w = m_image_background->get_width();
@@ -244,7 +247,7 @@ void Slider::draw_2images(GdkEventExpose* event,
               / (m_param->get_upper() - m_param->get_lower());
       cc->set_source(m_image_foreground, value, 0);
     } else {
-      value = (value - m_param->get_lower())
+      value = ((m_param->get_upper() - m_param->get_lower()) - (value - m_param->get_lower()))
               * (h - m_image_foreground->get_height())//(m_images->size()-1)
               / (m_param->get_upper() - m_param->get_lower());
       cc->set_source(m_image_foreground, 0, value);
@@ -264,6 +267,11 @@ bool Slider::on_expose_event(GdkEventExpose* event) {
   //clip to what really need to be redrawn
   cc->rectangle(event->area.x, event->area.y, event->area.width, event->area.height);
   cc->clip();
+
+ /* cc->save();
+  cc->set_operator (Cairo::OPERATOR_CLEAR);
+  cc->paint();
+  cc->restore();*/
 
   cc->set_line_join(Cairo::LINE_JOIN_ROUND);
   if (get_mode() == ModeNormal) {

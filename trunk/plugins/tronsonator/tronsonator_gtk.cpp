@@ -6,9 +6,11 @@
 #include "tronsonator.peg"
 #include <thc/thc.h>
 #include <thc/skinmanager.h>
-
+#include "back-lol.xpm"
 using namespace std;
 using namespace Gtk;
+using namespace Gdk;
+using namespace Glib;
 using namespace sigc;
 using namespace Thc;
 
@@ -43,55 +45,69 @@ public:
       m_gain2(create_param(peg_gain_2)),
       m_gain3(create_param(peg_gain_3)),
       m_gain4(create_param(peg_gain_4)),
-      m_slider1(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_1), true),
-			m_slider2(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_2), true),
-			m_slider3(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_3), true),
-			m_slider4(SkinManager::get_skin("slider/crossfader-handle-v"), create_param(peg_volume_4), true),
-			m_crossfader(SkinManager::get_skin("slider/fader-h"), create_param(peg_crossfader), true) {
+      m_slider1(SkinManager::get_skin("slider/fader-v"), create_param(peg_volume_1), false),
+			m_slider2(SkinManager::get_skin("slider/fader-v"), create_param(peg_volume_2), false),
+			m_slider3(SkinManager::get_skin("slider/fader-v"), create_param(peg_volume_3), false),
+			m_slider4(SkinManager::get_skin("slider/fader-v"), create_param(peg_volume_4), false),
+			m_crossfader(SkinManager::get_skin("slider/fader-h"), create_param(peg_crossfader), false) {
     VBox *vbox;
-    widget = &m_vbox;
-    m_vbox.pack_start(m_hbox);
+    widget = &m_fixed;
+
+    m_fixed.set_has_window(true);
+    RefPtr<Pixbuf> back = Pixbuf::create_from_xpm_data(back_lol_xpm);
+    m_fixed.set_size_request(back->get_width(), back->get_height());
+    RefPtr<Pixmap> pixmap = Pixmap::create(m_fixed.get_window(), back->get_width(), back->get_height());
+    RefPtr<Bitmap> bitmap;
+    back->render_pixmap_and_mask(pixmap, bitmap, 10);
+    RefPtr<Style> s = m_fixed.get_style()->copy();
+    s->set_bg_pixmap(STATE_NORMAL, pixmap);
+    s->set_bg_pixmap(STATE_ACTIVE, pixmap);
+    s->set_bg_pixmap(STATE_PRELIGHT, pixmap);
+    s->set_bg_pixmap(STATE_SELECTED, pixmap);
+    s->set_bg_pixmap(STATE_INSENSITIVE, pixmap);
+    m_fixed.set_style(s);
+
     vbox = new VBox();
-    m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_1);
     vbox->pack_start(m_bal1);
     vbox->pack_start(m_gain1);
-    vbox->pack_start(m_slider1);
+    vbox->pack_start(m_slider1, PACK_SHRINK);
     vbox->pack_start(m_hbox1);
     m_hbox1.pack_start(m_cross_l1);
     m_hbox1.pack_start(m_cross_r1);
+    m_fixed.put(*vbox, 0, 0);
 
     vbox = new VBox();
-    m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_2);
     vbox->pack_start(m_bal2);
     vbox->pack_start(m_gain2);
-    vbox->pack_start(m_slider2);
+    vbox->pack_start(m_slider2, PACK_EXPAND_WIDGET);
     vbox->pack_start(m_hbox2);
     m_hbox2.pack_start(m_cross_l2);
     m_hbox2.pack_start(m_cross_r2);
+		m_fixed.put(*vbox, 80, 0);
 
     vbox = new VBox();
-    m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_3);
     vbox->pack_start(m_bal3);
     vbox->pack_start(m_gain3);
-    vbox->pack_start(m_slider3);
+    vbox->pack_start(m_slider3, PACK_EXPAND_PADDING);
     vbox->pack_start(m_hbox3);
     m_hbox3.pack_start(m_cross_l3);
     m_hbox3.pack_start(m_cross_r3);
+    m_fixed.put(*vbox, 160, 0);
 
     vbox = new VBox();
-    m_hbox.pack_start(*vbox);
     vbox->pack_start(m_btn_headphone_4);
     vbox->pack_start(m_bal4);
     vbox->pack_start(m_gain4);
-    vbox->pack_start(m_slider4);
+    vbox->pack_start(m_slider4, PACK_EXPAND_PADDING);
     vbox->pack_start(m_hbox4);
     m_hbox4.pack_start(m_cross_l4);
     m_hbox4.pack_start(m_cross_r4);
+    m_fixed.put(*vbox, 240, 0);
 
-    m_vbox.pack_start(m_crossfader);
+    m_fixed.put(m_crossfader, 10, 378);
 
 		bind_param(m_gain1.get_param("x"), peg_gain_1);
 		bind_param(m_gain2.get_param("x"), peg_gain_2);
@@ -111,6 +127,17 @@ public:
     bind_param3(m_cross_l3, m_cross_r3, peg_crossfader_ch_3);
     bind_param3(m_cross_l4, m_cross_r4, peg_crossfader_ch_4);
   }
+
+	void set_control(uint32_t port, float value) {
+		switch(port) {
+			case peg_volume_1: m_slider1.get_param("x")->set_value(value); break;
+			case peg_volume_2: m_slider2.get_param("x")->set_value(value); break;
+			case peg_volume_3: m_slider3.get_param("x")->set_value(value); break;
+			case peg_volume_4: m_slider4.get_param("x")->set_value(value); break;
+			case peg_crossfader: m_crossfader.get_param("x")->set_value(value); break;
+			default:;
+		}
+	}
 
   void bind_param(Thc::Param::Ref param, int port) {
   	param->signal_value_changed().
@@ -133,10 +160,8 @@ public:
 
   void cross_toggle(Gtk::ToggleButton* param1, Gtk::ToggleButton* param2, int port, float val) {
   	bool active = param1->get_active();
-  	//m_ctrl.set_control(port1, active);
   	if (param2->get_active() == active && active) {
   		param2->set_active(!active);
-  		//m_ctrl.set_control(port2, !active);
   	}
     if (active)
       m_ctrl.set_control(port, val);
@@ -144,22 +169,9 @@ public:
       m_ctrl.set_control(port, 0.0);
   }
 
-  //when a trigger button is clicked
-  void button_headphone() {
-  	std::cout << "gtk: loading" << std::endl;
-  }
-
-  //when a trigger button is clicked
-  void button_clicked(int note) {
-    std::cout << "Note: " << note << std::endl;
-    unsigned char data_on[3] = { 0x90, note, 127 };
-    unsigned char data_off[3] = { 0x80, note, 0 };
-    m_ctrl.send_midi(peg_midi, 3, data_on);
-    m_ctrl.send_midi(peg_midi, 3, data_off);
-  }
-
 protected:
   LV2Controller &m_ctrl;
+  Fixed m_fixed;
   HBox m_hbox;
   HBox m_hbox1;
   HBox m_hbox2;

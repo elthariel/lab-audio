@@ -3,4 +3,8 @@
     <image name="background" path="ttoine/fader-h.png"/>
     <image name="handle" path="ttoine/fader-handle-h.png"/>
   </slider>
+  <slider name="fader-v" render="handle" horizontal="false">
+    <image name="background" path="ttoine/fader-v.png"/>
+    <image name="handle" path="ttoine/fader-handle-v.png"/>
+  </slider>
 </thc>

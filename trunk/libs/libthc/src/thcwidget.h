@@ -33,13 +33,13 @@
 
 
 namespace Thc {
-  
+
   static int widget_id = 0;
-  
+
   template <class T>
   class ThcWidget: public IThcWidget, public T {
   public:
-    //typedef typename T BaseClass;
+    typedef T BaseClass;
     ThcWidget(const Glib::ustring &widget_name = "unamed", Skin::Ref skin = Skin::Ref());
     virtual ~ThcWidget();
 
@@ -48,14 +48,14 @@ namespace Thc {
 	inline Param::Ref get_param(const Glib::ustring& name) { return m_params[name]; }
   protected:
  	inline void set_param(const Glib::ustring& name, Param::Ref param) { m_params[name] = param; }
-		
+
   public:
     inline void set_mode(WidgetMode mode) { m_mode = mode; on_mode_change(); m_signal_mode_change(); }
     inline WidgetMode get_mode()const { return m_mode; }
     inline int get_supported_mode()const { return m_supported_mode; }
     inline sigc::signal<void>& signal_mode_change() { return m_signal_mode_change; }
   protected:
-    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; } 
+    inline void add_supported_mode(WidgetMode mode) { m_supported_mode &= mode; }
     virtual void on_mode_change() {};
     void draw_ports(const Gtk::Allocation &allocation, Cairo::RefPtr<Cairo::Context> cc);
 
@@ -68,10 +68,10 @@ namespace Thc {
 
   public:
     inline const Glib::ustring &get_name()const { return m_widget_name; }
-    
+
   //add
   //pack_start
-  
+
   private:
     std::map<Glib::ustring, Param::Ref> m_params;
     WidgetMode m_mode;
