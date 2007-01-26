@@ -27,13 +27,42 @@
 #ifndef   	KEVENT_HH_
 # define   	KEVENT_HH_
 
-enum kEventType
+enum kEvent
   {
-    kEvent
+    kNote,
+    kCtrlAbs,
+    kCtrlRel,
+    kTimestamp
   };
+
+struct kEventNote
+{
+  char note;
+  char vel;
+};
+
+struct kEventCtrlAbs
+{
+  uint32_t      control;
+  uint32_t      value;
+};
+
+struct kEventCtrlRel
+{
+  uint32_t      control;
+  int32_t       value;
+};
 
 struct kEvent
 {
+  uint32_t      device;
+  uint32_t      type;
+  union
+  {
+    kEventNote          note;
+    kEventCtrlAbs       abs;
+    kEventCtrlRel       rel;
+  };
 };
 
 #endif	    /* !KEVENT_HH_ */

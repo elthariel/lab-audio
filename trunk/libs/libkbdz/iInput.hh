@@ -1,7 +1,7 @@
 /*
-** lfringbuffer.cc
+** iInput.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Jan 25 05:43:13 2007 Nahlwe
+** Started on  Fri Jan 26 03:56:19 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,13 +20,27 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#include <iostream>
-#include "lfringbuffer.hh"
+#ifndef   	IINPUT_HH_
+# define   	IINPUT_HH_
 
-template <class BlockType>
-LFRingbuffer::LFRingbuffer(uint32_t item_count)
-  : m_buffer(0), m_ro(0), m_wo(0), m_capacity(item_count),
-    m_occupation(0), m_reader(false), m_writer(false)
+#include "kevent.hh"
+#include "lfringbuffer.hh"
+#include <boost/thread.hpp>
+
+/** Interface for input class.
+ * Can be added to kInputRegistry
+ */
+class iInput
 {
-  m_buffer = new BlockType[item_count];
-}
+public:
+  iInput(uint32_t buffer_size)
+  LFRingBufferReader<kEvent>    *get_reader();
+private:
+  virtual void                  thread_fun() = 0; /** Input loop thread function */
+
+  thread                        m_thread;
+  LFRingBuffer<kEvent>          m_buffer;
+  LFRingBufferWriter<kEvent>    *m_writer;
+};
+
+#endif	    /* !IINPUT_HH_ */

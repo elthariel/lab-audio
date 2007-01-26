@@ -1,7 +1,7 @@
 /*
-** lfringbuffer.cc
+** kMain.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Jan 25 05:43:13 2007 Nahlwe
+** Started on  Fri Jan 26 07:58:16 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,13 +20,16 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#include <iostream>
-#include "lfringbuffer.hh"
+#ifndef   	KMAIN_HH_
+# define   	KMAIN_HH_
 
-template <class BlockType>
-LFRingbuffer::LFRingbuffer(uint32_t item_count)
-  : m_buffer(0), m_ro(0), m_wo(0), m_capacity(item_count),
-    m_occupation(0), m_reader(false), m_writer(false)
+#include "kinputregistry.hh"
+
+class kMain
 {
-  m_buffer = new BlockType[item_count];
-}
+public:
+private:
+
+};
+
+#endif	    /* !KMAIN_HH_ */
