@@ -21,7 +21,12 @@
 //
 #include <iostream>
 #include "ffmpeginterface.h"
+#include "sndbuffer.h"
 
+/** TODO
+ *	lock avopen/avclose
+ * 	make ffmpeg init a simgleton class
+ */
 static bool ffmpeginit = false;
 
 void ffmpeg::ffmpeg_init()
@@ -31,19 +36,25 @@ void ffmpeg::ffmpeg_init()
 		ffmpeginit = true;
 	}
 }
-
+/** Ctor
+ *
+ */
 ffmpeg::ffmpeg(unsigned int samplerate) {
 	m_packet.data = NULL;
 	m_frame = NULL;
 	m_codecctx = NULL;
 	m_formatctx = NULL;
 	m_loaded = false;
+	m_samplerate = samplerate;
 	m_soundtouch.setChannels(2);
   m_soundtouch.setRate(1.);
   m_soundtouch.setTempo(1.);
   m_soundtouch.setSampleRate(samplerate);
 }
 
+/** load one file
+ *  make all the initialisation
+ */
 bool ffmpeg::load_file(const Glib::ustring &str) {
 	AVFormatParameters param;
 
@@ -58,7 +69,7 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 	/* initialize param to something so av_open_input_file works for raw */
 	memset(&param, 0, sizeof(AVFormatParameters));
 	param.channels = 2;
-	param.sample_rate = 44100;
+	param.sample_rate = m_samplerate;
 
 	m_iformat = av_find_input_format(str.c_str());
 	// Open audio file
@@ -107,12 +118,16 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 
 	m_frame=avcodec_alloc_frame();
 	m_channels = m_codecctx->channels;
-
+  m_samplerate = m_codecctx->sample_rate;
+  //in short int
+  m_filelength = (unsigned long) ((double)m_formatctx->duration * 2 / AV_TIME_BASE * m_samplerate);
+  m_pos = 0;
 	if(m_channels > 2){
 		std::cerr << "ffmpeg: No support for more than 2 channels!" << std::endl;
 		return false;
 	}
 	m_loaded = true;
+	return true;
 }
 
 void ffmpeg::close() {
@@ -132,135 +147,47 @@ void ffmpeg::close() {
 }
 
 int ffmpeg::get_length() {
+	//std::cout << "ffmpeg: getlength=" << m_filelength << std::endl;
+	return m_filelength;
 }
 
 int ffmpeg::get_pos() {
+	//std::cout << "ffmpeg: getpos=" << m_pos << std::endl;
+	return m_pos;
 }
 
-bool ffmpeg::seek(unsigned long long seek_pos) {
-}
-
-
-void ffmpeg::copys2ff(short *input, float *buffer_l, float *buffer_r, int sz) {
-  int j = 0,k = 0;
-  float res;
-
-  for (int i = 0; i < sz; ++i) {
-  	if (i % 2) {
-  	  buffer_r[j] = input[i];
-  	  buffer_r[j] /= (float)SHRT_MAX;
-  	  ++j;
-  	} else {
-  	  buffer_l[k] = input[i];
-  	  buffer_l[k] /= (float)SHRT_MAX;
-  	  ++k;
-  	}
-  }
-}
-
-void ffmpeg::copys2f(short *input, float *buffer, int sz) {
-  for (int i = 0; i < sz; ++i) {
-  	buffer[i] = input[i];
-  	buffer[i] /= (float)SHRT_MAX;
-  }
-}
-
-void ffmpeg::copyf2ff(float *input, float *buffer_l, float *buffer_r, int sz) {
-  int j = 0,k = 0;
-  float res;
-
-  for (int i = 0; i < sz; ++i) {
-  	if (i % 2) {
-  	  buffer_r[j] = input[i];
-  	  ++j;
-  	} else {
-  	  buffer_l[k] = input[i];
-  	  ++k;
-  	}
-  }
-}
-
-bool ffmpeg::readsoundtouch() {
-	if (!readpaquet())
-		return false;
-	copys2f(m_buffer, m_buffer2, m_buffersize / 2);
-	m_soundtouch.putSamples((soundtouch::SAMPLETYPE*)m_buffer2, m_buffersize / 4);
-	return true;
-}
-
-int ffmpeg::soundtouch(float *buffer_l, float *buffer_r, int samplecount) {
-	float *dest_l = buffer_l;
-	float *dest_r = buffer_r;
-	char *src = NULL;
-	int index = 0;
-	int outsize = 0;
-	int tries = 0;
-	int needed = samplecount;//*channels
-
-  if (!m_loaded)
-  	return 0;
-
-	while (needed > 0) {
-		index = m_soundtouch.receiveSamples((soundtouch::SAMPLETYPE*)m_outbuffer, needed);
-		outsize += index;
-		copyf2ff(m_outbuffer, dest_l, dest_r, index * 2);
-		dest_l += index;
-		dest_r += index;
-		needed -= outsize;
-		if (needed > 0) {
-			readsoundtouch();
-			++tries;
-			if (tries > 10)
-			  break;
-		}
-	}
-	return (outsize);
-}
-
-/*
- * all index are char *based
+/** seek into the mp3
+ *  two operations: seek then readpacket
+ * @return -1 on error, else return the new pos
  */
-int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
-	float *dest_l = buffer_l;
-	float *dest_r = buffer_r;
-	char *src = NULL;
-	int index = 0;
-	int outsize = 0;
-	int tries = 0;
-	int needed = samplecount*2*2;//*channels*sizeof(short);
+bool ffmpeg::seek(unsigned long long seek_pos) {
+	long fspos;
+	//unsigned long ppos;
 
-  if (!m_loaded)
-  	return 0;
-	src = (char *)m_buffer;
-	src += m_bufferoffset;
-	while (needed > 0) {
-		if (m_bufferoffset < m_buffersize) {
-			index = m_buffersize - m_bufferoffset > needed ? needed : m_buffersize - m_bufferoffset;
-			copys2ff((short *)src, (float *)dest_l, (float *)dest_r, index/2);
-			src += index;
-			dest_l += index/4;
-			dest_r += index/4;
-			needed -= index;
-			m_bufferoffset += index;
-			outsize += index;
-		}
-		if (needed > 0) {
-			m_bufferoffset = 0;
-			readpaquet();
-			if (m_buffersize == 0) {
-			  ++tries;
-			  if (tries > 3)
-			  	break;
-			}
-			src = (char*)m_buffer;
-			src += m_bufferoffset;
-		}
-	}
-	return (outsize/4);
+  //ppos = m_pos;
+  AVRational time_base = m_formatctx->streams[m_audiostream]->time_base;
+  //fspos = (long)((double)seek_pos / m_samplerate / 2 * AV_TIME_BASE);
+  fspos = (long)((double)seek_pos / m_samplerate / 2 * time_base.den);
+
+  if (av_seek_frame(m_formatctx, m_audiostream, fspos, AVSEEK_FLAG_BACKWARD /*AVSEEK_FLAG_ANY*/)) {
+	  std::cout << "Error seeking" << std::endl;
+    return -1;
+  }
+	m_soundtouch.flush();
+	m_bufferoffset = ((float)(fspos - m_formatctx->streams[m_audiostream]->cur_dts) / time_base.den * m_samplerate * 2);
+	/*if (m_bufferoffset > m_buffersize) {
+		std::cout << "ffmpeg BADOFFFFFFSET buffsize: " << m_buffersize << " offset: " << m_bufferoffset << std::endl;
+		m_bufferoffset = 0;
+	}*/
+	streadpacket(m_bufferoffset);
+  m_pos = seek_pos;//(unsigned long)((double)m_formatctx->streams[m_audiostream]->cur_dts / time_base.den * m_samplerate * 2 );
+  //std::cout << "seek: seek_pos=" << seek_pos << "value before seeking=" << ppos << std::endl; 
+  return m_pos;
 }
 
 
-bool ffmpeg::readpaquet(){
+
+bool ffmpeg::readpacket(){
 	char *dst;
 	unsigned char *src;
 	int ret = 0;
@@ -302,3 +229,43 @@ bool ffmpeg::readpaquet(){
 	}
 	return false;
 }
+
+bool ffmpeg::streadpacket(int octetoffset) {
+	if (!readpacket())
+		return false;
+	//TODO check for error octetoffset > m_buffersize)
+	//rereadpkt	
+	copys2f(m_buffer + octetoffset / 2, m_buffer2, (m_buffersize - octetoffset) / 2);
+	m_soundtouch.putSamples((soundtouch::SAMPLETYPE*)m_buffer2, m_buffersize / 4);
+	return true;
+}
+
+int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
+	float *dest_l = buffer_l;
+	float *dest_r = buffer_r;
+	int index = 0;
+	int outsize = 0;
+	int tries = 0;
+	int needed = samplecount;//*channels
+
+  if (!m_loaded)
+  	return 0;
+
+	while (needed > 0) {
+		index = m_soundtouch.receiveSamples((soundtouch::SAMPLETYPE*)m_outbuffer, needed);
+		outsize += index;
+		copyf2ff(m_outbuffer, dest_l, dest_r, index * 2);
+		m_pos += index * 2;//error
+		dest_l += index;
+		dest_r += index;
+		needed -= outsize;
+		if (needed > 0) {
+			streadpacket();
+			++tries;
+			if (tries > 10)
+			  break;
+		}
+	}
+	return (outsize);
+}
+

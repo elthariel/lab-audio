@@ -37,8 +37,9 @@ public:
       LV2 bundle, the third is the host features supported by this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
     : LV2Instrument(peg_n_ports),
-    	m_ffmpeg(rate) {
-		m_pause = false;
+    	m_ffmpeg(rate),
+    	m_cue(0),
+    	m_pause(false) {
   }
 
   /** The run() callback. This is the function that gets called by the host
@@ -52,6 +53,7 @@ public:
     uint32_t now = 0;
     uint32_t then;
 		uint32_t outsz = 0;
+		unsigned long pos = 0;
 		float *dest_l = p<float>(peg_output_l);
 		float *dest_r = p<float>(peg_output_r);
 
@@ -59,28 +61,25 @@ public:
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
       m_ffmpeg.set_rate(*p(peg_pitch));
-
 //      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), (then - now));
-
-
       if (then < sample_count) {
         // Is the event a Note On?
         if (event[0] == 0x90) {
           int key = event[1];
           switch(key) {
-          	case 62: pause();
-          		m_pause = !m_pause;
-          		break;
+            case 64: internal_iplay(); break;
+          	case 62: pause(); break;
           	case 63: cue(); break;
           	case 42: play(); break;
+          	case 43: stop(); break;
           }
         }
       }
       if (m_pause)
       	outsz = 0;
       else
-      	outsz = m_ffmpeg.soundtouch(dest_l, dest_r, (then - now));
-    	for (int i = outsz; i < (then - now); ++ i) {
+      	outsz = m_ffmpeg.process(dest_l, dest_r, (then - now));
+    	for (unsigned int i = outsz; i < (then - now); ++ i) {
 				dest_l[i] = 0.;
 				dest_r[i] = 0.;
 			}
@@ -89,6 +88,8 @@ public:
       now = then;
       lv2midi_step(&midi);
     }
+    pos = m_ffmpeg.get_pos();
+    *p(peg_current_position) = (pos == 0 ? 0 : m_ffmpeg.get_length() / pos * 100.);
   }
 
     /** Arbitrary configuration function without RT constraints. */
@@ -102,20 +103,40 @@ public:
   	return 0;
   }
 
+  void pause() {
+    m_pause = !m_pause;
+  }
+
 
   void load_file(const std::string& path) {
+  	m_pause = false;
+  	m_cue = 0;
   	m_ffmpeg.load_file(path);
   }
 
-  void pause() {
-  }
-
+	/** play the track from cue
+	 */
   void play() {
+  	m_pause = false;
+  	m_ffmpeg.seek(m_cue);
   }
 
+  void internal_iplay() {
+    m_ffmpeg.seek(m_ffmpeg.get_length() * (*p(peg_position) / 100.));
+  }
+  
+	/** cue the track
+	 * set the cue point for later use
+	 */
   void cue() {
+  	m_cue = m_ffmpeg.get_pos();
   }
-
+	/** stop the playback and rewind the file
+	 */
+	void stop() {
+		m_pause = true;
+		m_ffmpeg.seek(0);
+	}
 
 
 protected:

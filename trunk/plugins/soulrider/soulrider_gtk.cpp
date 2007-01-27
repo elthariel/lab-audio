@@ -28,42 +28,44 @@ public:
       m_btn_pause("pause"),
       m_btn_play("play"),
       m_btn_cue("cue"),
+      m_btn_stop("stop"),
       m_trackname("track: "),
-      m_table(2, 3, true),
+      m_table(3, 6, true),
       m_scale(peg_ports[peg_pitch].min, peg_ports[peg_pitch].max, 0.05),
       m_scale_pos(peg_ports[peg_position].min, peg_ports[peg_position].max, 0.01) {
     widget = &m_vbox;
     m_vbox.pack_start(m_table);
-    m_table.attach(m_btn_load_track, 0, 1, 0, 1);
-    m_table.attach(m_btn_pause, 1, 2, 0, 1);
+    m_table.attach(m_btn_load_track, 0, 2, 0, 1);
+    m_table.attach(m_btn_pause, 0, 1, 1, 2);
     m_table.attach(m_btn_play, 1, 2, 1, 2);
-    m_table.attach(m_btn_cue, 0, 1, 1, 2);
-    m_table.attach(m_scale, 2, 3, 0, 1);
-    m_table.attach(m_scale_pos, 2, 3, 1, 2);
+    m_table.attach(m_btn_cue, 1, 2, 2, 3);
+    m_table.attach(m_btn_stop, 0, 1, 2, 3);
+    m_table.attach(m_scale, 2, 6, 0, 1);
+    m_table.attach(m_scale_pos, 2, 6, 1, 2);
     m_vbox.pack_start(m_trackname);
 
     m_targetlist.push_back(Gtk::TargetEntry("text/uri-list"));
+
     m_btn_load_track.drag_dest_set(m_targetlist);
 		m_btn_load_track.drag_dest_add_uri_targets();
 		m_btn_load_track.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
 		m_btn_load_track.signal_clicked().connect(sigc::mem_fun(*this, &MyPluginGUI::button_load_clicked));
 
-    m_btn_pause.drag_dest_set(m_targetlist);
-		m_btn_pause.drag_dest_add_uri_targets();
-		m_btn_pause.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_pause.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 62));
-
-    m_btn_cue.drag_dest_set(m_targetlist);
-		m_btn_cue.drag_dest_add_uri_targets();
-		m_btn_cue.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_cue.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 63));
-
-    m_btn_play.drag_dest_set(m_targetlist);
-		m_btn_play.drag_dest_add_uri_targets();
-		m_btn_play.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_play.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 42));
-		bind_param(m_scale, peg_pitch);
+		dropable_btn(m_btn_cue, 63);
+		dropable_btn(m_btn_play, 42);
+		dropable_btn(m_btn_pause, 62);
+		dropable_btn(m_btn_stop, 43);
+ 		bind_param(m_scale, peg_pitch);
+ 		bind_param(m_scale_pos, peg_position);
+ 		m_scale_pos.signal_value_changed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 64));
+ 		m_scale_pos.set_update_policy(Gtk::UPDATE_DELAYED);//Gtk::UPDATE_DISCONTINUOUS
   }
+	void dropable_btn(Gtk::Button &btn, int port) {
+    btn.drag_dest_set(m_targetlist);
+		btn.drag_dest_add_uri_targets();
+		btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
+		btn.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), port));
+	}
 
 	void bind_param(Gtk::Scale &param, int port) {
   	param.signal_value_changed().
@@ -125,6 +127,11 @@ public:
 		}
   }
 
+  void set_control(uint32_t port, float value) {
+    if (port == peg_current_position)
+      m_scale_pos.set_value(value);
+  }
+  
   /** Function for loading data from external files. */
   void set_file(const char* key, const char* filename) {
   	Glib::ustring fname(filename);
@@ -141,6 +148,7 @@ protected:
   Button m_btn_pause;
   Button m_btn_play;
   Button m_btn_cue;
+  Button m_btn_stop;
   HScale m_scale;
   HScale m_scale_pos;
   Label m_trackname;
