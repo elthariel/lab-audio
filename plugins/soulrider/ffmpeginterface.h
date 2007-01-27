@@ -60,6 +60,7 @@ public:
 //	int process(float *buffer, int samplecount);
 //	int process_mono(float *buffer, int samplecount);
 	inline void set_rate(float rate) { m_soundtouch.setRate(rate); }
+	inline void set_pitch(float pitch) { m_soundtouch.setPitch(pitch); }
 	int soundtouch(float *buffer_l, float *buffer_r, int samplecount);
 protected:
   //read one paquet from ffmpeg
