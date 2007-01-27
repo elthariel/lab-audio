@@ -80,6 +80,7 @@ dist: $(DIST_FILES)
 #install the plugin
 install: $(PLUGIN_NAME).lv2
 	cp -rf $(PLUGIN_NAME).lv2 /usr/lib/lv2
+	cp $(PLUGIN_NAME) /usr/bin
 
 # Remove all generated files
 clean:
