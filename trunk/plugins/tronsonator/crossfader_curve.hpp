@@ -45,7 +45,7 @@ struct point
 struct crossdata
 {
   crossdata(unsigned int a_step)
-    :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 0.5), step(a_step)
+    :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 1.), step(a_step)
     //// !! Do not touch to p1.x !! ////
   {
     data = new double[step];
