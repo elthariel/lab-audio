@@ -27,14 +27,14 @@
 #include <ffmpeg/avcodec.h>
 #include <ffmpeg/avformat.h>
 #include <gtkmm.h>
-//#define INTEGER_SAMPLES
+#define FLOAT_SAMPLES
 #include "soundtouch/SoundTouch.h"
 
 class ffmpeg {
 public:
 	ffmpeg(unsigned int samplerate = 44100);
 	static void ffmpeg_init();
-
+	
   void close();
   //load an mp3 and reset all variable
 	bool load_file(const Glib::ustring &str);
@@ -56,25 +56,24 @@ public:
 
   //process the buffer, update pos
   //return true, if its the last buffer, feel with 0
-	int process(float *buffer_l, float *buffer_r, int samplecount);
+	//int process(float *buffer_l, float *buffer_r, int samplecount);
 //	int process(float *buffer, int samplecount);
 //	int process_mono(float *buffer, int samplecount);
 	inline void set_rate(float rate) { m_soundtouch.setRate(rate); }
 	inline void set_pitch(float pitch) { m_soundtouch.setPitch(pitch); }
-	int soundtouch(float *buffer_l, float *buffer_r, int samplecount);
+	int process(float *buffer_l, float *buffer_r, int samplecount);
 protected:
   //read one paquet from ffmpeg
-	bool readpaquet();
-	bool readsoundtouch();
+	bool readpacket();
+	bool streadpacket(int octetoffset = 0);
 	//void copy(char *input, char *buffer_l, char *buffer_r, int sz);
-	void copys2ff(short *input, float *buffer_l, float *buffer_r, int sz);
-	void copys2f(short *input, float *buffer, int sz);
-	void copyf2ff(float *input, float *buffer_l, float *buffer_r, int sz);
 
 private:
 	int m_channels;
 	bool m_loaded;
-	unsigned long m_filelength;
+	unsigned long m_filelength;	/// in number of short for one raw file (left and right)
+	unsigned long m_pos;
+	unsigned int m_samplerate;
 	AVFormatContext *m_formatctx;
   AVInputFormat *m_iformat;
 	int m_audiostream;
