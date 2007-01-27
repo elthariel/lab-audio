@@ -27,21 +27,24 @@
 #include "lv2-miditype.h"
 #include "lv2-midifunctions.h"
 #include "tronsonator.peg"
+#include "crossfader_curve.hpp"
 
-/** This is the class that contains all the code and data for the plugin. */
+/** This is the class that contains all the code and data for the
+    plugin. */
 class MyPlugin : public LV2Plugin {
 public:
 
-  /** The first parameter is the sample rate, the second is the path to the
-      LV2 bundle, the third is the host features supported by this host. */
+  /** The first parameter is the sample rate, the second is the path
+      to the LV2 bundle, the third is the host features supported by
+      this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Plugin(peg_n_ports) {
-
+    : LV2Plugin(peg_n_ports), m_cross(256) {
   }
 
 
   class StepFunc {
-    //step cant be changed at runtime, cause we wont want malloc when processing
+    //step cant be changed at runtime, cause we wont want malloc when
+    //processing
     StepFunc(int step) {
       m_step = step;
       //default init
@@ -72,16 +75,19 @@ public:
   };
 
   float crossfade(float cross, float left, float right) {
+    /*
     float cross_l = cross <= 0.5 ? 1.0 : 1.0 - (cross * 2.0 - 1.0);
-    float cross_r = cross >= 0.5 ? 1.0 : (cross * 2.0);
+    float cross_r = cross >= 0.5 ? 1.0 : (cross * 2.0);*/
     //return left * StepFunc(cross_l) + right * StepFunc(cross_r);
+    float cross_l = m_cross[((uin32_t) cross / 512)];
+    float cross_r = m_cross[512 - ((uin32_t) cross / 512);
     return left * cross_l + right * cross_r;
   }
 
 
-  /** The run() callback. This is the function that gets called by the host
-      when it wants to run the plugin. The parameter is the number of sample
-      frames to process. */
+  /** The run() callback. This is the function that gets called by the
+      host when it wants to run the plugin. The parameter is the
+      number of sample frames to process. */
   void run(uint32_t sample_count) {
     float cross1l, cross1r, cross2l, cross2r;
     while (sample_count) {
@@ -145,11 +151,12 @@ public:
 
 protected:
 
+  crossdata             m_cross;
 };
 
 
-// For some reason the attribute part can only be in a prototype, not a
-// function definition.
+// For some reason the attribute part can only be in a prototype, not
+// a function definition.
 void initialise() __attribute__((constructor));
 void initialise() {
   register_lv2<MyPlugin>(peg_uri);
