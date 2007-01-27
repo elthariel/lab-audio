@@ -30,7 +30,7 @@ struct point
 struct crossdata
 {
   crossdata(unsigned int a_step)
-    :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 0.5), step(a_step)
+    :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 0.7), step(a_step)
     //// !! Do not touch to p1.x !! ////
   {
     data = new double[step];
@@ -38,7 +38,9 @@ struct crossdata
   }
   ~crossdata(){ delete data; }
 
-  inline const double &operator[](unsigned int i)const { return data[i]; }
+  inline const double operator[](unsigned int i)const {
+    if (data[i] > 1.0) return 1.0;
+    else return data[i]; }
   inline void          set_curve(double y)
   { p1.y = y; compute(); }
 
@@ -54,12 +56,12 @@ protected:
 
     for (i = 0; i < step; i++)
       {
-        t = 1.0 / step * i;
+        t = (1.0 / step) * i;
         tmp = p0 * (1 - t) *(1 - t) +
-          p1 * 2 * t * (1 - t)+
+          p1 * 2 * t * (1 - t) +
           p2 * t * t;
         data[i] = tmp.y;
-        //cout << i <<": X : " << tmp.x << "\t\t Y : \t" << tmp.y << endl;
+        cout << i <<": X : " << tmp.x << "\t\t Y : \t" << tmp.y << endl;
       }
   }
 };
