@@ -23,6 +23,8 @@
 #ifndef   	LFRINGBUFFER_HH_
 # define   	LFRINGBUFFER_HH_
 
+#include "smp_uint.hh"
+
 template <class BlockType>
 class LFRingBuffer;
 
@@ -35,7 +37,6 @@ public:
 
 private:
   LFRingBufferReader(LFRingBuffer<BlockType> &);
-  LFRingBufferReader();
   ~LFRingBufferReader();
 
   LFRingBuffer<BlockType>       &ring;
@@ -57,7 +58,6 @@ public:
 
 private:
   LFRingBufferWriter(LFRingBuffer<BlockType> &);
-  LFRingBufferWriter();
   ~LFRingBufferWriter();
 
   LFRingBuffer<BlockType>       &ring;
@@ -95,7 +95,7 @@ protected:
   volatile uint32_t     m_ro;
   volatile uint32_t     m_wo;
   volatile uint32_t     m_capacity;
-  volatile uint32_t     m_occupation;
+  smp_int_t             m_size;
   volatile bool         m_reader;
   volatile bool         m_writer;
 
