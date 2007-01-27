@@ -38,7 +38,7 @@ public:
       to the LV2 bundle, the third is the host features supported by
       this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Plugin(peg_n_ports), m_cross(256) {
+    : LV2Plugin(peg_n_ports), m_cross(512) {
   }
 
 
