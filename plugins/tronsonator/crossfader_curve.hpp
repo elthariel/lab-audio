@@ -1,10 +1,15 @@
 
-#include <iostream>
+
+#ifndef CROSS_CV_H
+# define CROSS_CV_H
+
+# include <iostream>
 
 using namespace std;
 
 /*
- * Ask me sur msn sur comment ca marche, tu te demerde pour l'add a ton truc
+ * Ask me sur msn sur comment ca marche, tu te demerde pour l'add a
+ * ton truc
  */
 
 struct point
@@ -73,3 +78,6 @@ protected:
   }
   const double &operator[](unsigned int i) { return data[i]; }
 };
+
+
+#endif
