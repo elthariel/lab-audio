@@ -74,7 +74,7 @@ bool ffmpeg::load_file(const Glib::ustring &str) {
 	}
 
 	//debug only
-	dump_format(m_formatctx, 0, str.c_str(), false);
+	//dump_format(m_formatctx, 0, str.c_str(), false);
 
 	// Find the first video stream
 	m_audiostream=-1;
