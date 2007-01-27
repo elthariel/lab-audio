@@ -79,8 +79,8 @@ public:
     float cross_l = cross <= 0.5 ? 1.0 : 1.0 - (cross * 2.0 - 1.0);
     float cross_r = cross >= 0.5 ? 1.0 : (cross * 2.0);*/
     //return left * StepFunc(cross_l) + right * StepFunc(cross_r);
-    float cross_l = m_cross[((uin32_t) cross / 512)];
-    float cross_r = m_cross[512 - ((uin32_t) cross / 512);
+    float cross_l = m_cross[((uint32_t) cross / 512)];
+    float cross_r = m_cross[512 - ((uint32_t) cross / 512)];
     return left * cross_l + right * cross_r;
   }
 

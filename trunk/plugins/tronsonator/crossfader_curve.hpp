@@ -53,6 +53,7 @@ struct crossdata
   }
   ~crossdata(){ delete data; }
 
+  const double &operator[](unsigned int i) { return data[i]; }
   void          set_curve(double y)
   { p1.y = y; compute(); }
 
@@ -76,7 +77,6 @@ protected:
         //cout << i <<": X : " << tmp.x << "\t\t Y : \t" << tmp.y << endl;
       }
   }
-  const double &operator[](unsigned int i) { return data[i]; }
 };
 
 
