@@ -24,8 +24,9 @@
 # define   	WAVIEW_HH_
 
 #include <gtkmm.h>
+#include <thcwidget.h>
 
-class WaveView : public Gtk::DrawingArea
+class WaveView : public ThcWidget<Gtk::DrawingArea>
 {
 public:
   WaveView();
@@ -34,6 +35,7 @@ public:
   virtual bool                  on_expose_event(GdkEventExpose* event);
   //  void                          render_data(sample_t *, unsigned int);
   void                          set_data(sample_t *, unsigned int, unsigned char);
+  void                          remove_data();
 
 private:
   sample_t                      *data;

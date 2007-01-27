@@ -24,7 +24,7 @@
 #include "waveview.h"
 
 WaveView::WaveView()
-  :data(0), data_size(0), channels(0)
+  :Thcwidget<BaseClass>("Waveview"), data(0), data_size(0), channels(0)
 {
 }
 
@@ -78,10 +78,21 @@ bool                    WaveView::on_expose_event(GdkEventExpose* event)
   return (true);
 }
 
+/*
+ *
+ */
 void                    WaveView::set_data(sample_t *d, unsigned int size,
                                          unsigned char chan)
 {
   data = d;
   data_size = size;
   channels = chan;
+}
+
+
+void                    WaveView::remove_data()
+{
+  data = 0;
+  data_size = 0;
+  channels = 0;
 }
