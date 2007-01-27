@@ -81,6 +81,7 @@ public:
     //return left * StepFunc(cross_l) + right * StepFunc(cross_r);
     float cross_l = m_cross[((uint32_t) (cross * 512))];
     float cross_r = m_cross[512 - ((uint32_t) (cross * 512))];
+
     return left * cross_l + right * cross_r;
   }
 
