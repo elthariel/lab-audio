@@ -17,35 +17,20 @@ struct point
   double        x;
   double        y;
 
-  point():x(0.0), y(0.0){}
-  point(double a_x, double a_y):x(a_x), y(a_y){}
+  inline point():x(0.0), y(0.0){}
+  inline point(double a_x, double a_y):x(a_x), y(a_y){}
 
-  point         operator+(point p)
-  {
-    point       np;
+  inline point operator+(point p) { return point(x + p.x, y + p.y); }
 
-    np.x = x + p.x;
-    np.y = y + p.y;
-    return np;
-  }
+  inline point operator*(double factor) { return point(x * factor, y * factor); }
 
-  point         operator*(double factor)
-  {
-    point       np;
-
-    np.x = x * factor;
-    np.y = y * factor;
-    return np;
-  }
-
-  point         &operator=(point p)
-  { x = p.x; y = p.y; return *this; }
+  inline point &operator=(point p) { x = p.x; y = p.y; return *this; }
 };
 
 struct crossdata
 {
   crossdata(unsigned int a_step)
-    :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 1.), step(a_step)
+    :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 0.5), step(a_step)
     //// !! Do not touch to p1.x !! ////
   {
     data = new double[step];
@@ -53,8 +38,8 @@ struct crossdata
   }
   ~crossdata(){ delete data; }
 
-  const double &operator[](unsigned int i) { return data[i]; }
-  void          set_curve(double y)
+  inline const double &operator[](unsigned int i)const { return data[i]; }
+  inline void          set_curve(double y)
   { p1.y = y; compute(); }
 
 protected:
