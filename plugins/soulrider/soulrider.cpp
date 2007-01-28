@@ -68,6 +68,9 @@ public:
           int key = event[1];
           switch(key) {
             case 64: internal_iplay(); break;
+            case 65: slowdown(); break;
+            case 66  slowup(); break;
+            case 67: beatsmash(); break;
           	case 62: pause(); break;
           	case 63: cue(); break;
           	case 42: play(); break;
@@ -124,7 +127,7 @@ public:
   void internal_iplay() {
     m_ffmpeg.seek(m_ffmpeg.get_length() * (*p(peg_position) / 100.));
   }
-  
+
 	/** cue the track
 	 * set the cue point for later use
 	 */
@@ -138,6 +141,16 @@ public:
 		m_ffmpeg.seek(0);
 	}
 
+	void slowdown() {
+	}
+
+	void slowup() {
+
+	}
+
+	void beatsmash() {
+
+	}
 
 protected:
   std::string m_filepath;
