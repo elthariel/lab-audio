@@ -5,6 +5,7 @@ Legend:
 + : open task / untested
 * : done task
 
+#### 0.2.0
 ## Bug
    - note_off not working
    - Low shelf is an anti-noise gate
@@ -18,8 +19,6 @@ Legend:
    - HP24
    - ?notch
    - SVF
-   + Low shelf
-
 
 ## Sample class
    * basic sampler
@@ -27,26 +26,37 @@ Legend:
    + normalize
    + reverse
    + fine pitch
+     - Pitch envelop.
    - midi delay
    - arp
    + Antialias filter?
    + Filter support
+     - Filter Envelop.
    - Envelops
-     * EnvSwitcher, EnvDecay, EnvHold
-     - End Dahdsr
+     + EnvSwitcher, EnvDecay, EnvHold
+     + End Dahdsr
 
 ## Promethee
-   - Know how to sync ui when connected to midi controller.
 
 ## Promethee GUI
    + GUI Base.
    - Envelopview
+     - filter
+     - amp
+     - pan
+     - pitch
    - WaveView
    * gain, pitch, pan, root
    - filter view and/or filter sliders
    - antialias, reverse, normalize button.
 
-## Long term idea(s)
+#### 0.4.0
+   - Wef files as envelops
+
+#### Unsorted.
    - Time stretching.
    - DynParam extension support.
    - Beatmasher.
+   - Loop.
+   - Slicer.
+   - Granulars envelops

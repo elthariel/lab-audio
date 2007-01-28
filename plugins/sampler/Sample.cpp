@@ -184,10 +184,8 @@ void                    Sample::render(unsigned int sample_count,
   {
   		outL[i] *= m_gain;
   		outR[i] *= m_gain;
-      if (m_pan > 1.0)
-        outL[i] *= m_pan - 1.0;
-      else
-        outR[i] *= m_pan - 1.0;
+      outL[i] *= 1.0 - m_pan;
+      outR[i] *= m_pan;
   }
   apply_antialias_filter(sample_count, outL, outR);
 }
