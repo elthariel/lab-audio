@@ -37,7 +37,7 @@ class BitSmasher {
 			m_loop_size = 0;
 			m_pos = 0;
 		}
-/*
+/**
  * name: inconnu
  * @param
  * @return
@@ -59,11 +59,6 @@ class BitSmasher {
 				}
 			for (m_pos; m_pos < m_loop_size; ++m_pos) {
 			}
-
-
-
-
-
 		}
 
 		inline void active(bool active) {
