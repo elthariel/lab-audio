@@ -1,4 +1,5 @@
 #summary ctaf todo-list
+http://code.google.com/images/code_sm.png
 
   * fix soolrider
   * update clochette to use param from lv2 and libthc
