@@ -42,6 +42,7 @@ struct SmpVoice
   double                pos;    // pos in sample into the wav
   unsigned int          pos_rel; // pos in sample into the stream, relative to the start
   // time of this voice.
+  unsigned int          note_off_pos_rel;
 };
 
 
