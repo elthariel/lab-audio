@@ -30,7 +30,8 @@ using namespace std;
  */
 
 SmpVoice::SmpVoice()
-  : activated(false), freq(0), vel(0), pos(0.0), pos_rel(0)
+  : activated(false), freq(0), vel(0), pos(0.0), pos_rel(0),
+    note_off_pos_rel(0)
 {
 }
 

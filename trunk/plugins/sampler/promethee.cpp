@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:46:24 2007 Elthariel
-// Last update Sat Jan 20 22:51:28 2007 Nahlwe
+// Last update Sun Jan 28 20:43:35 2007 Nahlwe
 //
 
 #include <cmath>
@@ -56,10 +56,8 @@ char*                   Promethee::set_file(const char* key,
       cout << "Loading sample : " << file << endl;
       if (m_smp[sample_id])
         delete m_smp[sample_id];
-      else
-        {
-          m_smp[sample_id] = new Sample(file, m_sample_rate);
-        }
+      m_smp[sample_id] = new Sample(file, m_sample_rate);
+
     }
   return (0);
 }

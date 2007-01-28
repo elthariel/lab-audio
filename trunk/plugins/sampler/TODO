@@ -9,7 +9,6 @@ Legend:
 ## Bug
    - note_off not working
    - Low shelf is an anti-noise gate
-   - pan not working
 
 ## Filters class.
    - simple and fast lp.
@@ -27,8 +26,6 @@ Legend:
    + reverse
    + fine pitch
      - Pitch envelop.
-   - midi delay
-   - arp
    + Antialias filter?
    + Filter support
      - Filter Envelop.
@@ -52,6 +49,8 @@ Legend:
 
 #### 0.4.0
    - Wef files as envelops
+   - midi delay
+   - arp
 
 #### Unsorted.
    - Time stretching.
