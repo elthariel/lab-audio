@@ -25,18 +25,30 @@
 
 #include <vector>
 
+enum EnvMode
+  {
+    EnvModeOn,
+    EnvModeRelease,
+    EnvModeCount
+  };
+
 class Envelop
 {
 protected:
-  Envelop(){}
+  Envelop(): m_note(-1), m_vel(0){}
+
+  char                          m_note;
+  char                          m_vel;
 
 public:
   virtual ~Envelop(){}
-  Envelop(unsigned int, unsigned int){} //sample_rate, tempo
+  Envelop(unsigned int, unsigned int): m_note(-1), m_vel(0){} //sample_rate, tempo
 
-  virtual double                operator()(unsigned int) = 0;
+  virtual double                operator()(unsigned int, char = 0) = 0;
   virtual void                  set_coefs(double *,
                                           unsigned int coef_count) = 0;
+  virtual void                  note_on(char note, char vel);
+  virtual void                  note_off();
 
 };
 
@@ -54,9 +66,11 @@ public:
   unsigned int          add_envelop(Envelop *, int = -1);
 
   void                  set_envelop(int);
-  virtual double        operator()(unsigned int);
+  virtual double        operator()(unsigned int, char = 0);
   virtual void          set_coefs(double *,
                                   unsigned int coef_count = 1);
+  virtual void          note_on(char note, char vel);
+  virtual void          note_off();
 
   static EnvSwitch      *create_switch_full(unsigned int, unsigned int);
 };
@@ -76,7 +90,7 @@ class EnvD : public Envelop
 public:
   EnvD(unsigned int, unsigned int);
 
-  virtual double                operator()(unsigned int);
+  virtual double                operator()(unsigned int, char = 0);
   virtual void                  set_coefs(double *coefs,
                                           unsigned int coef_count = 1);
 };
@@ -88,32 +102,36 @@ class EnvH : public Envelop
 
   double                        m_hold;         //hold time in beat
   unsigned int                  m_beat_length; //beat length in sample
-  
+
   void							set_hold(double);
 public:
   EnvH(unsigned int, unsigned int);
 
-  virtual double                operator()(unsigned int);
+  virtual double                operator()(unsigned int, char = 0);
   virtual void                  set_coefs(double *coefs,
                                           unsigned int coef_count = 1);
-
 };
 
-/*
+
 // 'Delay Attack Hold Decay Sustain Release' Envelop
 class EnvDahdsr : public Envelop
 {
   unsigned int                  m_bpm;
   unsigned int                  m_sr;
 
-  double                        coefs[6]
+  double                        m_coefs_beat[6]; // Env coef in beat.
+  double                        m_coefs[6];      // Env curve maths coefs.
+  double                        m_beat_length;
+
+  void                          compute_coefs();
 public:
   EnvDahdsr(unsigned int, unsigned int);
 
-  virtual double                operator()(unsigned int);
+  virtual double                operator()(unsigned int, char = 0);
   virtual void                  set_coefs(double *coefs,
                                           unsigned int coef_count = 1);
+  //  virtual void                  note_on(char note, char vel);
+  //  virtual void                  note_off();
 };
-*/
 
 #endif	    /* !ENVELOP_HH_ */

@@ -30,7 +30,7 @@
 #include "frequencytable.hpp"
 #include "filter.hh"
 
-#define                 SAMPLER_POLY            32
+#define                 SAMPLER_POLY            16
 
 
 struct SmpVoice
