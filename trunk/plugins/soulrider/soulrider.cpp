@@ -28,6 +28,7 @@
 #include "lv2-midifunctions.h"
 #include "soulrider.peg"
 #include "ffmpeginterface.h"
+#include "beatsmasher.h"
 
 /** This is the class that contains all the code and data for the plugin. */
 class MyPlugin : public LV2Instrument {
@@ -39,7 +40,10 @@ public:
     : LV2Instrument(peg_n_ports),
     	m_ffmpeg(rate),
     	m_cue(0),
-    	m_pause(false) {
+    	m_pause(false),
+    	m_beatsmasher_l(rate),
+    	m_beatsmasher_r(rate),
+    	m_rate_tmp(0.) {
   }
 
   /** The run() callback. This is the function that gets called by the host
@@ -60,32 +64,21 @@ public:
 
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
-      m_ffmpeg.set_rate(*p(peg_pitch));
-//      m_ffmpeg.process(p<float>(peg_output_l), p<float>(peg_output_r), (then - now));
-      if (then < sample_count) {
-        // Is the event a Note On?
-        if (event[0] == 0x90) {
-          int key = event[1];
-          switch(key) {
-            case 64: internal_iplay(); break;
-            case 65: slowdown(); break;
-            case 66  slowup(); break;
-            case 67: beatsmash(); break;
-          	case 62: pause(); break;
-          	case 63: cue(); break;
-          	case 42: play(); break;
-          	case 43: stop(); break;
-          }
-        }
-      }
-      if (m_pause)
-      	outsz = 0;
-      else
+      m_ffmpeg.set_rate(*p(peg_pitch) + m_rate_tmp);
+      if (then < sample_count)
+				midi_event(event);
+      if (!m_pause)
       	outsz = m_ffmpeg.process(dest_l, dest_r, (then - now));
+      else
+      	outsz = 0;
     	for (unsigned int i = outsz; i < (then - now); ++ i) {
 				dest_l[i] = 0.;
 				dest_r[i] = 0.;
 			}
+			m_beatsmasher_l.set_loop_size(*p(peg_beatsmasher_length));
+			m_beatsmasher_r.set_loop_size(*p(peg_beatsmasher_length));
+			m_beatsmasher_l.process(dest_l, then - now);
+			m_beatsmasher_r.process(dest_r, then - now);
 			dest_l += (then - now);
     	dest_r += (then - now);
       now = then;
@@ -95,6 +88,25 @@ public:
     *p(peg_current_position) = (pos == 0 ? 0 : m_ffmpeg.get_length() / pos * 100.);
   }
 
+  void midi_event(unsigned char *event) {
+		int key = event[1];
+		if (event[0] == 0x90) {
+			switch(key) {
+				case 64: internal_iplay(); break;
+				case 62: pause(); break;
+				case 63: cue(); break;
+				case 42: play(); break;
+				case 43: stop(); break;
+			}
+		}
+		if (event[0] == 0x90 || event[0] == 0x80) {
+			switch(key) {
+				case 65: slowdown(event[0] == 0x90); break;
+				case 66: slowup(event[0] == 0x90); break;
+				case 67: beatsmasher(event[0] == 0x90); break;
+			}
+		}
+  }
     /** Arbitrary configuration function without RT constraints. */
   char* configure(const char* key, const char* value) {
   	return 0;
@@ -104,10 +116,6 @@ public:
   char* set_file(const char* key, const char* filename) {
   	m_ffmpeg.load_file(filename);
   	return 0;
-  }
-
-  void pause() {
-    m_pause = !m_pause;
   }
 
 
@@ -128,6 +136,10 @@ public:
     m_ffmpeg.seek(m_ffmpeg.get_length() * (*p(peg_position) / 100.));
   }
 
+  void pause() {
+    m_pause = !m_pause;
+  }
+
 	/** cue the track
 	 * set the cue point for later use
 	 */
@@ -141,23 +153,34 @@ public:
 		m_ffmpeg.seek(0);
 	}
 
-	void slowdown() {
+	void slowdown(bool noteon) {
+		if (noteon)
+			m_rate_tmp = -0.1;
+		else
+			m_rate_tmp = 0.;
 	}
 
-	void slowup() {
-
+	void slowup(bool noteon) {
+		if (noteon)
+			m_rate_tmp = 0.1;
+		else
+			m_rate_tmp = 0.;
 	}
 
-	void beatsmash() {
-
+	void beatsmasher(bool noteon) {
+		m_beatsmasher_l.active(noteon);
+		m_beatsmasher_r.active(noteon);
 	}
 
 protected:
   std::string m_filepath;
   ffmpeg m_ffmpeg;
+  BeatSmasher m_beatsmasher_l;
+  BeatSmasher m_beatsmasher_r;
   bool m_pause;
   unsigned long m_cue;
   unsigned long m_filelength;
+  float m_rate_tmp;
 };
 
 

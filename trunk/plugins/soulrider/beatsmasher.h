@@ -22,62 +22,38 @@
 //
 // Class: BitSmasher
 //
-// Created by: GESTES Cedric <goctaf@gmail.com>
-// Created on: Sun Dec  3 19:34:17 2006
+// Created by: GESTES Cedric <ctaf42@gmail.com>
+// Created on: Mon Jan  29 19:34:17 2007
 //
-#ifndef _BITSMASHER_H_
-#define _BITSMASHER_H_
+#ifndef _BEATSMASHER_H_
+#define _BEATSMASHER_H_
 
-class BitSmasher {
-	public:
-		BitSmasher(int samplerate) {
-			m_samplerate = samplerate;
-			m_buffer = new float[samplerate];
-			m_active = false;
-			m_loop_size = 0;
-			m_pos = 0;
-		}
-/**
- * name: inconnu
- * @param
- * @return
- */
+class BeatSmasher {
+public:
+	BeatSmasher(int samplerate);
 
-/***
- *
- ***/
-		void process(float *buffer, int samplecount) {
-			int i = 0, j = 0;
-			if (!m_active)
-				return;
-			while (j < samplecount)
-			if (m_loadbuffer) {
-				int ret = samplecount < m_loop_size - m_pos ? m_loop_size - m_pos : samplecount;
-				for (m_pos; m_pos < ret; ++m_pos) {
-					m_buffer[m_pos] = buffer[j];
-					++j;
-				}
-			for (m_pos; m_pos < m_loop_size; ++m_pos) {
-			}
-		}
+	/** process a mono buffer
+	 */
+	void process(float *buffer,const int samplecount);
 
-		inline void active(bool active) {
-			m_active = active;
-			if (m_active) {
-				m_pos = 0;
-				m_loadbuffer = true;
-			}
-		}
+	/** toggle the beatsmasher on and off
+	 */
+	void active(const bool active);
+	inline void set_loop_size(int loop_size) { m_loop_size = loop_size; }
 
-	private:
-		float *m_buffer;
-		int m_samplerate;
-		int m_loop_size;
-		float m_gate;
-		bool m_loadbuffer;
-		bool m_active;
-		bool m_sync;
+protected:
+	void learn(float *buffer, const int samplecount);
 
+private:
+	float *m_buffer;						///beatsmasher buffer
+	int m_samplerate;						///the samplerate of the buffer
+	int m_loop_size;						///the length in buffer of the loop
+	int m_pos;									///the current position in the buffer (reading)
+	int m_pos_learn;						///the current position in the buffer (writing)
+	float m_gate;								///unused
+	bool m_loadbuffer;					///writing or reading the buffer?
+	bool m_active;							///is the beatsmasher active?
+	bool m_sync;								///unused
 };
 
 #endif
