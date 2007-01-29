@@ -63,13 +63,13 @@ public:
 		dropable_btn(m_btn_play, 42);
 		dropable_btn(m_btn_pause, 62);
 		dropable_btn(m_btn_stop, 43);
-		dropable_btn(m_btn_slowdown, 65);
-		dropable_btn(m_btn_slowup, 66);
-		dropable_btn(m_btn_beatsmash, 67);
+		dropable_btn_toggle(m_btn_slowdown, 65);
+		dropable_btn_toggle(m_btn_slowup, 66);
+		dropable_btn_toggle(m_btn_beatsmash, 67);
  		bind_param(m_scale, peg_pitch);
  		bind_param(m_scale_pos, peg_position);
  		bind_param(m_scale_beatsmash, peg_beatsmasher_length);
- 		m_scale_pos.signal_value_changed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), 64));
+ 		m_scale_pos.signal_value_changed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteonoff), 64));
  		m_scale_pos.set_update_policy(Gtk::UPDATE_DELAYED);//Gtk::UPDATE_DISCONTINUOUS
   }
 
@@ -77,7 +77,15 @@ public:
     btn.drag_dest_set(m_targetlist);
 		btn.drag_dest_add_uri_targets();
 		btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		btn.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::button_clicked), port));
+		btn.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteonoff), port));
+	}
+
+	void dropable_btn_toggle(Gtk::Button &btn, int port) {
+    btn.drag_dest_set(m_targetlist);
+		btn.drag_dest_add_uri_targets();
+		btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
+		btn.signal_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteon), port));
+		btn.signal_released().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteoff), port));
 	}
 
 	void bind_param(Gtk::Scale &param, int port) {
@@ -112,10 +120,20 @@ public:
  	}
 
   //when a trigger button is clicked
-  void button_clicked(int note) {
+  void send_noteonoff(int note) {
     unsigned char data_on[3] = { 0x90, note, 127 };
     unsigned char data_off[3] = { 0x80, note, 0 };
     m_ctrl.send_midi(peg_midi, 3, data_on);
+    m_ctrl.send_midi(peg_midi, 3, data_off);
+  }
+
+  void send_noteon(int note) {
+    unsigned char data_on[3] = { 0x90, note, 127 };
+    m_ctrl.send_midi(peg_midi, 3, data_on);
+  }
+
+  void send_noteoff(int note) {
+    unsigned char data_off[3] = { 0x80, note, 0 };
     m_ctrl.send_midi(peg_midi, 3, data_off);
   }
 
