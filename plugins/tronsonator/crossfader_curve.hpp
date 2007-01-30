@@ -5,47 +5,52 @@
 
 # include <iostream>
 
-using namespace std;
 
 /*
  * Ask me sur msn sur comment ca marche, tu te demerde pour l'add a
  * ton truc
  */
 
-struct point
+class Point
 {
+public:
+	friend class CurveData;
+  inline Point():x(0.0), y(0.0){}
+  inline Point(const double a_x, const double a_y):x(a_x), y(a_y){}
+
+  inline Point operator+(const Point& p)const { return Point(x + p.x, y + p.y); }
+
+  inline Point operator*(const double factor)const { return Point(x * factor, y * factor); }
+
+  inline Point &operator=(const Point& p) { x = p.x; y = p.y; return *this; }
+
+protected:
   double        x;
   double        y;
-
-  inline point():x(0.0), y(0.0){}
-  inline point(double a_x, double a_y):x(a_x), y(a_y){}
-
-  inline point operator+(point p) { return point(x + p.x, y + p.y); }
-
-  inline point operator*(double factor) { return point(x * factor, y * factor); }
-
-  inline point &operator=(point p) { x = p.x; y = p.y; return *this; }
 };
 
-struct crossdata
+/*** array storing a curve
+ *   to access the curve use the array operator []
+ */
+class CurveData
 {
-  crossdata(unsigned int a_step)
+public:
+  CurveData(const unsigned int a_step)
     :p0(0.0, 1.0), p2(1.0, 0.0), p1(0.5, 0.7), step(a_step)
     //// !! Do not touch to p1.x !! ////
   {
     data = new double[step];
     compute();
   }
-  ~crossdata(){ delete data; }
+  ~CurveData() { delete data; }
 
-  inline const double operator[](unsigned int i)const {
-    if (data[i] > 1.0) return 1.0;
-    else return data[i]; }
-  inline void          set_curve(double y)
-  { p1.y = y; compute(); }
+  inline const double operator[](const unsigned int i)const {
+    return (data[i] > 1.0 ? 1.0 : data[i]); }
+
+  inline void set_curve(const double y) { p1.y = y; compute(); }
 
 protected:
-  point         p0, p1, p2, tmp;
+  Point         p0, p1, p2, tmp;
   unsigned int  step;
   double        *data;
 
@@ -61,7 +66,7 @@ protected:
           p1 * 2 * t * (1 - t) +
           p2 * t * t;
         data[i] = tmp.y;
-        cout << i <<": X : " << tmp.x << "\t\t Y : \t" << tmp.y << endl;
+        //std::cout << i <<": X : " << tmp.x << "\t\t Y : \t" << tmp.y << std::endl;
       }
   }
 };

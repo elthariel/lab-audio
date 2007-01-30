@@ -38,49 +38,16 @@ public:
       to the LV2 bundle, the third is the host features supported by
       this host. */
   MyPlugin(uint32_t rate, const char*, const LV2_Host_Feature**)
-    : LV2Plugin(peg_n_ports), m_cross(512) {
+    : LV2Plugin(peg_n_ports), m_cross_curve(512) {
   }
-
-
-  class StepFunc {
-    //step cant be changed at runtime, cause we wont want malloc when
-    //processing
-    StepFunc(int step) {
-      m_step = step;
-      //default init
-      m_tab = (double *)malloc(sizeof(double) * m_step);
-      for (int i = 0; i < m_step; ++i) {
-        m_tab[i] = (double)i / (double)m_step;
-      }
-    }
-    /* input = [ 0.0 - 1.0 ]
-     * output = euhh
-     * yes, this is an outrageous cast!
-     */
-    inline double get_value(double value)const {
-      return m_tab[(int)value * m_step];
-    }
-
-    inline void set_value(int step, double value) {
-      m_tab[step] = value;
-    }
-
-    inline int get_step_count()const {
-      return m_step;
-    }
-
-  private:
-    int m_step;
-    double *m_tab;
-  };
 
   float crossfade(float cross, float left, float right) {
     /*
     float cross_l = cross <= 0.5 ? 1.0 : 1.0 - (cross * 2.0 - 1.0);
     float cross_r = cross >= 0.5 ? 1.0 : (cross * 2.0);*/
     //return left * StepFunc(cross_l) + right * StepFunc(cross_r);
-    float cross_l = m_cross[((uint32_t) (cross * 512))];
-    float cross_r = m_cross[512 - ((uint32_t) (cross * 512))];
+    float cross_l = m_cross_curve[((uint32_t) (cross * 512))];
+    float cross_r = m_cross_curve[512 - ((uint32_t) (cross * 512))];
 
     return left * cross_l + right * cross_r;
   }
@@ -152,7 +119,7 @@ public:
 
 protected:
 
-  crossdata             m_cross;
+  CurveData m_cross_curve;
 };
 
 
