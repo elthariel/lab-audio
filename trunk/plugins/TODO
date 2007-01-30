@@ -1,8 +1,5 @@
 soulrider:
-  - seek (in ffmpeg interface)
-  - support for cue/instant cue/instant play
-  - beatsmasher
-  - cleanup (ffmpeg interface)
+  - use a queue for mp3 input, timeout on seek
   - add a wave summary/ maybe a seekbar first
   - add a wave display
   - use traktor III stripe
