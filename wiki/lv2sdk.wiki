@@ -2,7 +2,24 @@
 
 = Introduction =
 
+We aim to create a LADSPA v2 Software development kit
+
 = Details =
+
+= Sources =
+  * C lv2 header.
+  * larsl C++ lv2 plugin class
+  * Extensions
+    * miditype
+    * instrument
+    * gtk2gui
+    * related C++ classes.
+  * larsl MyPlugin.
+  * Examples if necessary.
+
+= Documentation =
+  * Doxygen of larsl classes.
+  * Lv2 introduction & recommended way to develop a plugin.
 
 = Applications =
   * tthell : generate .ttl from simpler file
