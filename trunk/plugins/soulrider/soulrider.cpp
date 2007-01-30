@@ -29,6 +29,7 @@
 #include "soulrider.peg"
 #include "ffmpeginterface.h"
 #include "beatsmasher.h"
+#include "../tronsonator/crossfader_curve.hpp"
 
 /** This is the class that contains all the code and data for the plugin. */
 class MyPlugin : public LV2Instrument {
@@ -43,7 +44,9 @@ public:
     	m_pause(false),
     	m_beatsmasher_l(rate),
     	m_beatsmasher_r(rate),
-    	m_rate_tmp(0.) {
+    	m_rate_tmp(0.),
+    	m_fade_pos(0),
+    	m_fade_curve(512*160)  {
   }
 
   /** The run() callback. This is the function that gets called by the host
@@ -61,10 +64,12 @@ public:
 		float *dest_l = p<float>(peg_output_l);
 		float *dest_r = p<float>(peg_output_r);
 
-
     while (now < sample_count) {
       then = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &event));
-      m_ffmpeg.set_rate(*p(peg_pitch) + m_rate_tmp);
+      if (m_fade_pos < 160*512)
+        m_ffmpeg.set_rate(*p(peg_pitch) + (m_rate_tmp - m_rate_tmp * m_fade_curve[m_fade_pos]));
+      else
+        m_ffmpeg.set_rate(*p(peg_pitch) + m_rate_tmp);
       if (then < sample_count)
 				midi_event(event);
       if (!m_pause)
@@ -75,6 +80,7 @@ public:
 				dest_l[i] = 0.;
 				dest_r[i] = 0.;
 			}
+			m_fade_pos += then - now;
 			m_beatsmasher_l.set_loop_size(*p(peg_beatsmasher_length));
 			m_beatsmasher_r.set_loop_size(*p(peg_beatsmasher_length));
 			m_beatsmasher_l.process(dest_l, then - now);
@@ -154,16 +160,18 @@ public:
 	}
 
 	void slowdown(bool noteon) {
-		if (noteon)
-			m_rate_tmp = -0.1;
-		else
+		if (noteon) {
+			m_rate_tmp = -0.3;
+			m_fade_pos = 0;
+		} else
 			m_rate_tmp = 0.;
 	}
 
 	void slowup(bool noteon) {
-		if (noteon)
-			m_rate_tmp = 0.1;
-		else
+		if (noteon) {
+			m_rate_tmp = 0.3;
+			m_fade_pos = 0;
+		} else
 			m_rate_tmp = 0.;
 	}
 
@@ -181,6 +189,8 @@ protected:
   unsigned long m_cue;
   unsigned long m_filelength;
   float m_rate_tmp;
+  int m_fade_pos;
+  CurveData m_fade_curve;
 };
 
 
