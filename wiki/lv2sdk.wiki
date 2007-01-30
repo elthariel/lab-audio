@@ -1,0 +1,15 @@
+#summary lv2 sdk
+
+= Introduction =
+
+= Details =
+
+= Applications =
+  * tthell : generate .ttl from simpler file
+
+  * lv2wizard : gtk2 apps that allow the creation of a simple lv2 plugin skeleton
+    * support extensions
+    * graphical interface to add port into the ttl
+    * project name/plugin uri
+    * support for different plugin in one bundle
+    * generate build script
