@@ -104,10 +104,10 @@ sub write_port
 sub make_manifest
 {
 
-    open MANIFEST, ">manifest.tll" or die "Unable to open manifest.tll for writing\n";
+    open MANIFEST, ">manifest.ttl" or die "Unable to open manifest.tll for writing\n";
 
     print MANIFEST "\@prefix lv2:  <http://lv2plug.in/ontology#>.\n";
-    print MANIFEST "\@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n";
+    print MANIFEST "\@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n\n";
     print MANIFEST "<".$ttl[0]->[1].">\n";
     print MANIFEST "lv2:binary <".$ttl[0]->[0].".so>;\n";
     print MANIFEST "rdfs:seeAlso <".$ttl[0]->[0].".ttl>.\n\n";
@@ -161,7 +161,7 @@ sub parse_line
         $line = $';
         while ($line)
         {
-            $line =~ /([\w:\/\.]+)\s*/;
+            $line =~ /([\S]+)\s*/;
             push @res, $1;
             $line = $';
         }
