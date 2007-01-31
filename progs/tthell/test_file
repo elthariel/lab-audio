@@ -15,10 +15,12 @@ lv2            mylv2plugin      http://test.org                 lv2-instrument
 audio           in              input_mono      The_friendly_name
 audio           out             output_mono     The_friendly_name2
 
+control         in              gain_ctrl_1     The_Gain 0 1 0.5
+
 #[type specific option] : audio
 # none
 #[type specific option] : midi
 # none
 #[type specific option] : control
-# not any supported for the moment
-#
+# control in gain_1 The_Gain_01 min max default.
+# You should provide all the extension parameter or any of them (min max def).

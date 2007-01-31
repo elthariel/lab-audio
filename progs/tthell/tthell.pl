@@ -60,10 +60,10 @@ sub write_port
     if ($line->[0] == 0)
     {
         if ($line->[1] =~ /in/) {
-            print TTL "a lv2:AudioRateInputPort;\nlv2:datatype lv2:float;";
+            print TTL "a lv2:AudioRateInputPort;\nlv2:datatype lv2:float;\n";
         }
         else {
-            print TTL "a lv2:AudioRateOutputPort;\nlv2:datatype lv2:float;";
+            print TTL "a lv2:AudioRateOutputPort;\nlv2:datatype lv2:float;\n";
         }
     }
     elsif ($line->[0] == 1)
@@ -80,10 +80,10 @@ sub write_port
     elsif ($line->[0] == 2)
     {
         if ($line->[1] =~ /in/) {
-            print TTL "a lv2:ControlRateInputPort;\nlv2:datatype lv2:float;";
+            print TTL "a lv2:ControlRateInputPort;\nlv2:datatype lv2:float;\n";
         }
         else {
-            print TTL "a lv2:ControlRateOutputPort;\nlv2:datatype lv2:float;";
+            print TTL "a lv2:ControlRateOutputPort;\nlv2:datatype lv2:float;\n";
         }
     }
 
@@ -91,7 +91,12 @@ sub write_port
     print TTL "lv2:symbol \"".$line->[2]."\";\n";
     print TTL "lv2:name \"".$line->[3]."\";\n";
 
-    ## Fixme take care of specific extensions
+    if ($line->[0] == 2 && defined($line->[4]))
+    {
+        print TTL "lv2:minimum ".$line->[4].";\n";
+        print TTL "lv2:maximum ".$line->[5].";\n";
+        print TTL "lv2:default ".$line->[6].";\n";
+    }
 
     print TTL "]";
 }
@@ -112,16 +117,17 @@ sub make_manifest
 
 sub make_ttl_header
 {
-    open TTL, ">".$ttl[0]->[1] or die "Unable to open your lv2 ttl file for writing.\n";
+    open TTL, ">".$ttl[0]->[0].".ttl"
+        or die "Unable to open your lv2 ttl file for writing.\n";
 
     print TTL "\@prefix lv2:  <http://lv2plug.in/ontology#>.\n".
         "\@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n".
         "\@prefix doap: <http://usefulinc.com/ns/doap#>.\n".
         "\@prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.\n";
     print TTL "\n<".$ttl[0]->[1].">\n";
-    print TTL "a lv2:Plugin;\n doap:name \"".$ttl[0]->[0]."\";\n";
+    print TTL "a lv2:Plugin;\ndoap:name \"".$ttl[0]->[0]."\";\n";
     print TTL "doap:licence <http://usefulinc.com/doap/licenses/gpl>;\n";
-    print TTL "ll:gtk2Gui <".$ttl[0]->[1]."_gtk.so>;\n";
+    print TTL "ll:gtk2Gui <".$ttl[0]->[0]."_gtk.so>;\n";
     print TTL "lv2:requiredHostFeature ll:instrument-ext;\nll:pegName \"peg\";\n";
     print TTL "\nlv2:port  \n";
 }
@@ -152,27 +158,22 @@ sub parse_line
 
     if ($line =~ /^lv2\s+/)
     {
-        print "Catched lv2 base string\n";
         $line = $';
-#        while (!($line eq ""))
         while ($line)
         {
-            $line =~ /(\w+)\s*/;
+            $line =~ /([\w:\/\.]+)\s*/;
             push @res, $1;
             $line = $';
-            print $line;
         }
         $ttl[0] = \@res;
         return;
     }
     elsif ($line =~ /\#/)
     {
-        print "comment :" .$line ."\n";
         return;
     }
     elsif ($line =~ /(\w+)\s+/)
     {
-        print "Normal line" . $line ."\n";
         if ($1 eq "")
         {
             return;
@@ -191,13 +192,14 @@ sub parse_line
         }
         else
         {
-            print "Nothing understood\n";
+            print "Error : understood nothing\n";
             return;
         }
-        $line = $´;
-        while ($line =~ /(\w+)/)
+        $line = $';
+        while ($line =~ /(\S+)/)
         {
             push @res, $1;
+            $line = $';
         }
         push @ttl, \@res;
         return;
