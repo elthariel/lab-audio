@@ -69,11 +69,11 @@ sub write_port
     elsif ($line->[0] == 1)
     {
         if ($line->[1] =~ /in/) {
-            print TTL "a lv2:ControlRateInputPort;\nlv2:datatype".
+            print TTL "a lv2:ControlRateInputPort;\nlv2:datatype ".
                 "<http://ll-plugins.nongnu.org/lv2/ext/miditype>;\n";
         }
         else {
-            print TTL "a lv2:ControlRateOutputPort;\nlv2:datatype".
+            print TTL "a lv2:ControlRateOutputPort;\nlv2:datatype ".
                 "<http://ll-plugins.nongnu.org/lv2/ext/miditype>;\n";
         }
     }
@@ -87,7 +87,7 @@ sub write_port
         }
     }
 
-    print TTL "lv2:index ".$index.";\n";
+    print TTL "lv2:index ".($index - 1).";\n";
     print TTL "lv2:symbol \"".$line->[2]."\";\n";
     print TTL "lv2:name \"".$line->[3]."\";\n";
 
@@ -161,7 +161,7 @@ sub parse_line
         $line = $';
         while ($line)
         {
-            $line =~ /([\S]+)\s*/;
+            $line =~ /(\S+)\s*/;
             push @res, $1;
             $line = $';
         }
@@ -227,7 +227,7 @@ sub main
         &write_port($i);
         if ($i == ((scalar @ttl) - 1))
         {
-            print TTL ".\n";
+            print TTL ".\n\n\n";
         }
         else
         {
