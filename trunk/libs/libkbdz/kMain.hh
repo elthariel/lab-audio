@@ -28,6 +28,8 @@
 class kMain
 {
 public:
+
+  int           main();
 private:
 
 };
