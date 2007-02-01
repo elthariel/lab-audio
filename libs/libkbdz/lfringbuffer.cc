@@ -127,6 +127,8 @@ bool            LFRingBufferReader::ready()
   return (ring.ready_to_read());
 }
 
+// Writer
+
 template <class BlockType>
 LFRingBufferWriter::LFRingBufferWriter(LFRingBuffer<BlockType> &ringbuf)
   : ring(ringbuf)
