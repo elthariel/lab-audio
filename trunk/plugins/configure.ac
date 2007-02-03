@@ -9,6 +9,6 @@ AM_INIT_AUTOMAKE
 #AC_CONFIG_SUBDIRS([butinator])
 #AC_CONFIG_SUBDIRS([sekrym])
 
-AC_CONFIG_FILES(["Makefile"])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
 
