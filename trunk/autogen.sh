@@ -17,7 +17,7 @@ autogen_dir() {
 	cd ..
 }
 
-autogen_dir libs/libthc "* libthc * \t"
+#autogen_dir libs/libthc "* libthc * \t"
 
 automake --foreign --add-missing
 autoconf
