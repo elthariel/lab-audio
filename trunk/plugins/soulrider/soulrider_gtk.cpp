@@ -32,9 +32,9 @@ using namespace Gtk;
 using namespace sigc;
 /*
 Param::Ref create_param(int port) {
-	return Param::create_param(peg_ports[port].min,
-														 peg_ports[port].max,
-														 peg_ports[port].default_value);
+  return Param::create_param(peg_ports[port].min,
+                             peg_ports[port].max,
+                             peg_ports[port].default_value);
 }*/
 
 class MyPluginGUI : public LV2GTK2GUI {
@@ -76,70 +76,71 @@ public:
     m_targetlist.push_back(Gtk::TargetEntry("text/uri-list"));
 
     m_btn_load_track.drag_dest_set(m_targetlist);
-		m_btn_load_track.drag_dest_add_uri_targets();
-		m_btn_load_track.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		m_btn_load_track.signal_clicked().connect(sigc::mem_fun(*this, &MyPluginGUI::button_load_clicked));
+    m_btn_load_track.drag_dest_add_uri_targets();
+    m_btn_load_track.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
+    m_btn_load_track.signal_clicked().connect(sigc::mem_fun(*this, &MyPluginGUI::button_load_clicked));
 
-		dropable_btn(m_btn_cue, 63);
-		dropable_btn(m_btn_play, 42);
-		dropable_btn(m_btn_pause, 62);
-		dropable_btn(m_btn_stop, 43);
-		dropable_btn_toggle(m_btn_slowdown, 65);
-		dropable_btn_toggle(m_btn_slowup, 66);
-		dropable_btn_toggle(m_btn_beatsmash, 67);
- 		bind_param(m_scale, peg_pitch);
- 		bind_param(m_scale_pos, peg_position);
- 		bind_param(m_scale_beatsmash, peg_beatsmasher_length);
- 		m_scale_pos.signal_value_changed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteonoff), 64));
- 		m_scale_pos.set_update_policy(Gtk::UPDATE_DELAYED);//Gtk::UPDATE_DISCONTINUOUS
- 		m_scale.set_value(1.0);
+    dropable_btn(m_btn_cue, 63);
+    dropable_btn(m_btn_play, 42);
+    dropable_btn(m_btn_pause, 62);
+    dropable_btn(m_btn_stop, 43);
+    dropable_btn_toggle(m_btn_slowdown, 65);
+    dropable_btn_toggle(m_btn_slowup, 66);
+    dropable_btn_toggle(m_btn_beatsmash, 67);
+    bind_param(m_scale, peg_pitch);
+    bind_param(m_scale_pos, peg_position);
+    bind_param(m_scale_beatsmash, peg_beatsmasher_length);
+    m_scale_pos.signal_value_changed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteonoff), 64));
+    m_scale_pos.set_update_policy(Gtk::UPDATE_DELAYED);//Gtk::UPDATE_DISCONTINUOUS
+    m_scale.set_value(1.0);
   }
 
-	void dropable_btn(Gtk::Button &btn, int port) {
+  void dropable_btn(Gtk::Button &btn, int port) {
     btn.drag_dest_set(m_targetlist);
-		btn.drag_dest_add_uri_targets();
-		btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		btn.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteonoff), port));
-	}
+    btn.drag_dest_add_uri_targets();
+    btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
+    btn.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteonoff), port));
+  }
 
-	void dropable_btn_toggle(Gtk::Button &btn, int port) {
+  void dropable_btn_toggle(Gtk::Button &btn, int port) {
     btn.drag_dest_set(m_targetlist);
-		btn.drag_dest_add_uri_targets();
-		btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
-		btn.signal_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteon), port));
-		btn.signal_released().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteoff), port));
-	}
+    btn.drag_dest_add_uri_targets();
+    btn.signal_drag_data_received().connect(sigc::mem_fun(*this, &MyPluginGUI::on_drop_drag_data_received));
+    btn.signal_pressed().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteon), port));
+    btn.signal_released().connect(sigc::bind(sigc::mem_fun(*this, &MyPluginGUI::send_noteoff), port));
+  }
 
-	void bind_param(Gtk::Scale &param, int port) {
-  	param.signal_value_changed().
+  void bind_param(Gtk::Scale &param, int port) {
+    param.signal_value_changed().
     connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control), port),
                             mem_fun(param, &Scale::get_value)));
   }
+
   //when a trigger button is clicked
   void button_load_clicked() {
-		Gtk::FileChooserDialog dialog("Choose a file to load", Gtk::FILE_CHOOSER_ACTION_OPEN);
-		Gtk::FileFilter filter_samples;
+    Gtk::FileChooserDialog dialog("Choose a file to load", Gtk::FILE_CHOOSER_ACTION_OPEN);
+    Gtk::FileFilter filter_samples;
 
-		dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-		dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+    dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+    dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
 
-		filter_samples.set_name("Audio sample Files");
-		filter_samples.add_pattern("*.wav");
-		filter_samples.add_pattern("*.aiff");
-		filter_samples.add_pattern("*.ogg");
-		filter_samples.add_pattern("*.mp3");
-		filter_samples.add_pattern("*.mpc");
-		filter_samples.add_pattern("*.avi");//lol
-		filter_samples.add_pattern("*.mpg");
-		filter_samples.add_pattern("*.mpeg");
-		dialog.add_filter(filter_samples);
+    filter_samples.set_name("Audio sample Files");
+    filter_samples.add_pattern("*.wav");
+    filter_samples.add_pattern("*.aiff");
+    filter_samples.add_pattern("*.ogg");
+    filter_samples.add_pattern("*.mp3");
+    filter_samples.add_pattern("*.mpc");
+    filter_samples.add_pattern("*.avi");//lol
+    filter_samples.add_pattern("*.mpg");
+    filter_samples.add_pattern("*.mpeg");
+    dialog.add_filter(filter_samples);
 
-		int result = dialog.run();
-		if (result == Gtk::RESPONSE_OK) {
-				Glib::ustring filename = dialog.get_filename();
-				m_ctrl.set_file("soundfile", filename);
-		}
- 	}
+    int result = dialog.run();
+    if (result == Gtk::RESPONSE_OK) {
+        Glib::ustring filename = dialog.get_filename();
+        m_ctrl.set_file("soundfile", filename);
+    }
+   }
 
   //when a trigger button is clicked
   void send_noteonoff(int note) {
@@ -160,24 +161,24 @@ public:
   }
 
   void on_drop_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context,
-  															  int,
-  															  int,
-  															  const Gtk::SelectionData& selection_data,
-  															  guint,
-  															  guint time) {
+                                  int,
+                                  int,
+                                  const Gtk::SelectionData& selection_data,
+                                  guint,
+                                  guint time) {
     if (selection_data.get_data()) {
       std::vector<Glib::ustring> targets = selection_data.get_uris();
       if (! targets.empty()) {
-      	for (std::vector<Glib::ustring>::iterator it(targets.begin()); it != targets.end(); ++it) {
-				  try {
-				  	std::string filename = Glib::filename_from_uri(*it);
-						m_ctrl.set_file("soundfile", filename);
-						} catch (const std::exception& ex) {
-						g_warning("Error while getting file info for path %s: %s", it->c_str(), ex.what());
-					}
-				}
-			}
-		}
+        for (std::vector<Glib::ustring>::iterator it(targets.begin()); it != targets.end(); ++it) {
+          try {
+            std::string filename = Glib::filename_from_uri(*it);
+            m_ctrl.set_file("soundfile", filename);
+            } catch (const std::exception& ex) {
+            g_warning("Error while getting file info for path %s: %s", it->c_str(), ex.what());
+          }
+        }
+      }
+    }
   }
 
   void set_control(uint32_t port, float value) {
@@ -187,9 +188,9 @@ public:
 
   /** Function for loading data from external files. */
   void set_file(const char* key, const char* filename) {
-  	Glib::ustring fname(filename);
-  	fname.insert(0, "track: ");
-  	m_trackname.set_label(fname);
+    Glib::ustring fname(filename);
+    fname.insert(0, "track: ");
+    m_trackname.set_label(fname);
   }
 
 protected:
@@ -210,7 +211,6 @@ protected:
   HScale m_scale_pos;
   Label m_trackname;
 };
-
 
 void initialise() __attribute__((constructor));
 void initialise() {
