@@ -256,7 +256,7 @@ int ffmpeg::process(float *buffer_l, float *buffer_r, int samplecount) {
 		index = m_soundtouch.receiveSamples((soundtouch::SAMPLETYPE*)m_outbuffer, needed);
 		outsize += index;
 		copyf2ff(m_outbuffer, dest_l, dest_r, index * 2);
-		m_pos += index * 2 / m_rate;//maybe one or two sample could be chopped
+		m_pos += (float)index * (float)2 / m_rate;//maybe one or two sample could be chopped
 		dest_l += index;
 		dest_r += index;
 		needed -= outsize;
