@@ -9,6 +9,7 @@ Legend:
 ## Bug
    + note_off not working
    - Low shelf is an anti-noise gate
+   - Block rendering when reversing.
 
 ## Filters class.
    - simple and fast lp.
