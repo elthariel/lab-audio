@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:58:36 2007 Elthariel
-// Last update Sun Feb  4 23:11:57 2007 Nahlwe
+// Last update Mon Feb  5 05:36:10 2007 Nahlwe
 //
 
 #include <iostream>
@@ -119,11 +119,15 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
     //    m_main_scale(m_main_adj[0])
   : m_ctrl(ctrl),
     m_sample_id(sample_id),
-    m_amp_env(ctrl, sample_id, peg_amp_env_coef0_0, false),
-    m_pan_env(ctrl, sample_id, peg_pan_env_amnt_0),
-    m_pitch_env(ctrl, sample_id, peg_pitch_env_amnt_0),
-    m_fcut_env(ctrl, sample_id, peg_fcut_env_amnt_0),
-    m_fres_env(ctrl, sample_id, peg_fres_env_amnt_0),
+    m_pcount(peg_fres_env_sel_0 - peg_gain_0 + 1),
+    m_rev("Reverse"),
+    m_norm("Normalize"),
+    m_aalias("AntiAlias"),
+    m_amp_env(ctrl, sample_id, peg_amp_env_coef0_0 + sample_id * m_pcount, false),
+    m_pan_env(ctrl, sample_id, peg_pan_env_amnt_0 + sample_id * m_pcount),
+    m_pitch_env(ctrl, sample_id, peg_pitch_env_amnt_0 + sample_id * m_pcount),
+    m_fcut_env(ctrl, sample_id, peg_fcut_env_amnt_0 + sample_id * m_pcount),
+    m_fres_env(ctrl, sample_id, peg_fres_env_amnt_0 + sample_id * m_pcount),
     m_main_adj_vol(1.0, 0.0, 2.0, 0.01),
     m_main_adj_pan(0.5, 0.0, 1.0, 0.01),
     m_main_adj_pitch(1.0, 0.0, 2.0, 0.01),
@@ -170,6 +174,24 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
   m_env_notebook.append_page(m_fcut_env, "Filter cutoff");
   m_env_notebook.append_page(m_fres_env, "Filter resonance");
 
+  // (Waveview &) non-rt features.
+  m_hbox[sedit_smp].pack_end(m_nonrt_vbox);
+  m_nonrt_vbox.pack_start(m_rev);
+  m_nonrt_vbox.pack_start(m_norm);
+  m_nonrt_vbox.pack_start(m_aalias);
+  m_rev.signal_toggled().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_reverse_0 + sample_id * m_pcount),
+                    mem_fun(m_rev, &CheckButton::get_active)));
+  m_rev.signal_toggled().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_normalize_0 + sample_id * m_pcount),
+                    mem_fun(m_norm, &CheckButton::get_active)));
+  m_rev.signal_toggled().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_antialias_0 + sample_id * m_pcount),
+                    mem_fun(m_aalias, &CheckButton::get_active)));
+
 }
 
 void                    SampleEdit::set_sample_id(unsigned int sid)
@@ -179,25 +201,25 @@ void                    SampleEdit::set_sample_id(unsigned int sid)
 
 bool                    SampleEdit::set_vol(Gtk::ScrollType st, double val)
 {
-  m_ctrl.set_control(peg_gain_0, val);
+  m_ctrl.set_control(peg_gain_0 + m_sample_id * m_pcount, val);
   return (true);
 }
 
 bool                    SampleEdit::set_pan(Gtk::ScrollType st, double val)
 {
-  m_ctrl.set_control(peg_pan_0, val);
+  m_ctrl.set_control(peg_pan_0 + m_sample_id * m_pcount, val);
   return (true);
 }
 
 bool                    SampleEdit::set_pitch(Gtk::ScrollType st, double val)
 {
-  m_ctrl.set_control(peg_pitch_0, val);
+  m_ctrl.set_control(peg_pitch_0 + m_sample_id * m_pcount, val);
   return (true);
 }
 
 bool                    SampleEdit::set_root(Gtk::ScrollType st, double val)
 {
-  m_ctrl.set_control(peg_root_0, val);
+  m_ctrl.set_control(peg_root_0 + m_sample_id * m_pcount, val);
   return (true);
 }
 

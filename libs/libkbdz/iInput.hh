@@ -34,7 +34,7 @@ class iInput
 {
 public:
   iInput(uint32_t buffer_size)
-  LFRingBufferReader<kEvent>    *get_reader();
+  virtual LFRingBufferReader<kEvent>    *get_reader();
 private:
   virtual void                  thread_fun() = 0; /** Input loop thread function */
 

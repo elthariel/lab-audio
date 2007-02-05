@@ -25,10 +25,10 @@ Legend:
    + normalize
    + reverse
    * fine pitch
-     - Pitch envelop.
+     * Pitch envelop.
    + Antialias filter?
    + Filter support
-     - Filter Envelop.
+     + Filter Envelop.
    - Envelops
      * EnvSwitcher, EnvDecay, EnvHold
      + End Dahdsr
@@ -46,7 +46,7 @@ Legend:
      - Shared memory.
    * gain, pitch, pan, root
    - filter view and/or filter sliders
-   - antialias, reverse, normalize button.
+   * antialias, reverse, normalize button.
 
 #### 0.4.0
    - Wef files as envelops
