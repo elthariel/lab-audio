@@ -2,6 +2,6 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/promethee>
-  lv2:binary <promethee.so>;
-  rdfs:seeAlso <promethee.ttl>.
+lv2:binary <promethee.so>;
+rdfs:seeAlso <promethee.ttl>.
 

@@ -39,6 +39,46 @@ enum sedit_vbox {
   sedit_n_hbox
 };
 
+class EnvEdit : public Gtk::VBox
+{
+public:
+  EnvEdit(LV2Controller& ctrl, unsigned int sample_id,
+          unsigned int base_peg, bool amount = true);
+
+protected:
+  void                  bind_scale(Gtk::Adjustment &,
+                                   unsigned int port);
+  void                  bind_radio(Gtk::RadioButton &,
+                                   int but_num,
+                                   unsigned int port);
+  void                  radio_check(unsigned int port,
+                                    int button,
+                                    bool val);
+
+  LV2Controller         &m_ctrl;
+
+  Gtk::HBox             m_hbox;
+  Gtk::HBox             m_env_hbox;
+  Gtk::Adjustment       m_amount;
+  Gtk::Adjustment       m_coef0;
+  Gtk::Adjustment       m_coef1;
+  Gtk::Adjustment       m_coef2;
+  Gtk::Adjustment       m_coef3;
+  Gtk::Adjustment       m_coef4;
+  Gtk::Adjustment       m_coef5;
+  Gtk::VScale           m_scale_amount;
+  Gtk::VScale           m_scale0;
+  Gtk::VScale           m_scale1;
+  Gtk::VScale           m_scale2;
+  Gtk::VScale           m_scale3;
+  Gtk::VScale           m_scale4;
+  Gtk::VScale           m_scale5;
+  Gtk::RadioButton::Group m_env_select;
+  Gtk::RadioButton      m_env_none;
+  Gtk::RadioButton      m_env_decay;
+  Gtk::RadioButton      m_env_hold;
+  Gtk::RadioButton      m_env_dahdsr;
+};
 
 class SampleEdit : public Gtk::VBox
 {
@@ -54,6 +94,13 @@ public:
 protected:
   LV2Controller&        m_ctrl;
   unsigned int          m_sample_id;
+
+  EnvEdit               m_amp_env;
+  EnvEdit               m_pan_env;
+  EnvEdit               m_pitch_env;
+  EnvEdit               m_fcut_env;
+  EnvEdit               m_fres_env;
+  Gtk::Notebook         m_env_notebook;
 
   Gtk::HBox             m_hbox[sedit_n_hbox];
   Gtk::VBox             m_vbox_main[4];

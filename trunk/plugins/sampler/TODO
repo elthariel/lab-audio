@@ -24,13 +24,13 @@ Legend:
    - velocity support
    + normalize
    + reverse
-   + fine pitch
+   * fine pitch
      - Pitch envelop.
    + Antialias filter?
    + Filter support
      - Filter Envelop.
    - Envelops
-     + EnvSwitcher, EnvDecay, EnvHold
+     * EnvSwitcher, EnvDecay, EnvHold
      + End Dahdsr
 
 ## Promethee
@@ -59,3 +59,12 @@ Legend:
    - Loop.
    - Slicer.
    - Granulars envelops
+   - Record sample from an input instead of loading file.
+
+#### Optionnal
+   - Autoanalyze sample note and set root not in consequence.
+   - Env which can be sent to other env amount or
+     to parameters
+
+#### Under reflexion
+   - MIDI binding for control ports.

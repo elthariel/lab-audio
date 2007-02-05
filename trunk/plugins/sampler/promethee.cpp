@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:46:24 2007 Elthariel
-// Last update Sun Jan 28 20:43:35 2007 Nahlwe
+// Last update Mon Feb  5 04:02:24 2007 Nahlwe
 //
 
 #include <cmath>
@@ -68,10 +68,48 @@ void                    Promethee::load_file(const std::string& path)
 
 void                    Promethee::dispatch_control_ports(unsigned int sample_id)
 {
-  m_smp[sample_id]->set_root_note((unsigned int)(*p<float>(peg_root_0 + 4 * sample_id)));
-  m_smp[sample_id]->set_fine_pitch(*p<float>(peg_pitch_0 + 4 * sample_id));
-  m_smp[sample_id]->set_gain(*p<float>(peg_gain_0 + 4 * sample_id));
-  m_smp[sample_id]->set_pan(*p<float>(peg_pan_0 + 4 * sample_id));
+  unsigned int          i;
+  double                coefs[6];
+  unsigned int          pcount = peg_fres_env_sel_0 - peg_gain_0 + 1;
+
+  m_smp[sample_id]->set_root_note((unsigned int)(*p(peg_root_0 + pcount * sample_id)));
+  m_smp[sample_id]->set_fine_pitch(*p(peg_pitch_0 + pcount * sample_id));
+  m_smp[sample_id]->set_gain(*p(peg_gain_0 + pcount * sample_id));
+  m_smp[sample_id]->set_pan(*p(peg_pan_0 + pcount * sample_id));
+  // FIXME filter cuttof
+  // FIXME filter res
+  for (i = 0; i < 6; i++)
+    coefs[i] = *p(peg_amp_env_coef0_0 + pcount * sample_id + i);
+  m_smp[sample_id]->env(EnvAmp).set_coefs((double *)&coefs, 6);
+
+  m_smp[sample_id]->env_amount(EnvPan) = *p(peg_pan_env_amnt_0 + pcount * sample_id);
+  for (i = 0; i < 6; i++)
+    coefs[i] = *p(peg_pan_env_coef0_0 + pcount * sample_id + i);
+  m_smp[sample_id]->env(EnvPan).set_coefs((double *)&coefs, 6);
+
+  m_smp[sample_id]->env_amount(EnvPitch) = *p(peg_pitch_env_amnt_0 + pcount * sample_id);
+  for (i = 0; i < 6; i++)
+    coefs[i] = *p(peg_pitch_env_coef0_0 + pcount * sample_id + i);
+  m_smp[sample_id]->env(EnvPitch).set_coefs((double *)&coefs, 6);
+  // FIXME filter envs etc
+
+  dispatch_env_change(sample_id, EnvAmp,
+                      peg_amp_env_sel_0 + pcount * sample_id);
+  dispatch_env_change(sample_id, EnvPitch,
+                      peg_pitch_env_sel_0 + pcount * sample_id);
+  dispatch_env_change(sample_id, EnvPan,
+                      peg_pan_env_sel_0 + pcount * sample_id);
+}
+
+void                    Promethee::dispatch_env_change(unsigned int sample_id,
+                                                       EnvSelect env,
+                                                       unsigned int port)
+{
+  EnvSwitch             &esw = m_smp[sample_id]->env(env);
+  int                   val;
+
+  val = (int) *p(port);
+  esw.set_envelop(val);
 }
 
 void                    Promethee::dispatch_midi_ports(unsigned int sample_id,
@@ -109,8 +147,8 @@ void                    Promethee::process_audio(unsigned int sample_id,
                                                  unsigned int sample_count)
 {
   m_smp[sample_id]->render(sample_count,
-                           p<float>(sample_id * 2),
-                           p<float>(sample_id * 2 + 1));
+           p<float>(peg_sample_0_outl + sample_id * 2),
+           p<float>(peg_sample_0_outr + sample_id * 2));
 }
 
 

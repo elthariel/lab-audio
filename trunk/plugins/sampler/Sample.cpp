@@ -44,6 +44,12 @@ FrequencyTable 			Sample::freq_table = FrequencyTable();
 Sample::Sample(string path, unsigned int sample_rate)
   : m_sr(sample_rate),
     amp_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
+    pitch_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
+    pitch_amount(0.0),
+    pan_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
+    pan_amount(0.0),
+    filter_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
+    filter_amount(0.0),
     m_root_note(63), m_fine_pitch(0.0), m_gain(1.0), m_pan(1.0),
     m_norm(false),
     m_reverse(false)
@@ -70,6 +76,9 @@ Sample::Sample(string path, unsigned int sample_rate)
 Sample::Sample(Sample &smp)
   :m_sr(smp.m_sr), info(smp.info),
    amp_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+   pitch_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+   pan_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+   filter_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
    m_root_note(smp.m_root_note),
    m_fine_pitch(smp.m_fine_pitch), m_gain(smp.m_gain), m_pan(smp.m_pan),
    m_norm(smp.m_norm),
@@ -78,6 +87,7 @@ Sample::Sample(Sample &smp)
 {
   int           fcount = info.channels * info.frames;
 
+  //FIXME copy env coefs.
   data = new sample_t[info.channels * info.frames];
   for (int i = 0; i < fcount; i++)
     {
@@ -88,6 +98,11 @@ Sample::Sample(Sample &smp)
   *m_antialias_filter_l = *(smp.m_antialias_filter_l);
   m_antialias_filter_r = new BesselLP24(smp.m_sr);
   *m_antialias_filter_r = *(smp.m_antialias_filter_r);
+}
+
+Sample::~Sample()
+{
+  delete[] data;
 }
 
 void                    Sample::load_data(SNDFILE *file)
@@ -116,16 +131,25 @@ void                    Sample::play_voice(unsigned int voice_number,
   int                   tmp;
   bool                  sample_end = false;
   int                   i = 0;
+  double                env;
 
-  sample_ratio = m_sr / ((float)info.samplerate) + m_fine_pitch;
-  sample_ratio *= freq_table[voices[voice_number].freq] / freq_table[m_root_note];
 
-  //cout << "Play a voice : " << sample_ratio << "" << endl;
+  // Fill the output audio buffer
   while ((i < sample_count) && !sample_end)
     {
+      // Aplly pitch env.
+      if (voices[voice_number].freq >= 0)
+        env = pitch_env(voices[voice_number].pos_rel, EnvModeOn);
+      else
+        env = pitch_env(voices[voice_number].pos_rel, EnvModeRelease);
+      env *= pitch_amount;
+      sample_ratio = m_sr / ((float)info.samplerate) + m_fine_pitch + env;
+      sample_ratio *= freq_table[voices[voice_number].freq] / freq_table[m_root_note];
+
+      // Is it the first sample of the sample ^^.
       if (voices[voice_number].pos == 0.0)
         {
-          cout << "Beginning of the sample" << endl;
+          //cout << "Beginning of the sample" << endl;
           outL[i] += s(0,0);
           if (info.channels == 1)
             outR[i] += s(0,0);
@@ -135,9 +159,9 @@ void                    Sample::play_voice(unsigned int voice_number,
       else
         {
           tmp = (unsigned int)voices[voice_number].pos;
+          // Render sample at the right pitch
           outL[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
                       + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp)));
-          outL[i] *= amp_env(voices[voice_number].pos_rel);
           if (info.channels == 1)
             {
               outR[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
@@ -148,8 +172,34 @@ void                    Sample::play_voice(unsigned int voice_number,
               outR[i] += (s(1,tmp) * (voices[voice_number].pos - tmp)
                           + s(1, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
             }
-          outR[i] *= amp_env(voices[voice_number].pos_rel);
         }
+
+
+
+      // Apply amp env.
+      if (voices[voice_number].freq >= 0)
+        env = amp_env(voices[voice_number].pos_rel, EnvModeOn);
+      else
+        {
+          env = amp_env(voices[voice_number].pos_rel, EnvModeRelease);
+          if (env == 0.0)
+            {
+              voices[voice_number].activated = false;
+              sample_end = true;
+            }
+        }
+      outL[i] *= env;
+      outR[i] *= env;
+      // Apply pan amp.
+      /*      if (voices[voice_number].freq >= 0)
+        env = pan_env(voices[voice_number].pos_rel, EnvModeOn) * pan_amount;
+      else
+        env = pan_env(voices[voice_number].pos_rel, EnvModeRelease) * pan_amount;
+      outL[i] *= 1.0 - env;
+      outR[i] *= env;*/
+
+
+      // Update voice pos, check if it is the end of the sample
       voices[voice_number].pos_rel++;
       voices[voice_number].pos += sample_ratio;
       if (voices[voice_number].pos >= (info.frames / info.channels))
@@ -253,6 +303,41 @@ void                  Sample::set_gain(double gain)
 void                  Sample::set_pan(double pan)
 {
   m_pan = pan;
+}
+
+EnvSwitch             &Sample::env(EnvSelect which)
+{
+  switch (which)
+    {
+    case EnvAmp:
+      return (amp_env);
+      break;
+    case EnvPitch:
+      return (pitch_env);
+      break;
+    case EnvPan:
+      return (pan_env);
+      break;
+    case EnvFilterCut:
+      return (filter_env);
+      break;
+    }
+}
+
+double                &Sample::env_amount(EnvSelect which)
+{
+  switch (which)
+    {
+    case EnvPitch:
+      return (pitch_amount);
+      break;
+    case EnvPan:
+      return (pan_amount);
+      break;
+    case EnvFilterCut:
+      return (filter_amount);
+      break;
+    }
 }
 
 void                  Sample::apply_antialias_filter(unsigned int sample_count,
