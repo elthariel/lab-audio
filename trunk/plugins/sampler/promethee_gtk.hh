@@ -94,6 +94,12 @@ public:
 protected:
   LV2Controller&        m_ctrl;
   unsigned int          m_sample_id;
+  unsigned int          m_pcount; //port count
+
+  Gtk::VBox             m_nonrt_vbox;
+  Gtk::CheckButton      m_rev;
+  Gtk::CheckButton      m_norm;
+  Gtk::CheckButton      m_aalias;
 
   EnvEdit               m_amp_env;
   EnvEdit               m_pan_env;

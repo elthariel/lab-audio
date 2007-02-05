@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:46:24 2007 Elthariel
-// Last update Mon Feb  5 04:02:24 2007 Nahlwe
+// Last update Mon Feb  5 06:02:11 2007 Nahlwe
 //
 
 #include <cmath>
@@ -93,12 +93,18 @@ void                    Promethee::dispatch_control_ports(unsigned int sample_id
   m_smp[sample_id]->env(EnvPitch).set_coefs((double *)&coefs, 6);
   // FIXME filter envs etc
 
+  // Envelop controls
   dispatch_env_change(sample_id, EnvAmp,
                       peg_amp_env_sel_0 + pcount * sample_id);
   dispatch_env_change(sample_id, EnvPitch,
                       peg_pitch_env_sel_0 + pcount * sample_id);
   dispatch_env_change(sample_id, EnvPan,
                       peg_pan_env_sel_0 + pcount * sample_id);
+
+  // non-rt dispatch
+  m_smp[sample_id]->set_reverse(*p(peg_reverse_0 + pcount * sample_id));
+  m_smp[sample_id]->set_normalize(*p(peg_normalize_0 + pcount * sample_id));
+  m_smp[sample_id]->set_aalias(*p(peg_antialias_0 + pcount * sample_id));
 }
 
 void                    Promethee::dispatch_env_change(unsigned int sample_id,

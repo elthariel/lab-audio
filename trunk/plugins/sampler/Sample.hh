@@ -75,6 +75,10 @@ public:
   void                  set_pan(double pan);
   EnvSwitch             &env(EnvSelect);
   double                &env_amount(EnvSelect which);
+  void                  set_reverse(float);
+  void                  set_normalize(float);
+  void                  set_aalias(float);
+
 
 private:
   // Internal data;

@@ -34,10 +34,12 @@ public:
 
   void                                  register_input(iInput &);
   void                                  unregister_input(iInput &);
+  bool                                  read(kEvent *);
 private:
   mutex                                 m_mutex; // Mutex to protect access to m_inputs.
   std::list<iInput &>                   m_inputs;
   std::list<LFRingBufferReader<kEvent> &> m_readers;
+  std::list<LFRingBufferReader<kEvent> &>::iterator m_read_iter;
 
   friend class kInputRegistryIterator;
 };

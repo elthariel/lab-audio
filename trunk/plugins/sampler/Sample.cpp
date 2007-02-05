@@ -405,3 +405,46 @@ void                    Sample::reverse()
     }
   m_reverse = !m_reverse;
 }
+
+void                    Sample::set_reverse(float val)
+{
+  bool tmp;
+
+  if (val > 0.0)
+    tmp = true;
+  else
+    tmp = false;
+
+  if (tmp != m_reverse)
+    {
+ m_reverse = tmp;
+ reverse();
+}
+}
+
+void                    Sample::set_normalize(float val)
+{
+  bool tmp;
+
+  if (val > 0)
+    tmp = true;
+  else
+    tmp = false;
+
+  if (tmp != m_norm)
+    {
+ m_norm = tmp;
+ normalize();
+}
+}
+
+void                    Sample::set_aalias(float val)
+{
+  bool tmp;
+
+  if (val > 0)
+    tmp = true;
+  else
+    tmp = false;
+  m_antialias = tmp;
+}
