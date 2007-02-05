@@ -23,15 +23,24 @@
 #ifndef   	SAMPLE_HH_
 # define   	SAMPLE_HH_
 
-#include <string>
-#include <sndfile.h>
+# include <string>
+# include <sndfile.h>
 
-#include "Envelop.hh"
-#include "frequencytable.hpp"
-#include "filter.hh"
+# include "Envelop.hh"
+# include "frequencytable.hpp"
+# include "filter.hh"
 
-#define                 SAMPLER_POLY            16
+# define                 SAMPLER_POLY            16
 
+enum EnvSelect
+  {
+    EnvAmp,
+    EnvPitch,
+    EnvPan,
+    EnvFilterCut,
+    EnvFilterRes,
+    EnvCount
+  };
 
 struct SmpVoice
 {
@@ -51,6 +60,7 @@ class Sample
 public:
   Sample(Sample &smp);
   Sample(std::string, unsigned int);
+  ~Sample();
   //  Sample(int);
 
   typedef float         sample_t;
@@ -63,6 +73,8 @@ public:
   void                  set_fine_pitch(double fine_pitch);
   void                  set_gain(double gain);
   void                  set_pan(double pan);
+  EnvSwitch             &env(EnvSelect);
+  double                &env_amount(EnvSelect which);
 
 private:
   // Internal data;
@@ -74,6 +86,12 @@ private:
 
   //User config
   EnvSwitch             &amp_env;
+  EnvSwitch             &pitch_env;
+  double                pitch_amount;
+  EnvSwitch             &pan_env;
+  double                pan_amount;
+  EnvSwitch             &filter_env;
+  double                filter_amount;
   Filter                *m_antialias_filter_l;
   Filter                *m_antialias_filter_r;
 

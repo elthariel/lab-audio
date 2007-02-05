@@ -65,12 +65,12 @@ void                    EnvD::compute_a()
 }
 
 double                  EnvD::operator()(unsigned int position,
-                                         char mode)
+                                         EnvMode mode)
 {
   double                res;
 
   res = 1.0 - m_a * position;
-  if (res < 0.0)
+  if (res < 0.0 | (mode == EnvModeRelease))
     return (0.0);
   else
     return (res);
@@ -103,7 +103,7 @@ EnvH::EnvH(unsigned int sample_rate, unsigned int tempo)
 }
 
 double          		EnvH::operator()(unsigned int x,
-                                     char mode)
+                                     EnvMode mode)
 {
   if ((x < (m_hold * m_beat_length)) && (mode == EnvModeOn))
     return (1.0);
@@ -171,9 +171,9 @@ void                    EnvDahdsr::compute_coefs()
 }
 
 double                  EnvDahdsr::operator()(unsigned int index,
-                                              char mode)
+                                              EnvMode mode)
 {
-  if (m_note == EnvModeOn)
+  if (mode == EnvModeOn)
     {
       if (index < m_coefs[0])
         return (0.0);
@@ -245,10 +245,14 @@ void                    EnvSwitch::note_off()
 
 void                    EnvSwitch::set_envelop(int env)
 {
-  if (env < m_envs.size())
-    {
-      m_current_env = env;
-    }
+  //  if (env < m_envs.size())
+  {
+    if (env != m_current_env)
+      {
+        cout << "Switched to env " << env << endl;
+        m_current_env = env;
+      }
+  }
 }
 
 // pos < 0 -> next free offset, if pos exist, the item at that pos will be replaced.
@@ -276,7 +280,7 @@ unsigned int            EnvSwitch::add_envelop(Envelop *env, int position)
 }
 
 double                  EnvSwitch::operator()(unsigned int env_pos,
-                                              char mode)
+                                              EnvMode mode)
 {
   if (m_current_env < 0)
     {
@@ -286,7 +290,7 @@ double                  EnvSwitch::operator()(unsigned int env_pos,
         return (0.0);
     }
   else
-    return ((*m_envs[m_current_env])(env_pos));
+    return ((*m_envs[m_current_env])(env_pos, mode));
 }
 
 void                    EnvSwitch::set_coefs(double *coefs,

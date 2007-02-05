@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:58:36 2007 Elthariel
-// Last update Sat Jan 20 23:08:08 2007 Nahlwe
+// Last update Sun Feb  4 23:11:57 2007 Nahlwe
 //
 
 #include <iostream>
@@ -16,6 +16,101 @@ using namespace Gtk;
 using namespace sigc;
 
 /*
+ * EnvEdit class
+ */
+
+void                  EnvEdit::bind_scale(Adjustment &sc,
+                                          unsigned int port)
+{
+  sc.signal_value_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control), port),
+                    mem_fun(sc, &Adjustment::get_value)));
+}
+
+void                  EnvEdit::bind_radio(RadioButton &bu,
+                                          int but_num,
+                                          unsigned int port)
+{
+  bu.signal_toggled().
+    connect(compose(bind<0>(bind<0>(mem_fun(*this, &EnvEdit::radio_check),
+                                    port),
+                            but_num),
+                    mem_fun(bu, &RadioButton::get_active)));
+}
+
+void                  EnvEdit::radio_check(unsigned int port,
+                                           int button,
+                                           bool val)
+{
+  if (val)
+    {
+      m_ctrl.set_control(port, (double) button);
+    }
+}
+
+EnvEdit::EnvEdit(LV2Controller& ctrl, unsigned int sample_id,
+                 unsigned int base_peg, bool amount)
+  : m_ctrl(ctrl),
+    m_amount(0.0, -1.0, 1.0, 0.01),
+    m_coef0(1.0, 0.0, 16.0, 0.01),
+    m_coef1(1.0, 0.0, 16.0, 0.01),
+    m_coef2(1.0, 0.0, 16.0, 0.01),
+    m_coef3(1.0, 0.0, 16.0, 0.01),
+    m_coef4(1.0, 0.0, 16.0, 0.01),
+    m_coef5(1.0, 0.0, 16.0, 0.01),
+    m_scale_amount(m_amount),
+    m_scale0(m_coef0),
+    m_scale1(m_coef1),
+    m_scale2(m_coef2),
+    m_scale3(m_coef3),
+    m_scale4(m_coef4),
+    m_scale5(m_coef5),
+    m_env_none("Disable"),
+    m_env_decay("Decay"),
+    m_env_hold("Hold"),
+    m_env_dahdsr("Dahdsr")
+{
+  m_env_none.set_group(m_env_select);
+  m_env_decay.set_group(m_env_select);
+  m_env_hold.set_group(m_env_select);
+  m_env_dahdsr.set_group(m_env_select);
+  m_env_none.set_active();
+  m_env_hbox.pack_start(m_env_none);
+  m_env_hbox.pack_start(m_env_decay);
+  m_env_hbox.pack_start(m_env_hold);
+  m_env_hbox.pack_start(m_env_dahdsr);
+
+  pack_start(m_env_hbox);
+  pack_start(m_hbox);
+  m_hbox.pack_start(m_scale0);
+  m_hbox.pack_start(m_scale1);
+  m_hbox.pack_start(m_scale2);
+  m_hbox.pack_start(m_scale3);
+  m_hbox.pack_start(m_scale4);
+  m_hbox.pack_start(m_scale5);
+  if (amount)
+    m_hbox.pack_start(m_scale_amount);
+
+  // Connect all this
+  if (amount)
+    {
+      bind_scale(m_amount, base_peg);
+      ++base_peg;
+    }
+  bind_scale(m_coef0, base_peg++);
+  bind_scale(m_coef1, base_peg++);
+  bind_scale(m_coef2, base_peg++);
+  bind_scale(m_coef3, base_peg++);
+  bind_scale(m_coef4, base_peg++);
+  bind_scale(m_coef5, base_peg++);
+
+  bind_radio(m_env_none, -1,  base_peg);
+  bind_radio(m_env_decay, 0,  base_peg);
+  bind_radio(m_env_hold, 1,  base_peg);
+  bind_radio(m_env_dahdsr, 2,  base_peg);
+}
+
+/*
  * SampleEdit class.
  */
 
@@ -24,8 +119,13 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
     //    m_main_scale(m_main_adj[0])
   : m_ctrl(ctrl),
     m_sample_id(sample_id),
+    m_amp_env(ctrl, sample_id, peg_amp_env_coef0_0, false),
+    m_pan_env(ctrl, sample_id, peg_pan_env_amnt_0),
+    m_pitch_env(ctrl, sample_id, peg_pitch_env_amnt_0),
+    m_fcut_env(ctrl, sample_id, peg_fcut_env_amnt_0),
+    m_fres_env(ctrl, sample_id, peg_fres_env_amnt_0),
     m_main_adj_vol(1.0, 0.0, 2.0, 0.01),
-    m_main_adj_pan(1.0, 0.0, 2.0, 0.01),
+    m_main_adj_pan(0.5, 0.0, 1.0, 0.01),
     m_main_adj_pitch(1.0, 0.0, 2.0, 0.01),
     m_main_adj_root(63.0, 0.0, 127.0, 1.0),
     m_main_scale_vol(m_main_adj_vol),
@@ -61,6 +161,15 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
   m_main_scale_pitch.signal_change_value().connect(mem_fun(*this, &SampleEdit::set_pitch));
   m_main_scale_root.signal_change_value().connect(mem_fun(*this, &SampleEdit::set_root));
   m_choose_sample.signal_clicked().connect(mem_fun(*this, &SampleEdit::choose_sample));
+
+  // Init envelops edit & co
+  m_hbox[sedit_env].pack_start(m_env_notebook);
+  m_env_notebook.append_page(m_amp_env, "Amp");
+  m_env_notebook.append_page(m_pan_env, "Pan");
+  m_env_notebook.append_page(m_pitch_env, "Pitch");
+  m_env_notebook.append_page(m_fcut_env, "Filter cutoff");
+  m_env_notebook.append_page(m_fres_env, "Filter resonance");
+
 }
 
 void                    SampleEdit::set_sample_id(unsigned int sid)
@@ -189,9 +298,6 @@ PrometheeGUI::PrometheeGUI(LV2Controller& ctrl,
       m_smp_edit.push_back(new SampleEdit(m_ctrl, i));
       m_smp_notebook.append_page(*m_smp_edit[i], "_(free)_");
     }
-  /*  m_button.signal_released().connect(bind(mem_fun(*this,
-                                                  &PrometheeGUI::button_clik), 1));
-  */
 }
 
 void initialise() __attribute__((constructor));

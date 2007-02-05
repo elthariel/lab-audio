@@ -1,6 +1,6 @@
 # The name and version of your plugin - edit these (at least the name)
 PLUGIN_NAME = promethee
-VERSION = 0.1.0
+VERSION = 0.1.2
 
 # The lv2peg program - edit if it's not in your path
 LV2PEG = lv2peg
@@ -14,8 +14,8 @@ PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp \
 PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h \
 	lv2-midifunctions.h $(PLUGIN_NAME).peg frequencytable.hpp Envelop.hh \
 	Sample.hh filter.hh
-PLUGIN_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 sndfile`
-PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gtkmm-2.4 gthread-2.0 sndfile`
+PLUGIN_LDFLAGS = `pkg-config --libs gthread-2.0 sndfile`
+PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gthread-2.0 sndfile`
 
 # These are the source files for the plugin GUI
 GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
@@ -31,7 +31,8 @@ ALL_HEADERS = $(sort $(PLUGIN_HEADERS) $(GUI_HEADERS))
 
 
 # These files go into the distribution
-DIST_FILES = Makefile README manifest.ttl $(PLUGIN_NAME).ttl $(ALL_SOURCES) $(ALL_HEADERS)
+DIST_FILES = Makefile README manifest.ttl $(PLUGIN_NAME).ttl $(ALL_SOURCES) \
+	$(ALL_HEADERS) $(PLUGIN_NAME)
 
 
 
@@ -72,7 +73,7 @@ $(GUI_OBJECTS): $(subst .o,.cpp,$@)
 	$(LV2PEG) $(subst .peg,.ttl,$@) $@
 
 # The distribution - a bzip2ed tarball
-dist: $(DIST_FILES)
+dist: #$(DIST_FILES)
 	rm -rf $(PLUGIN_NAME)-$(VERSION) $(PLUGIN_NAME)-$(VERSION).tar $(PLUGIN_NAME)-$(VERSION).tar.bz2
 	mkdir $(PLUGIN_NAME)-$(VERSION)
 	cp $(DIST_FILES) $(PLUGIN_NAME)-$(VERSION)
@@ -85,7 +86,12 @@ install: $(PLUGIN_NAME).lv2
 	cp -rf $(PLUGIN_NAME).lv2 /usr/lib/lv2
 	cp $(PLUGIN_NAME) /usr/bin
 
-
 # Remove all generated files
 clean:
-	rm -rf $(PLUGIN_NAME).lv2 $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so $(ALL_SOURCES:.cpp=.dep) $(ALL_SOURCES:.cpp=.o)
+	rm -rf $(PLUGIN_NAME).lv2 $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so $(ALL_SOURCES:.cpp=.dep) $(ALL_SOURCES:.cpp=.o) \
+		env_test env_test.o
+
+test: env_test
+
+env_test:
+	g++ $(PLUGIN_CFLAGS) $(PLUGIN_LDFLAGS) -o env_test env_test.cpp Envelop.cpp

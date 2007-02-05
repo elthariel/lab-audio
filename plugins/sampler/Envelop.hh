@@ -44,7 +44,7 @@ public:
   virtual ~Envelop(){}
   Envelop(unsigned int, unsigned int): m_note(-1), m_vel(0){} //sample_rate, tempo
 
-  virtual double                operator()(unsigned int, char = 0) = 0;
+  virtual double                operator()(unsigned int, EnvMode = EnvModeOn) = 0;
   virtual void                  set_coefs(double *,
                                           unsigned int coef_count) = 0;
   virtual void                  note_on(char note, char vel);
@@ -66,7 +66,7 @@ public:
   unsigned int          add_envelop(Envelop *, int = -1);
 
   void                  set_envelop(int);
-  virtual double        operator()(unsigned int, char = 0);
+  virtual double        operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void          set_coefs(double *,
                                   unsigned int coef_count = 1);
   virtual void          note_on(char note, char vel);
@@ -90,7 +90,7 @@ class EnvD : public Envelop
 public:
   EnvD(unsigned int, unsigned int);
 
-  virtual double                operator()(unsigned int, char = 0);
+  virtual double                operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void                  set_coefs(double *coefs,
                                           unsigned int coef_count = 1);
 };
@@ -107,7 +107,7 @@ class EnvH : public Envelop
 public:
   EnvH(unsigned int, unsigned int);
 
-  virtual double                operator()(unsigned int, char = 0);
+  virtual double                operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void                  set_coefs(double *coefs,
                                           unsigned int coef_count = 1);
 };
@@ -127,7 +127,7 @@ class EnvDahdsr : public Envelop
 public:
   EnvDahdsr(unsigned int, unsigned int);
 
-  virtual double                operator()(unsigned int, char = 0);
+  virtual double                operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void                  set_coefs(double *coefs,
                                           unsigned int coef_count = 1);
   //  virtual void                  note_on(char note, char vel);

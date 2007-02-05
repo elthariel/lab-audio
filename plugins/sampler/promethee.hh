@@ -51,6 +51,9 @@ protected:
                                             unsigned int sample_count);
   void                  process_audio(unsigned int sample_id,
                                       unsigned int sample_count);
+  void                  dispatch_env_change(unsigned int sample_id,
+                                            EnvSelect env,
+                                            unsigned int port);
 };
 
 
