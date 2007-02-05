@@ -5,6 +5,8 @@
 
 Promethee is a project of live/impro oriented [LV2] sampler. 
 
+*Promethee (as all our projects) is looking for graphists who could make us professional graphical interfaces.*
+
 http://elthariel.free.fr/lae/promethee/promethee-0.1.8.png
 
 For the moment it's GUI is ugly and not handy at all but it will be highly improved as the project evolves.
