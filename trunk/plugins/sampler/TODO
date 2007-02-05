@@ -7,7 +7,7 @@ Legend:
 
 #### 0.2.0
 ## Bug
-   - note_off not working
+   + note_off not working
    - Low shelf is an anti-noise gate
 
 ## Filters class.
@@ -36,13 +36,14 @@ Legend:
 ## Promethee
 
 ## Promethee GUI
-   + GUI Base.
-   - Envelopview
-     - filter
-     - amp
-     - pan
-     - pitch
+   * GUI Base.
+   * Envelopview
+     * filter{cut | res}
+     * amp
+     * pan
+     * pitch
    - WaveView
+     - Shared memory.
    * gain, pitch, pan, root
    - filter view and/or filter sliders
    - antialias, reverse, normalize button.
@@ -51,6 +52,15 @@ Legend:
    - Wef files as envelops
    - midi delay
    - arp
+
+#### 0.6.0
+   - Use libthc.
+   - UI skin
+
+#### 0.8.0
+
+#### 1.0.0
+   - All of the unsorted.
 
 #### Unsorted.
    - Time stretching.
