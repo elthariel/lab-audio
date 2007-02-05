@@ -34,6 +34,8 @@ control in              pitch_0         Pitch_0         0       3       0
 control in              root_0          Root_note_0     0       127     63
 control in              filter_cutoff_0 Filter_Cutoff_0 0       22000   22000
 control in              filter_res_0    Filter_Reso_0   0       1       0
+control in              reverse_0       Reverse_0       0       1       0
+control in              normalize_0     Normalize_0     0       1       0
 control in              amp_env_coef0_0 Amp_env_Coef0_0 0       16      1
 control in              amp_env_coef1_0 Amp_env_Coef1_0 0       16      1
 control in              amp_env_coef2_0 Amp_env_Coef2_0 0       16      1
