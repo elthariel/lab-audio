@@ -10,10 +10,10 @@ BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so $(PLUGIN_NAME)_
 
 # These are the source files for the plugin
 PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp \
-	Envelop.cpp Sample.cpp filter.cpp
+	Envelop.cpp Sample.cpp filter.cpp AnalogFilter.cpp
 PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h \
 	lv2-midifunctions.h $(PLUGIN_NAME).peg frequencytable.hpp Envelop.hh \
-	Sample.hh filter.hh
+	Sample.hh filter.hh Filter_.h AnalogFilter.hpp
 PLUGIN_LDFLAGS = `pkg-config --libs gthread-2.0 sndfile`
 PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gthread-2.0 sndfile`
 
