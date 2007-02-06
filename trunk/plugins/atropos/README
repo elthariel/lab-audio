@@ -1,0 +1,35 @@
+##
+## README for Atropos in /home/elthariel/code/lab-audio/plugins/atropos
+##
+## Made by Nahlwe
+## Login   <elthariel@epita.fr>
+##
+## Started on  Tue Feb  6 12:55:18 2007 Nahlwe
+## Last update Tue Feb  6 13:06:18 2007 Nahlwe
+##
+
+
+## Background.
+
+Atropos is the one of the Moirae which cuts the thread in the greek
+mythology. Would you like to know more ?
+
+Francais ->
+http://fr.wikipedia.org/wiki/Moires
+English ->
+http://en.wikipedia.org/wiki/Moirae
+
+## Introduction.
+
+Atropos is an LV2 software mixing device.
+It (will) features :
+   - Master volume
+   - 16 stereo tracks with each :
+      - Volume.
+      - 3 bands eq with adjustable frequency crossovers.
+      - mute, solo, pan.
+      - Cue function to preview tracks contents.
+   - 4 stereo send fx tracks.
+
+As an LV2 it will supports real-time processing, and parameters
+automations.
