@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:46:24 2007 Elthariel
-// Last update Mon Feb  5 06:02:11 2007 Nahlwe
+// Last update Tue Feb  6 12:25:40 2007 Nahlwe
 //
 
 #include <cmath>
@@ -25,6 +25,7 @@ Promethee::Promethee(uint32_t rate, const char*, const LV2_Host_Feature**)
 
   for (i = 0; i < SAMPLES_COUNT; i++)
     m_smp[i] = 0;
+  TempBuffer::get(true);
 }
 
 void                    Promethee::run(uint32_t sample_count) {
@@ -76,8 +77,9 @@ void                    Promethee::dispatch_control_ports(unsigned int sample_id
   m_smp[sample_id]->set_fine_pitch(*p(peg_pitch_0 + pcount * sample_id));
   m_smp[sample_id]->set_gain(*p(peg_gain_0 + pcount * sample_id));
   m_smp[sample_id]->set_pan(*p(peg_pan_0 + pcount * sample_id));
-  // FIXME filter cuttof
-  // FIXME filter res
+  m_smp[sample_id]->set_fcut(*p(peg_filter_cutoff_0 + pcount * sample_id));
+  m_smp[sample_id]->set_fres(*p(peg_filter_res_0 + pcount * sample_id));
+
   for (i = 0; i < 6; i++)
     coefs[i] = *p(peg_amp_env_coef0_0 + pcount * sample_id + i);
   m_smp[sample_id]->env(EnvAmp).set_coefs((double *)&coefs, 6);

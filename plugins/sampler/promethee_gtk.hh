@@ -39,6 +39,47 @@ enum sedit_vbox {
   sedit_n_hbox
 };
 
+class FilterEdit : public Gtk::VBox
+{
+public:
+  FilterEdit(LV2Controller& ctrl, unsigned int sample_id);
+
+  class TMFtype : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+    TMFtype();
+    Gtk::TreeModelColumn<Glib::ustring>   m_col_ftype;
+    Gtk::TreeModelColumn<int>             m_col_ftype_id;
+  };
+  class TMFStage : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+    TMFStage();
+    Gtk::TreeModelColumn<int>             m_col_stage;
+  };
+
+private:
+  LV2Controller         &m_ctrl;
+  unsigned int          m_sample_id;
+  unsigned int          m_pcount;
+  Glib::RefPtr<Gtk::ListStore> m_ftype_model;
+  Glib::RefPtr<Gtk::ListStore> m_fstages_model;
+  TMFtype               m_tmftype;
+  TMFStage              m_tmfstage;
+
+  Gtk::HBox             m_box_ftype;
+  Gtk::HBox             m_box_param;
+  Gtk::Label            m_lb_ftype;
+  Gtk::ComboBox         m_cb_ftype;
+  Gtk::Label            m_lb_fstages;
+  Gtk::ComboBox         m_cb_fstages;
+  Gtk::Adjustment       m_ad_fcut;
+  Gtk::Adjustment       m_ad_fres;
+  Gtk::VScale           m_vs_fcut;
+  Gtk::VScale           m_vs_fres;
+
+};
+
 class EnvEdit : public Gtk::VBox
 {
 public:
@@ -107,6 +148,7 @@ protected:
   EnvEdit               m_fcut_env;
   EnvEdit               m_fres_env;
   Gtk::Notebook         m_env_notebook;
+  FilterEdit            m_fedit;
 
   Gtk::HBox             m_hbox[sedit_n_hbox];
   Gtk::VBox             m_vbox_main[4];

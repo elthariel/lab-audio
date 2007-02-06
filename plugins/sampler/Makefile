@@ -1,6 +1,6 @@
 # The name and version of your plugin - edit these (at least the name)
 PLUGIN_NAME = promethee
-VERSION = 0.1.2
+VERSION = 0.1.9
 
 # The lv2peg program - edit if it's not in your path
 LV2PEG = lv2peg
@@ -32,7 +32,7 @@ ALL_HEADERS = $(sort $(PLUGIN_HEADERS) $(GUI_HEADERS))
 
 # These files go into the distribution
 DIST_FILES = Makefile README manifest.ttl $(PLUGIN_NAME).ttl $(ALL_SOURCES) \
-	$(ALL_HEADERS) $(PLUGIN_NAME)
+	$(ALL_HEADERS) $(PLUGIN_NAME) tthellfile tthell.pl
 
 
 
