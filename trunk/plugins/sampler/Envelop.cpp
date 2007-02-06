@@ -136,7 +136,7 @@ EnvDahdsr::EnvDahdsr(unsigned int sample_rate, unsigned int tempo)
   m_coefs_beat[1] = 1.0;
   m_coefs_beat[2] = 1.0;
   m_coefs_beat[3] = 1.0;
-  m_coefs_beat[4] = 1.0;
+  m_coefs_beat[4] = 0.5;
   m_coefs_beat[5] = 1.0;
 
   compute_coefs();
@@ -163,11 +163,11 @@ void                    EnvDahdsr::compute_coefs()
   // Hold -> do not use
   m_coefs[2] = 1.0;
   // Decay
-  m_coefs[3] = -((1.0 - m_coefs_beat[4]) / (m_coefs[3] * m_beat_length));
+  m_coefs[3] = 0.0 - ((1.0 - m_coefs_beat[4]) / (m_coefs_beat[3] * m_beat_length));
   // Sustain
   m_coefs[4] = m_coefs_beat[4];
   // Release
-  m_coefs[5] = m_coefs_beat[5] * m_beat_length;
+  m_coefs[5] = m_coefs_beat[4] / (m_coefs_beat[5] * m_beat_length);
 }
 
 double                  EnvDahdsr::operator()(unsigned int index,
@@ -176,19 +176,29 @@ double                  EnvDahdsr::operator()(unsigned int index,
   if (mode == EnvModeOn)
     {
       if (index < m_coefs[0])
-        return (0.0);
-      else if (index < (m_coefs[0] + m_coefs[1] * m_beat_length))
-        return ((index - m_coefs[0]) * m_coefs[1]);
+        {
+          return (0.0);
+        }
+      else if (index < (m_coefs[0] + m_coefs_beat[1] * m_beat_length))
+        {
+          return ((index - m_coefs[0]) * m_coefs[1]);
+        }
       else if (index < (m_coefs[0] + m_coefs_beat[1] * m_beat_length +
                         m_coefs_beat[2] * m_beat_length ))
-        return (1.0);
+        {
+          return (1.0);
+        }
       else if (index < (m_coefs[0] + m_coefs_beat[1] * m_beat_length +
                         m_coefs_beat[2] * m_beat_length +
                         m_coefs_beat[3] * m_beat_length))
-        return(1.0 - (index - (m_coefs[0] + m_coefs_beat[1] * m_beat_length +
-                               m_coefs_beat[2] * m_beat_length)) * m_coefs[3]);
+        {
+          return(1.0 + (index - (m_coefs[0] + m_coefs_beat[1] * m_beat_length +
+                                 m_coefs_beat[2] * m_beat_length)) * m_coefs[3]);
+        }
       else
-        return (m_coefs[4]);
+        {
+          return (m_coefs[4]);
+        }
     }
   else
     {

@@ -64,6 +64,7 @@ Legend:
    - All of the unsorted.
 
 #### Unsorted.
+   - FM between samples
    - Time stretching.
    - DynParam extension support.
    - Beatmasher.
