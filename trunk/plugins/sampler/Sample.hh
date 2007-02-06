@@ -73,6 +73,8 @@ public:
   void                  set_fine_pitch(double fine_pitch);
   void                  set_gain(double gain);
   void                  set_pan(double pan);
+  void                  set_fcut(double fcut);
+  void                  set_fres(double fres);
   EnvSwitch             &env(EnvSelect);
   double                &env_amount(EnvSelect which);
   void                  set_reverse(float);
@@ -104,6 +106,10 @@ private:
   double                m_fine_pitch;
   double                m_gain;
   double                m_pan;
+  double                m_fcut;
+  double                m_fres;
+  double                m_ftype;
+  unsigned char         m_fstages;
   float                 m_norm_factor;
   bool                  m_norm;
   bool                  m_reverse;

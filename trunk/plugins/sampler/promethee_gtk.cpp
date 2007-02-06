@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Jan 18 16:58:36 2007 Elthariel
-// Last update Mon Feb  5 05:36:10 2007 Nahlwe
+// Last update Tue Feb  6 11:20:36 2007 Nahlwe
 //
 
 #include <iostream>
@@ -111,6 +111,113 @@ EnvEdit::EnvEdit(LV2Controller& ctrl, unsigned int sample_id,
 }
 
 /*
+ * FilterEdit class
+ */
+
+FilterEdit::FilterEdit(LV2Controller& ctrl, unsigned int sample_id)
+  : m_ctrl(ctrl), m_sample_id(sample_id),
+    m_pcount(peg_fres_env_sel_0 - peg_gain_0 + 1),
+    m_lb_ftype("Filter Type"),
+    m_lb_fstages("Filter stages"),
+    m_ad_fcut(22000.0, 10.0, 22000.0, 0.5),
+    m_ad_fres(0.0, 0.0, 1.0, 0.01),
+    m_vs_fcut(m_ad_fcut),
+    m_vs_fres(m_ad_fres)
+{
+  // Init comboboxes
+  m_ftype_model = ListStore::create(m_tmftype);
+  m_fstages_model = ListStore::create(m_tmfstage);
+  m_cb_ftype.set_model(m_ftype_model);
+  m_cb_fstages.set_model(m_fstages_model);
+
+  // Fill filter type combo
+  Gtk::TreeModel::Row row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 0;
+  row[m_tmftype.m_col_ftype] = "LowPass 1-pole";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 1;
+  row[m_tmftype.m_col_ftype] = "HighPass 1-pole";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 2;
+  row[m_tmftype.m_col_ftype] = "LowPass 2-poles";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 3;
+  row[m_tmftype.m_col_ftype] = "HighPass 2-poles";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 4;
+  row[m_tmftype.m_col_ftype] = "BandPass 2-poles";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 5;
+  row[m_tmftype.m_col_ftype] = "Notch";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 6;
+  row[m_tmftype.m_col_ftype] = "Peak";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 7;
+  row[m_tmftype.m_col_ftype] = "LowShelf 2-poles";
+  row = *(m_ftype_model->append());
+  row[m_tmftype.m_col_ftype_id] = 8;
+  row[m_tmftype.m_col_ftype] = "HighShelf 2-poles";
+
+  // Fill filter stages combo
+  row = *(m_fstages_model->append());
+  row[m_tmfstage.m_col_stage] = 1;
+  row = *(m_fstages_model->append());
+  row[m_tmfstage.m_col_stage] = 2;
+  row = *(m_fstages_model->append());
+  row[m_tmfstage.m_col_stage] = 3;
+  row = *(m_fstages_model->append());
+  row[m_tmfstage.m_col_stage] = 4;
+
+  m_cb_ftype.set_active(0);
+  m_cb_fstages.set_active(0);
+
+  // Pack everything
+  m_cb_ftype.pack_start(m_tmftype.m_col_ftype);
+  m_cb_fstages.pack_start(m_tmfstage.m_col_stage);
+
+  pack_start(m_box_ftype);
+  pack_start(m_box_param);
+
+  m_box_ftype.pack_start(m_lb_ftype);
+  m_box_ftype.pack_start(m_cb_ftype);
+  m_box_ftype.pack_start(m_lb_fstages);
+  m_box_ftype.pack_start(m_cb_fstages);
+
+  m_box_param.pack_start(m_vs_fcut);
+  m_box_param.pack_start(m_vs_fres);
+
+  // Connect signals
+  m_cb_ftype.signal_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_filter_type_0 + sample_id * m_pcount),
+                    mem_fun(m_cb_ftype, &ComboBox::get_active_row_number)));
+  m_cb_fstages.signal_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_filter_stages_0 + sample_id * m_pcount),
+                    mem_fun(m_cb_fstages, &ComboBox::get_active_row_number)));
+  m_ad_fcut.signal_value_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_filter_cutoff_0 + sample_id * m_pcount),
+                    mem_fun(m_ad_fcut, &Adjustment::get_value)));
+  m_ad_fres.signal_value_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_filter_res_0 + sample_id * m_pcount),
+                    mem_fun(m_ad_fres, &Adjustment::get_value)));
+}
+
+FilterEdit::TMFtype::TMFtype()
+{
+  add(m_col_ftype);
+  add(m_col_ftype_id);
+}
+
+FilterEdit::TMFStage::TMFStage()
+{
+  add(m_col_stage);
+}
+
+/*
  * SampleEdit class.
  */
 
@@ -128,6 +235,7 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
     m_pitch_env(ctrl, sample_id, peg_pitch_env_amnt_0 + sample_id * m_pcount),
     m_fcut_env(ctrl, sample_id, peg_fcut_env_amnt_0 + sample_id * m_pcount),
     m_fres_env(ctrl, sample_id, peg_fres_env_amnt_0 + sample_id * m_pcount),
+    m_fedit(ctrl, sample_id),
     m_main_adj_vol(1.0, 0.0, 2.0, 0.01),
     m_main_adj_pan(0.5, 0.0, 1.0, 0.01),
     m_main_adj_pitch(1.0, 0.0, 2.0, 0.01),
@@ -168,6 +276,7 @@ SampleEdit::SampleEdit(LV2Controller& ctrl, unsigned int sample_id)
 
   // Init envelops edit & co
   m_hbox[sedit_env].pack_start(m_env_notebook);
+  m_hbox[sedit_env].pack_start(m_fedit);
   m_env_notebook.append_page(m_amp_env, "Amp");
   m_env_notebook.append_page(m_pan_env, "Pan");
   m_env_notebook.append_page(m_pitch_env, "Pitch");

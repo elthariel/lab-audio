@@ -1,0 +1,76 @@
+# This is the Tthell for for generating atropos's TTL
+
+lv2     atropos http://lab-audio.googlecode.com/svn/trunk/plugins/atropos
+
+audio   in              track_0_l       Track_0_l
+audio   in              track_0_r       Track_0_r
+audio   in              track_1_l       Track_1_l
+audio   in              track_1_r       Track_1_r
+audio   in              track_2_l       Track_2_l
+audio   in              track_2_r       Track_2_r
+audio   in              track_3_l       Track_3_l
+audio   in              track_3_r       Track_3_r
+audio   in              track_4_l       Track_4_l
+audio   in              track_4_r       Track_4_r
+audio   in              track_5_l       Track_5_l
+audio   in              track_5_r       Track_5_r
+audio   in              track_6_l       Track_6_l
+audio   in              track_6_r       Track_6_r
+audio   in              track_7_l       Track_7_l
+audio   in              track_7_r       Track_7_r
+audio   in              track_8_l       Track_8_l
+audio   in              track_8_r       Track_8_r
+audio   in              track_9_l       Track_9_l
+audio   in              track_9_r       Track_9_r
+audio   in              track_10_l      Track_10_l
+audio   in              track_10_r      Track_10_r
+audio   in              track_11_l      Track_11_l
+audio   in              track_11_r      Track_11_r
+audio   in              track_12_l      Track_12_l
+audio   in              track_12_r      Track_12_r
+audio   in              track_13_l      Track_13_l
+audio   in              track_13_r      Track_13_r
+audio   in              track_14_l      Track_14_l
+audio   in              track_14_r      Track_14_r
+audio   in              track_15_l      Track_15_l
+audio   in              track_16_r      Track_15_r
+
+audio   in              send_0_ret_l    Send_0_l
+audio   in              send_0_ret_r    Send_0_r
+audio   in              send_1_ret_l    Send_1_l
+audio   in              send_1_ret_r    Send_1_r
+audio   in              send_2_ret_l    Send_2_l
+audio   in              send_2_ret_r    Send_2_r
+audio   in              send_3_ret_l    Send_3_l
+audio   in              send_4_ret_r    Send_3_r
+
+audio   out             send_0_l        Send_0_l
+audio   out             send_0_r        Send_0_r
+audio   out             send_1_l        Send_1_l
+audio   out             send_1_r        Send_1_r
+audio   out             send_2_l        Send_2_l
+audio   out             send_2_r        Send_2_r
+audio   out             send_3_l        Send_3_l
+audio   out             send_4_r        Send_3_r
+
+control in              main_volume             Master_volume   0       2       1
+control in              send0_return            Send_FX_0_return 0      2       1
+control in              send1_return            Send_FX_1_return 0      2       1
+control in              send2_return            Send_FX_2_return 0      2       1
+control in              send3_return            Send_FX_3_return 0      2       1
+
+control in              volume_0                Volume_0        0       2       1
+control in              pan_0                   Pan_0           0       1       0.5
+control in              mute_0                  Mute_0          0       1       0
+control in              solo_0                  Solo_0          0       1       0
+control in              send_fx0_0              Send_to_FX0_0   0       2       0
+control in              send_fx1_0              Send_to_FX1_0   0       2       0
+control in              send_fx2_0              Send_to_FX2_0   0       2       0
+control in              send_fx3_0              Send_to_FX3_0   0       2       0
+control in              send_fx3_pre_0          Send_Premix_FX3 0       1       0
+control in              eq_active_0             Activate_EQs    0       1       0
+control in              eq_low_0                Low_EQ          0       2       0
+control in              eq_mid_0                Mid_EQ          0       2       0
+control in              eq_hi_0                 Hi_EQ           0       2       0
+control in              eq_crossover0_0         EQ_Crossover1_0 0       22000   300
+control in              eq_crossover1_0         EQ_Crossover2_0 0       22000   4000

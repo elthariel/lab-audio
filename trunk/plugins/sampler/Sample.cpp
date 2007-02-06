@@ -145,26 +145,26 @@ void                    Sample::play_voice(unsigned int voice_number,
       if (voices[voice_number].pos == 0.0)
         {
           //cout << "Beginning of the sample" << endl;
-          outL[i] += s(0,0);
+          outL[i] = s(0,0);
           if (info.channels == 1)
-            outR[i] += s(0,0);
+            outR[i] = s(0,0);
           else
-            outR[i] += s(0,0);
+            outR[i] = s(0,0);
         }
       else
         {
           tmp = (unsigned int)voices[voice_number].pos;
           // Render sample at the right pitch
-          outL[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
+          outL[i] = (s(0,tmp) * (voices[voice_number].pos - tmp)
                       + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp)));
           if (info.channels == 1)
             {
-              outR[i] += (s(0,tmp) * (voices[voice_number].pos - tmp)
+              outR[i] = (s(0,tmp) * (voices[voice_number].pos - tmp)
                           + s(0, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp)));
             }
           else
             {
-              outR[i] += (s(1,tmp) * (voices[voice_number].pos - tmp)
+              outR[i] = (s(1,tmp) * (voices[voice_number].pos - tmp)
                           + s(1, tmp + 1) * (1.0 - (voices[voice_number].pos - tmp))) / 2;
             }
         }
@@ -298,6 +298,16 @@ void                  Sample::set_gain(double gain)
 void                  Sample::set_pan(double pan)
 {
   m_pan = pan;
+}
+
+void                  set_fcut(double fcut)
+{
+  m_fcut = fcut;
+}
+
+void                  set_fres(double fres)
+{
+  m_fres = fres;
 }
 
 EnvSwitch             &Sample::env(EnvSelect which)
