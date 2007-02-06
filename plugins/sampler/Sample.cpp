@@ -43,6 +43,8 @@ FrequencyTable 			Sample::freq_table = FrequencyTable();
 
 Sample::Sample(string path, unsigned int sample_rate)
   : m_sr(sample_rate),
+    aalias_l(sample_rate, 0, sample_rate / 2.0, 0.0, 2),
+    aalias_r(sample_rate, 0, sample_rate / 2.0, 0.0, 2),
     amp_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
     pitch_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
     pitch_amount(0.0),
@@ -62,11 +64,7 @@ Sample::Sample(string path, unsigned int sample_rate)
     {
       load_data(file);
       sf_close(file);
-      m_antialias_filter_l = new BesselLP24(sample_rate);
-      m_antialias_filter_l->set_cutoff(sample_rate / 2);
-      m_antialias_filter_r = new BesselLP24(sample_rate);
-      m_antialias_filter_r->set_cutoff(sample_rate / 2);
-      m_antialias = false;
+      m_antialias = true;
     }
   else
     cerr << "Unable to open : " << path << endl;
@@ -75,6 +73,7 @@ Sample::Sample(string path, unsigned int sample_rate)
 
 Sample::Sample(Sample &smp)
   :m_sr(smp.m_sr), info(smp.info),
+   aalias_l(smp.aalias_l), aalias_r(smp.aalias_r),
    amp_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
    pitch_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
    pan_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
@@ -94,10 +93,6 @@ Sample::Sample(Sample &smp)
       data[i] = smp.data[i];
     }
   m_antialias = smp.m_antialias;
-  m_antialias_filter_l = new BesselLP24(smp.m_sr);
-  *m_antialias_filter_l = *(smp.m_antialias_filter_l);
-  m_antialias_filter_r = new BesselLP24(smp.m_sr);
-  *m_antialias_filter_r = *(smp.m_antialias_filter_r);
 }
 
 Sample::~Sample()
@@ -346,11 +341,8 @@ void                  Sample::apply_antialias_filter(unsigned int sample_count,
 {
   if (m_antialias)
     {
-      for (unsigned int i = 0; i < sample_count; i++)
-        {
-          m_antialias_filter_l->apply(&outL[i]);
-          m_antialias_filter_r->apply(&outR[i]);
-        }
+      aalias_l.filterout(outL, sample_count);
+      aalias_r.filterout(outR, sample_count);
     }
 }
 
@@ -410,7 +402,7 @@ void                    Sample::set_reverse(float val)
 {
   bool tmp;
 
-  if (val > 0.0)
+  if (val > 0.1)
     tmp = true;
   else
     tmp = false;
@@ -447,4 +439,26 @@ void                    Sample::set_aalias(float val)
   else
     tmp = false;
   m_antialias = tmp;
+}
+
+
+/*
+ * TempBuffer singleton
+ */
+
+TempBuffer      *TempBuffer::m_instance = 0;
+
+TempBuffer::TempBuffer()
+{
+}
+
+float           *TempBuffer::get(bool sel)
+{
+  if (TempBuffer::m_instance == 0)
+    m_instance = new TempBuffer();
+
+    if (sel)
+      return m_instance->buffers[0];
+    else
+      return m_instance->buffers[1];
 }

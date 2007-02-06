@@ -30,9 +30,9 @@ Legend:
    + Antialias filter?
    + Filter support
      + Filter Envelop.
-   - Envelops
+   * Envelops
      * EnvSwitcher, EnvDecay, EnvHold
-     + End Dahdsr
+     * End Dahdsr
 
 ## Promethee
 

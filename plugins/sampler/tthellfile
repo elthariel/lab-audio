@@ -32,6 +32,8 @@ control in              gain_0          Gain_0          0       2       1
 control in              pan_0           Pan_0           0       1       0.5
 control in              pitch_0         Pitch_0         0       3       0
 control in              root_0          Root_note_0     0       127     63
+control in              filter_type_0   Filter_Type_0   0       8       0
+control in              filter_stages_0 Filte_Stages_0  1       4       1
 control in              filter_cutoff_0 Filter_Cutoff_0 0       22000   22000
 control in              filter_res_0    Filter_Reso_0   0       1       0
 control in              reverse_0       Reverse_0       0       1       0
