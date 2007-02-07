@@ -13,9 +13,25 @@ ll:pegName "peg";
 
 lv2:port  
 [
-a lv2:AudioRateInputPort;
+a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
 lv2:index 0;
+lv2:symbol "main_out_l";
+lv2:name "Main_Out_L";
+],
+
+[
+a lv2:AudioRateOutputPort;
+lv2:datatype lv2:float;
+lv2:index 1;
+lv2:symbol "main_out_r";
+lv2:name "Main_Out_R";
+],
+
+[
+a lv2:AudioRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 2;
 lv2:symbol "track_0_l";
 lv2:name "Track_0_l";
 ],
@@ -23,7 +39,7 @@ lv2:name "Track_0_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 1;
+lv2:index 3;
 lv2:symbol "track_0_r";
 lv2:name "Track_0_r";
 ],
@@ -31,7 +47,7 @@ lv2:name "Track_0_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 2;
+lv2:index 4;
 lv2:symbol "track_1_l";
 lv2:name "Track_1_l";
 ],
@@ -39,7 +55,7 @@ lv2:name "Track_1_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 3;
+lv2:index 5;
 lv2:symbol "track_1_r";
 lv2:name "Track_1_r";
 ],
@@ -47,7 +63,7 @@ lv2:name "Track_1_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 4;
+lv2:index 6;
 lv2:symbol "track_2_l";
 lv2:name "Track_2_l";
 ],
@@ -55,7 +71,7 @@ lv2:name "Track_2_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 5;
+lv2:index 7;
 lv2:symbol "track_2_r";
 lv2:name "Track_2_r";
 ],
@@ -63,7 +79,7 @@ lv2:name "Track_2_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 6;
+lv2:index 8;
 lv2:symbol "track_3_l";
 lv2:name "Track_3_l";
 ],
@@ -71,7 +87,7 @@ lv2:name "Track_3_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 7;
+lv2:index 9;
 lv2:symbol "track_3_r";
 lv2:name "Track_3_r";
 ],
@@ -79,7 +95,7 @@ lv2:name "Track_3_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 8;
+lv2:index 10;
 lv2:symbol "track_4_l";
 lv2:name "Track_4_l";
 ],
@@ -87,7 +103,7 @@ lv2:name "Track_4_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 9;
+lv2:index 11;
 lv2:symbol "track_4_r";
 lv2:name "Track_4_r";
 ],
@@ -95,7 +111,7 @@ lv2:name "Track_4_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 10;
+lv2:index 12;
 lv2:symbol "track_5_l";
 lv2:name "Track_5_l";
 ],
@@ -103,7 +119,7 @@ lv2:name "Track_5_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 11;
+lv2:index 13;
 lv2:symbol "track_5_r";
 lv2:name "Track_5_r";
 ],
@@ -111,7 +127,7 @@ lv2:name "Track_5_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 12;
+lv2:index 14;
 lv2:symbol "track_6_l";
 lv2:name "Track_6_l";
 ],
@@ -119,7 +135,7 @@ lv2:name "Track_6_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 13;
+lv2:index 15;
 lv2:symbol "track_6_r";
 lv2:name "Track_6_r";
 ],
@@ -127,7 +143,7 @@ lv2:name "Track_6_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 14;
+lv2:index 16;
 lv2:symbol "track_7_l";
 lv2:name "Track_7_l";
 ],
@@ -135,7 +151,7 @@ lv2:name "Track_7_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 15;
+lv2:index 17;
 lv2:symbol "track_7_r";
 lv2:name "Track_7_r";
 ],
@@ -143,7 +159,7 @@ lv2:name "Track_7_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 16;
+lv2:index 18;
 lv2:symbol "track_8_l";
 lv2:name "Track_8_l";
 ],
@@ -151,7 +167,7 @@ lv2:name "Track_8_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 17;
+lv2:index 19;
 lv2:symbol "track_8_r";
 lv2:name "Track_8_r";
 ],
@@ -159,7 +175,7 @@ lv2:name "Track_8_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 18;
+lv2:index 20;
 lv2:symbol "track_9_l";
 lv2:name "Track_9_l";
 ],
@@ -167,7 +183,7 @@ lv2:name "Track_9_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 19;
+lv2:index 21;
 lv2:symbol "track_9_r";
 lv2:name "Track_9_r";
 ],
@@ -175,7 +191,7 @@ lv2:name "Track_9_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 20;
+lv2:index 22;
 lv2:symbol "track_10_l";
 lv2:name "Track_10_l";
 ],
@@ -183,7 +199,7 @@ lv2:name "Track_10_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 21;
+lv2:index 23;
 lv2:symbol "track_10_r";
 lv2:name "Track_10_r";
 ],
@@ -191,7 +207,7 @@ lv2:name "Track_10_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 22;
+lv2:index 24;
 lv2:symbol "track_11_l";
 lv2:name "Track_11_l";
 ],
@@ -199,7 +215,7 @@ lv2:name "Track_11_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 23;
+lv2:index 25;
 lv2:symbol "track_11_r";
 lv2:name "Track_11_r";
 ],
@@ -207,7 +223,7 @@ lv2:name "Track_11_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 24;
+lv2:index 26;
 lv2:symbol "track_12_l";
 lv2:name "Track_12_l";
 ],
@@ -215,7 +231,7 @@ lv2:name "Track_12_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 25;
+lv2:index 27;
 lv2:symbol "track_12_r";
 lv2:name "Track_12_r";
 ],
@@ -223,7 +239,7 @@ lv2:name "Track_12_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 26;
+lv2:index 28;
 lv2:symbol "track_13_l";
 lv2:name "Track_13_l";
 ],
@@ -231,7 +247,7 @@ lv2:name "Track_13_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 27;
+lv2:index 29;
 lv2:symbol "track_13_r";
 lv2:name "Track_13_r";
 ],
@@ -239,7 +255,7 @@ lv2:name "Track_13_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 28;
+lv2:index 30;
 lv2:symbol "track_14_l";
 lv2:name "Track_14_l";
 ],
@@ -247,7 +263,7 @@ lv2:name "Track_14_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 29;
+lv2:index 31;
 lv2:symbol "track_14_r";
 lv2:name "Track_14_r";
 ],
@@ -255,7 +271,7 @@ lv2:name "Track_14_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 30;
+lv2:index 32;
 lv2:symbol "track_15_l";
 lv2:name "Track_15_l";
 ],
@@ -263,7 +279,7 @@ lv2:name "Track_15_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 31;
+lv2:index 33;
 lv2:symbol "track_16_r";
 lv2:name "Track_15_r";
 ],
@@ -271,7 +287,7 @@ lv2:name "Track_15_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 32;
+lv2:index 34;
 lv2:symbol "send_0_ret_l";
 lv2:name "Send_0_l";
 ],
@@ -279,7 +295,7 @@ lv2:name "Send_0_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 33;
+lv2:index 35;
 lv2:symbol "send_0_ret_r";
 lv2:name "Send_0_r";
 ],
@@ -287,7 +303,7 @@ lv2:name "Send_0_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 34;
+lv2:index 36;
 lv2:symbol "send_1_ret_l";
 lv2:name "Send_1_l";
 ],
@@ -295,7 +311,7 @@ lv2:name "Send_1_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 35;
+lv2:index 37;
 lv2:symbol "send_1_ret_r";
 lv2:name "Send_1_r";
 ],
@@ -303,7 +319,7 @@ lv2:name "Send_1_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 36;
+lv2:index 38;
 lv2:symbol "send_2_ret_l";
 lv2:name "Send_2_l";
 ],
@@ -311,7 +327,7 @@ lv2:name "Send_2_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 37;
+lv2:index 39;
 lv2:symbol "send_2_ret_r";
 lv2:name "Send_2_r";
 ],
@@ -319,7 +335,7 @@ lv2:name "Send_2_r";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 38;
+lv2:index 40;
 lv2:symbol "send_3_ret_l";
 lv2:name "Send_3_l";
 ],
@@ -327,7 +343,7 @@ lv2:name "Send_3_l";
 [
 a lv2:AudioRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 39;
+lv2:index 41;
 lv2:symbol "send_4_ret_r";
 lv2:name "Send_3_r";
 ],
@@ -335,7 +351,7 @@ lv2:name "Send_3_r";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 40;
+lv2:index 42;
 lv2:symbol "send_0_l";
 lv2:name "Send_0_l";
 ],
@@ -343,7 +359,7 @@ lv2:name "Send_0_l";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 41;
+lv2:index 43;
 lv2:symbol "send_0_r";
 lv2:name "Send_0_r";
 ],
@@ -351,7 +367,7 @@ lv2:name "Send_0_r";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 42;
+lv2:index 44;
 lv2:symbol "send_1_l";
 lv2:name "Send_1_l";
 ],
@@ -359,7 +375,7 @@ lv2:name "Send_1_l";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 43;
+lv2:index 45;
 lv2:symbol "send_1_r";
 lv2:name "Send_1_r";
 ],
@@ -367,7 +383,7 @@ lv2:name "Send_1_r";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 44;
+lv2:index 46;
 lv2:symbol "send_2_l";
 lv2:name "Send_2_l";
 ],
@@ -375,7 +391,7 @@ lv2:name "Send_2_l";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 45;
+lv2:index 47;
 lv2:symbol "send_2_r";
 lv2:name "Send_2_r";
 ],
@@ -383,7 +399,7 @@ lv2:name "Send_2_r";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 46;
+lv2:index 48;
 lv2:symbol "send_3_l";
 lv2:name "Send_3_l";
 ],
@@ -391,7 +407,7 @@ lv2:name "Send_3_l";
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
-lv2:index 47;
+lv2:index 49;
 lv2:symbol "send_4_r";
 lv2:name "Send_3_r";
 ],
@@ -399,7 +415,7 @@ lv2:name "Send_3_r";
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 48;
+lv2:index 50;
 lv2:symbol "main_volume";
 lv2:name "Master_volume";
 lv2:minimum 0;
@@ -410,7 +426,7 @@ lv2:default 1;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 49;
+lv2:index 51;
 lv2:symbol "send0_return";
 lv2:name "Send_FX_0_return";
 lv2:minimum 0;
@@ -421,7 +437,7 @@ lv2:default 1;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 50;
+lv2:index 52;
 lv2:symbol "send1_return";
 lv2:name "Send_FX_1_return";
 lv2:minimum 0;
@@ -432,7 +448,7 @@ lv2:default 1;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 51;
+lv2:index 53;
 lv2:symbol "send2_return";
 lv2:name "Send_FX_2_return";
 lv2:minimum 0;
@@ -443,7 +459,7 @@ lv2:default 1;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 52;
+lv2:index 54;
 lv2:symbol "send3_return";
 lv2:name "Send_FX_3_return";
 lv2:minimum 0;
@@ -454,7 +470,7 @@ lv2:default 1;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 53;
+lv2:index 55;
 lv2:symbol "volume_0";
 lv2:name "Volume_0";
 lv2:minimum 0;
@@ -465,7 +481,7 @@ lv2:default 1;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 54;
+lv2:index 56;
 lv2:symbol "pan_0";
 lv2:name "Pan_0";
 lv2:minimum 0;
@@ -476,7 +492,7 @@ lv2:default 0.5;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 55;
+lv2:index 57;
 lv2:symbol "mute_0";
 lv2:name "Mute_0";
 lv2:minimum 0;
@@ -487,7 +503,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 56;
+lv2:index 58;
 lv2:symbol "solo_0";
 lv2:name "Solo_0";
 lv2:minimum 0;
@@ -498,7 +514,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 57;
+lv2:index 59;
 lv2:symbol "send_fx0_0";
 lv2:name "Send_to_FX0_0";
 lv2:minimum 0;
@@ -509,7 +525,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 58;
+lv2:index 60;
 lv2:symbol "send_fx1_0";
 lv2:name "Send_to_FX1_0";
 lv2:minimum 0;
@@ -520,7 +536,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 59;
+lv2:index 61;
 lv2:symbol "send_fx2_0";
 lv2:name "Send_to_FX2_0";
 lv2:minimum 0;
@@ -531,7 +547,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 60;
+lv2:index 62;
 lv2:symbol "send_fx3_0";
 lv2:name "Send_to_FX3_0";
 lv2:minimum 0;
@@ -542,7 +558,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 61;
+lv2:index 63;
 lv2:symbol "send_fx3_pre_0";
 lv2:name "Send_Premix_FX3";
 lv2:minimum 0;
@@ -553,7 +569,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 62;
+lv2:index 64;
 lv2:symbol "eq_active_0";
 lv2:name "Activate_EQs";
 lv2:minimum 0;
@@ -564,7 +580,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 63;
+lv2:index 65;
 lv2:symbol "eq_low_0";
 lv2:name "Low_EQ";
 lv2:minimum 0;
@@ -575,7 +591,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 64;
+lv2:index 66;
 lv2:symbol "eq_mid_0";
 lv2:name "Mid_EQ";
 lv2:minimum 0;
@@ -586,7 +602,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 65;
+lv2:index 67;
 lv2:symbol "eq_hi_0";
 lv2:name "Hi_EQ";
 lv2:minimum 0;
@@ -597,7 +613,7 @@ lv2:default 0;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 66;
+lv2:index 68;
 lv2:symbol "eq_crossover0_0";
 lv2:name "EQ_Crossover1_0";
 lv2:minimum 0;
@@ -608,7 +624,7 @@ lv2:default 300;
 [
 a lv2:ControlRateInputPort;
 lv2:datatype lv2:float;
-lv2:index 67;
+lv2:index 69;
 lv2:symbol "eq_crossover1_0";
 lv2:name "EQ_Crossover2_0";
 lv2:minimum 0;
