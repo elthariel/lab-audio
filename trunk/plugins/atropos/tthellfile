@@ -2,6 +2,9 @@
 
 lv2     atropos http://lab-audio.googlecode.com/svn/trunk/plugins/atropos
 
+audio   out             main_out_l      Main_Out_L
+audio   out             main_out_r      Main_Out_R
+
 audio   in              track_0_l       Track_0_l
 audio   in              track_0_r       Track_0_r
 audio   in              track_1_l       Track_1_l
