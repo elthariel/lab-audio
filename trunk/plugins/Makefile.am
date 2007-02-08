@@ -1,4 +1,5 @@
 SUBDIRS = 10test\
+					atropos\
 					butinator\
 					sampler\
 					soulrider\
