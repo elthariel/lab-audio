@@ -8,10 +8,9 @@ a lv2:Plugin;
 doap:name "atropos";
 doap:licence <http://usefulinc.com/doap/licenses/gpl>;
 ll:gtk2Gui <atropos_gtk.so>;
-lv2:requiredHostFeature ll:instrument-ext;
 ll:pegName "peg";
 
-lv2:port  
+lv2:port
 [
 a lv2:AudioRateOutputPort;
 lv2:datatype lv2:float;
@@ -627,6 +626,2481 @@ lv2:datatype lv2:float;
 lv2:index 69;
 lv2:symbol "eq_crossover1_0";
 lv2:name "EQ_Crossover2_0";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 70;
+lv2:symbol "volume_1";
+lv2:name "Volume_1";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 71;
+lv2:symbol "pan_1";
+lv2:name "Pan_1";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 72;
+lv2:symbol "mute_1";
+lv2:name "Mute_1";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 73;
+lv2:symbol "solo_1";
+lv2:name "Solo_1";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 74;
+lv2:symbol "send_fx0_1";
+lv2:name "Send_to_FX0_1";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 75;
+lv2:symbol "send_fx1_1";
+lv2:name "Send_to_FX1_1";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 76;
+lv2:symbol "send_fx2_1";
+lv2:name "Send_to_FX2_1";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 77;
+lv2:symbol "send_fx3_1";
+lv2:name "Send_to_FX3_1";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 78;
+lv2:symbol "send_fx3_pre_1";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 79;
+lv2:symbol "eq_active_1";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 80;
+lv2:symbol "eq_low_1";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 81;
+lv2:symbol "eq_mid_1";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 82;
+lv2:symbol "eq_hi_1";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 83;
+lv2:symbol "eq_crossover0_1";
+lv2:name "EQ_Crossover1_1";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 84;
+lv2:symbol "eq_crossover1_1";
+lv2:name "EQ_Crossover2_1";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 85;
+lv2:symbol "volume_2";
+lv2:name "Volume_2";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 86;
+lv2:symbol "pan_2";
+lv2:name "Pan_2";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 87;
+lv2:symbol "mute_2";
+lv2:name "Mute_2";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 88;
+lv2:symbol "solo_2";
+lv2:name "Solo_2";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 89;
+lv2:symbol "send_fx0_2";
+lv2:name "Send_to_FX0_2";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 90;
+lv2:symbol "send_fx1_2";
+lv2:name "Send_to_FX1_2";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 91;
+lv2:symbol "send_fx2_2";
+lv2:name "Send_to_FX2_2";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 92;
+lv2:symbol "send_fx3_2";
+lv2:name "Send_to_FX3_2";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 93;
+lv2:symbol "send_fx3_pre_2";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 94;
+lv2:symbol "eq_active_2";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 95;
+lv2:symbol "eq_low_2";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 96;
+lv2:symbol "eq_mid_2";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 97;
+lv2:symbol "eq_hi_2";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 98;
+lv2:symbol "eq_crossover0_2";
+lv2:name "EQ_Crossover1_2";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 99;
+lv2:symbol "eq_crossover1_2";
+lv2:name "EQ_Crossover2_2";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 100;
+lv2:symbol "volume_3";
+lv2:name "Volume_3";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 101;
+lv2:symbol "pan_3";
+lv2:name "Pan_3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 102;
+lv2:symbol "mute_3";
+lv2:name "Mute_3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 103;
+lv2:symbol "solo_3";
+lv2:name "Solo_3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 104;
+lv2:symbol "send_fx0_3";
+lv2:name "Send_to_FX0_3";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 105;
+lv2:symbol "send_fx1_3";
+lv2:name "Send_to_FX1_3";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 106;
+lv2:symbol "send_fx2_3";
+lv2:name "Send_to_FX2_3";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 107;
+lv2:symbol "send_fx3_3";
+lv2:name "Send_to_FX3_3";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 108;
+lv2:symbol "send_fx3_pre_3";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 109;
+lv2:symbol "eq_active_3";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 110;
+lv2:symbol "eq_low_3";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 111;
+lv2:symbol "eq_mid_3";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 112;
+lv2:symbol "eq_hi_3";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 113;
+lv2:symbol "eq_crossover0_3";
+lv2:name "EQ_Crossover1_3";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 114;
+lv2:symbol "eq_crossover1_3";
+lv2:name "EQ_Crossover2_3";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 115;
+lv2:symbol "volume_4";
+lv2:name "Volume_4";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 116;
+lv2:symbol "pan_4";
+lv2:name "Pan_4";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 117;
+lv2:symbol "mute_4";
+lv2:name "Mute_4";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 118;
+lv2:symbol "solo_4";
+lv2:name "Solo_4";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 119;
+lv2:symbol "send_fx0_4";
+lv2:name "Send_to_FX0_4";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 120;
+lv2:symbol "send_fx1_4";
+lv2:name "Send_to_FX1_4";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 121;
+lv2:symbol "send_fx2_4";
+lv2:name "Send_to_FX2_4";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 122;
+lv2:symbol "send_fx3_4";
+lv2:name "Send_to_FX3_4";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 123;
+lv2:symbol "send_fx3_pre_4";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 124;
+lv2:symbol "eq_active_4";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 125;
+lv2:symbol "eq_low_4";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 126;
+lv2:symbol "eq_mid_4";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 127;
+lv2:symbol "eq_hi_4";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 128;
+lv2:symbol "eq_crossover0_4";
+lv2:name "EQ_Crossover1_4";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 129;
+lv2:symbol "eq_crossover1_4";
+lv2:name "EQ_Crossover2_4";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 130;
+lv2:symbol "volume_5";
+lv2:name "Volume_5";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 131;
+lv2:symbol "pan_5";
+lv2:name "Pan_5";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 132;
+lv2:symbol "mute_5";
+lv2:name "Mute_5";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 133;
+lv2:symbol "solo_5";
+lv2:name "Solo_5";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 134;
+lv2:symbol "send_fx0_5";
+lv2:name "Send_to_FX0_5";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 135;
+lv2:symbol "send_fx1_5";
+lv2:name "Send_to_FX1_5";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 136;
+lv2:symbol "send_fx2_5";
+lv2:name "Send_to_FX2_5";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 137;
+lv2:symbol "send_fx3_5";
+lv2:name "Send_to_FX3_5";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 138;
+lv2:symbol "send_fx3_pre_5";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 139;
+lv2:symbol "eq_active_5";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 140;
+lv2:symbol "eq_low_5";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 141;
+lv2:symbol "eq_mid_5";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 142;
+lv2:symbol "eq_hi_5";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 143;
+lv2:symbol "eq_crossover0_5";
+lv2:name "EQ_Crossover1_5";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 144;
+lv2:symbol "eq_crossover1_5";
+lv2:name "EQ_Crossover2_5";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 145;
+lv2:symbol "volume_6";
+lv2:name "Volume_6";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 146;
+lv2:symbol "pan_6";
+lv2:name "Pan_6";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 147;
+lv2:symbol "mute_6";
+lv2:name "Mute_6";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 148;
+lv2:symbol "solo_6";
+lv2:name "Solo_6";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 149;
+lv2:symbol "send_fx0_6";
+lv2:name "Send_to_FX0_6";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 150;
+lv2:symbol "send_fx1_6";
+lv2:name "Send_to_FX1_6";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 151;
+lv2:symbol "send_fx2_6";
+lv2:name "Send_to_FX2_6";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 152;
+lv2:symbol "send_fx3_6";
+lv2:name "Send_to_FX3_6";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 153;
+lv2:symbol "send_fx3_pre_6";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 154;
+lv2:symbol "eq_active_6";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 155;
+lv2:symbol "eq_low_6";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 156;
+lv2:symbol "eq_mid_6";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 157;
+lv2:symbol "eq_hi_6";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 158;
+lv2:symbol "eq_crossover0_6";
+lv2:name "EQ_Crossover1_6";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 159;
+lv2:symbol "eq_crossover1_6";
+lv2:name "EQ_Crossover2_6";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 160;
+lv2:symbol "volume_7";
+lv2:name "Volume_7";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 161;
+lv2:symbol "pan_7";
+lv2:name "Pan_7";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 162;
+lv2:symbol "mute_7";
+lv2:name "Mute_7";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 163;
+lv2:symbol "solo_7";
+lv2:name "Solo_7";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 164;
+lv2:symbol "send_fx0_7";
+lv2:name "Send_to_FX0_7";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 165;
+lv2:symbol "send_fx1_7";
+lv2:name "Send_to_FX1_7";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 166;
+lv2:symbol "send_fx2_7";
+lv2:name "Send_to_FX2_7";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 167;
+lv2:symbol "send_fx3_7";
+lv2:name "Send_to_FX3_7";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 168;
+lv2:symbol "send_fx3_pre_7";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 169;
+lv2:symbol "eq_active_7";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 170;
+lv2:symbol "eq_low_7";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 171;
+lv2:symbol "eq_mid_7";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 172;
+lv2:symbol "eq_hi_7";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 173;
+lv2:symbol "eq_crossover0_7";
+lv2:name "EQ_Crossover1_7";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 174;
+lv2:symbol "eq_crossover1_7";
+lv2:name "EQ_Crossover2_7";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 175;
+lv2:symbol "volume_8";
+lv2:name "Volume_8";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 176;
+lv2:symbol "pan_8";
+lv2:name "Pan_8";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 177;
+lv2:symbol "mute_8";
+lv2:name "Mute_8";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 178;
+lv2:symbol "solo_8";
+lv2:name "Solo_8";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 179;
+lv2:symbol "send_fx0_8";
+lv2:name "Send_to_FX0_8";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 180;
+lv2:symbol "send_fx1_8";
+lv2:name "Send_to_FX1_8";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 181;
+lv2:symbol "send_fx2_8";
+lv2:name "Send_to_FX2_8";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 182;
+lv2:symbol "send_fx3_8";
+lv2:name "Send_to_FX3_8";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 183;
+lv2:symbol "send_fx3_pre_8";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 184;
+lv2:symbol "eq_active_8";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 185;
+lv2:symbol "eq_low_8";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 186;
+lv2:symbol "eq_mid_8";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 187;
+lv2:symbol "eq_hi_8";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 188;
+lv2:symbol "eq_crossover0_8";
+lv2:name "EQ_Crossover1_8";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 189;
+lv2:symbol "eq_crossover1_8";
+lv2:name "EQ_Crossover2_8";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 190;
+lv2:symbol "volume_9";
+lv2:name "Volume_9";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 191;
+lv2:symbol "pan_9";
+lv2:name "Pan_9";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 192;
+lv2:symbol "mute_9";
+lv2:name "Mute_9";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 193;
+lv2:symbol "solo_9";
+lv2:name "Solo_9";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 194;
+lv2:symbol "send_fx0_9";
+lv2:name "Send_to_FX0_9";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 195;
+lv2:symbol "send_fx1_9";
+lv2:name "Send_to_FX1_9";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 196;
+lv2:symbol "send_fx2_9";
+lv2:name "Send_to_FX2_9";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 197;
+lv2:symbol "send_fx3_9";
+lv2:name "Send_to_FX3_9";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 198;
+lv2:symbol "send_fx3_pre_9";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 199;
+lv2:symbol "eq_active_9";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 200;
+lv2:symbol "eq_low_9";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 201;
+lv2:symbol "eq_mid_9";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 202;
+lv2:symbol "eq_hi_9";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 203;
+lv2:symbol "eq_crossover0_9";
+lv2:name "EQ_Crossover1_9";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 204;
+lv2:symbol "eq_crossover1_9";
+lv2:name "EQ_Crossover2_9";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 205;
+lv2:symbol "volume_10";
+lv2:name "Volume_10";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 206;
+lv2:symbol "pan_10";
+lv2:name "Pan_10";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 207;
+lv2:symbol "mute_10";
+lv2:name "Mute_10";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 208;
+lv2:symbol "solo_10";
+lv2:name "Solo_10";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 209;
+lv2:symbol "send_fx0_10";
+lv2:name "Send_to_FX0_10";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 210;
+lv2:symbol "send_fx1_10";
+lv2:name "Send_to_FX1_10";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 211;
+lv2:symbol "send_fx2_10";
+lv2:name "Send_to_FX2_10";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 212;
+lv2:symbol "send_fx3_10";
+lv2:name "Send_to_FX3_10";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 213;
+lv2:symbol "send_fx3_pre_10";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 214;
+lv2:symbol "eq_active_10";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 215;
+lv2:symbol "eq_low_10";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 216;
+lv2:symbol "eq_mid_10";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 217;
+lv2:symbol "eq_hi_10";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 218;
+lv2:symbol "eq_crossover0_10";
+lv2:name "EQ_Crossover1_10";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 219;
+lv2:symbol "eq_crossover1_10";
+lv2:name "EQ_Crossover2_10";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 220;
+lv2:symbol "volume_11";
+lv2:name "Volume_11";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 221;
+lv2:symbol "pan_11";
+lv2:name "Pan_11";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 222;
+lv2:symbol "mute_11";
+lv2:name "Mute_11";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 223;
+lv2:symbol "solo_11";
+lv2:name "Solo_11";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 224;
+lv2:symbol "send_fx0_11";
+lv2:name "Send_to_FX0_11";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 225;
+lv2:symbol "send_fx1_11";
+lv2:name "Send_to_FX1_11";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 226;
+lv2:symbol "send_fx2_11";
+lv2:name "Send_to_FX2_11";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 227;
+lv2:symbol "send_fx3_11";
+lv2:name "Send_to_FX3_11";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 228;
+lv2:symbol "send_fx3_pre_11";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 229;
+lv2:symbol "eq_active_11";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 230;
+lv2:symbol "eq_low_11";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 231;
+lv2:symbol "eq_mid_11";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 232;
+lv2:symbol "eq_hi_11";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 233;
+lv2:symbol "eq_crossover0_11";
+lv2:name "EQ_Crossover1_11";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 234;
+lv2:symbol "eq_crossover1_11";
+lv2:name "EQ_Crossover2_11";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 235;
+lv2:symbol "volume_12";
+lv2:name "Volume_12";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 236;
+lv2:symbol "pan_12";
+lv2:name "Pan_12";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 237;
+lv2:symbol "mute_12";
+lv2:name "Mute_12";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 238;
+lv2:symbol "solo_12";
+lv2:name "Solo_12";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 239;
+lv2:symbol "send_fx0_12";
+lv2:name "Send_to_FX0_12";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 240;
+lv2:symbol "send_fx1_12";
+lv2:name "Send_to_FX1_12";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 241;
+lv2:symbol "send_fx2_12";
+lv2:name "Send_to_FX2_12";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 242;
+lv2:symbol "send_fx3_12";
+lv2:name "Send_to_FX3_12";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 243;
+lv2:symbol "send_fx3_pre_12";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 244;
+lv2:symbol "eq_active_12";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 245;
+lv2:symbol "eq_low_12";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 246;
+lv2:symbol "eq_mid_12";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 247;
+lv2:symbol "eq_hi_12";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 248;
+lv2:symbol "eq_crossover0_12";
+lv2:name "EQ_Crossover1_12";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 249;
+lv2:symbol "eq_crossover1_12";
+lv2:name "EQ_Crossover2_12";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 250;
+lv2:symbol "volume_13";
+lv2:name "Volume_13";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 251;
+lv2:symbol "pan_13";
+lv2:name "Pan_13";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 252;
+lv2:symbol "mute_13";
+lv2:name "Mute_13";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 253;
+lv2:symbol "solo_13";
+lv2:name "Solo_13";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 254;
+lv2:symbol "send_fx0_13";
+lv2:name "Send_to_FX0_13";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 255;
+lv2:symbol "send_fx1_13";
+lv2:name "Send_to_FX1_13";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 256;
+lv2:symbol "send_fx2_13";
+lv2:name "Send_to_FX2_13";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 257;
+lv2:symbol "send_fx3_13";
+lv2:name "Send_to_FX3_13";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 258;
+lv2:symbol "send_fx3_pre_13";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 259;
+lv2:symbol "eq_active_13";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 260;
+lv2:symbol "eq_low_13";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 261;
+lv2:symbol "eq_mid_13";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 262;
+lv2:symbol "eq_hi_13";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 263;
+lv2:symbol "eq_crossover0_13";
+lv2:name "EQ_Crossover1_13";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 264;
+lv2:symbol "eq_crossover1_13";
+lv2:name "EQ_Crossover2_13";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 265;
+lv2:symbol "volume_14";
+lv2:name "Volume_14";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 266;
+lv2:symbol "pan_14";
+lv2:name "Pan_14";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 267;
+lv2:symbol "mute_14";
+lv2:name "Mute_14";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 268;
+lv2:symbol "solo_14";
+lv2:name "Solo_14";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 269;
+lv2:symbol "send_fx0_14";
+lv2:name "Send_to_FX0_14";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 270;
+lv2:symbol "send_fx1_14";
+lv2:name "Send_to_FX1_14";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 271;
+lv2:symbol "send_fx2_14";
+lv2:name "Send_to_FX2_14";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 272;
+lv2:symbol "send_fx3_14";
+lv2:name "Send_to_FX3_14";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 273;
+lv2:symbol "send_fx3_pre_14";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 274;
+lv2:symbol "eq_active_14";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 275;
+lv2:symbol "eq_low_14";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 276;
+lv2:symbol "eq_mid_14";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 277;
+lv2:symbol "eq_hi_14";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 278;
+lv2:symbol "eq_crossover0_14";
+lv2:name "EQ_Crossover1_14";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 279;
+lv2:symbol "eq_crossover1_14";
+lv2:name "EQ_Crossover2_14";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 4000;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 280;
+lv2:symbol "volume_15";
+lv2:name "Volume_15";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 1;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 281;
+lv2:symbol "pan_15";
+lv2:name "Pan_15";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0.5;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 282;
+lv2:symbol "mute_15";
+lv2:name "Mute_15";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 283;
+lv2:symbol "solo_15";
+lv2:name "Solo_15";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 284;
+lv2:symbol "send_fx0_15";
+lv2:name "Send_to_FX0_15";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 285;
+lv2:symbol "send_fx1_15";
+lv2:name "Send_to_FX1_15";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 286;
+lv2:symbol "send_fx2_15";
+lv2:name "Send_to_FX2_15";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 287;
+lv2:symbol "send_fx3_15";
+lv2:name "Send_to_FX3_15";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 288;
+lv2:symbol "send_fx3_pre_15";
+lv2:name "Send_Premix_FX3";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 289;
+lv2:symbol "eq_active_15";
+lv2:name "Activate_EQs";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 290;
+lv2:symbol "eq_low_15";
+lv2:name "Low_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 291;
+lv2:symbol "eq_mid_15";
+lv2:name "Mid_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 292;
+lv2:symbol "eq_hi_15";
+lv2:name "Hi_EQ";
+lv2:minimum 0;
+lv2:maximum 2;
+lv2:default 0;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 293;
+lv2:symbol "eq_crossover0_15";
+lv2:name "EQ_Crossover1_15";
+lv2:minimum 0;
+lv2:maximum 22000;
+lv2:default 300;
+],
+
+[
+a lv2:ControlRateInputPort;
+lv2:datatype lv2:float;
+lv2:index 294;
+lv2:symbol "eq_crossover1_15";
+lv2:name "EQ_Crossover2_15";
 lv2:minimum 0;
 lv2:maximum 22000;
 lv2:default 4000;

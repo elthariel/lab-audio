@@ -17,7 +17,7 @@
 wf						*wef_new(const char *name, const char *author)
 {
 	wf			*new_wef;
-	
+
 	new_wef = malloc(sizeof(wf));
 	strncpy(new_wef->wf_author, author, 128);
 	strncpy(new_wef->wf_name, name, 128);
@@ -36,7 +36,7 @@ void					wefmaker(const char *path, const char *name,
 	int		wfd;
 	double 		tmp;
 	int i;
-	
+
 	new_wef = wef_new(name, author);
 	wave = (*gen)(&wave_size);
 	for (i = 0; i < 200; i++)
@@ -52,8 +52,9 @@ void					wefmaker(const char *path, const char *name,
 			printf ("Write error (header write) : %s", path);
 		if ((sizeof(double) * wave_size) != write(wfd, (void *)wave, (sizeof(double) * wave_size)))
 			printf ("Write error (wave write) : %s", path);
+    close(wfd);
 	}
-	
+
 	free(wave);
 	free(new_wef);
 }

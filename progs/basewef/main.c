@@ -12,12 +12,11 @@
 
 int main(int argc, char *argv[])
 {
-	wefmaker("sin.wef", "mySine - 4096",
-				"Elthariel", &sine_gen); 
-	wefmaker("wefs/saw.wef", "mySaw - trivial generation - 4096",
+	wefmaker("wefs/sin.wef", "mySine - 4096\n",
+				"Elthariel", &sine_gen);
+	wefmaker("wefs/saw.wef", "mySaw - trivial generation - 4096]n",
 				"Elthariel", &saw_gen);
-	wefmaker("wefs/square.wef", "mySquare - trivial generation - 1024",
+	wefmaker("wefs/square.wef", "mySquare - trivial generation - 1024\n",
 				"Elthariel", &square_gen);
-	system("PAUSE");
 	return 0;
 }
