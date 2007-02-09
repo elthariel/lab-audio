@@ -1,0 +1,9 @@
+<thc name="atropos">
+  <slider name="fader" render="all" horizontal="false" scale="false">
+    <images name="all" count="127" path="lta/slide_00/%04d.png"/>
+  </slider>
+
+  <slider name="rotary" render="all" horizontal="false" scale="false">
+    <images name="all" count="127" path="lta/rot_00/%04d.png"/>
+  </slider>
+</thc>

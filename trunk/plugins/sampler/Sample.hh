@@ -24,6 +24,7 @@
 # define   	SAMPLE_HH_
 
 # include <string>
+# include <vector>
 # include <sndfile.h>
 
 # include "Envelop.hh"
@@ -44,7 +45,7 @@ enum EnvSelect
 
 struct SmpVoice
 {
-  SmpVoice();
+  SmpVoice(unsigned int m_sr);
   bool                  activated;
   char                  freq;
   char                  vel;
@@ -52,6 +53,8 @@ struct SmpVoice
   unsigned int          pos_rel; // pos in sample into the stream, relative to the start
   // time of this voice.
   unsigned int          note_off_pos_rel;
+  AnalogFilter          filter_l;
+  AnalogFilter          filter_r;
 };
 
 
@@ -101,7 +104,7 @@ private:
   EnvSwitch             &filter_env;
   double                filter_amount;
 
-  SmpVoice              voices[SAMPLER_POLY];
+  std::vector<SmpVoice> voices;
   char                  m_root_note;
   double                m_fine_pitch;
   double                m_gain;

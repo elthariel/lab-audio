@@ -17,13 +17,14 @@ PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h \
 	Filter_.h AnalogFilter.hpp Track.hpp
 
 PLUGIN_LDFLAGS = `pkg-config --libs gthread-2.0 sndfile`
-PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gthread-2.0 sndfile`
+PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gthread-2.0 sndfile` -O3
+#	-march=athlon64 -mfpmath=sse -msse2 -m3dnow
 
 # These are the source files for the plugin GUI
 GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
 GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h $(PLUGIN_NAME).peg
-GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0`
-GUI_CFLAGS = -g -Wall `pkg-config --cflags gtkmm-2.4 gthread-2.0`
+GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libthc`
+GUI_CFLAGS = -g -Wall -O2 `pkg-config --cflags gtkmm-2.4 gthread-2.0 libthc`
 
 # Derived variables - do not edit
 PLUGIN_OBJECTS = $(subst .cpp,.o,$(PLUGIN_SOURCES))

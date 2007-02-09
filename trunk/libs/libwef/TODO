@@ -1,0 +1,16 @@
+##
+## TODO for libwef-cpp in /home/elthariel/code/lab-audio/libs/libwef
+##
+## Made by Nahlwe
+## Login   <elthariel@epita.fr>
+##
+## Started on  Fri Feb  9 16:28:38 2007 Nahlwe
+## Last update Fri Feb  9 16:29:47 2007 Nahlwe
+##
+
+* : done
++ : open/untested
+- : not yet open
+
+- C functions for editing and writing wef files.
+- C++ wrapper.

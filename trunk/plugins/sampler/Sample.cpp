@@ -29,9 +29,11 @@ using namespace std;
  * SmpVoice Implementation
  */
 
-SmpVoice::SmpVoice()
+SmpVoice::SmpVoice(unsigned int m_sr)
   : activated(false), freq(0), vel(0), pos(0.0), pos_rel(0),
-    note_off_pos_rel(0)
+    note_off_pos_rel(0),
+    filter_l(m_sr, 0, 22000., 0., 1),
+    filter_r(m_sr, 0, 22000., 0., 1)
 {
 }
 
@@ -52,6 +54,7 @@ Sample::Sample(string path, unsigned int sample_rate)
     pan_amount(0.0),
     filter_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
     filter_amount(0.0),
+    voices(SAMPLER_POLY, SmpVoice(sample_rate)),
     m_root_note(63), m_fine_pitch(0.0), m_gain(1.0), m_pan(1.0),
     m_norm(false),
     m_reverse(false)
@@ -71,6 +74,9 @@ Sample::Sample(string path, unsigned int sample_rate)
 
 }
 
+/*
+ * This copy constructor is not up to date
+ */
 Sample::Sample(Sample &smp)
   :m_sr(smp.m_sr), info(smp.info),
    aalias_l(smp.aalias_l), aalias_r(smp.aalias_r),
@@ -300,12 +306,12 @@ void                  Sample::set_pan(double pan)
   m_pan = pan;
 }
 
-void                  set_fcut(double fcut)
+void                  Sample::set_fcut(double fcut)
 {
   m_fcut = fcut;
 }
 
-void                  set_fres(double fres)
+void                  Sample::set_fres(double fres)
 {
   m_fres = fres;
 }

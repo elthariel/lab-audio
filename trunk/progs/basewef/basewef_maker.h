@@ -7,7 +7,7 @@
 #ifndef BASEWEF_MAKER_H_
 # define BASEWEF_MAKER_H_
 
-#include "../libwef/wef_file_0_2.h"
+#include <wef_file_0_2.h>
 
 typedef double		*(*wave_gen_f)(int *wave_len);
 

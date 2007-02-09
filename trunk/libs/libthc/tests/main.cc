@@ -95,6 +95,16 @@ int main (int argc, char *argv[]) {
   Slider slider9(SkinManager::get_skin("slider/crossfader-full"));
   Slider slider10(SkinManager::get_skin("slider/fader-h"));
   Slider slider11(SkinManager::get_skin("slider/fader-v"));
+
+  /*
+   * Begin Lta tests
+   */
+  /*  Slider slider12(Images::create_images("../skins/lta/rot_00/%04d.png", 127), Param::create_param(), false, false);
+      Slider slider13(Images::create_images("../skins/lta/slide_00/%04d.png", 128), Param::create_param(), false, false);*/
+
+  /*
+   * End Lta tests.
+   */
   slider = new Slider();
   ModeManager::instance()->add_widget("test", slider);
   delete slider;
@@ -144,6 +154,8 @@ int main (int argc, char *argv[]) {
   hbox2.pack_start(slider7);
   hbox2.pack_start(slider8);
   hbox2.pack_start(slider9);
+  /*hbox2.pack_start(slider12);
+    hbox2.pack_start(slider13);*/
 	m_fixed.put(slider6, 0, 0);
 	m_fixed.put(slider11, 100, 0);
 	m_fixed.put(slider10, 200, 0);

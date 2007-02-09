@@ -13,12 +13,12 @@
 #include <string.h>
 #include "wef_mem_0_2.h"
 
-int32			wef_preopen(const char *path, wf *wef_file)
+int  			wef_preopen(const char *path, wf *wef_file)
 {
 	int				fd;
 	unsigned int	read_sz;
 
-	fd = open(path, O_RDONLY | O_BINARY );
+	fd = open(path, O_RDONLY);
 	if (fd)
 	{
 		read_sz = read(fd, (void *)wef_file, sizeof(wf));  //FIXME Ptential bug here sizeof - 1
@@ -37,14 +37,14 @@ int32			wef_preopen(const char *path, wf *wef_file)
 
 
 
-wf				*wef_read(int32 fd, wf *wef_file)
+wf				*wef_read(int fd, wf *wef_file)
 {
 	int			read_size;
 	wf				*wef_file_full;
 	int			wef_size;
 	int			tmp;
-	
-	wef_size = sizeof(wf) + sizeof(grain) * wef_file->wf_grain_count 
+
+	wef_size = sizeof(wf) + sizeof(grain) * wef_file->wf_grain_count
 			+ sizeof(double) * wef_file->wf_size;	 //FIXME correct size (-1 ?)
 	read_size = wef_size - sizeof(wf);
 	wef_file_full = (wf *)malloc(wef_size);
@@ -56,7 +56,7 @@ wf				*wef_read(int32 fd, wf *wef_file)
 		free(wef_file_full);
 		wef_file_full = 0;
 	}
-	return (wef_file_full);	
+	return (wef_file_full);
 }
 
 
@@ -108,22 +108,3 @@ void			wef_close(wfm *tofree)
 	free(tofree->wf_file);
 	free(tofree);
 }
-
-
-int			main()
-{
-	wfm		*t;
-	int		bound;
-	int 		i;
-	
-	t = wef_open("..\\basewef\\wefs\\sin.wef");
-	bound = t->wf_size;
-	for (i =0; i < bound; ++i)
-		{ 
-			printf("%d : %f\n", i, t->wf_wave[i]);
-			if (!(i % 500))
-				system("PAUSE");
-		}
-	system("PAUSE");
-}
-

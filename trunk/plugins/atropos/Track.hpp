@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 00:54:22 2007 Nahlwe
-// Last update Wed Feb  7 10:09:32 2007 Nahlwe
+// Last update Thu Feb  8 05:56:46 2007 Nahlwe
 //
 
 #ifndef TRACK_HPP_
@@ -53,8 +53,7 @@ public:
   //  MixerTrack(unsigned int sample_rate, unsigned int in_port);
   MixerTrack(unsigned int sample_rate,
              iTrack *default_out,
-             float default_out_amount,
-             unsigned int in_port);
+             float default_out_amount);
 
   virtual void                  feed(float *in,
                                      unsigned int sample_count,
@@ -63,8 +62,9 @@ public:
                                          float gain);
   void                          set_crossover(unsigned char which,
                                               float freq);
+  void                          set_in(float *in);
 protected:
-  unsigned int                  m_in_port;
+  float                         *m_in_port;
 
   AnalogFilter                  m_lp;
   AnalogFilter                  m_hp;
@@ -83,21 +83,19 @@ protected:
 class SendTrack : public iTrack
 {
 public:
-  SendTrack(unsigned int sample_rate,
-            unsigned int send_port,
-            unsigned int ret_port);
+  SendTrack(unsigned int sample_rate);
   SendTrack(unsigned int sample_rate,
             iTrack *default_out,
-            float default_out_amount,
-            unsigned int send_port,
-            unsigned int ret_port);
+            float default_out_amount);
 
   virtual void                  feed(float *in,
                                      unsigned int sample_count,
                                      float carried_amnt = 1.0);
+  virtual void                  feedback(unsigned int sample_count);
+  void                          set_port(float *send, float *ret);
 protected:
-  unsigned int                  m_send_port;
-  unsigned int                  m_ret_port;
+  float                         *m_send_port;
+  float                         *m_ret_port;
 };
 
 
@@ -107,15 +105,14 @@ protected:
 class MasterTrack : public iTrack
 {
 public:
-  MasterTrack(unsigned int sample_rate,
-              unsigned int out_port);
+  MasterTrack(unsigned int sample_rate);
 
   virtual void                  feed(float *in,
                                      unsigned int sample_count,
                                      float carried_amnt = 1.0);
-
+  virtual void                  set_out(float *out);
 protected:
-  unsigned int                  m_out_port;
+  float                         *m_out_port;
 };
 
 #endif
