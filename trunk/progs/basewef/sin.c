@@ -21,7 +21,6 @@ double			*sine_gen(int *wave_len)
 	{
 		sine_table[i] = sine((2.0 * M_PI * (double)i) / *wave_len, SINE_ITER);
 		//sine_table[i] = sin((2.0 * M_PI * (double)i) / ((double) SINE_L));
-		printf("Sine : %d : %f\n", i, sine_table[i]);
 	}
 	return (sine_table);
 }
