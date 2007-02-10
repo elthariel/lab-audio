@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 09:02:49 2007 Nahlwe
-// Last update Sat Feb 10 09:35:12 2007 Nahlwe
+// Last update Sat Feb 10 10:35:00 2007 Nahlwe
 //
 
 #ifndef ATROPOS_HPP_
@@ -30,6 +30,7 @@ public:
 
 protected:
   void          process_midi(unsigned int sample_count);
+  void          dispatch_control();
 
   unsigned int  m_sr;
   unsigned int  m_pcount;
@@ -44,6 +45,11 @@ protected:
   char          m_note, m_vel;
   float         m_note_len;
   float         m_cutoff;
+  float         m_pitch;
+  float         m_res;
+  float         m_env_mod;
+  float         m_env_decay;
+  float         m_glide;
 };
 
 #endif
