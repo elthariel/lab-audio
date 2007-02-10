@@ -1,0 +1,8 @@
+
+This is a little piece of software i use to mperform various test in
+order to build a 303-like synths.
+
+In order to use it, you'll need to change the path of the wef
+inside cigue.cpp.
+These wefs are generated using progs/basewef
+You also need to install libs/libwef

@@ -1,0 +1,45 @@
+#ifndef cigue_peg
+#define cigue_peg
+
+
+#ifndef PEG_STRUCT
+#define PEG_STRUCT
+typedef struct {
+  float min;
+  float max;
+  float default_value;
+  char toggled;
+  char integer;
+  char logarithmic;
+} peg_data_t;
+#endif
+
+/* <http://lab-audio.googlecode.com/svn/trunk/plugins/cigue> */
+
+static const char peg_uri[] = "http://lab-audio.googlecode.com/svn/trunk/plugins/cigue";
+
+enum peg_port_enum {
+  peg_main_out,
+  peg_midi,
+  peg_pitch,
+  peg_cutoff,
+  peg_res,
+  peg_env_mod,
+  peg_env_decay,
+  peg_glide,
+  peg_n_ports
+};
+
+static const peg_data_t peg_ports[] = {
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -10, 10, 0, 0, 0, 0 }, 
+  { 10, 20000, 20000, 0, 0, 0 }, 
+  { 0, 10, 1, 0, 0, 0 }, 
+  { 0, 1, 0.5, 0, 0, 0 }, 
+  { 0, 1, 0.5, 0, 0, 0 }, 
+  { 1, 1000, 200, 0, 0, 0 }, 
+};
+
+
+#endif /* cigue_peg */
