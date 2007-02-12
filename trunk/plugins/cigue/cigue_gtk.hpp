@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Feb  8 00:30:28 2007 Nahlwe
-// Last update Sat Feb 10 10:52:55 2007 Nahlwe
+// Last update Mon Feb 12 02:25:58 2007 Nahlwe
 //
 
 #ifndef ATROPOS_GTK_HPP_
@@ -34,9 +34,9 @@ protected:
   LV2Controller         &m_ctrl;
 
   Gtk::HBox             m_hbox;
-  Thc::Slider           *m_slider[6];
-  Thc::Param::Ref       m_params[6];
-  Gtk::Label            m_labels[6];
+  Thc::Slider           *m_slider[7];
+  Thc::Param::Ref       m_params[7];
+  Gtk::Label            m_labels[7];
 
 };
 

@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Thu Feb  8 00:30:28 2007 Nahlwe
-// Last update Sat Feb 10 10:52:48 2007 Nahlwe
+// Last update Mon Feb 12 02:24:04 2007 Nahlwe
 //
 
 #include <iostream>
@@ -40,14 +40,31 @@ CigueGUI::CigueGUI(LV2Controller& ctrl,
   unsigned int i;
 
   widget = &m_hbox;
+  m_hbox.modify_bg(STATE_NORMAL, Gdk::Color("#000000"));
 
-  m_labels[0].set_label("Pitch");
-  m_labels[1].set_label("Cut");
-  m_labels[2].set_label("Res");
-  m_labels[3].set_label("EnvMod");
-  m_labels[4].set_label("Decay");
-  m_labels[5].set_label("Glide");
-  for (i = 0; i < 6; i++)
+  m_labels[0].set_use_markup();
+  m_labels[0].
+    set_markup("<span background=\"black\" foreground=\"white\">Pitch</span>");
+  m_labels[1].set_use_markup();
+  m_labels[1].
+    set_markup("<span background=\"black\" foreground=\"white\">Cutoff</span>");
+  m_labels[2].set_use_markup();
+  m_labels[2].
+    set_markup("<span background=\"black\" foreground=\"white\">Res</span>");
+  m_labels[3].set_use_markup();
+  m_labels[3].
+    set_markup("<span background=\"black\" foreground=\"white\">EnvMod</span>");
+  m_labels[4].set_use_markup();
+  m_labels[4].
+    set_markup("<span background=\"black\" foreground=\"white\">Decay</span>");
+  m_labels[5].set_use_markup();
+  m_labels[5].
+    set_markup("<span background=\"black\" foreground=\"white\">Glide</span>");
+  m_labels[6].set_use_markup();
+  m_labels[6].
+    set_markup("<span background=\"black\" foreground=\"white\">Dist</span>");
+
+  for (i = 0; i < 7; i++)
     {
       m_params[i] = create_param(peg_pitch + i);
       m_slider[i] = new Slider(SkinManager::get_skin("slider/rotary"),
@@ -81,7 +98,10 @@ CigueGUI::CigueGUI(LV2Controller& ctrl,
     connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
                             peg_glide),
                     mem_fun(*(m_params[5]), &Param::get_value)));
-
+  m_params[6]->signal_value_changed().
+    connect(compose(bind<0>(mem_fun(m_ctrl, &LV2Controller::set_control),
+                            peg_dist),
+                    mem_fun(*(m_params[6]), &Param::get_value)));
 }
 
 void initialise() __attribute__((constructor));

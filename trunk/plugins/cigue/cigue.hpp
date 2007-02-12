@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 09:02:49 2007 Nahlwe
-// Last update Sat Feb 10 10:35:00 2007 Nahlwe
+// Last update Mon Feb 12 02:25:28 2007 Nahlwe
 //
 
 #ifndef ATROPOS_HPP_
@@ -50,6 +50,7 @@ protected:
   float         m_env_mod;
   float         m_env_decay;
   float         m_glide;
+  float         m_dist;
 };
 
 #endif
