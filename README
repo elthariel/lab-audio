@@ -1,0 +1,36 @@
+## README for the lae svn tree.
+
+
+## Presentation.
+
+## Tree structure.
+
+/ : svnroot (folder containing this file)
+
+/extensions             : Lv2 extensions.
+
+/libs                   : Libraries to support audio soft dev.
+/libs/libkbdz           : OSC mapping and discovery for evdev and midi devices.
+/libs/liblo-avahi       : Avahi-enabled liblo version, ODL support is planned.
+/libs/libthc            : Gtk skinnable widget library.
+/libs/libwef            : Waveform exchange format reading library.
+
+/lv2sdk                 : Sdk that (will) includes all files required to develop lv2 plugins
+
+/plugins                : Lv2 plugins.
+/plugins/10test         : Distortion plugin workshop
+/plugins/atropos        : 16 stereo tracks, 3 bands EQ mixer.
+/plugins/butinator      : Lv2 browser and playlist viewer/editor.
+/plugins/cigue          : TB-303 emulation workshop
+/plugins/sampler        : Promethee sampler lv3 plugin.
+/plugins/sekrym         : Monophonic pattern sequencer
+/plugins/soulrider      : Virtual turntable (features a beatmasher !!!)
+/plugins/tronsonator    : 4 tracks Dj-mixer.
+
+/progs                  : standalone software
+/progs/basewef          : Generates simple wef (square, sin, saw, ...)
+/progs/thc-tools        : various tools for supporting libthc developpement
+/progs/thc-tools/bang   : perl script that generates images for libthc, use as example
+/progs/tthell           : Ugly perl script that generates plugin.ttl file from simple
+                          description
+/progs/wefcat           : Console tools that prints wave values of a wef file.

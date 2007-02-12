@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 09:03:52 2007 Nahlwe
-// Last update Sat Feb 10 11:39:37 2007 Nahlwe
+// Last update Mon Feb 12 02:44:29 2007 Nahlwe
 //
 
 #include <iostream>
@@ -19,10 +19,10 @@ using namespace std;
 Cigue::Cigue(uint32_t rate, const char*,
              const LV2_Host_Feature**)
   : LV2Instrument(peg_n_ports), m_sr(rate),
-    m_aalias(rate, 0, 22000., 0., 4),
+    m_aalias(rate, 0, rate / 2, 0., 4),
     m_filter(rate, 2, 4000., 5.0, 4),
     m_saw("/home/elthariel/code/lab-audio/progs/basewef/wefs/saw.wef"),
-    m_exp("/home/elthariel/code/lab-audio/progs/basewef/wefs/exp.wef"),
+    m_exp("/home/elthariel/code/lab-audio/progs/basewef/wefs/exp10.wef"),
     m_pos(0), m_note(-1), m_cutoff(500.),
     m_note_len(0.)
 {
@@ -56,12 +56,10 @@ void            Cigue::process_midi(unsigned int sample_count)
           m_note = ev[1];
           m_vel = ev[2];
           m_pos = 0.0;
-          cout << "note_on " << endl;
           break;
         case 0x80:
           m_note = -1;
           m_note_len = 0.;
-          cout << "note_off " << endl;
           break;
         }
       lv2midi_step(&midi);
@@ -78,6 +76,7 @@ void            Cigue::dispatch_control()
   m_env_mod = *p(peg_env_mod);
   m_env_decay = *p(peg_env_decay);
   m_glide = *p(peg_glide);
+  m_dist = *p(peg_dist);
 }
 
 void            Cigue::run(uint32_t sample_count)
@@ -111,15 +110,19 @@ void            Cigue::run(uint32_t sample_count)
       env = (1.0 / m_env_decay) / tmp; //pos in env
       tmp = m_exp.get_size() / (m_env_decay * m_sr);
       tmp = m_note_len * tmp;
-      cout << tmp << endl;
       if (tmp > m_exp.get_size())
         m_filter.setfreq_and_q(m_cutoff,
                                m_res);
       else
-        m_filter.setfreq_and_q(m_cutoff + m_exp[tmp] * m_env_mod,
+        m_filter.setfreq_and_q(m_cutoff + m_exp[tmp] * m_env_mod
+                               * (((float) m_vel) / 127 + 1),
                                m_res);
       m_filter.filterout(out, sample_count);
       m_note_len += sample_count;
+
+      // Distortion
+      for (i = 0; i < sample_count; i++)
+        out[i] = (1.0 - m_dist) * out[i] + m_dist * tanhf(out[i]);
     }
   else
     for(i = 0; i < sample_count; i++)

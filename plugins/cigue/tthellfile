@@ -8,8 +8,9 @@ midi    in      midi            Midi_port
 
 control in      pitch           Osc_pitch       -0.5    0.5      0
 control in      cutoff          Filter_cutoff   10      20000   20000
-control in      res             Filter_res      0       15      2
+control in      res             Filter_res      0.1     15      2
 control in      env_mod         Envelop_amount  0       20000   4000
 control in      env_decay       Envelop_decay   0       1       0.5
 control in      glide           Glide           1       1000    200
+control in      dist            Distortion      0       1       0
 
