@@ -1,0 +1,49 @@
+#ifndef adelay_peg
+#define adelay_peg
+
+
+#ifndef PEG_STRUCT
+#define PEG_STRUCT
+typedef struct {
+  float min;
+  float max;
+  float default_value;
+  char toggled;
+  char integer;
+  char logarithmic;
+} peg_data_t;
+#endif
+
+/* <http://lab-audio.googlecode.com/svn/trunk/plugins/adelay> */
+
+static const char peg_uri[] = "http://lab-audio.googlecode.com/svn/trunk/plugins/adelay";
+
+enum peg_port_enum {
+  peg_main_inl,
+  peg_main_inr,
+  peg_main_outl,
+  peg_main_outr,
+  peg_tempo,
+  peg_time_sw,
+  peg_time_ms,
+  peg_time_beat,
+  peg_feedback,
+  peg_amount,
+  peg_n_ports
+};
+
+static const peg_data_t peg_ports[] = {
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { -3.40282e+38, 3.40282e+38, -3.40282e+38, 0, 0, 0 }, 
+  { 60, 999, 180, 0, 0, 0 }, 
+  { 0, 1, 1, 0, 0, 0 }, 
+  { 1, 2000, 200, 0, 0, 0 }, 
+  { 1, 16, 3, 0, 0, 0 }, 
+  { 0, 1, 0.3, 0, 0, 0 }, 
+  { 0, 1, 1, 0, 0, 0 }, 
+};
+
+
+#endif /* adelay_peg */

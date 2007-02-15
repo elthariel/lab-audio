@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 09:02:49 2007 Nahlwe
-// Last update Mon Feb 12 02:25:28 2007 Nahlwe
+// Last update Thu Feb 15 05:55:25 2007 Nahlwe
 //
 
 #ifndef ATROPOS_HPP_
@@ -38,9 +38,17 @@ protected:
   FrequencyTable m_freqs;
   AnalogFilter  m_aalias;
   AnalogFilter  m_filter;
+  AnalogFilter  m_filter2;
   Wef           m_saw;
+  Wef           m_square;
   Wef           m_exp;
+  bool          m_wave; // true = saw, false = square.
   float         m_pos;
+  float         m_cur_rate;
+  float         m_target_rate;
+  float         m_rate_inc;
+  unsigned int  m_note_count;
+  bool          m_glide_on;
 
   char          m_note, m_vel;
   float         m_note_len;
