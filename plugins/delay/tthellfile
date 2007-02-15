@@ -1,0 +1,15 @@
+# tthellfile for Analog Delay
+
+lv2     adelay  http://lab-audio.googlecode.com/svn/trunk/plugins/adelay
+
+audio   in      main_inl        main_in_L
+audio   in      main_inr        main_in_R
+audio   out     main_outl       main_out_L
+audio   out     main_outr       main_out_R
+
+control in      tempo           Tempo           60      999     180
+control in      time_sw         Time_src_switch 0       1       1
+control in      time_ms         Time_ms         1       2000    200
+control in      time_beat       Time_beat       1       16      3
+control in      feedback        Feedback        0       1       0.3
+control in      amount          Dry/Wet         0       1       1

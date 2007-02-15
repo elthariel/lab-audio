@@ -1,5 +1,5 @@
 # The name and version of your plugin - edit these (at least the name)
-PLUGIN_NAME = cigue
+PLUGIN_NAME = adelay
 VERSION = 0.0.1
 
 # The lv2peg program - edit if it's not in your path
@@ -10,24 +10,20 @@ BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl \
 	$(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so
 
 # These are the source files for the plugin
-PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp \
-	AnalogFilter.cpp
-PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h \
-	lv2-midifunctions.h $(PLUGIN_NAME).peg frequencytable.hpp \
-	Filter_.h AnalogFilter.hpp
+PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp
 
-PLUGIN_LDFLAGS = `pkg-config --libs gthread-2.0 sndfile` \
-	-L../../libs/libwef -lwef++
-PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gthread-2.0 sndfile` \
-	-I../../libs/libwef -O3
-#	-march=athlon64 -mfpmath=sse -msse2 -m3dnow
+PLUGIN_HEADERS = lv2plugin.hpp lv2instrument.hpp lv2.h lv2-miditype.h \
+	lv2-midifunctions.h $(PLUGIN_NAME).peg
+
+PLUGIN_LDFLAGS = `pkg-config --libs gthread-2.0`
+
+PLUGIN_CFLAGS = -g -Wall `pkg-config --cflags gthread-2.0` #-O3
 
 # These are the source files for the plugin GUI
 GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
 GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h $(PLUGIN_NAME).peg
 GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0 libthc`
 GUI_CFLAGS = -g -Wall -O2 `pkg-config --cflags gtkmm-2.4 gthread-2.0 libthc` \
-	-I../../libs/libwef
 
 # Derived variables - do not edit
 PLUGIN_OBJECTS = $(subst .cpp,.o,$(PLUGIN_SOURCES))
