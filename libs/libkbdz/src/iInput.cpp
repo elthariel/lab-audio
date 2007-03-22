@@ -1,5 +1,5 @@
 /*
-** iInput.hh
+** iInput.cpp
 ** Login : <elthariel@elthariel-desktop>
 ** Started on  Fri Jan 26 03:56:19 2007 Nahlwe
 ** $Id$
@@ -20,27 +20,30 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	IINPUT_HH_
-# define   	IINPUT_HH_
+#ifndef IINPUT_CPP_
+# define IINPUT_CPP_
 
-#include "kevent.hh"
-#include "lfringbuffer.hh"
-#include <boost/thread.hpp>
+#include "iInput.hh"
 
-/** Interface for input class.
- * Can be added to kInputRegistry
- */
-class iInput
+template <class InputType>
+iInput<InputType>::iInput(Semaphore &a_sem, uint32_t buffer_size)
+  : m_sem(a_sem),
+    m_thread(*this),
+    m_buffer(buffer_size)
 {
-public:
-  iInput(uint32_t buffer_size)
-  virtual LFRingBufferReader<kEvent>    *get_reader();
-private:
-  virtual void                  thread_fun() = 0; /** Input loop thread function */
+  m_writer = m_buffer.get_writer();
+}
 
-  thread                        m_thread;
-  LFRingBuffer<kEvent>          m_buffer;
-  LFRingBufferWriter<kEvent>    *m_writer;
-};
+template <class InputType>
+LFRingBufferReader<InputType>   *iInput<InputType>::get_reader()
+{
+  return m_buffer.get_reader();
+}
 
-#endif	    /* !IINPUT_HH_ */
+template <class InputType>
+void                            iInput<InputType>::operator()()
+{
+  thread_fun();
+}
+
+#endif

@@ -1,7 +1,7 @@
 /*
-** kMain.hh
+** iInput.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Fri Jan 26 07:58:16 2007 Nahlwe
+** Started on  Fri Jan 26 03:56:19 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,18 +20,32 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	KMAIN_HH_
-# define   	KMAIN_HH_
+#ifndef   	IINPUT_HH_
+# define   	IINPUT_HH_
 
-#include "kinputregistry.hh"
+#include "thread.hpp"
+#include "lfringbuffer.hh"
 
-class kMain
+/** Interface for input class.
+ * Can be added to kInputRegistry
+ */
+template <class InputType>
+class iInput : public iFoncteur0<void>
 {
 public:
+  iInput(Semaphore &a_sem, uint32_t buffer_size);
+  virtual LFRingBufferReader<InputType> *get_reader();
+protected:
+  virtual void                  thread_fun() = 0; /** Input loop thread function */
+  void                          operator()();
 
-  int           main();
-private:
-
+  LFRingBuffer<InputType>       m_buffer;
+  LFRingBufferWriter<InputType> *m_writer;
+  Semaphore                     &m_sem;
+  Thread                        m_thread;
 };
 
-#endif	    /* !KMAIN_HH_ */
+#include "iInput.cpp"
+
+#endif	    /* !IINPUT_HH_ */
+
