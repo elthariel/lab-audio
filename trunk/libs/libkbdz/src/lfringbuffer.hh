@@ -103,4 +103,6 @@ protected:
   friend class LFRingBufferReader<BlockType>;
 };
 
+#include "lfringbuffer.cpp"
+
 #endif	    /* !LFRINGBUFFER_HH_ */

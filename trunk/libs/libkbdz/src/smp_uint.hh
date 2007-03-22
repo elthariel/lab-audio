@@ -33,21 +33,34 @@ public:
   smp_int_t(uint32_t init = 0) : m_i(init)
   {}
 
-  inline uint32_t              operator++()
+  inline smp_int_t              &operator++()
   {
-    __asm__ __volatile__("lock ; incl %0 \n\t" : "m"(m_i));
+    __asm__ __volatile__("lock ; incl %0 \n\t" : "=m"(m_i));
+    return (*this);
   }
-  inline uint32_t              operator--()
+  inline smp_int_t              &operator--()
   {
-    __asm__ __volatile__("lock ; decl %0 \n\t" : "m"(m_i));
+    __asm__ __volatile__("lock ; decl %0 \n\t" : "=m"(m_i));
+    return (*this);
   }
-  inline uint32_t              operator+(uint32_t val)
+  inline uint32_t               operator+(uint32_t val)
   {
-    __asm__ __volatile__("lock ; addl %1, %0 \n\t" : "m"(m_i) : "r"(val));
+    __asm__ __volatile__("lock ; addl %1, %0 \n\t" : "=m"(m_i) : "r"(val));
+    return (m_i);
   }
-  inline uint32_t              operator-(uint32_t val)
+  inline uint32_t               operator-(uint32_t val)
   {
-    __asm__ __volatile__("lock ; subbl %1, %0" :  "m"(m_i) : "r"(val));
+    __asm__ __volatile__("lock ; subbl %1, %0" :  "=m"(m_i) : "r"(val));
+    return (m_i);
+  }
+
+  /*  inline uint32_t               uint32_t()
+  {
+    return (m_i);
+    }*/
+  inline uint32_t               get_value()
+  {
+    return m_i;
   }
 
   inline bool                   operator<(uint32_t val)

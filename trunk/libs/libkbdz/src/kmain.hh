@@ -20,36 +20,33 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	KINPUTREGISTRY_HH_
-# define   	KINPUTREGISTRY_HH_
+#ifndef   	KMAIN_HH_
+# define   	KMAIN_HH_
 
 #include <vector>
+#include <list>
+#include "thread.hpp"
+#include "smp_uint.hh"
 #include "iInput.hh"
+#include "kevent.hh"
 
-class kInputRegistry
+class kMain
 {
 public:
-  kInputRegistry();
-  ~kInputRegistry();
+  kMain();
+  ~kMain();
 
-  void                                  register_input(iInput &);
-  void                                  unregister_input(iInput &);
-  bool                                  read(kEvent *);
+  Semaphore             &get_sem();
+  void                  main_loop();
+
 private:
-  mutex                                 m_mutex; // Mutex to protect access to m_inputs.
-  std::list<iInput &>                   m_inputs;
-  std::list<LFRingBufferReader<kEvent> &> m_readers;
-  std::list<LFRingBufferReader<kEvent> &>::iterator m_read_iter;
+  void                  register_event_input(iInput<kEvent> &);
+  void                  unregister_event_input(iInput<kEvent> &);
+  bool                  read_event(kEvent *);
 
-  friend class kInputRegistryIterator;
+  std::list<iInput<kEvent> *>           m_ev_inputs;
+  std::list<LFRingBufferReader<kEvent> *> m_ev_readers;
+  Semaphore                             m_sem;
 };
 
-/** InputRegistry iterator, provides access to the input modules.
- * Enforce locking policy. the registry is locked when registering or
- * unregistering Inpute modules.
- */
-class kInputRegistryIterator
-{
-};
-
-#endif	    /* !KINPUTREGISTRY_HH_ */
+#endif	    /* !KMAIN_HH_ */
