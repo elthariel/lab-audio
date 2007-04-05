@@ -28,10 +28,15 @@
 template <class InputType>
 iInput<InputType>::iInput(Semaphore &a_sem, uint32_t buffer_size)
   : m_sem(a_sem),
-    m_thread(*this),
     m_buffer(buffer_size)
 {
   m_writer = m_buffer.get_writer();
+}
+template <class InputType>
+Thread                        &iInput<InputType>::run()
+{
+  m_thread = new Thread(*this);
+  return *m_thread;
 }
 
 template <class InputType>

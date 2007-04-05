@@ -5,7 +5,7 @@
 // Login   <elthariel@epita.fr>
 //
 // Started on  Fri Feb 23 08:04:50 2007 Nahlwe
-// Last update Thu Mar 22 08:27:01 2007 Nahlwe
+// Last update Mon Apr  2 17:57:52 2007 Nahlwe
 //
 
 #ifndef THREAD_HPP_
@@ -91,7 +91,7 @@ public:
   unsigned int  get_value();
 
 private:
-  sem_t         m_sem;
+  sem_t         *m_sem;
 
 };
 

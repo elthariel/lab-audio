@@ -35,6 +35,7 @@ EvdevInput::EvdevInput(Semaphore &a_sem, std::string a_path)
     m_path(a_path),
     active(true)
 {
+  cerr << "Creating EvdevInput " << a_path << endl;
 }
 
 EvdevInput::~EvdevInput()
@@ -50,6 +51,7 @@ void                    EvdevInput::thread_fun()
   kEvent                kev;
   input_event           ev;
 
+  cerr << "Evdev (" << m_path << ") thread created." << endl;
   open_dev();
   while (active)
     {
@@ -66,7 +68,7 @@ void                    EvdevInput::open_dev()
 {
   if ((m_fd = open(m_path.c_str(), O_RDONLY)) == -1)
     {
-      cerr << "Unable to opne evdev (" << m_path << ") : "
+      cerr << "Unable to open evdev (" << m_path << ") : "
            << strerror(errno) << endl;
       active = false;
       // FIXME throw an exception.
@@ -77,7 +79,7 @@ bool                    EvdevInput::read_event(input_event *a_ev)
 {
   int                   res;
 
-  res = read(m_fd, (void *)a_ev, sizeof(input_event));
+  res = read(m_fd, (void *)a_ev, sizeof(struct input_event));
   if (res < 0)
     {
       cerr << "An error occur while reading (" << m_path
@@ -92,7 +94,9 @@ bool                    EvdevInput::read_event(input_event *a_ev)
       return false;
     }
   else
-    return true;
+    {
+      return true;
+    }
 
 }
 
@@ -133,5 +137,8 @@ bool                    EvdevInput::evdev_to_kevent(kEvent *a_kev,
 void                    EvdevInput::send_kevent(kEvent *a_kev)
 {
   if (m_writer->ready())
-    m_writer->write(a_kev);
+    {
+      m_writer->write(a_kev);
+      ++m_sem;
+    }
 }

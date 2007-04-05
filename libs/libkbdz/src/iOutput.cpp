@@ -1,7 +1,7 @@
 /*
-** evdev_input.hh
+** iOutput.cc
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Mar 22 12:30:00 2007 Nahlwe
+** Started on  Mon Apr  2 19:03:27 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,33 +20,43 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	EVDEV_INPUT_HH_
-# define   	EVDEV_INPUT_HH_
+#ifndef IOUTPUT_CPP_
+# define IOUTPUT_CPP_
 
-extern "C" {
-#include <linux/input.h>
-}
-#include "iInput.hh"
-#include "kevent.hh"
-#include <string>
+#include <iostream>
+#include "iOutput.hh"
 
-class EvdevInput : public iInput<kEvent>
+using namespace std;
+
+template <class OutputType>
+iOutput<OutputType>::iOutput(uint32_t a_buf_size)
+ : m_buffer(a_buf_size)
 {
-public:
-  EvdevInput(Semaphore &a_sem, std::string a_path);
-  ~EvdevInput();
+}
 
-private:
-  virtual void          thread_fun();
-  void                  open_dev();
-  bool                  read_event(input_event *a_ev);
-  bool                  evdev_to_kevent(kEvent *a_kev,
-                                        input_event *a_ev);
-  void                  send_kevent(kEvent *a_kev);
+template <class OutputType>
+LFRingBufferWriter<OutputType> *iOutput<OutputType>::get_writer()
+{
+  return m_buffer.get_writer();
+}
 
-  int                   m_fd;
-  std::string           m_path;
-  bool                  active;
-};
+template <class OutputType>
+Thread                &iOutput<OutputType>::run()
+{
+  m_thread = new Thread(*this);
+  return m_thread;
+}
 
-#endif	    /* !EVDEV_INPUT_HH_ */
+template <class OutputType>
+Semaphore             &iOutput<OutputType>::get_sem()
+{
+  return m_sem;
+}
+
+template <class OutputType>
+void          iOutput<OutputType>::operator()()
+{
+  thread_fun();
+}
+
+#endif

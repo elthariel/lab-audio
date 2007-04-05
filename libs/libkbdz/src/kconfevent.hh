@@ -1,7 +1,7 @@
 /*
-** evdev_input.hh
+** kconfevent.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Mar 22 12:30:00 2007 Nahlwe
+** Started on  Thu Mar 22 14:31:27 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,33 +20,44 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	EVDEV_INPUT_HH_
-# define   	EVDEV_INPUT_HH_
+#ifndef   	KCONFEVENT_HH_
+# define   	KCONFEVENT_HH_
 
-extern "C" {
-#include <linux/input.h>
-}
+#include <sigc++/sigc++.h>
 #include "iInput.hh"
 #include "kevent.hh"
 #include <string>
 
-class EvdevInput : public iInput<kEvent>
+struct kConfAddEventInput
 {
-public:
-  EvdevInput(Semaphore &a_sem, std::string a_path);
-  ~EvdevInput();
-
-private:
-  virtual void          thread_fun();
-  void                  open_dev();
-  bool                  read_event(input_event *a_ev);
-  bool                  evdev_to_kevent(kEvent *a_kev,
-                                        input_event *a_ev);
-  void                  send_kevent(kEvent *a_kev);
-
-  int                   m_fd;
-  std::string           m_path;
-  bool                  active;
+  iInput<kEvent>        *input;
 };
 
-#endif	    /* !EVDEV_INPUT_HH_ */
+struct kConfRemoveEventInput
+{
+  iInput<kEvent>        *input;
+};
+
+struct kConfDeferredExec
+{
+  sigc::signal0<void>   *fun;
+};
+
+struct kConf
+{
+  enum kConfType
+    {
+      AddEventInput,
+      RemoveEventInput,
+      DeferredExec,
+      TypeCount
+    }                           type;
+  union
+  {
+    kConfAddEventInput          add_ev_input;
+    kConfRemoveEventInput       rem_ev_input;
+    kConfDeferredExec           deferred_exec;
+  }                             data;
+};
+
+#endif	    /* !KCONFEVENT_HH_ */

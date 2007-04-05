@@ -5,7 +5,7 @@
 // Login   <elthariel@epita.fr>
 //
 // Started on  Fri Feb 23 08:05:03 2007 Nahlwe
-// Last update Thu Mar 22 08:14:52 2007 Nahlwe
+// Last update Mon Apr  2 17:59:00 2007 Nahlwe
 //
 
 #include <iostream>
@@ -31,6 +31,8 @@ Thread::Thread(iFoncteur0<void> &a_foncteur)
   if (pthread_create(&m_thread, 0,
                      &run_thread, (void *)&a_foncteur) != 0)
     cerr << "Thread wasn't created" << endl;
+  else
+    cerr << "Creating thread" << endl;
 }
 
 Thread::~Thread()
@@ -147,25 +149,27 @@ void                    Event::wait(unsigned int a_sec)
 
 Semaphore::Semaphore(unsigned int a_init_value)
 {
-  if (sem_init(&m_sem, 0, a_init_value) == -1)
+  m_sem = new sem_t;
+  if (sem_init(m_sem, 0, a_init_value) == -1)
     cerr << "Unable to create Semaphore" << endl;
 }
 
 Semaphore::~Semaphore()
 {
   //fixme check that nobody is waiting on ?
-  sem_destroy(&m_sem);
+  sem_destroy(m_sem);
+  delete m_sem;
 }
 
 Semaphore       &Semaphore::operator++()
 {
-  sem_post(&m_sem);
+  sem_post(m_sem);
   return *this;
 }
 
 Semaphore       &Semaphore::operator--()
 {
-  sem_wait(&m_sem);
+  sem_wait(m_sem);
   return *this;
 }
 
@@ -174,7 +178,7 @@ Semaphore       &Semaphore::operator+=(unsigned int a_added)
   unsigned int  i;
 
   for (i = 0; i < a_added; i++)
-    sem_post(&m_sem);
+    sem_post(m_sem);
   return *this;
 }
 
@@ -183,7 +187,7 @@ Semaphore       &Semaphore::operator-=(unsigned int a_removed)
   unsigned int  i;
 
   for (i = 0; i < a_removed; i++)
-    sem_wait(&m_sem);
+    sem_wait(m_sem);
   return *this;
 }
 
@@ -191,7 +195,7 @@ unsigned int    Semaphore::get_value()
 {
   int  res;
 
-  if (sem_getvalue(&m_sem, &res) < 0)
+  if (sem_getvalue(m_sem, &res) < 0)
     cerr << "Unable to get Semaphore value" << endl;
   return ((unsigned int)res);
 }
