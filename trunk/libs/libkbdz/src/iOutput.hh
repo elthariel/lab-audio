@@ -1,7 +1,7 @@
 /*
-** evdev_input.hh
+** iOutput.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Mar 22 12:30:00 2007 Nahlwe
+** Started on  Mon Apr  2 19:03:27 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,33 +20,33 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	EVDEV_INPUT_HH_
-# define   	EVDEV_INPUT_HH_
+#ifndef   	IOUTPUT_HH_
+# define   	IOUTPUT_HH_
 
-extern "C" {
-#include <linux/input.h>
-}
-#include "iInput.hh"
-#include "kevent.hh"
-#include <string>
+#include <sigc++/sigc++.h>
+#include "thread.hpp"
+#include "lfringbuffer.hh"
 
-class EvdevInput : public iInput<kEvent>
+template <class OutputType>
+class iOutput : public iFoncteur0<void>,
+                public sigc::trackable
 {
 public:
-  EvdevInput(Semaphore &a_sem, std::string a_path);
-  ~EvdevInput();
+  iOutput(uint32_t a_buf_size);
+  virtual LFRingBufferWriter<OutputType> *get_writer();
+  Thread                &run();
+  Semaphore             &get_sem();
 
-private:
-  virtual void          thread_fun();
-  void                  open_dev();
-  bool                  read_event(input_event *a_ev);
-  bool                  evdev_to_kevent(kEvent *a_kev,
-                                        input_event *a_ev);
-  void                  send_kevent(kEvent *a_kev);
+protected:
+  virtual void          thread_fun() = 0;
+  virtual void          operator()();
 
-  int                   m_fd;
-  std::string           m_path;
-  bool                  active;
+  Semaphore                     m_sem;
+  LFRingBuffer<OutputType>      m_buffer;
+  LFRingBufferReader<OutputType> *m_reader;
+  Thread                        *m_thread;
 };
 
-#endif	    /* !EVDEV_INPUT_HH_ */
+#include "iOutput.cpp"
+
+#endif	    /* !IOUTPUT_HH_ */

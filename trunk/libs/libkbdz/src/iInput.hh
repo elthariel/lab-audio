@@ -27,7 +27,7 @@
 #include "lfringbuffer.hh"
 
 /** Interface for input class.
- * Can be added to kInputRegistry
+ * Can be added to kMain
  */
 template <class InputType>
 class iInput : public iFoncteur0<void>
@@ -35,14 +35,16 @@ class iInput : public iFoncteur0<void>
 public:
   iInput(Semaphore &a_sem, uint32_t buffer_size);
   virtual LFRingBufferReader<InputType> *get_reader();
-protected:
+  Thread                        &run();
   virtual void                  thread_fun() = 0; /** Input loop thread function */
-  void                          operator()();
+  virtual void                  operator()();
 
+protected:
+
+  Semaphore                     &m_sem;
   LFRingBuffer<InputType>       m_buffer;
   LFRingBufferWriter<InputType> *m_writer;
-  Semaphore                     &m_sem;
-  Thread                        m_thread;
+  Thread                        *m_thread;
 };
 
 #include "iInput.cpp"

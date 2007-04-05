@@ -1,7 +1,7 @@
 /*
-** evdev_input.hh
+** aseq_output.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Mar 22 12:30:00 2007 Nahlwe
+** Started on  Tue Apr  3 00:54:51 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,33 +20,29 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	EVDEV_INPUT_HH_
-# define   	EVDEV_INPUT_HH_
+#ifndef   	ASEQ_OUTPUT_HH_
+# define   	ASEQ_OUTPUT_HH_
 
-extern "C" {
-#include <linux/input.h>
-}
-#include "iInput.hh"
 #include "kevent.hh"
-#include <string>
+#include "iOutput.hh"
+#include <alsa/asoundlib.h>
 
-class EvdevInput : public iInput<kEvent>
+class ASeqOutput : public iOutput<kEvent>
 {
 public:
-  EvdevInput(Semaphore &a_sem, std::string a_path);
-  ~EvdevInput();
+  ASeqOutput();
 
-private:
+  void                  send_event(kEvent &a_ev);
+
+protected:
   virtual void          thread_fun();
-  void                  open_dev();
-  bool                  read_event(input_event *a_ev);
-  bool                  evdev_to_kevent(kEvent *a_kev,
-                                        input_event *a_ev);
-  void                  send_kevent(kEvent *a_kev);
+  bool                  open_aseq();
+  bool                  open_port();
 
-  int                   m_fd;
-  std::string           m_path;
-  bool                  active;
+  snd_seq_t             *m_aseq;
+  int                   m_port;
+  bool                  m_active;
+
 };
 
-#endif	    /* !EVDEV_INPUT_HH_ */
+#endif	    /* !ASEQ_OUTPUT_HH_ */

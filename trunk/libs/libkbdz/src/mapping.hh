@@ -1,7 +1,7 @@
 /*
-** evdev_input.hh
+** mapping.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Mar 22 12:30:00 2007 Nahlwe
+** Started on  Tue Apr  3 19:37:23 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,33 +20,26 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	EVDEV_INPUT_HH_
-# define   	EVDEV_INPUT_HH_
+#ifndef   	MAPPING_HH_
+# define   	MAPPING_HH_
 
-extern "C" {
-#include <linux/input.h>
-}
-#include "iInput.hh"
+#include <list>
+#include <sigc++/sigc++.h>
 #include "kevent.hh"
-#include <string>
+#include "iInput.hh"
+#include "iOutput.hh"
 
-class EvdevInput : public iInput<kEvent>
+template <class OutType>
+class iMapping : public sigc::trackable
 {
 public:
-  EvdevInput(Semaphore &a_sem, std::string a_path);
-  ~EvdevInput();
-
+  void                  set_out(LFRingBufferWriter<OutType> *a_out);
+  void                  add_out(LFRingBufferWriter<OutType> *a_out);
+  void                  rem_out(LFRingBufferWriter<OutType> *a_out);
+  virtual bool          accept(kEvent &) = 0;
 private:
-  virtual void          thread_fun();
-  void                  open_dev();
-  bool                  read_event(input_event *a_ev);
-  bool                  evdev_to_kevent(kEvent *a_kev,
-                                        input_event *a_ev);
-  void                  send_kevent(kEvent *a_kev);
-
-  int                   m_fd;
-  std::string           m_path;
-  bool                  active;
+  typedef LFRingBufferWriter<OutType> Out;
+  std::list<Out *>      m_outs;
 };
 
-#endif	    /* !EVDEV_INPUT_HH_ */
+#endif	    /* !MAPPING_HH_ */

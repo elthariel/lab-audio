@@ -25,28 +25,39 @@
 
 #include <vector>
 #include <list>
+#include "foncteurs.hpp"
 #include "thread.hpp"
 #include "smp_uint.hh"
 #include "iInput.hh"
+#include "kconfevent.hh"
 #include "kevent.hh"
 
-class kMain
+class kMain : public iFoncteur0<void>
 {
 public:
-  kMain();
+  kMain(LFRingBufferReader<kConf> *a_base_conf_input);
   ~kMain();
 
   Semaphore             &get_sem();
-  void                  main_loop();
+  Thread                &run();
 
 private:
+  virtual void          operator()();
+  void                  main_loop();
   void                  register_event_input(iInput<kEvent> &);
   void                  unregister_event_input(iInput<kEvent> &);
+  void                  register_conf_input(LFRingBufferReader<kConf> *);
+  void                  unregister_conf_input(LFRingBufferReader<kConf> *);
   bool                  read_event(kEvent *);
+  void                  process_event(kEvent &);
+  bool                  read_conf(kConf *);
+  void                  process_conf(kConf &);
 
   std::list<iInput<kEvent> *>           m_ev_inputs;
   std::list<LFRingBufferReader<kEvent> *> m_ev_readers;
+  std::list<LFRingBufferReader<kConf> *> m_conf_readers;
   Semaphore                             m_sem;
+  Thread                                *m_thread;
 };
 
 #endif	    /* !KMAIN_HH_ */

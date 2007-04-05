@@ -1,7 +1,7 @@
 /*
-** evdev_input.hh
+** mapping.cpp
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Thu Mar 22 12:30:00 2007 Nahlwe
+** Started on  Tue Apr  3 19:37:23 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,33 +20,26 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	EVDEV_INPUT_HH_
-# define   	EVDEV_INPUT_HH_
+#include <iostream>
+#include "mapping.hh"
 
-extern "C" {
-#include <linux/input.h>
-}
-#include "iInput.hh"
-#include "kevent.hh"
-#include <string>
+using namespace std;
 
-class EvdevInput : public iInput<kEvent>
+template <class OutType>
+void    iMapping<OutType>::set_out(LFRingBufferWriter<OutType> *a_out)
 {
-public:
-  EvdevInput(Semaphore &a_sem, std::string a_path);
-  ~EvdevInput();
+  m_outs.clear();
+  m_outs.push_back(a_out);
+}
 
-private:
-  virtual void          thread_fun();
-  void                  open_dev();
-  bool                  read_event(input_event *a_ev);
-  bool                  evdev_to_kevent(kEvent *a_kev,
-                                        input_event *a_ev);
-  void                  send_kevent(kEvent *a_kev);
+template <class OutType>
+void    iMapping<OutType>::add_out(LFRingBufferWriter<OutType> *a_out)
+{
+  m_outs.push_back(a_out);
+}
 
-  int                   m_fd;
-  std::string           m_path;
-  bool                  active;
-};
-
-#endif	    /* !EVDEV_INPUT_HH_ */
+template <class OutType>
+void    iMapping<OutType>::rem_out(LFRingBufferWriter<OutType> *a_out)
+{
+  m_outs.remove(a_out);
+}
