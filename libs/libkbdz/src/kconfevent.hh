@@ -26,6 +26,7 @@
 #include <sigc++/sigc++.h>
 #include "iInput.hh"
 #include "kevent.hh"
+#include "mapping.hh"
 #include <string>
 
 struct kConfAddEventInput
@@ -43,6 +44,11 @@ struct kConfDeferredExec
   sigc::signal0<void>   *fun;
 };
 
+struct kConfSetMap
+{
+  iMapping              *map;
+};
+
 struct kConf
 {
   enum kConfType
@@ -50,6 +56,7 @@ struct kConf
       AddEventInput,
       RemoveEventInput,
       DeferredExec,
+      SetMap,
       TypeCount
     }                           type;
   union
@@ -57,6 +64,7 @@ struct kConf
     kConfAddEventInput          add_ev_input;
     kConfRemoveEventInput       rem_ev_input;
     kConfDeferredExec           deferred_exec;
+    kConfSetMap                 set_map;
   }                             data;
 };
 

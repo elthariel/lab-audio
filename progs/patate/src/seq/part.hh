@@ -57,6 +57,11 @@ namespace Seq
     void                        add_note(Note &a_note);
     bool                        rem_note(unsigned int a_begin = 0,
                                          unsigned int a_end = 0);
+    void                        add_step(Note &a_note,
+                                         unsigned int a_bar,
+                                         unsigned int a_step);
+    void                        rem_step(unsigned int a_bar,
+                                         unsigned int a_step);
 
     const std::list<Note *>     &get_seq() const;
     void                        set_mres(int a_res = 1);

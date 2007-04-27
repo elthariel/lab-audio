@@ -23,9 +23,9 @@
 #include <stdio.h>
 #include "drumseqview.hh"
 
-DrumSeqView::DrumSeqView(DrumSeq &a_drumseq, Sampler &a_sampler,
+DrumSeqView::DrumSeqView(Seq::Seq &a_seq, Sampler &a_sampler,
                          unsigned int a_init_track)
-  : m_drumseq(a_drumseq), m_sampler(a_sampler),
+  : m_seq(a_seq), m_sampler(a_sampler),
     m_track_id(a_init_track)
 {
   unsigned int i;

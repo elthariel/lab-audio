@@ -178,6 +178,23 @@ namespace Seq
       }
   }
 
+void                        Part::add_step(Note &a_note,
+                                           unsigned int a_bar,
+                                           unsigned int a_step)
+{
+  unsigned int pos = a_bar * 4 * m_ppq + a_step * (m_ppq / 4);
+  a_note.start = pos;
+  add_note(a_note);
+}
+
+void                        Part::rem_step(unsigned int a_bar,
+                                           unsigned int a_step)
+{
+  unsigned int pos_start = a_bar * 4 * m_ppq + a_step * (m_ppq / 4);
+  unsigned int pos_end = a_bar * 4 * m_ppq + (a_step + 1) * (m_ppq / 4);
+  rem_note(pos_start, pos_end);
+}
+
+
 
 };
-

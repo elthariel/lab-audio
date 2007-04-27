@@ -23,8 +23,6 @@
 #ifndef   	ISYNTH_HH_
 # define   	ISYNTH_HH_
 
-#include "part.hh"
-
 namespace Seq
 {
   class Note;
@@ -40,5 +38,7 @@ namespace Seq
   protected:
   };
 };
+
+# include "part.hh"
 
 #endif	    /* !ISYNTH_HH_ */

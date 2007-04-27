@@ -27,6 +27,7 @@
 using namespace std;
 
 kMain::kMain(LFRingBufferReader<kConf> *a_base_conf_input)
+  : m_map(0)
 {
   m_conf_readers.push_back(a_base_conf_input);
 }
@@ -74,6 +75,13 @@ void            kMain::unregister_conf_input(LFRingBufferReader<kConf> *a_input)
   // FIXME Unregister conf input.
 }
 
+void            kMain::set_map(iMapping *a_map)
+{
+  if (m_map)
+    delete m_map;
+  m_map = a_map;
+}
+
 bool                    kMain::read_event(kEvent *a_ev)
 {
   std::list<LFRingBufferReader<kEvent> *>::iterator iter;
@@ -92,7 +100,9 @@ bool                    kMain::read_event(kEvent *a_ev)
 
 void                    kMain::process_event(kEvent &a_ev)
 {
-  cout << "received an event" << endl;
+  //  cout << "received an event" << endl;
+  if (m_map)
+    m_map->accept(a_ev);
 }
 
 
@@ -123,6 +133,13 @@ void                    kMain::process_conf(kConf &a_conf_ev)
       break;
     case kConf::RemoveEventInput:
       unregister_event_input(*a_conf_ev.data.rem_ev_input.input);
+      break;
+    case kConf::SetMap:
+      set_map(a_conf_ev.data.set_map.map);
+      break;
+    case kConf::DeferredExec:
+      a_conf_ev.data.deferred_exec.fun->emit();
+      delete a_conf_ev.data.deferred_exec.fun;
       break;
     default:
       break;

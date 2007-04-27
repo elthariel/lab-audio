@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include "patate.hh"
+#include "part.hh"
 
 using namespace std;
 
@@ -37,10 +38,11 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
   : m_writer(a_writer),
     m_reader(a_reader),
     m_sampler(PATATE_SAMPLER_COUNT),
-    m_seq(PATATE_SEQ_PPQ, m_sampler),
-    m_bpm(180), m_remaining_samples(0.0)
+    m_seq(180, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1),
+  m_bpm(180)//, m_remaining_samples(0.0)
 {
   init_jack();
+  m_seq.start();
 }
 
 Patate::~Patate()
@@ -89,6 +91,8 @@ int             Patate::process(jack_nframes_t nframes)
 
   //Midi process
   process_midi(nframes);
+  //Internal event process.
+  process_event();
   //Seq process
   process_seq(nframes, sample_rate);
   //Audio process
@@ -109,22 +113,56 @@ void            Patate::process_midi(jack_nframes_t nframes)
     }
 }
 
+void            Patate::process_event()
+{
+  Event         ev;
+
+  while(m_reader->ready())
+    {
+      m_reader->read(&ev);
+      _process_event(ev);
+    }
+}
+
+void            Patate::_process_event(Event &a_ev)
+{
+  Seq::Note     note;
+
+  if (a_ev.subsystem == Sys_DrumSeq)
+    {
+      if (a_ev.type == Event::TypeNote)
+        {
+          if (a_ev.data.note.note < 16)
+            {
+              note.note = a_ev.data.note.note;
+              note.vel = a_ev.data.note.vel;
+              note.len = 90;
+              get_drumseq().part(1).add_step(note, 1, a_ev.data.note.note);
+            }
+          else if ((a_ev.data.note.note >= 16) && (a_ev.data.note.note < 32))
+            get_drumseq().part(1).rem_step(1, a_ev.data.note.note);
+        }
+    }
+}
+
 void            Patate::process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate)
 {
-  float         tick_len;
-  float         sample_len;
+  /*  float         tick_len;
+      float         sample_len;
 
-  tick_len = 60.0 / (m_bpm * 4 * PATATE_SEQ_PPQ);
-  sample_len = 1.0 / sample_rate;
-  tick_len = tick_len / sample_len;
+      tick_len = 60.0 / (m_bpm * 4 * PATATE_SEQ_PPQ);
+      sample_len = 1.0 / sample_rate;
+      tick_len = tick_len / sample_len;
 
-  m_remaining_samples += nframes;
-  while (m_remaining_samples >= tick_len)
-    {
+      m_remaining_samples += nframes;
+      while (m_remaining_samples >= tick_len)
+      {
       m_seq.tick();
       m_remaining_samples -= tick_len;
-    }
+      }
+  */
+  m_seq.run();
 }
 
 void            Patate::set_bpm(unsigned int a_new_bpm)
@@ -137,7 +175,7 @@ Sampler         &Patate::get_sampler()
   return m_sampler;
 }
 
-DrumSeq         &Patate::get_drumseq()
+Seq::Seq        &Patate::get_drumseq()
 {
   return m_seq;
 }

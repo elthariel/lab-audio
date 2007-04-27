@@ -8,7 +8,7 @@ Legend:
 #### 0.2.0
 ## Bug
    + note_off not working
-   - Low shelf is an anti-noise gate
+   * Low shelf is an anti-noise gate
    - Block rendering when reversing.
 
 ## Filters class.
@@ -24,10 +24,10 @@ Legend:
    * basic sampler
    - velocity support
    + normalize
-   + reverse
+   - reverse (rework reverse from scratch)
    * fine pitch
      * Pitch envelop.
-   + Antialias filter?
+   * Antialias filter?
    + Filter support
      + Filter Envelop.
    * Envelops
