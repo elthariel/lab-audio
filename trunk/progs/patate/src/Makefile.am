@@ -5,12 +5,12 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Thu Apr 26 12:18:57 2007 Nahlwe
+## Last update Fri Apr 27 06:18:30 2007 Nahlwe
 ##
 
 SUBDIRS = seq
 
-noinst_HEADERS = drumseq.hh Envelop.hh event.hh lfringbuffer.hh \
+noinst_HEADERS = Envelop.hh event.hh lfringbuffer.hh \
 	patate_gui.hh patate.hh Sample.hh sampler.hh smp_uint.hh \
 	help.hpp patate_gui.hh drumseqview.hh
 
@@ -24,11 +24,11 @@ bin_PROGRAMS = patate
 
 patate_SOURCES = AnalogFilter.cpp Envelop.cpp foncteurs.cpp \
 	lfringbuffer.cpp main.cpp patate.cpp Sample.cpp sampler.cpp \
-	thread.cpp help.cpp patate_gui.cpp drumseq.cpp drumseqview.cpp
+	thread.cpp help.cpp patate_gui.cpp drumseqview.cpp
 
 # Don't forget that the order of the libraries _does_ matter
-patate_CPPFLAGS = -g -Wall -pthread @PKG_CFLAGS@
-patate_LDADD = -lpthread -lrt @PKG_LIBS@
+patate_CPPFLAGS = -g -Wall -pthread @PKG_CFLAGS@ -Iseq/
+patate_LDADD = -lpthread -lrt @PKG_LIBS@ seq/libseq.la
 
 ##########
 # Checks #

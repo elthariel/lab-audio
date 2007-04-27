@@ -25,21 +25,39 @@
 
 #include <list>
 #include <sigc++/sigc++.h>
+#include <alsa/asoundlib.h>
 #include "kevent.hh"
 #include "iInput.hh"
 #include "iOutput.hh"
 
-template <class OutType>
 class iMapping : public sigc::trackable
 {
 public:
+  virtual ~iMapping();
+  virtual bool          accept(kEvent &) = 0;
+};
+
+template <class OutType>
+class Mapping : public iMapping
+{
+public:
+  virtual ~Mapping();
   void                  set_out(LFRingBufferWriter<OutType> *a_out);
   void                  add_out(LFRingBufferWriter<OutType> *a_out);
   void                  rem_out(LFRingBufferWriter<OutType> *a_out);
   virtual bool          accept(kEvent &) = 0;
-private:
+protected:
+  void                  send(OutType &a_ev);
   typedef LFRingBufferWriter<OutType> Out;
   std::list<Out *>      m_outs;
+};
+
+class AseqNoMap : public Mapping<snd_seq_event_t>
+{
+public:
+  virtual bool          accept(kEvent &a_ev);
+protected:
+  snd_seq_event_t       m_buf;
 };
 
 #endif	    /* !MAPPING_HH_ */

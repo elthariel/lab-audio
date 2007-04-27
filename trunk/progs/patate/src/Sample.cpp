@@ -457,6 +457,27 @@ void                    Sample::set_aalias(float val)
   m_antialias = tmp;
 }
 
+/*
+ * Sample class : iSynth interface
+ */
+void                    Sample::play_note(const Seq::Note &a_note)
+{
+  note_on(a_note.note, a_note.vel);
+}
+
+void                    Sample::stop_note(const Seq::Note &a_note)
+{
+  note_on(a_note.note, a_note.vel);
+}
+
+void                    Sample::flush_note()
+{
+  unsigned int i;
+
+  for (i = 0; i < SAMPLER_POLY; i++)
+    voices[i].activated = false;
+}
+
 
 /*
  * TempBuffer singleton

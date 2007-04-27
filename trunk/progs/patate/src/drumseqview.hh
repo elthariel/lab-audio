@@ -26,16 +26,16 @@
 #include <gtkmm.h>
 #include <vector>
 #include "sampler.hh"
-#include "drumseq.hh"
+#include "seq.hh"
 #include "patate.hh"
 
 class DrumSeqView : public Gtk::VBox
 {
 public:
-  DrumSeqView(DrumSeq &a_drumseq, Sampler &a_sampler,
+  DrumSeqView(Seq::Seq &a_seq, Sampler &a_sampler,
               unsigned int a_init_track);
 protected:
-  DrumSeq               &m_drumseq;
+  Seq::Seq              &m_seq;
   Sampler               &m_sampler;
   unsigned int          m_track_id;
   Gtk::HBox             m_seq_hbox;

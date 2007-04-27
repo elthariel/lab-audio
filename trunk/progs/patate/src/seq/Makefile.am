@@ -28,8 +28,9 @@
 ## extra files
 EXTRA_DIST =
 
-noinst_HEADERS = timer.hh iSynth.hh part.hh seq.hh
+noinst_HEADERS =
 
+include_HEADERS = timer.hh iSynth.hh part.hh seq.hh
 
 #######################
 # Build an executable #
@@ -37,11 +38,11 @@ noinst_HEADERS = timer.hh iSynth.hh part.hh seq.hh
 
 #INCLUDES = -I $(top_builddir)/src
 
-bin_PROGRAMS = libmidiseq.so
-libmidiseq_so_SOURCES = timer.cc part.cc seq.cc
-libmidiseq_so_CPPFLAGS = -g
-libmidiseq_so_LDADD = -lrt
-libmidiseq_so_LDFLAGS = -shared
+lib_LTLIBRARIES = libseq.la
+libseq_la_SOURCES = timer.cc part.cc seq.cc
+libseq_la_CPPFLAGS = -g3
+libseq_la_LIBADD = -lrt
+libseq_la_LDFLAGS =
 
 
 # Don't forget that the order of the libraries _does_ matter

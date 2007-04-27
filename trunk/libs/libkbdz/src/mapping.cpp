@@ -26,20 +26,50 @@
 using namespace std;
 
 template <class OutType>
-void    iMapping<OutType>::set_out(LFRingBufferWriter<OutType> *a_out)
+void    Mapping<OutType>::set_out(LFRingBufferWriter<OutType> *a_out)
 {
   m_outs.clear();
   m_outs.push_back(a_out);
 }
 
 template <class OutType>
-void    iMapping<OutType>::add_out(LFRingBufferWriter<OutType> *a_out)
+void    Mapping<OutType>::add_out(LFRingBufferWriter<OutType> *a_out)
 {
   m_outs.push_back(a_out);
 }
 
 template <class OutType>
-void    iMapping<OutType>::rem_out(LFRingBufferWriter<OutType> *a_out)
+void    Mapping<OutType>::rem_out(LFRingBufferWriter<OutType> *a_out)
 {
   m_outs.remove(a_out);
+}
+
+template <class OutType>
+void    Mapping<OutType>::send(OutType &a_ev)
+{
+  typename list<Out *>::iterator    iter;
+
+  for (iter = m_outs.begin(); iter != m_outs.end(); iter++)
+    (*iter)->write(&a_ev);
+}
+
+bool            AseqNoMap::accept(kEvent &a_ev)
+{
+  if (a_ev.type != kEvent::kNote)
+    return false;
+
+  snd_seq_ev_clear(&m_buf);
+
+  if (a_ev.data.note.vel == 0)
+    {
+      snd_seq_ev_set_noteoff(a_ev, 0, a_ev.data.note.note,
+                             a_ev.data.note.vel)
+    }
+  else
+    {
+      snd_seq_ev_set_noteon(a_ev, 0, a_ev.data.note.note,
+                            a_ev.data.note.vel)
+    }
+  send(a_ev);
+  return true;
 }

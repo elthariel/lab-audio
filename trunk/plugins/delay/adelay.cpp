@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 09:03:52 2007 Nahlwe
-// Last update Tue Feb 13 13:42:52 2007 Nahlwe
+// Last update Thu Feb 15 10:51:47 2007 Nahlwe
 //
 
 #include <iostream>
@@ -80,14 +80,21 @@ void            ADelay::compute_rate()
 
 void            ADelay::run(uint32_t sample_count)
 {
-  unsigned int  i;
+  unsigned int  i, j;
   float         *inL, *inR, *outL, *outR;
+  float         tf, tmp;
+  unsigned int  ti;
 
   dispatch_control();
 
+  ti = (unsigned int) m_rate;
+
   // Feed tape
-  for (i = 0; i < sample_count; i++)
+  for (i = sample_count - 1; i >= 0; i--)
     {
+      for (j = 0; j < m_rate; j++)
+        {
+        }
     }
 
   // Output delay.

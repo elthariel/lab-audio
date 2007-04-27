@@ -37,8 +37,17 @@ struct EventCtrl
   char                  val;
 };
 
+enum SubSystem
+  {
+    Sys_Main,
+    Sys_DrumSeq,
+    Sys_Sample,
+    Sys_Gui,
+  };
+
 struct Event
 {
+  SubSystem             subsystem;
   enum EventType
     {
       TypeNote,

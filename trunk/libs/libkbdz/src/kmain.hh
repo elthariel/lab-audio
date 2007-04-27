@@ -31,6 +31,7 @@
 #include "iInput.hh"
 #include "kconfevent.hh"
 #include "kevent.hh"
+#include "mapping.hh"
 
 class kMain : public iFoncteur0<void>
 {
@@ -48,16 +49,18 @@ private:
   void                  unregister_event_input(iInput<kEvent> &);
   void                  register_conf_input(LFRingBufferReader<kConf> *);
   void                  unregister_conf_input(LFRingBufferReader<kConf> *);
+  void                  set_map(iMapping *a_map);
   bool                  read_event(kEvent *);
   void                  process_event(kEvent &);
   bool                  read_conf(kConf *);
   void                  process_conf(kConf &);
 
-  std::list<iInput<kEvent> *>           m_ev_inputs;
-  std::list<LFRingBufferReader<kEvent> *> m_ev_readers;
-  std::list<LFRingBufferReader<kConf> *> m_conf_readers;
-  Semaphore                             m_sem;
-  Thread                                *m_thread;
+  std::list<iInput<kEvent> *>                   m_ev_inputs;
+  std::list<LFRingBufferReader<kEvent> *>       m_ev_readers;
+  std::list<LFRingBufferReader<kConf> *>        m_conf_readers;
+  Semaphore                                     m_sem;
+  Thread                                        *m_thread;
+  iMapping                                      *m_map;
 };
 
 #endif	    /* !KMAIN_HH_ */

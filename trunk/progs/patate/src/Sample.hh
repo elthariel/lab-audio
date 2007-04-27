@@ -26,6 +26,7 @@
 # include <string>
 # include <vector>
 # include <sndfile.h>
+# include <iSynth.hh>
 
 # include "Envelop.hh"
 # include "frequencytable.hpp"
@@ -58,12 +59,12 @@ struct SmpVoice
 };
 
 
-class Sample
+class Sample : public Seq::iSynth
 {
 public:
   Sample(Sample &smp);
   Sample(std::string, unsigned int);
-  ~Sample();
+  virtual ~Sample();
   //  Sample(int);
 
   typedef float         sample_t;
@@ -84,6 +85,10 @@ public:
   void                  set_normalize(float);
   void                  set_aalias(float);
 
+  // iSynth interface
+  virtual void          play_note(const Seq::Note &a_note);
+  virtual void          stop_note(const Seq::Note &a_note);
+  virtual void          flush_note();
 
 private:
   // Internal data;

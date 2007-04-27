@@ -29,7 +29,7 @@
 #include "lfringbuffer.hh"
 #include "event.hh"
 #include "sampler.hh"
-#include "drumseq.hh"
+#include "seq.hh"
 
 #define PATATE_SEQ_PPQ         96
 #define PATATE_SAMPLER_COUNT   16
@@ -43,27 +43,29 @@ public:
 
   int                   process(jack_nframes_t nframes);
   Sampler               &get_sampler();
-  DrumSeq               &get_drumseq();
+  Seq::Seq              &get_drumseq();
 
 protected:
   void                  init_jack();
   void                  close_jack();
   void                  process_midi(jack_nframes_t nframes);
+  void                  process_event();
+  void                  _process_event(Event &a_ev);
   void                  process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate);
   void                  set_bpm(unsigned int a_new_bpm);
 
-  LFRingBufferWriter<Event> *m_writer;
-  LFRingBufferReader<Event> *m_reader;
+  LFRingBufferWriter<Event> *m_writer; // to the gui
+  LFRingBufferReader<Event> *m_reader; // from the gui
   Sampler               m_sampler;
-  DrumSeq               m_seq;
+  Seq::Seq              m_seq;
   jack_client_t         *m_jack_client;
   jack_port_t           *m_midi_port;
   jack_port_t           *m_audioL_port;
   jack_port_t           *m_audioR_port;
   jack_nframes_t        m_buffer_size;
   unsigned int          m_bpm;
-  float                 m_remaining_samples;
+  //  float                 m_remaining_samples;
 };
 
 class jack_error : public std::exception
