@@ -1,0 +1,43 @@
+dnl autoconf script for Zia httpd server
+dnl process with autoconf in order to get configure script
+dnl or use autogen.sh (recommended)
+
+AC_INIT(configure.in)
+AM_INIT_AUTOMAKE(patate, 0.0.1)
+
+AM_MAINTAINER_MODE
+
+AC_ISC_POSIX
+AC_PROG_CC
+AC_PROG_CXXCPP
+AC_PROG_CXX
+AC_PROG_MAKE_SET
+
+AM_PROG_CC_STDC
+
+AC_PROG_INSTALL
+
+dnl We need to write some rules to check stl classes.
+dnl    pthreads, libxml++ (or embbed it into src tree)
+
+AC_CHECK_HEADERS([pthread.h, semaphore.h])
+AC_CHECK_HEADERS([iostream, vector, list])
+
+PKG_CHECK_MODULES(PKG, [gtkmm-2.4 jack sndfile])
+AC_SUBST(PKG_CFLAGS)
+AC_SUBST(PKG_LIBS)
+
+dnl libxml++ checks
+#PKG_CHECK_MODULES(LIBXML, libxml++-2.6 >= 2.10.0)
+#AC_SUBST(LIBXML_CFLAGS)
+#AC_SUBST(LIBXML_LIBS)
+
+
+dnl Autoheader things :p
+
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+src/seq/Makefile
+])

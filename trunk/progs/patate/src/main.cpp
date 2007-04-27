@@ -1,7 +1,7 @@
 /*
-** patate.hh
+** main.cpp
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Wed Apr  4 12:28:10 2007 Nahlwe
+** Started on  Wed Apr  4 00:00:29 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,39 +20,24 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	PATATE_HH_
-# define   	PATATE_HH_
+#include <iostream>
+#include "patate.hh"
+#include "patate_gui.hh"
+#include "lfringbuffer.hh"
 
-#include <exception>
-#include <jack/jack.h>
-#include <jack/midiport.h>
+using namespace std;
+using namespace Gtk;
 
-class Patate
+int     main(int ac, char **av)
 {
-public:
-  Patate();
-  ~Patate();
+  LFRingBuffer<Event>   m_ring_gui2core(50);
+  LFRingBuffer<Event>   m_ring_core2gui(50);
+  Patate                patate(m_ring_core2gui.get_writer(),
+                               m_ring_gui2core.get_reader());
+  Main                  kit(ac, av);
+  PatateGUI             gui(m_ring_gui2core.get_reader(),
+                            m_ring_core2gui.get_writer(),
+                            patate);
 
-  int                   process(jack_nframes_t nframes);
-
-protected:
-  void                  init_jack();
-  void                  close_jack();
-
-  jack_client_t         *m_jack_client;
-  jack_port_t           *m_midi_port;
-  jack_port_t           *m_audioL_port;
-  jack_port_t           *m_audioR_port;
-  jack_nframes_t        m_buffer_size;
-};
-
-class jack_error : public std::exception
-{
-public:
-  jack_error(const char *a_err);
-  virtual const char *what() const;
-protected:
-  const char    *m_err;
+  Main::run(gui);
 }
-
-#endif	    /* !PATATE_HH_ */

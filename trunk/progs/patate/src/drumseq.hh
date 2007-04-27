@@ -23,7 +23,10 @@
 #ifndef   	DRUMSEQ_HH_
 # define   	DRUMSEQ_HH_
 
-# define    DPATTERN_LEN 128
+#include <vector>
+#include "sampler.hh"
+
+# define    DPATTERN_LEN 256
 # define    DPATTERN_COUNT 16
 
 struct drum_note
@@ -34,24 +37,41 @@ struct drum_note
 
 struct drum_pattern
 {
+  drum_pattern();
   drum_note     data[DPATTERN_LEN];
 };
 
 class DrumPattern
 {
 public:
-  DrumPattern(LV2Instrument &a_plugin,
-              unsigned int a_ppq);
+  DrumPattern(unsigned int a_ppq, Sampler &a_sampler,
+              unsigned int a_track_id);
   void                  tick();
 protected:
   DrumPattern();
+  void                  play_note(unsigned int a_index);
 
-  LV2Instrument         &m_plugin;
-  drum_pattern          &m_pattern;
+  Sampler               &m_sampler;
+  drum_pattern          m_pattern;
+  unsigned int          m_track_id;
   unsigned int          m_ppq;
   unsigned int          m_res;
   unsigned int          m_len;
   unsigned int          m_tick;
+  unsigned int          m_index;
+  char                  m_note;
+  drum_note             m_active_note;
+};
+
+class DrumSeq
+{
+public:
+  DrumSeq(unsigned int a_ppq, Sampler &a_sampler);
+  void                  tick();
+protected:
+
+  Sampler                       &m_sampler;
+  std::vector<DrumPattern *>    m_patterns;
 };
 
 #endif	    /* !DRUMSEQ_HH_ */
