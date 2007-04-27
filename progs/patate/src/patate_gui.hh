@@ -1,0 +1,51 @@
+/*
+** patate_gui.hh
+** Login : <elthariel@elthariel-desktop>
+** Started on  Tue Apr 10 02:57:27 2007 Nahlwe
+** $Id$
+**
+** Copyright (C) 2007 Nahlwe
+** This program is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** This program is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with this program; if not, write to the Free Software
+** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+*/
+
+#ifndef   	PATATE_GUI_HH_
+# define   	PATATE_GUI_HH_
+
+#include <gtkmm.h>
+#include "drumseqview.hh"
+#include "lfringbuffer.hh"
+#include "event.hh"
+
+class PatateGUI : public Gtk::Window
+{
+public:
+  PatateGUI(LFRingBufferReader<Event> *a_reader,
+            LFRingBufferWriter<Event> *a_writer,
+            Patate &a_patate);
+  ~PatateGUI();
+
+protected:
+  void          gui_update();
+  void          process_gui_event(Event &a_ev);
+
+  LFRingBufferReader<Event>     *m_reader;
+  LFRingBufferWriter<Event>     *m_writer;
+  Patate                        &m_patate;
+  Gtk::VBox                     m_main_vbox;
+  Gtk::HBox                     m_main_hbox[4];
+  DrumSeqView                   m_seqview;
+};
+
+#endif	    /* !PATATE_GUI_HH_ */

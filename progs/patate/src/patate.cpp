@@ -20,6 +20,11 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+#include <iostream>
+#include "patate.hh"
+
+using namespace std;
+
 static int      jack_process_proxy(jack_nframes_t nframes, void *arg)
 {
   Patate        *instance = (Patate *)arg;
@@ -27,7 +32,13 @@ static int      jack_process_proxy(jack_nframes_t nframes, void *arg)
   return instance->process(nframes);
 }
 
-Patate::Patate()
+Patate::Patate(LFRingBufferWriter<Event> *a_writer,
+               LFRingBufferReader<Event> *a_reader)
+  : m_writer(a_writer),
+    m_reader(a_reader),
+    m_sampler(PATATE_SAMPLER_COUNT),
+    m_seq(PATATE_SEQ_PPQ, m_sampler),
+    m_bpm(180), m_remaining_samples(0.0)
 {
   init_jack();
 }
@@ -58,21 +69,80 @@ void                  Patate::init_jack()
     throw *(new jack_error("Unable to create Midi_in port"));
   m_buffer_size = jack_get_buffer_size(m_jack_client);
 
+  //Registering audio ports.
+
   //Activating client.
   if (jack_activate(m_jack_client))
     throw *(new jack_error("Unable to activate jack client"));
 }
 
-void                  Patate::close_jack()
+void            Patate::close_jack()
 {
+  jack_client_close(m_jack_client);
 }
 
-int                   Patate::process(jack_nframes_t nframes)
+int             Patate::process(jack_nframes_t nframes)
 {
+  jack_nframes_t sample_rate;
+
+  sample_rate = jack_get_sample_rate(m_jack_client);
+
   //Midi process
+  process_midi(nframes);
   //Seq process
+  process_seq(nframes, sample_rate);
   //Audio process
 }
+
+void            Patate::process_midi(jack_nframes_t nframes)
+{
+  void                  *midi_buf;
+  jack_midi_event_t     ev;
+  jack_nframes_t        ev_count, i;
+
+  midi_buf = jack_port_get_buffer(m_midi_port, nframes);
+  ev_count = jack_midi_get_event_count(midi_buf, nframes);
+  for (i = 0; i < ev_count; i++)
+    {
+      if (jack_midi_event_get(&ev, midi_buf, i, nframes) == 0)
+        cerr << "Received a midi event" << endl;
+    }
+}
+
+void            Patate::process_seq(jack_nframes_t nframes,
+                                    jack_nframes_t sample_rate)
+{
+  float         tick_len;
+  float         sample_len;
+
+  tick_len = 60.0 / (m_bpm * 4 * PATATE_SEQ_PPQ);
+  sample_len = 1.0 / sample_rate;
+  tick_len = tick_len / sample_len;
+
+  m_remaining_samples += nframes;
+  while (m_remaining_samples >= tick_len)
+    {
+      m_seq.tick();
+      m_remaining_samples -= tick_len;
+    }
+}
+
+void            Patate::set_bpm(unsigned int a_new_bpm)
+{
+  m_bpm = a_new_bpm;
+}
+
+Sampler         &Patate::get_sampler()
+{
+  return m_sampler;
+}
+
+DrumSeq         &Patate::get_drumseq()
+{
+  return m_seq;
+}
+
+
 
 /*
  * Exception
@@ -82,7 +152,7 @@ jack_error::jack_error(const char *a_err)
 {
 }
 
-const char *jack_error::what() const
+const char *jack_error::what() const throw()
 {
   return m_err;
 }

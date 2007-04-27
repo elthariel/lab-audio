@@ -1,7 +1,7 @@
 /*
-** main.cpp
+** iSynth.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Wed Apr  4 00:00:29 2007 Nahlwe
+** Started on  Thu Apr 26 13:31:16 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,5 +20,25 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+#ifndef   	ISYNTH_HH_
+# define   	ISYNTH_HH_
 
+#include "part.hh"
 
+namespace Seq
+{
+  class Note;
+
+  class iSynth
+  {
+  public:
+    virtual     ~iSynth(){}
+
+    virtual void        play_note(const Seq::Note &a_note) = 0;
+    virtual void        stop_note(const Seq::Note &a_note) = 0;
+    virtual void        flush_note() = 0;
+  protected:
+  };
+};
+
+#endif	    /* !ISYNTH_HH_ */
