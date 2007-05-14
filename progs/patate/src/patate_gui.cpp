@@ -31,7 +31,7 @@ PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
   : m_reader(a_reader),
     m_writer(a_writer),
     m_patate(a_patate),
-    m_seqview(m_patate.get_drumseq(), m_patate.get_sampler(), 0)
+    m_seqview(*this, 0)
 {
   add(m_main_vbox);
   m_main_vbox.pack_end(m_seqview);
@@ -55,4 +55,14 @@ void            PatateGUI::gui_update()
 
 void            PatateGUI::process_gui_event(Event &a_ev)
 {
+}
+
+LFRingBufferReader<Event>     *PatateGUI::reader()
+{
+  return m_reader;
+}
+
+LFRingBufferWriter<Event>     *PatateGUI::writer()
+{
+  return m_writer;
 }

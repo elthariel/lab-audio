@@ -37,9 +37,9 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
                LFRingBufferReader<Event> *a_reader)
   : m_writer(a_writer),
     m_reader(a_reader),
-    m_sampler(PATATE_SAMPLER_COUNT),
-    m_seq(180, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1),
-  m_bpm(180)//, m_remaining_samples(0.0)
+    m_sampler(PATATE_SAMPLER_COUNT, 48000),
+    m_seq(250, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_sampler),
+    m_bpm(250)//, m_remaining_samples(0.0)
 {
   init_jack();
   m_seq.start();
@@ -59,16 +59,18 @@ void                  Patate::init_jack()
     throw *(new jack_error("Unable to connect to jack (servernot running ?)"));
 
   // Register process callback
-  jack_set_process_callback(m_jack_client, &jack_process_proxy,
-                            (void *)this);
+  if (jack_set_process_callback(m_jack_client, &jack_process_proxy,
+                            (void *)this))
+    cerr << "Unable to register process callback" << endl;
 
   //Registering midi port.
   m_midi_port = jack_port_register(m_jack_client, "midi_in",
                                    JACK_DEFAULT_MIDI_TYPE,
                                    JackPortIsInput, //| JackPortIsTerminal,
                                    0);
-  if (m_midi_port == 0)
+  if (m_midi_port == NULL)
     throw *(new jack_error("Unable to create Midi_in port"));
+
   m_buffer_size = jack_get_buffer_size(m_jack_client);
 
   //Registering audio ports.
@@ -126,8 +128,10 @@ void            Patate::process_event()
 
 void            Patate::_process_event(Event &a_ev)
 {
-  Seq::Note     note;
+  Seq::Note     &note = *(new Seq::Note);
 
+  // FIXME move to a PatateController.
+  //cout << "received an event from gui or midi" << endl;
   if (a_ev.subsystem == Sys_DrumSeq)
     {
       if (a_ev.type == Event::TypeNote)
@@ -136,11 +140,11 @@ void            Patate::_process_event(Event &a_ev)
             {
               note.note = a_ev.data.note.note;
               note.vel = a_ev.data.note.vel;
-              note.len = 90;
-              get_drumseq().part(1).add_step(note, 1, a_ev.data.note.note);
+              note.len = 24;
+              get_drumseq().part(1).add_step(note, 0, a_ev.data.note.note);
             }
           else if ((a_ev.data.note.note >= 16) && (a_ev.data.note.note < 32))
-            get_drumseq().part(1).rem_step(1, a_ev.data.note.note);
+            get_drumseq().part(1).rem_step(1, a_ev.data.note.note - 16);
         }
     }
 }

@@ -64,18 +64,21 @@ namespace Seq
                                            unsigned int a_tick)
   {
     std::list<Note *>::iterator iter;
-
+    //      cout << a_pos << " : " << a_tick << endl;
     if (m_synth)
       {
         update_note_on(a_tick);
         for (iter = m_seq.begin();
              ((*iter)->start < (a_pos + a_tick)) && (iter != m_seq.end());
              iter++)
-          if ((*iter)->start >= a_pos)
-            {
-              insert_note_on(*iter);
-              m_synth->play_note(**iter);
-            }
+          {
+            //            cout << "Seen a note" << endl;
+            if ((*iter)->start >= a_pos)
+              {
+                insert_note_on(*iter);
+                m_synth->play_note(**iter);
+              }
+          }
       }
   }
 
@@ -97,6 +100,7 @@ namespace Seq
          ((*iter)->start <= a_note.start) && (iter != m_seq.end());
          iter++);
     m_seq.insert(iter, &a_note);
+    cout << "Inserted a note : " << m_seq.size() << endl;
   }
 
   bool                          Part::rem_note(unsigned int a_begin,
@@ -140,6 +144,7 @@ namespace Seq
     m_synth = a_synth;
   }
 
+  // FIXME delete notes.
   void                          Part::update_note_on(unsigned int a_tick)
   {
     std::list<Note *>::iterator iter;
@@ -174,9 +179,12 @@ namespace Seq
         for (iter = m_note_on.begin();
              ((*iter)->start <= a_note->start) && (iter != m_note_on.end());
              iter++);
+        a_note->rem = a_note->len;
         m_note_on.insert(iter, a_note);
+        cout << a_note->rem << endl;
       }
   }
+
 
 void                        Part::add_step(Note &a_note,
                                            unsigned int a_bar,

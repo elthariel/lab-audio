@@ -21,7 +21,12 @@
 */
 
 #include <iostream>
+#include <cstdlib>
+#include <cstdio>
 #include "timer.hh"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -90,6 +95,7 @@ namespace Seq
     update_ticks();
     res = m_ticks;
     m_ticks = 0;
+    return (res);
   }
 
   void                  Timer::update_tick_len()
@@ -103,15 +109,18 @@ namespace Seq
       m_tick_len.tv_nsec = (long) len;
     else
       {
-        len = 1000000000.0;
+        len *= 1000000000.0;
         m_tick_len.tv_nsec = (long) len;
       }
   }
 
   void                  Timer::update_ticks()
   {
-    unsigned int        tmp;
+    unsigned long       tmp;
     timespec            now;
+    static unsigned int tmp2 = 0;
+    static FILE         *fd = NULL;
+    static timespec     last_now;
 
     // FIXME doesn't support tick_len > 1s;
     clock_gettime(m_clock, &now);
@@ -120,9 +129,28 @@ namespace Seq
     tmp += now.tv_nsec - m_last_tick.tv_nsec;
     tmp += m_remaining_nsec;
 
-    m_ticks += tmp / m_tick_len.tv_nsec;
-    m_remaining_nsec = tmp % m_tick_len.tv_nsec;
-    m_last_tick = now;
+    if ((tmp / m_tick_len.tv_nsec) > 0)
+      {
+        m_ticks += tmp / m_tick_len.tv_nsec;
+        m_remaining_nsec = tmp % m_tick_len.tv_nsec;
+        m_last_tick = now;
+      }
+    else
+      m_remaining_nsec = tmp;
+
+    /*    if (fd == NULL)
+      {
+        fd = fopen("tmp/debug", "w");
+        if (fd == NULL)
+          cout << "Unable to open debug file" << endl;
+      }
+    else
+      {
+        tmp = now.tv_sec - last_now.tv_sec;
+        tmp *= 1000000000;
+        tmp += now.tv_nsec - last_now.tv_nsec;
+        fprintf(fd, "%d : %d : %d \n", now.tv_sec, now.tv_nsec, m_ticks);
+        }*/
   }
 
 };

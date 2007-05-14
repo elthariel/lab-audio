@@ -33,7 +33,8 @@ namespace Seq
   {
   public:
     Seq(unsigned int a_bpm, unsigned int a_ppq,
-        unsigned int a_part_count, unsigned int a_bar_count);
+        unsigned int a_part_count, unsigned int a_bar_count,
+        iSynthContainer &a_sampler);
     ~Seq();
 
     void                run();
@@ -47,6 +48,7 @@ namespace Seq
     bool                started();
   protected:
     Timer               m_timer;
+    iSynthContainer     &m_synths;
     std::vector<Part *> m_parts;
     unsigned int        m_part_count;
     unsigned int        m_bar_count;

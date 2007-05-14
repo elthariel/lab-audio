@@ -84,6 +84,7 @@ public:
   void                  set_reverse(float);
   void                  set_normalize(float);
   void                  set_aalias(float);
+  void                  set_sample_rate(unsigned int a_sr);
 
   // iSynth interface
   virtual void          play_note(const Seq::Note &a_note);

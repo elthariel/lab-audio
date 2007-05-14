@@ -25,14 +25,18 @@
 
 #include <vector>
 #include "Sample.hh"
+#include <iSynth.hh>
 
-class Sampler
+class Sampler : public Seq::iSynthContainer
 {
 public:
-  Sampler(unsigned int a_sample_count);
+  Sampler(unsigned int a_sample_count,
+          unsigned int a_sample_rate);
 
   unsigned int          get_sample_count();
   Sample                *get_sample(unsigned int a_index);
+  void                  set_sample_rate(unsigned int a_sr);
+  virtual Seq::iSynth   *synth(unsigned int i);
 protected:
   std::vector<Sample *> m_samples;
 };

@@ -29,17 +29,22 @@
 #include "seq.hh"
 #include "patate.hh"
 
+class PatateGUI;
+
 class DrumSeqView : public Gtk::VBox
 {
 public:
-  DrumSeqView(Seq::Seq &a_seq, Sampler &a_sampler,
+  DrumSeqView(PatateGUI &a_gui,
               unsigned int a_init_track);
 protected:
-  Seq::Seq              &m_seq;
-  Sampler               &m_sampler;
+  void                  step_pressed(unsigned int a_step_id);
+
+  PatateGUI             &m_gui;
   unsigned int          m_track_id;
   Gtk::HBox             m_seq_hbox;
   Gtk::ToggleButton     m_steps[16];
 };
+
+#include "patate_gui.hh"
 
 #endif	    /* !DRUMSEQVIEW_HH_ */

@@ -20,12 +20,15 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
+#include <iostream>
 #include <stdio.h>
 #include "drumseqview.hh"
 
-DrumSeqView::DrumSeqView(Seq::Seq &a_seq, Sampler &a_sampler,
+using namespace std;
+
+DrumSeqView::DrumSeqView(PatateGUI &a_gui,
                          unsigned int a_init_track)
-  : m_seq(a_seq), m_sampler(a_sampler),
+  : m_gui(a_gui),
     m_track_id(a_init_track)
 {
   unsigned int i;
@@ -37,5 +40,26 @@ DrumSeqView::DrumSeqView(Seq::Seq &a_seq, Sampler &a_sampler,
       sprintf(label, "%d", i);
       m_seq_hbox.pack_start(m_steps[i]);
       m_steps[i].set_label(label);
+      m_steps[i].signal_clicked()
+        .connect(sigc::bind<0>(sigc::mem_fun(*this,
+                                             &DrumSeqView::step_pressed),
+                               i));
     }
+}
+
+void                    DrumSeqView::step_pressed(unsigned int a_step_id)
+{
+  Event                 ev;
+
+  ev.subsystem = Sys_DrumSeq;
+  ev.type = Event::TypeNote;
+  ev.data.note.chan = 1;
+  if (m_steps[a_step_id].get_active())
+    ev.data.note.note = a_step_id;
+  else
+    ev.data.note.note = a_step_id + 16;
+  ev.data.note.vel = 50;
+
+  if (m_gui.writer()->ready())
+      m_gui.writer()->write(&ev);
 }

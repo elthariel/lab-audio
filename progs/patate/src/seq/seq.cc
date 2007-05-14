@@ -23,6 +23,8 @@
 #include <iostream>
 #include "seq.hh"
 
+using namespace std;
+
 namespace Seq
 {
 
@@ -31,15 +33,18 @@ namespace Seq
    */
 
   Seq::Seq(unsigned int a_bpm, unsigned int a_ppq,
-           unsigned int a_part_count, unsigned int a_bar_count)
-    : m_timer(a_bpm, a_ppq), m_parts(a_part_count),
+           unsigned int a_part_count, unsigned int a_bar_count,
+           iSynthContainer &a_sampler)
+    : m_timer(a_bpm, a_ppq), m_synths(a_sampler),
+      m_parts(a_part_count),
       m_part_count(a_part_count),
       m_bar_count(a_bar_count), m_ppq(a_ppq), m_pos(0)
   {
     unsigned int i;
 
     for (i = 0; i < m_part_count; i++)
-      m_parts[i] = new Part(a_ppq, 0, a_bar_count);
+      m_parts[i] = new Part(a_ppq, m_synths.synth(i),
+                            a_bar_count);
   }
 
   Seq::~Seq()
@@ -76,6 +81,7 @@ namespace Seq
               m_parts[i]->play(m_pos, ticks);
             m_pos += ticks;
           }
+        //        cout << ticks << " : " << m_pos << endl;
       }
   }
 
