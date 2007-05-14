@@ -28,6 +28,10 @@
 #include "lfringbuffer.hh"
 #include "event.hh"
 
+#ifdef DRUMSEQVIEW_HH_
+class DrumSeqView;
+#endif
+
 class PatateGUI : public Gtk::Window
 {
 public:
@@ -35,6 +39,9 @@ public:
             LFRingBufferWriter<Event> *a_writer,
             Patate &a_patate);
   ~PatateGUI();
+
+  LFRingBufferReader<Event>     *reader();
+  LFRingBufferWriter<Event>     *writer();
 
 protected:
   void          gui_update();

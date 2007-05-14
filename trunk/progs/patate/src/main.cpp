@@ -30,13 +30,13 @@ using namespace Gtk;
 
 int     main(int ac, char **av)
 {
-  LFRingBuffer<Event>   m_ring_gui2core(50);
-  LFRingBuffer<Event>   m_ring_core2gui(50);
-  Patate                patate(m_ring_core2gui.get_writer(),
-                               m_ring_gui2core.get_reader());
+  LFRingBuffer<Event>   *m_ring_gui2core = new LFRingBuffer<Event>(50);
+  LFRingBuffer<Event>   *m_ring_core2gui = new LFRingBuffer<Event>(50);
+  Patate                patate(m_ring_core2gui->get_writer(),
+                               m_ring_gui2core->get_reader());
   Main                  kit(ac, av);
-  PatateGUI             gui(m_ring_gui2core.get_reader(),
-                            m_ring_core2gui.get_writer(),
+  PatateGUI             gui(m_ring_core2gui->get_reader(),
+                            m_ring_gui2core->get_writer(),
                             patate);
 
   Main::run(gui);

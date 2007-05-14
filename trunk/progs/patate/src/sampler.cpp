@@ -25,9 +25,15 @@
 
 using namespace std;
 
-Sampler::Sampler(unsigned int a_sample_count)
+Sampler::Sampler(unsigned int a_sample_count,
+                 unsigned int a_sample_rate)
   : m_samples(a_sample_count, 0)
 {
+  unsigned int i;
+
+  for (i = 0; i < a_sample_count; i++)
+    m_samples[i] = new Sample("/home/elthariel/test.wav",
+                              a_sample_rate);
 }
 
 unsigned int    Sampler::get_sample_count()
@@ -42,3 +48,19 @@ Sample          *Sampler::get_sample(unsigned int a_index)
   else
     return m_samples[a_index];
 }
+
+Seq::iSynth     *Sampler::synth(unsigned int i)
+{
+  return get_sample(i);
+}
+
+void            Sampler::set_sample_rate(unsigned int a_sr)
+{
+  vector<Sample *>::iterator iter;
+
+  for (iter = m_samples.begin(); iter != m_samples.end(); iter++)
+    if (*iter)
+      (*iter)->set_sample_rate(a_sr);
+}
+
+

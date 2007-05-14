@@ -37,6 +37,13 @@ namespace Seq
     virtual void        flush_note() = 0;
   protected:
   };
+
+  class iSynthContainer
+  {
+  public:
+    virtual ~iSynthContainer(){}
+    virtual iSynth      *synth(unsigned int i) = 0;
+  };
 };
 
 # include "part.hh"

@@ -247,6 +247,7 @@ void                    Sample::note_on(char note_num, char velocity)
   bool                  finished = false;
   int                   i = 0;
 
+  cout << "Played a note" << endl;
   while ((i < SAMPLER_POLY) && !finished)
     {
       if (!voices[i].activated)
@@ -267,6 +268,7 @@ void                    Sample::note_off(char note_num, char velocity)
   bool                  finished = false;
   int                   i = 0;
 
+  cout << "Stopped a note" << endl;
   while((i < SAMPLER_POLY) &&!finished)
     {
       if (voices[i].activated &&
@@ -457,6 +459,11 @@ void                    Sample::set_aalias(float val)
   m_antialias = tmp;
 }
 
+void                    Sample::set_sample_rate(unsigned int a_sr)
+{
+  m_sr = a_sr;
+}
+
 /*
  * Sample class : iSynth interface
  */
@@ -467,7 +474,7 @@ void                    Sample::play_note(const Seq::Note &a_note)
 
 void                    Sample::stop_note(const Seq::Note &a_note)
 {
-  note_on(a_note.note, a_note.vel);
+  note_off(a_note.note, a_note.vel);
 }
 
 void                    Sample::flush_note()

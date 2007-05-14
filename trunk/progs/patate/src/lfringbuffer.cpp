@@ -26,10 +26,12 @@
 #include <iostream>
 #include "lfringbuffer.hh"
 
+using namespace std;
+
 template <class BlockType>
 LFRingBuffer<BlockType>::LFRingBuffer(uint32_t item_count)
   : m_buffer(0), m_ro(0), m_wo(0), m_capacity(item_count),
-    m_size(), m_reader(false), m_writer(false)
+    m_size(0), m_reader(false), m_writer(false)
 {
   m_buffer = new BlockType[item_count];
 }
@@ -73,8 +75,9 @@ bool            LFRingBuffer<BlockType>::write(BlockType *out)
       m_buffer[m_wo] = *out;
       ++m_wo;
       m_wo %= m_capacity;
-      --m_size;
+      ++m_size;
     }
+  // cout << this << ": W : " << m_size.get_value() << " : " << m_capacity << endl;
   return (ret);
 }
 
@@ -87,8 +90,9 @@ bool            LFRingBuffer<BlockType>::read(BlockType *out)
       *out = m_buffer[m_ro];
       ++m_ro;
       m_ro %= m_capacity;
-      ++m_size;
+      --m_size;
     }
+  // cout << this << ": R : " << m_size.get_value() << " : " << m_capacity << endl;
   return (ret);
 }
 
@@ -101,6 +105,7 @@ bool            LFRingBuffer<BlockType>::ready_to_write()
 template <class BlockType>
 bool            LFRingBuffer<BlockType>::ready_to_read()
 {
+  //  cout << this << ": C_R : " << m_size.get_value() << " : " << m_capacity << endl;
   return ((m_size > 0));
 }
 

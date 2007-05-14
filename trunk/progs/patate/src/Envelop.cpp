@@ -283,7 +283,7 @@ unsigned int            EnvSwitch::add_envelop(Envelop *env, int position)
 
   if (replacing)
     delete m_envs[position];
-  cout << "actual position " << actual_position << endl;
+  //cout << "actual position " << actual_position << endl;
   m_envs.push_back(env);
 
   return (actual_position);
