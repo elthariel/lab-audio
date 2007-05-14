@@ -63,13 +63,28 @@ void                  Patate::init_jack()
                             (void *)this))
     cerr << "Unable to register process callback" << endl;
 
-  //Registering midi port.
+  //Registering ports.
   m_midi_port = jack_port_register(m_jack_client, "midi_in",
                                    JACK_DEFAULT_MIDI_TYPE,
                                    JackPortIsInput, //| JackPortIsTerminal,
                                    0);
   if (m_midi_port == NULL)
     throw *(new jack_error("Unable to create Midi_in port"));
+
+  m_audio_port_l = jack_port_register(m_jack_client, "outL",
+                                      JACK_DEFAULT_AUDIO_TYPE,
+                                      JackPortIsOutput | JackPortIsTerminal,
+                                      0);
+  if (m_audio_port_l == NULL)
+    throw *(new jack_error("Unable to create Audio port"));
+
+  m_audio_port_r = jack_port_register(m_jack_client, "outR",
+                                      JACK_DEFAULT_AUDIO_TYPE,
+                                      JackPortIsOutput | JackPortIsTerminal,
+                                      0);
+  if (m_audio_port_r == NULL)
+    throw *(new jack_error("Unable to create Audio port"));
+
 
   m_buffer_size = jack_get_buffer_size(m_jack_client);
 
@@ -98,6 +113,12 @@ int             Patate::process(jack_nframes_t nframes)
   //Seq process
   process_seq(nframes, sample_rate);
   //Audio process
+  process_audio(nframes, sample_rate);
+}
+
+void            Patate::process_audio(jack_nframes_t nframes,
+                                      jack_nframes_t sample_rate)
+{
 }
 
 void            Patate::process_midi(jack_nframes_t nframes)

@@ -50,6 +50,8 @@ protected:
   void                  close_jack();
   void                  process_midi(jack_nframes_t nframes);
   void                  process_event();
+  void                  process_audio(jack_nframes_t nframes,
+                                      jack_nframes_t sample_rate);
   void                  _process_event(Event &a_ev);
   void                  process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate);
@@ -61,8 +63,8 @@ protected:
   Seq::Seq              m_seq;
   jack_client_t         *m_jack_client;
   jack_port_t           *m_midi_port;
-  jack_port_t           *m_audioL_port;
-  jack_port_t           *m_audioR_port;
+  jack_port_t           *m_audio_port_l;
+  jack_port_t           *m_audio_port_r;
   jack_nframes_t        m_buffer_size;
   unsigned int          m_bpm;
   //  float                 m_remaining_samples;
