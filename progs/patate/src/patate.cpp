@@ -38,8 +38,8 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
   : m_writer(a_writer),
     m_reader(a_reader),
     m_sampler(PATATE_SAMPLER_COUNT, 48000),
-    m_seq(250, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_sampler),
-    m_bpm(250)//, m_remaining_samples(0.0)
+    m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_sampler),
+    m_bpm(160)//, m_remaining_samples(0.0)
 {
   init_jack();
   m_seq.start();
@@ -88,8 +88,6 @@ void                  Patate::init_jack()
 
   m_buffer_size = jack_get_buffer_size(m_jack_client);
 
-  //Registering audio ports.
-
   //Activating client.
   if (jack_activate(m_jack_client))
     throw *(new jack_error("Unable to activate jack client"));
@@ -119,6 +117,13 @@ int             Patate::process(jack_nframes_t nframes)
 void            Patate::process_audio(jack_nframes_t nframes,
                                       jack_nframes_t sample_rate)
 {
+  jack_default_audio_sample_t   *outL, *outR;
+  unsigned int                  i;
+
+  outL = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_l, nframes);
+  outR = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_r, nframes);
+  for (i = 0; i < m_sampler.get_sample_count(); i++)
+    m_sampler.synth(i)->render(nframes, sample_rate, outL, outR);
 }
 
 void            Patate::process_midi(jack_nframes_t nframes)
@@ -161,11 +166,11 @@ void            Patate::_process_event(Event &a_ev)
             {
               note.note = a_ev.data.note.note;
               note.vel = a_ev.data.note.vel;
-              note.len = 24;
+              note.len = 300;
               get_drumseq().part(1).add_step(note, 0, a_ev.data.note.note);
             }
           else if ((a_ev.data.note.note >= 16) && (a_ev.data.note.note < 32))
-            get_drumseq().part(1).rem_step(1, a_ev.data.note.note - 16);
+            get_drumseq().part(1).rem_step(0, a_ev.data.note.note - 16);
         }
     }
 }

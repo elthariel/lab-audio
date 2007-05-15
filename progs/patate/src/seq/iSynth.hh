@@ -23,6 +23,8 @@
 #ifndef   	ISYNTH_HH_
 # define   	ISYNTH_HH_
 
+#include <jack/jack.h>
+
 namespace Seq
 {
   class Note;
@@ -35,6 +37,10 @@ namespace Seq
     virtual void        play_note(const Seq::Note &a_note) = 0;
     virtual void        stop_note(const Seq::Note &a_note) = 0;
     virtual void        flush_note() = 0;
+    virtual void        render(jack_nframes_t nframes,
+                               jack_nframes_t sample_rate,
+                               jack_default_audio_sample_t *outL,
+                               jack_default_audio_sample_t *outR) = 0;
   protected:
   };
 

@@ -1,3 +1,4 @@
+
 /*
 ** Sample.hh
 ** Login : <elthariel@localhost.localdomain>
@@ -90,6 +91,10 @@ public:
   virtual void          play_note(const Seq::Note &a_note);
   virtual void          stop_note(const Seq::Note &a_note);
   virtual void          flush_note();
+  virtual void          render(jack_nframes_t nframes,
+                               jack_nframes_t sample_rate,
+                               jack_default_audio_sample_t *outL,
+                               jack_default_audio_sample_t *outR);
 
 private:
   // Internal data;
