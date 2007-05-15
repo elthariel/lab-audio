@@ -78,17 +78,17 @@ Sample::Sample(string path, unsigned int sample_rate)
  * This copy constructor is not up to date
  */
 Sample::Sample(Sample &smp)
-  :m_sr(smp.m_sr), info(smp.info),
-   aalias_l(smp.aalias_l), aalias_r(smp.aalias_r),
-   amp_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
-   pitch_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
-   pan_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
-   filter_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
-   m_root_note(smp.m_root_note),
-   m_fine_pitch(smp.m_fine_pitch), m_gain(smp.m_gain), m_pan(smp.m_pan),
-   m_norm(smp.m_norm),
-   m_reverse(smp.m_reverse),
-   m_norm_factor(smp.m_norm_factor)
+  : m_sr(smp.m_sr), info(smp.info),
+    aalias_l(smp.aalias_l), aalias_r(smp.aalias_r),
+    amp_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+    pitch_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+    pan_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+    filter_env(*EnvSwitch::create_switch_full(smp.m_sr, 170)),
+    m_root_note(smp.m_root_note),
+    m_fine_pitch(smp.m_fine_pitch), m_gain(smp.m_gain), m_pan(smp.m_pan),
+    m_norm(smp.m_norm),
+    m_reverse(smp.m_reverse),
+    m_norm_factor(smp.m_norm_factor)
 {
   int           fcount = info.channels * info.frames;
 
@@ -218,12 +218,12 @@ void                    Sample::render(unsigned int sample_count,
 {
   int i;
 
-  for (int i = 0; i < sample_count; i++) // clear audio buffer
+  /*  for (int i = 0; i < sample_count; i++) // clear audio buffer
   {
   		outL[i] = 0.0;
   		outR[i] = 0.0;
   }
-
+  */
   for (i = 0; i < SAMPLER_POLY; i++) // play sample voice
     {
       if (voices[i].activated)
@@ -484,6 +484,16 @@ void                    Sample::flush_note()
   for (i = 0; i < SAMPLER_POLY; i++)
     voices[i].activated = false;
 }
+
+void                    Sample::render(jack_nframes_t nframes,
+                                       jack_nframes_t sample_rate,
+                                       jack_default_audio_sample_t *outL,
+                                       jack_default_audio_sample_t *outR)
+{
+  set_sample_rate(sample_rate);
+  render(nframes, outL, outR);
+}
+
 
 
 /*

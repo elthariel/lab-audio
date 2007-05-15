@@ -109,22 +109,23 @@ namespace Seq
     std::list<Note *>::iterator iter;
     Note                        *to_rem = 0;
 
-    if (!a_end)
+    if (a_end == 0)
       a_end == a_begin;
 
-    if (m_synth)
-      for (iter = m_seq.begin();
-           ((*iter)->start > a_end) && (iter != m_seq.end());
-           iter++)
-        {
-          if (to_rem)
-            {
-              m_seq.remove(to_rem);
-              to_rem = 0;
-            }
-          if (((*iter)->start >= a_begin) && ((*iter)->start <= a_end))
-            to_rem = *iter;
-        }
+    for (iter = m_seq.begin();
+         ((*iter)->start <= a_end) && (iter != m_seq.end());
+         iter++)
+      {
+        cout << "pouet" << endl;
+        if (to_rem)
+          {
+            cout << "pk tu le removes pas batard" << endl;
+            m_seq.remove(to_rem);
+            to_rem = 0;
+          }
+        if (((*iter)->start >= a_begin) && ((*iter)->start <= a_end))
+          to_rem = *iter;
+      }
     if (to_rem)
       m_seq.remove(to_rem);
   }
@@ -152,12 +153,13 @@ namespace Seq
 
     for (iter = m_note_on.begin(); iter != m_note_on.end(); iter++)
       {
+        //        cout << "remaining ticks : " << (*iter)->rem << endl;
         if (to_del)
           {
             m_note_on.pop_front();
             to_del = false;
           }
-        if ((*iter)->rem >= a_tick)
+        if ((*iter)->rem <= a_tick)
           {
             to_del = true;
             if (m_synth)
@@ -181,7 +183,7 @@ namespace Seq
              iter++);
         a_note->rem = a_note->len;
         m_note_on.insert(iter, a_note);
-        cout << a_note->rem << endl;
+        //        cout << "Note off should happen in " << a_note->rem << " ticks." << endl;
       }
   }
 
