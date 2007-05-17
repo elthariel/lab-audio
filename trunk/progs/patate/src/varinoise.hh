@@ -27,20 +27,23 @@
 #include "dsp_config.h"
 #include "iFilter.hh"
 
-class VariNoise : public iOscVector
+namespace Dsp
 {
-public:
-  VariNoise(iOscVector &a_osc);
-  virtual ~VariNoise();
 
-  virtual void          reset() = 0;
-  virtual void          frequency(float new_frew);
-  virtual void          render(sample_t *out, unsigned int out_len) = 0;
-protected:
-  OnePoleFilter         m_filter;
-  iOscVector            &m_osc;
+  class VariNoise : public iOscVector
+  {
+  public:
+    VariNoise(iOscVector &a_osc);
+    virtual ~VariNoise();
+
+    virtual void          reset() = 0;
+    virtual void          frequency(float new_frew);
+    virtual void          render(sample_t *out, unsigned int out_len) = 0;
+  protected:
+    OnePoleFilter         m_filter;
+    iOscVector            &m_osc;
+  };
+
 };
-
-
 
 #endif	    /* !VARINOISE_HH_ */

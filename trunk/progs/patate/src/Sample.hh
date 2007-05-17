@@ -27,7 +27,7 @@
 # include <string>
 # include <vector>
 # include <sndfile.h>
-# include <iSynth.hh>
+# include <seq/iSynth.hh>
 
 # include "Envelop.hh"
 # include "frequencytable.hpp"

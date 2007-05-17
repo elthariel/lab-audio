@@ -25,6 +25,9 @@
 
 #include        "dsp_config.h"
 
+namespace Dsp
+{
+
 class iFilterVector
 {
 public:
@@ -69,6 +72,8 @@ protected:
   Type                  m_type;
   float                 m_coefs[3]; // a0, a1, b1
   sample_t              m_state[3];
+};
+
 };
 
 #endif	    /* !IFILTER_HH_ */

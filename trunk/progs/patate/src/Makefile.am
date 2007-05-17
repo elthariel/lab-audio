@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Thu May 17 17:41:24 2007 Nahlwe
+## Last update Thu May 17 18:16:53 2007 Nahlwe
 ##
 
 SUBDIRS = seq
@@ -13,7 +13,8 @@ SUBDIRS = seq
 noinst_HEADERS = Envelop.hh event.hh lfringbuffer.hh \
 	patate_gui.hh patate.hh Sample.hh sampler.hh smp_uint.hh \
 	help.hpp patate_gui.hh drumseqview.hh noise.hh \
-	dsp_config.h iFilter.hh varinoise.hh
+	dsp_config.h iFilter.hh varinoise.hh iSynth.hh \
+	drumsynth.hh
 
 #######################
 # Build an executable #
@@ -26,7 +27,7 @@ bin_PROGRAMS = patate
 patate_SOURCES = AnalogFilter.cpp Envelop.cpp foncteurs.cpp \
 	lfringbuffer.cpp main.cpp patate.cpp Sample.cpp sampler.cpp \
 	thread.cpp help.cpp patate_gui.cpp drumseqview.cpp noise.cc \
-	iFilter.cc varinoise.cc
+	iFilter.cc varinoise.cc drumsynth.cc
 
 # Don't forget that the order of the libraries _does_ matter
 patate_CPPFLAGS = -g -Wall -pthread @PKG_CFLAGS@ -Iseq/

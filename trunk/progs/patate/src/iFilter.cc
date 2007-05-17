@@ -24,6 +24,8 @@
 #include <cmath>
 #include "iFilter.hh"
 
+namespace Dsp
+{
 /*
  * iFilterVector interface
  */
@@ -142,6 +144,8 @@ void            OnePoleFilter::compute_coefs()
       m_coefs[2] = (w - cut) * norm;
     }
 }
+
+};
 
 /*
 void SetLPF(float fCut, float fSampling)
