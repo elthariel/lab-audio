@@ -20,8 +20,8 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	ISYNTH_HH_
-# define   	ISYNTH_HH_
+#ifndef   	SEQ_ISYNTH_HH_
+# define   	SEQ_ISYNTH_HH_
 
 #include <jack/jack.h>
 
@@ -49,6 +49,8 @@ namespace Seq
   public:
     virtual ~iSynthContainer(){}
     virtual iSynth      *synth(unsigned int i) = 0;
+    virtual unsigned int get_synth_count() = 0;
+    virtual void        set_sample_rate(unsigned int a_sr) = 0;
   };
 };
 

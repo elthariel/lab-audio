@@ -1,7 +1,7 @@
 /*
-** sampler.hh
+** synth_manager.cc
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Tue Apr 10 15:29:02 2007 Nahlwe
+** Started on  Fri May 18 00:54:34 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,25 +20,25 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	SAMPLER_HH_
-# define   	SAMPLER_HH_
+#include <iostream>
+#include "synth_manager.hh"
 
-#include <vector>
-//#include "Sample.hh"
-#include <seq/iSynth.hh>
-
-class Sampler : public Seq::iSynthContainer
+SynthManager::SynthManager(unsigned int size)
 {
-public:
-  Sampler(unsigned int a_sample_count,
-          unsigned int a_sample_rate);
+}
 
-  unsigned int          get_sample_count();
-  //  Sample                *get_sample(unsigned int a_index);
-  void                  set_sample_rate(unsigned int a_sr);
-  virtual Seq::iSynth   *synth(unsigned int i);
-protected:
-  //  std::vector<Sample *> m_samples;
-};
+SynthManager::~SynthManager()
+{
+}
 
-#endif	    /* !SAMPLER_HH_ */
+unsigned int          SynthManager::get_synth_count()
+{
+}
+
+void                  SynthManager::set_sample_rate(unsigned int a_sr)
+{
+}
+
+Seq::iSynth           *SynthManager::synth(unsigned int i)
+{
+}
