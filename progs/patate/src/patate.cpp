@@ -122,6 +122,13 @@ void            Patate::process_audio(jack_nframes_t nframes,
 
   outL = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_l, nframes);
   outR = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_r, nframes);
+
+  for (i = 0; i < nframes; i++)
+    {
+      outL[i] = 0.0;
+      outR[i] = 0.0;
+    }
+
   for (i = 0; i < m_sampler.get_sample_count(); i++)
     m_sampler.synth(i)->render(nframes, sample_rate, outL, outR);
 }
@@ -164,9 +171,9 @@ void            Patate::_process_event(Event &a_ev)
         {
           if (a_ev.data.note.note < 16)
             {
-              note.note = a_ev.data.note.note;
+              note.note = 63;
               note.vel = a_ev.data.note.vel;
-              note.len = 300;
+              note.len = 30;
               get_drumseq().part(1).add_step(note, 0, a_ev.data.note.note);
             }
           else if ((a_ev.data.note.note >= 16) && (a_ev.data.note.note < 32))
