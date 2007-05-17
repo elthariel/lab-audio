@@ -27,6 +27,9 @@
 
 #define PI 3.1415926536f
 
+namespace Dsp
+{
+
 class iRand
 {
 public:
@@ -122,7 +125,7 @@ protected:
   iRand                 &m_rand;
 };
 
-
+};
 
 
 

@@ -23,6 +23,8 @@
 #include <iostream>
 #include "varinoise.hh"
 
+namespace Dsp
+{
 /*
  * VariNoise class
  */
@@ -75,5 +77,5 @@ void          VariNoise::render(sample_t *out, unsigned int out_len)
     out[i] = amount * out[i] + (1.0 - amount) * buf[i];
 }
 
-
+};
 

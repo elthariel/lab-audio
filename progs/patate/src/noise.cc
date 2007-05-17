@@ -31,6 +31,8 @@
 
 using namespace std;
 
+namespace Dsp
+{
 /*
  * URandom
  */
@@ -255,7 +257,7 @@ float           GaussianWhiteNoise::sample()
   return ((float) sqrt(-2.0f * log(rnd[0])) * cos(2.0f * PI * rnd[1]));
 }
 
-
+};
 
 
 
