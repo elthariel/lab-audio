@@ -25,6 +25,8 @@
 
 #include <vector>
 
+namespace Dsp
+{
 enum EnvMode
   {
     EnvModeOn,
@@ -32,17 +34,17 @@ enum EnvMode
     EnvModeCount
   };
 
-class Envelop
+class iEnvelop
 {
 protected:
-  Envelop(): m_note(-1), m_vel(0){}
+  iEnvelop(): m_note(-1), m_vel(0){}
 
   char                          m_note;
   char                          m_vel;
 
 public:
-  virtual ~Envelop(){}
-  Envelop(unsigned int, unsigned int): m_note(-1), m_vel(0){} //sample_rate, tempo
+  virtual ~iEnvelop(){}
+  iEnvelop(unsigned int, unsigned int): m_note(-1), m_vel(0){} //sample_rate, tempo
 
   virtual double                operator()(unsigned int, EnvMode = EnvModeOn) = 0;
   virtual void                  set_coefs(double *,
@@ -53,17 +55,17 @@ public:
 };
 
 //FIXME add destructor
-class EnvSwitch : public Envelop
+class EnvSwitch : public iEnvelop
 {
   unsigned int          m_bpm;
   unsigned int          m_sr;
   int                   m_current_env;
-  std::vector<Envelop *> m_envs;
+  std::vector<iEnvelop *> m_envs;
 
 public:
   EnvSwitch(unsigned int, unsigned int);
 
-  unsigned int          add_envelop(Envelop *, int = -1);
+  unsigned int          add_envelop(iEnvelop *, int = -1);
 
   void                  set_envelop(int);
   virtual double        operator()(unsigned int, EnvMode = EnvModeOn);
@@ -76,7 +78,7 @@ public:
 };
 
 // Decay only envelop.
-class EnvD : public Envelop
+class EnvD : public iEnvelop
 {
   unsigned int                  m_bpm;
   unsigned int                  m_sr;
@@ -95,7 +97,7 @@ public:
                                           unsigned int coef_count = 1);
 };
 
-class EnvH : public Envelop
+class EnvH : public iEnvelop
 {
   unsigned int                  m_bpm;
   unsigned int                  m_sr;
@@ -114,7 +116,7 @@ public:
 
 
 // 'Delay Attack Hold Decay Sustain Release' Envelop
-class EnvDahdsr : public Envelop
+class EnvDahdsr : public iEnvelop
 {
   unsigned int                  m_bpm;
   unsigned int                  m_sr;
@@ -134,4 +136,5 @@ public:
   //  virtual void                  note_off();
 };
 
+};
 #endif	    /* !ENVELOP_HH_ */

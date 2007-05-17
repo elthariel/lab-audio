@@ -59,7 +59,7 @@ protected:
 
   LFRingBufferWriter<Event> *m_writer; // to the gui
   LFRingBufferReader<Event> *m_reader; // from the gui
-  Sampler               m_sampler;
+  SynthManager          m_synths;
   Seq::Seq              m_seq;
   jack_client_t         *m_jack_client;
   jack_port_t           *m_midi_port;

@@ -31,23 +31,23 @@ Sampler::Sampler(unsigned int a_sample_count,
 {
   unsigned int i;
 
-  for (i = 0; i < a_sample_count; i++)
+  /*  for (i = 0; i < a_sample_count; i++)
     m_samples[i] = new Sample("/home/elthariel/test.wav",
-                              a_sample_rate);
+    a_sample_rate);*/
 }
 
 unsigned int    Sampler::get_sample_count()
 {
   return m_samples.size();
 }
-
+/*
 Sample          *Sampler::get_sample(unsigned int a_index)
 {
   if (a_index > m_samples.size())
     return 0;
   else
     return m_samples[a_index];
-}
+}*/
 
 Seq::iSynth     *Sampler::synth(unsigned int i)
 {

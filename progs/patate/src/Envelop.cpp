@@ -25,17 +25,20 @@
 
 using namespace std;
 
+namespace Dsp
+{
+
 //////////////////////////////////////////////////////////////////////
-///////////////////// Envelop base class /////////////////////////////
+///////////////////// iEnvelop base class /////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-void                    Envelop::note_on(char note, char vel)
+void                    iEnvelop::note_on(char note, char vel)
 {
   m_note = note;
   m_vel = vel;
 }
 
-void                    Envelop::note_off()
+void                    iEnvelop::note_off()
 {
   m_note = -1;
   m_vel = 0;
@@ -48,7 +51,7 @@ void                    Envelop::note_off()
 
 EnvD::EnvD(unsigned int sample_rate, unsigned int tempo)
   : m_bpm(tempo), m_sr(sample_rate), m_decay(2.0),
-  	Envelop(sample_rate, tempo)
+  	iEnvelop(sample_rate, tempo)
 {
   //FIXME may be the wrong formula.
   m_beat_length = (60.0 / m_bpm) * m_sr;
@@ -228,13 +231,13 @@ double                  EnvDahdsr::operator()(unsigned int index,
 
 EnvSwitch::EnvSwitch(unsigned int sample_rate, unsigned int tempo)
   : m_bpm(tempo), m_sr(sample_rate), m_current_env(-1),
-  	Envelop(sample_rate, tempo)
+  	iEnvelop(sample_rate, tempo)
 {
 }
 
 void                    EnvSwitch::note_on(char note, char vel)
 {
-  vector<Envelop *>::iterator iter;
+  vector<iEnvelop *>::iterator iter;
 
   for (iter = m_envs.begin(); iter != m_envs.end(); iter++)
     {
@@ -244,7 +247,7 @@ void                    EnvSwitch::note_on(char note, char vel)
 
 void                    EnvSwitch::note_off()
 {
-  vector<Envelop *>::iterator iter;
+  vector<iEnvelop *>::iterator iter;
 
   for (iter = m_envs.begin(); iter != m_envs.end(); iter++)
     {
@@ -266,7 +269,7 @@ void                    EnvSwitch::set_envelop(int env)
 }
 
 // pos < 0 -> next free offset, if pos exist, the item at that pos will be replaced.
-unsigned int            EnvSwitch::add_envelop(Envelop *env, int position)
+unsigned int            EnvSwitch::add_envelop(iEnvelop *env, int position)
 {
   unsigned int          actual_position;
   bool                  replacing = false;
@@ -283,7 +286,7 @@ unsigned int            EnvSwitch::add_envelop(Envelop *env, int position)
 
   if (replacing)
     delete m_envs[position];
-  //cout << "actual position " << actual_position << endl;
+  cout << "actual position " << actual_position << endl;
   m_envs.push_back(env);
 
   return (actual_position);
@@ -324,3 +327,5 @@ EnvSwitch               *EnvSwitch::create_switch_full(unsigned int sample_rate,
 
   return esw;
 }
+
+};

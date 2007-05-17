@@ -1,7 +1,7 @@
 /*
-** sampler.hh
+** drumsynth.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Tue Apr 10 15:29:02 2007 Nahlwe
+** Started on  Thu May 17 18:17:08 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,25 +20,25 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	SAMPLER_HH_
-# define   	SAMPLER_HH_
+#ifndef   	DRUMSYNTH_HH_
+# define   	DRUMSYNTH_HH_
 
-#include <vector>
-//#include "Sample.hh"
-#include <seq/iSynth.hh>
+#include "iSynth.hh"
+#include "varinoise.hh"
 
-class Sampler : public Seq::iSynthContainer
+namespace Dsp
 {
-public:
-  Sampler(unsigned int a_sample_count,
-          unsigned int a_sample_rate);
+  class DrumHat
+  {
+  };
 
-  unsigned int          get_sample_count();
-  //  Sample                *get_sample(unsigned int a_index);
-  void                  set_sample_rate(unsigned int a_sr);
-  virtual Seq::iSynth   *synth(unsigned int i);
-protected:
-  //  std::vector<Sample *> m_samples;
+  class DrumSnare
+  {
+  };
+
+  class DrumKick
+  {
+  };
 };
 
-#endif	    /* !SAMPLER_HH_ */
+#endif	    /* !DRUMSYNTH_HH_ */
