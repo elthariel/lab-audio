@@ -25,7 +25,7 @@
 
 #include <vector>
 #include <seq/iSynth.hh>
-#include "iSynth.h"
+#include "iSynth.hh"
 
 class SynthManager : public Seq::iSynthContainer
 {
@@ -34,8 +34,9 @@ public:
   virtual ~SynthManager();
 
   virtual unsigned int          get_synth_count();
-  virtual void                  set_sample_rate(unsigned int a_sr);
+  //virtual void                  set_sample_rate(unsigned int a_sr);
   virtual Seq::iSynth           *synth(unsigned int i);
+  virtual void                  synth(unsigned int i, Seq::iSynth &a_synth);
 protected:
   std::vector<Seq::iSynth *>    m_synths;
 };

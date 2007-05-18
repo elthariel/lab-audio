@@ -32,6 +32,10 @@ namespace Dsp
 ///////////////////// iEnvelop base class /////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
+iEnvelop::~iEnvelop()
+{
+}
+
 void                    iEnvelop::note_on(char note, char vel)
 {
   m_note = note;
@@ -57,6 +61,10 @@ EnvD::EnvD(unsigned int sample_rate, unsigned int tempo)
   m_beat_length = (60.0 / m_bpm) * m_sr;
 
   compute_a();
+}
+
+EnvD::~EnvD()
+{
 }
 
 void                    EnvD::compute_a()
@@ -105,6 +113,10 @@ EnvH::EnvH(unsigned int sample_rate, unsigned int tempo)
   m_beat_length = (60.0 / tempo) * m_sr;
 }
 
+EnvH::~EnvH()
+{
+}
+
 double          		EnvH::operator()(unsigned int x,
                                      EnvMode mode)
 {
@@ -143,6 +155,10 @@ EnvDahdsr::EnvDahdsr(unsigned int sample_rate, unsigned int tempo)
   m_coefs_beat[5] = 1.0;
 
   compute_coefs();
+}
+
+EnvDahdsr::~EnvDahdsr()
+{
 }
 
 void                    EnvDahdsr::set_coefs(double *coefs, unsigned int coef_count)
@@ -228,6 +244,10 @@ double                  EnvDahdsr::operator()(unsigned int index,
 //////////////////////////////////////////////////////////////////////
 //////////////////////// EnvSwitch ///////////////////////////////////
 //////////////////////////////////////////////////////////////////////
+
+EnvSwitch::~EnvSwitch()
+{
+}
 
 EnvSwitch::EnvSwitch(unsigned int sample_rate, unsigned int tempo)
   : m_bpm(tempo), m_sr(sample_rate), m_current_env(-1),

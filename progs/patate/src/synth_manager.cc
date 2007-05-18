@@ -24,6 +24,7 @@
 #include "synth_manager.hh"
 
 SynthManager::SynthManager(unsigned int size)
+  : m_synths(size, 0)
 {
 }
 
@@ -33,12 +34,15 @@ SynthManager::~SynthManager()
 
 unsigned int          SynthManager::get_synth_count()
 {
-}
-
-void                  SynthManager::set_sample_rate(unsigned int a_sr)
-{
+  return m_synths.size();
 }
 
 Seq::iSynth           *SynthManager::synth(unsigned int i)
+{
+  return m_synths[i];
+}
+
+void                  SynthManager::synth(unsigned int i,
+                                          Seq::iSynth &a_synth)
 {
 }

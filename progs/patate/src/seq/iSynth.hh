@@ -50,7 +50,7 @@ namespace Seq
     virtual ~iSynthContainer(){}
     virtual iSynth      *synth(unsigned int i) = 0;
     virtual unsigned int get_synth_count() = 0;
-    virtual void        set_sample_rate(unsigned int a_sr) = 0;
+    //    virtual void        set_sample_rate(unsigned int a_sr) = 0;
   };
 };
 
