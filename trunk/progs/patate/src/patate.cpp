@@ -37,8 +37,8 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
                LFRingBufferReader<Event> *a_reader)
   : m_writer(a_writer),
     m_reader(a_reader),
-    m_sampler(PATATE_SAMPLER_COUNT, 48000),
-    m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_sampler),
+    m_synths(16),
+    m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_synths),
     m_bpm(160)//, m_remaining_samples(0.0)
 {
   init_jack();
@@ -129,8 +129,8 @@ void            Patate::process_audio(jack_nframes_t nframes,
       outR[i] = 0.0;
     }
 
-  for (i = 0; i < m_sampler.get_sample_count(); i++)
-    m_sampler.synth(i)->render(nframes, sample_rate, outL, outR);
+  for (i = 0; i < m_synths.get_synth_count(); i++)
+    m_synths.synth(i)->render(nframes, sample_rate, outL, outR);
 }
 
 void            Patate::process_midi(jack_nframes_t nframes)
@@ -207,9 +207,9 @@ void            Patate::set_bpm(unsigned int a_new_bpm)
   m_bpm = a_new_bpm;
 }
 
-Sampler         &Patate::get_sampler()
+SynthManager    &Patate::get_synths()
 {
-  return m_sampler;
+  return m_synths;
 }
 
 Seq::Seq        &Patate::get_drumseq()

@@ -28,7 +28,7 @@
 #include <jack/midiport.h>
 #include "lfringbuffer.hh"
 #include "event.hh"
-#include "sampler.hh"
+#include "synth_manager.hh"
 #include "seq.hh"
 
 #define PATATE_SEQ_PPQ         96
@@ -42,7 +42,7 @@ public:
   ~Patate();
 
   int                   process(jack_nframes_t nframes);
-  Sampler               &get_sampler();
+  SynthManager          &get_synths();
   Seq::Seq              &get_drumseq();
 
 protected:

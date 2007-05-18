@@ -43,7 +43,7 @@ protected:
   char                          m_vel;
 
 public:
-  virtual ~iEnvelop(){}
+  virtual ~iEnvelop();
   iEnvelop(unsigned int, unsigned int): m_note(-1), m_vel(0){} //sample_rate, tempo
 
   virtual double                operator()(unsigned int, EnvMode = EnvModeOn) = 0;
@@ -64,6 +64,7 @@ class EnvSwitch : public iEnvelop
 
 public:
   EnvSwitch(unsigned int, unsigned int);
+  virtual ~EnvSwitch();
 
   unsigned int          add_envelop(iEnvelop *, int = -1);
 
@@ -91,6 +92,7 @@ class EnvD : public iEnvelop
   void							set_decay(double);
 public:
   EnvD(unsigned int, unsigned int);
+  virtual ~EnvD();
 
   virtual double                operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void                  set_coefs(double *coefs,
@@ -108,6 +110,7 @@ class EnvH : public iEnvelop
   void							set_hold(double);
 public:
   EnvH(unsigned int, unsigned int);
+  virtual ~EnvH();
 
   virtual double                operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void                  set_coefs(double *coefs,
@@ -128,6 +131,7 @@ class EnvDahdsr : public iEnvelop
   void                          compute_coefs();
 public:
   EnvDahdsr(unsigned int, unsigned int);
+  virtual ~EnvDahdsr();
 
   virtual double                operator()(unsigned int, EnvMode = EnvModeOn);
   virtual void                  set_coefs(double *coefs,
