@@ -41,4 +41,21 @@ protected:
   std::vector<Seq::iSynth *>    m_synths;
 };
 
+class DspSynthAdapter : public Seq::iSynth
+{
+public:
+  DspSynthAdapter(Dsp::iSynth &synth);
+  virtual     ~DspSynthAdapter(){}
+
+  virtual void        play_note(const Seq::Note &a_note);
+  virtual void        stop_note(const Seq::Note &a_note);
+  virtual void        flush_note();
+  virtual void        render(jack_nframes_t nframes,
+                             jack_nframes_t sample_rate,
+                             unsigned int chan_count,
+                             jack_default_audio_sample_t **out);
+protected:
+  Dsp::iSynth         &m_synth;
+};
+
 #endif	    /* !SYNTH_MANAGER_HH_ */

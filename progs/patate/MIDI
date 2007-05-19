@@ -1,0 +1,17 @@
+##
+## patate midi implementation chart
+##
+## Made by Lta
+## Login   <elthariel@epita.fr>
+##
+## Started on  Sat May 19 14:36:08 2007 Nahlwe
+## Last update Sat May 19 15:38:33 2007 Nahlwe
+##
+
+This is the patate's MIDI Implementation chart.
+
+#### Main MIDI input.
+
+#### Seq MIDI input.
+
+#### Synth MIDI input.

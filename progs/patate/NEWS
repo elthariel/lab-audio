@@ -1,0 +1,17 @@
+##
+## NEWS for patate in /home/elthariel/code/lab-audio/progs/patate/src
+##
+## Made by Nahlwe
+## Login   <elthariel@epita.fr>
+##
+## Started on  Tue May 15 19:48:24 2007 Nahlwe
+## Last update Tue May 15 19:55:54 2007 Nahlwe
+##
+
+
+07-05-15 19:47 : r277 : First working 'proof of concept' for patate :
+         - promethee sampler class
+         - basic but precise sequencer
+         - ultra minimalist ui
+
+first half of april : rXXX : first lines of code of patate.

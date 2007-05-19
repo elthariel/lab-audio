@@ -23,6 +23,7 @@
 #include <iostream>
 #include "patate.hh"
 #include "part.hh"
+#include "drumsynth.hh"
 
 using namespace std;
 
@@ -41,8 +42,16 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
     m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_synths),
     m_bpm(160)//, m_remaining_samples(0.0)
 {
+  unsigned int i;
+
   init_jack();
   m_seq.start();
+
+  for(i = 0; i < 16; i++)
+    {
+      m_synths.synth(i, *new DspSynthAdapter(*new Dsp::DrumHat));
+      cout << "synth " << i << " " << m_synths.synth(i);
+    }
 }
 
 Patate::~Patate()
@@ -117,20 +126,20 @@ int             Patate::process(jack_nframes_t nframes)
 void            Patate::process_audio(jack_nframes_t nframes,
                                       jack_nframes_t sample_rate)
 {
-  jack_default_audio_sample_t   *outL, *outR;
+  jack_default_audio_sample_t   *out[2];
   unsigned int                  i;
 
-  outL = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_l, nframes);
-  outR = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_r, nframes);
+  out[0] = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_l, nframes);
+  out[1] = (jack_default_audio_sample_t *)jack_port_get_buffer(m_audio_port_r, nframes);
 
   for (i = 0; i < nframes; i++)
     {
-      outL[i] = 0.0;
-      outR[i] = 0.0;
+      out[0][i] = 0.0;
+      out[1][i] = 0.0;
     }
-
   for (i = 0; i < m_synths.get_synth_count(); i++)
-    m_synths.synth(i)->render(nframes, sample_rate, outL, outR);
+    m_synths.synth(i)->render(nframes, sample_rate, 2,
+                              (jack_default_audio_sample_t **)out);
 }
 
 void            Patate::process_midi(jack_nframes_t nframes)
@@ -199,6 +208,10 @@ void            Patate::process_seq(jack_nframes_t nframes,
       m_remaining_samples -= tick_len;
       }
   */
+  unsigned int i;
+
+  for (i = 0; i < 16; i++)
+    m_seq.part(i).set_synth(m_synths.synth(i));
   m_seq.run();
 }
 

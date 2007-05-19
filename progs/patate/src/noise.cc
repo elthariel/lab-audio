@@ -87,8 +87,12 @@ float           URandom::make_float()
   int32_t       rd;
   float         res;
 
-  rd = make_int32();
-  res = ((float)rd) / 2147483647.0;
+  /*  rd = make_int32();
+      res = ((float)rd) / 2147483647.0;*/
+  rd = 0;
+  res = ((float)rand()) / ((float)RAND_MAX);
+  res = res * 2.0 - 1.0;
+  //  cout << res << endl;
   return (res);
 }
 
@@ -190,8 +194,9 @@ void            iOscVectorAdapter::render(float *out, unsigned int out_len)
   unsigned int  i;
 
   for (i = 0; i < out_len; i++)
-    out[i] = m_osc.sample();
+    out[i] += m_osc.sample();
 }
+
 
 
 

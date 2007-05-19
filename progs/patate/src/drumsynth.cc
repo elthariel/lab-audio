@@ -22,3 +22,57 @@
 
 #include <iostream>
 #include "drumsynth.hh"
+
+using namespace std;
+
+/*
+ * DrumHat class
+ */
+namespace Dsp
+{
+  DrumHat::DrumHat()
+    : m_noise(*new iOscVectorAdapter(*new WhiteNoise(*new URandom))),
+      m_gate(false)
+  {
+  }
+
+  void            DrumHat::note_on(char note, char vel)
+  {
+    //    cout << "Played a noise" << endl;
+    m_gate = true;
+
+  }
+
+  void            DrumHat::note_off(char note, char vel)
+  {
+    //    cout << "Stopped a noise" << endl;
+    m_gate = false;
+  }
+
+  void            DrumHat::cc(unsigned int control, float value)
+  {
+  }
+
+  void            DrumHat::render(unsigned int sample_count,
+                                  unsigned int sample_rate,
+                                  unsigned int channel_count,
+                                  sample_t **out)
+  {
+    unsigned int i, j;
+
+    if (m_gate)
+      {
+        m_noise.render(out[0], sample_count);
+        for (j = 1; j < channel_count; j++)
+          for (i = 0; i < sample_count; i++)
+            out[j][i] += out[0][i];
+      }
+  }
+
+  void            DrumHat::reset()
+  {
+    m_gate = false;
+  }
+
+};
+
