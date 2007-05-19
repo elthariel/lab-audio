@@ -30,6 +30,7 @@
 #include "event.hh"
 #include "synth_manager.hh"
 #include "seq.hh"
+#include "midicontroller.hh"
 
 #define PATATE_SEQ_PPQ         96
 #define PATATE_SAMPLER_COUNT   16
@@ -49,20 +50,19 @@ protected:
   void                  init_jack();
   void                  close_jack();
   void                  process_midi(jack_nframes_t nframes);
-  void                  process_event();
   void                  process_audio(jack_nframes_t nframes,
                                       jack_nframes_t sample_rate);
   void                  _process_event(Event &a_ev);
   void                  process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate);
   void                  set_bpm(unsigned int a_new_bpm);
-
-  LFRingBufferWriter<Event> *m_writer; // to the gui
-  LFRingBufferReader<Event> *m_reader; // from the gui
   SynthManager          m_synths;
   Seq::Seq              m_seq;
+  MidiController        m_controller;
   jack_client_t         *m_jack_client;
-  jack_port_t           *m_midi_port;
+  jack_port_t           *m_midi_port_main;
+  jack_port_t           *m_midi_port_part;
+  jack_port_t           *m_midi_port_play;
   jack_port_t           *m_audio_port_l;
   jack_port_t           *m_audio_port_r;
   jack_nframes_t        m_buffer_size;

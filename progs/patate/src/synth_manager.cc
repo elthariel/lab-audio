@@ -88,3 +88,8 @@ void        DspSynthAdapter::render(jack_nframes_t nframes,
   m_synth.render(nframes, sample_rate,
                  chan_count, out);
 }
+
+void        DspSynthAdapter::cc(unsigned int control, float value)
+{
+  m_synth.cc(control, value);
+}
