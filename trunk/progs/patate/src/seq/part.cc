@@ -67,6 +67,7 @@ namespace Seq
     //      cout << a_pos << " : " << a_tick << endl;
     if (m_synth)
       {
+        //        cout << "poet2" << endl;
         update_note_on(a_tick);
         for (iter = m_seq.begin();
              ((*iter)->start < (a_pos + a_tick)) && (iter != m_seq.end());
@@ -116,10 +117,10 @@ namespace Seq
          ((*iter)->start <= a_end) && (iter != m_seq.end());
          iter++)
       {
-        cout << "pouet" << endl;
+        //        cout << "pouet" << endl;
         if (to_rem)
           {
-            cout << "pk tu le removes pas batard" << endl;
+            //           cout << "pk tu le removes pas batard" << endl;
             m_seq.remove(to_rem);
             to_rem = 0;
           }

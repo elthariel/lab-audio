@@ -28,8 +28,24 @@
 
 namespace Dsp
 {
-  class DrumHat
+  class DrumHat : public iSynth
   {
+  public:
+    DrumHat();
+    virtual ~DrumHat(){}
+
+    virtual void note_on(char note, char vel);
+    virtual void note_off(char note, char vel);
+    virtual void cc(unsigned int control, float value);
+    virtual void reset();
+    virtual void render(unsigned int sample_count,
+                   unsigned int sample_rate,
+                   unsigned int channel_count,
+                   sample_t **out);
+  protected:
+    VariNoise           m_noise;
+    bool                m_gate;
+
   };
 
   class DrumSnare

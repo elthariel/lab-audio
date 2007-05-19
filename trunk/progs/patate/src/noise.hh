@@ -99,8 +99,8 @@ public:
   iOscVectorAdapter(iOsc &a_osc);
   ~iOscVectorAdapter();
 
-  virtual void          reset() = 0;
-  virtual void          render(sample_t *out, unsigned int out_len) = 0;
+  virtual void          reset();
+  virtual void          render(sample_t *out, unsigned int out_len);
 protected:
   iOsc                  &m_osc;
 };

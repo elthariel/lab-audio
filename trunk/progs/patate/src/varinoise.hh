@@ -29,16 +29,15 @@
 
 namespace Dsp
 {
-
   class VariNoise : public iOscVector
   {
   public:
     VariNoise(iOscVector &a_osc);
     virtual ~VariNoise();
 
-    virtual void          reset() = 0;
+    virtual void          reset();
     virtual void          frequency(float new_frew);
-    virtual void          render(sample_t *out, unsigned int out_len) = 0;
+    virtual void          render(sample_t *out, unsigned int out_len);
   protected:
     OnePoleFilter         m_filter;
     iOscVector            &m_osc;

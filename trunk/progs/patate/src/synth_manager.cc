@@ -45,4 +45,46 @@ Seq::iSynth           *SynthManager::synth(unsigned int i)
 void                  SynthManager::synth(unsigned int i,
                                           Seq::iSynth &a_synth)
 {
+  m_synths[i] = &a_synth;
+}
+
+
+
+
+
+
+
+
+/*
+ * DspSynthAdapter
+ */
+DspSynthAdapter::DspSynthAdapter(Dsp::iSynth &synth)
+  : m_synth(synth)
+{
+}
+
+void        DspSynthAdapter::play_note(const Seq::Note &a_note)
+{
+  m_synth.note_on(a_note.note, a_note.vel);
+  //FIXME
+}
+
+void        DspSynthAdapter::stop_note(const Seq::Note &a_note)
+{
+  m_synth.note_off(a_note.note, a_note.vel);
+  //FIXME
+}
+
+void        DspSynthAdapter::flush_note()
+{
+  m_synth.reset();
+}
+
+void        DspSynthAdapter::render(jack_nframes_t nframes,
+                                    jack_nframes_t sample_rate,
+                                    unsigned int chan_count,
+                                    jack_default_audio_sample_t **out)
+{
+  m_synth.render(nframes, sample_rate,
+                 chan_count, out);
 }

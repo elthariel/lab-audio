@@ -39,8 +39,8 @@ namespace Seq
     virtual void        flush_note() = 0;
     virtual void        render(jack_nframes_t nframes,
                                jack_nframes_t sample_rate,
-                               jack_default_audio_sample_t *outL,
-                               jack_default_audio_sample_t *outR) = 0;
+                               unsigned int chan_count,
+                               jack_default_audio_sample_t **out) = 0;
   protected:
   };
 

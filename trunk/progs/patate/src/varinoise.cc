@@ -31,7 +31,7 @@ namespace Dsp
 VariNoise::VariNoise(iOscVector &a_osc)
   : m_osc(a_osc)
 {
-  m_freq = 0.0;
+  frequency(0.0);
 }
 
 VariNoise::~VariNoise()
@@ -65,16 +65,19 @@ void          VariNoise::render(sample_t *out, unsigned int out_len)
   sample_t buf[out_len];
 
   m_osc.render(out, out_len);
+
   for (i = 0; i < out_len; i++)
     buf[i] = out[i];
+
   m_filter.apply(buf, out_len);
+
   if (m_freq < 0.0)
     amount = -m_freq;
   else
     amount = m_freq;
 
   for (i = 0; i < out_len; i++)
-    out[i] = amount * out[i] + (1.0 - amount) * buf[i];
+    out[i] = (1.0 - amount) * out[i] + amount * buf[i];
 }
 
 };
