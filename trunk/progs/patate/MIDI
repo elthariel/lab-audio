@@ -5,13 +5,83 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sat May 19 14:36:08 2007 Nahlwe
-## Last update Sat May 19 15:38:33 2007 Nahlwe
+## Last update Sat May 19 18:37:27 2007 Nahlwe
 ##
 
 This is the patate's MIDI Implementation chart.
 
-#### Main MIDI input.
+------------------------------
+-----@ Main MIDI input
+------------------------------
 
-#### Seq MIDI input.
+--# Chan 1
 
-#### Synth MIDI input.
+#Note
+0       : play
+1       : pause
+2       : stop
+3       : rewing
+4       : prev measures
+5       : next measures
+
+#Control Change
+0       : Tempo down
+1       : Tempo up
+2       : Fine Tempo down
+3       : Fine Tempo up.
+
+
+
+
+
+
+
+
+
+
+
+---------------------------
+-----@ Parts MIDI input
+---------------------------
+
+--# Chan X (every chan is mapped to a part)
+
+#Note
+0-15    : On/Off step x
+16      : Menu Synth
+17      : Menu Seq
+18      : up
+19      : down
+20      : left
+21      : right
+
+#Control Change
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------------------------------
+-----@ Synth MIDI input
+----------------------------------
+
+--# Chan X (every chan is mapped to a part)
+
+#Note
+All notes are transmitted to synth.
+
+#Control Changes
+All control changes are transmitted to
+the synth.
+
+
+
+

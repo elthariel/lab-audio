@@ -52,7 +52,7 @@ protected:
   Patate                        &m_patate;
   Gtk::VBox                     m_main_vbox;
   Gtk::HBox                     m_main_hbox[4];
-  DrumSeqView                   m_seqview;
+  DrumSeqView                   *m_seqview[16];
 };
 
 #endif	    /* !PATATE_GUI_HH_ */

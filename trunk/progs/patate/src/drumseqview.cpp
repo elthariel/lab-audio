@@ -51,15 +51,16 @@ void                    DrumSeqView::step_pressed(unsigned int a_step_id)
 {
   Event                 ev;
 
-  ev.subsystem = Sys_DrumSeq;
+  ev.subsystem = Sys_Part;
   ev.type = Event::TypeNote;
-  ev.data.note.chan = 1;
+  ev.data.note.chan = m_track_id;
   if (m_steps[a_step_id].get_active())
-    ev.data.note.note = a_step_id;
+    ev.data.note.on = true;
   else
-    ev.data.note.note = a_step_id + 16;
-  ev.data.note.vel = 50;
+    ev.data.note.on = false;
+  ev.data.note.note = a_step_id;
+  ev.data.note.vel = 64;
 
   if (m_gui.writer()->ready())
-      m_gui.writer()->write(&ev);
+    m_gui.writer()->write(&ev);
 }

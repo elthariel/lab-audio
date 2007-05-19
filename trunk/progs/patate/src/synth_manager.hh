@@ -50,6 +50,7 @@ public:
   virtual void        play_note(const Seq::Note &a_note);
   virtual void        stop_note(const Seq::Note &a_note);
   virtual void        flush_note();
+  virtual void        cc(unsigned int control, float value);
   virtual void        render(jack_nframes_t nframes,
                              jack_nframes_t sample_rate,
                              unsigned int chan_count,

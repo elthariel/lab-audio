@@ -1,0 +1,65 @@
+##
+## TODO for patate in /home/elthariel/code/lab-audio/progs/patate/src
+##
+## Made by Nahlwe
+## Login   <elthariel@epita.fr>
+##
+## Started on  Sun May 20 01:31:11 2007 Nahlwe
+## Last update Sun May 20 01:49:52 2007 Nahlwe
+##
+
+- Not started
++ Started/untested/not all subtopics done
+* Done
+
+-------------------*
+-----@ v. 0.1.0
+-------------------*
+--@ Major
+
+ * Jack Setup
+ * Sequencer
+ + MidiController
+   * Architecture.
+   * Base of the MIDI chart.
+   * Sequencer
+   - Transport control
+ + Gui
+   * Step sequencer.
+   - Transport
+
+--@ Minor
+
+-------------------*
+-----@ v. 0.2.0
+-------------------*
+--@ Major
+
+ - Synth Management
+   - Synth switch
+ - MidiController
+   - Measure edit switch.
+ + Drumsynth
+   + Hat
+   - Snare
+   - Kick
+ - Gui
+   - Generic synth display
+
+
+--@ Minor
+
+-------------------*
+-----@ v. 0.3.0
+-------------------*
+--@ Major
+
+ - Load/Save
+
+--@ Minor
+
+
+
+
+
+

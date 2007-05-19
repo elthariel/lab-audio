@@ -36,10 +36,9 @@ static int      jack_process_proxy(jack_nframes_t nframes, void *arg)
 
 Patate::Patate(LFRingBufferWriter<Event> *a_writer,
                LFRingBufferReader<Event> *a_reader)
-  : m_writer(a_writer),
-    m_reader(a_reader),
-    m_synths(16),
+  : m_synths(16),
     m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_synths),
+    m_controller(m_synths, m_seq, a_writer, a_reader),
     m_bpm(160)//, m_remaining_samples(0.0)
 {
   unsigned int i;
@@ -73,12 +72,26 @@ void                  Patate::init_jack()
     cerr << "Unable to register process callback" << endl;
 
   //Registering ports.
-  m_midi_port = jack_port_register(m_jack_client, "midi_in",
+  m_midi_port_main = jack_port_register(m_jack_client, "midi_main",
                                    JACK_DEFAULT_MIDI_TYPE,
                                    JackPortIsInput, //| JackPortIsTerminal,
                                    0);
-  if (m_midi_port == NULL)
-    throw *(new jack_error("Unable to create Midi_in port"));
+  if (m_midi_port_main == NULL)
+    throw *(new jack_error("Unable to create Midi port"));
+
+  m_midi_port_part = jack_port_register(m_jack_client, "midi_main",
+                                   JACK_DEFAULT_MIDI_TYPE,
+                                   JackPortIsInput, //| JackPortIsTerminal,
+                                   0);
+  if (m_midi_port_part == NULL)
+    throw *(new jack_error("Unable to create Midi port"));
+
+  m_midi_port_play = jack_port_register(m_jack_client, "midi_main",
+                                   JACK_DEFAULT_MIDI_TYPE,
+                                   JackPortIsInput, //| JackPortIsTerminal,
+                                   0);
+  if (m_midi_port_play == NULL)
+    throw *(new jack_error("Unable to create Midi port"));
 
   m_audio_port_l = jack_port_register(m_jack_client, "outL",
                                       JACK_DEFAULT_AUDIO_TYPE,
@@ -115,8 +128,6 @@ int             Patate::process(jack_nframes_t nframes)
 
   //Midi process
   process_midi(nframes);
-  //Internal event process.
-  process_event();
   //Seq process
   process_seq(nframes, sample_rate);
   //Audio process
@@ -144,31 +155,14 @@ void            Patate::process_audio(jack_nframes_t nframes,
 
 void            Patate::process_midi(jack_nframes_t nframes)
 {
-  void                  *midi_buf;
-  jack_midi_event_t     ev;
-  jack_nframes_t        ev_count, i;
-
-  midi_buf = jack_port_get_buffer(m_midi_port, nframes);
-  ev_count = jack_midi_get_event_count(midi_buf, nframes);
-  for (i = 0; i < ev_count; i++)
-    {
-      if (jack_midi_event_get(&ev, midi_buf, i, nframes) == 0)
-        cerr << "Received a midi event" << endl;
-    }
+  m_controller
+    .process(nframes,
+             jack_port_get_buffer(m_midi_port_main, nframes),
+             jack_port_get_buffer(m_midi_port_part, nframes),
+             jack_port_get_buffer(m_midi_port_play, nframes));
 }
 
-void            Patate::process_event()
-{
-  Event         ev;
-
-  while(m_reader->ready())
-    {
-      m_reader->read(&ev);
-      _process_event(ev);
-    }
-}
-
-void            Patate::_process_event(Event &a_ev)
+/*void            _process_event(Event &a_ev)
 {
   Seq::Note     &note = *(new Seq::Note);
 
@@ -189,7 +183,7 @@ void            Patate::_process_event(Event &a_ev)
             get_drumseq().part(1).rem_step(0, a_ev.data.note.note - 16);
         }
     }
-}
+}*/
 
 void            Patate::process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate)

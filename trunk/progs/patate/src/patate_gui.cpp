@@ -30,11 +30,16 @@ PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
                      Patate &a_patate)
   : m_reader(a_reader),
     m_writer(a_writer),
-    m_patate(a_patate),
-    m_seqview(*this, 0)
+    m_patate(a_patate)
 {
+  unsigned int i;
+
   add(m_main_vbox);
-  m_main_vbox.pack_end(m_seqview);
+  for (i = 0; i < 16; i++)
+    {
+      m_seqview[i] = new DrumSeqView(*this, i);
+      m_main_vbox.pack_end(*m_seqview[i]);
+    }
   show_all();
 }
 

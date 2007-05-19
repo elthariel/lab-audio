@@ -36,6 +36,7 @@ namespace Seq
 
     virtual void        play_note(const Seq::Note &a_note) = 0;
     virtual void        stop_note(const Seq::Note &a_note) = 0;
+    virtual void        cc(unsigned int control, float value) = 0;
     virtual void        flush_note() = 0;
     virtual void        render(jack_nframes_t nframes,
                                jack_nframes_t sample_rate,

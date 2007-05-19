@@ -28,6 +28,7 @@ struct EventNote
   char                  chan;
   char                  note;
   char                  vel;
+  bool                  on;
 };
 
 struct EventCtrl
@@ -40,9 +41,9 @@ struct EventCtrl
 enum SubSystem
   {
     Sys_Main,
-    Sys_DrumSeq,
-    Sys_Sample,
-    Sys_Gui,
+    Sys_Part,
+    Sys_Play,
+    Sys_Gui
   };
 
 struct Event

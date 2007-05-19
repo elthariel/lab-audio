@@ -5,11 +5,17 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Tue May 15 19:48:24 2007 Nahlwe
-## Last update Tue May 15 19:55:54 2007 Nahlwe
+## Last update Sun May 20 01:51:43 2007 Nahlwe
 ##
 
 
-07-05-15 19:47 : r277 : First working 'proof of concept' for patate :
+20-05-07 01:22 : r283 : Improve internal structure :
+         - switch from sampler exclusively to a generic synth interface.
+         - basic dsp class for hat generation.
+         - Creation of the MidiController and beginning of the midi implementation.
+         - Set a roadmap.
+
+15-05-07 19:47 : r277 : First working 'proof of concept' for patate :
          - promethee sampler class
          - basic but precise sequencer
          - ultra minimalist ui
