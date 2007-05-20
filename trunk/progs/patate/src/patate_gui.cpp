@@ -79,6 +79,8 @@ PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
     {
       m_seqview[i] = new DrumSeqView(*this, i);
       m_main_vbox.pack_end(*m_seqview[i]);
+      m_synthviews[i] = new GenericSynthView(*this, i);
+      m_seqview[i]->pack_end(*m_synthviews[i]);
     }
   show_all();
 }
