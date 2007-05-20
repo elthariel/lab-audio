@@ -38,7 +38,7 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
                LFRingBufferReader<Event> *a_reader)
   : m_synths(16),
     m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_synths),
-    m_controller(m_synths, m_seq, a_writer, a_reader),
+    m_controller(*this, m_synths, m_seq, a_writer, a_reader),
     m_bpm(160)//, m_remaining_samples(0.0)
 {
   unsigned int i;
@@ -212,6 +212,12 @@ void            Patate::process_seq(jack_nframes_t nframes,
 void            Patate::set_bpm(unsigned int a_new_bpm)
 {
   m_bpm = a_new_bpm;
+  m_seq.set_bpm(a_new_bpm);
+}
+
+unsigned int    Patate::get_bpm()
+{
+  return m_bpm;
 }
 
 SynthManager    &Patate::get_synths()

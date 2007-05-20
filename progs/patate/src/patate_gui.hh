@@ -46,12 +46,19 @@ public:
 protected:
   void          gui_update();
   void          process_gui_event(Event &a_ev);
+  void          event_note(char note, bool on = true);
+  void          event_note_tempo(char note, int offset);
+  void          set_bpmview(int offset);
 
   LFRingBufferReader<Event>     *m_reader;
   LFRingBufferWriter<Event>     *m_writer;
   Patate                        &m_patate;
   Gtk::VBox                     m_main_vbox;
   Gtk::HBox                     m_main_hbox[4];
+  Gtk::Button                   m_transport[6];
+  unsigned int                  m_bpm;
+  Gtk::Button                   m_bpmedit[4];
+  Gtk::Label                    m_bpmview;
   DrumSeqView                   *m_seqview[16];
 };
 

@@ -30,10 +30,13 @@
 #include "synth_manager.hh"
 #include "seq.hh"
 
+class Patate;
+
 class MidiController
 {
 public:
-  MidiController(SynthManager &a_synths,
+  MidiController(Patate& a_patate,
+                 SynthManager &a_synths,
                  Seq::Seq &a_seq,
                  LFRingBufferWriter<Event> *a_writer,
                  LFRingBufferReader<Event> *a_reader);
@@ -71,8 +74,11 @@ protected:
 
   LFRingBufferWriter<Event>     *m_writer; // to the gui
   LFRingBufferReader<Event>     *m_reader; // from the gui
+  Patate                        &m_patate;
   SynthManager                  &m_synths;
   Seq::Seq                      &m_seq;
 };
+
+#include "patate.hh"
 
 #endif	    /* !MIDICONTROLLER_HH_ */
