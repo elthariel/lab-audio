@@ -24,6 +24,7 @@
 # define   	PATATE_GUI_HH_
 
 #include <gtkmm.h>
+#include "lv2Manager.hh"
 #include "drumseqview.hh"
 #include "synthview_generic.hh"
 #include "lfringbuffer.hh"
@@ -54,6 +55,7 @@ protected:
   LFRingBufferReader<Event>     *m_reader;
   LFRingBufferWriter<Event>     *m_writer;
   Patate                        &m_patate;
+  Lv2Manager                    m_lv2;
   GenericSynthView              *m_synthviews[16];
   Gtk::VBox                     m_main_vbox;
   Gtk::HBox                     m_main_hbox[4];

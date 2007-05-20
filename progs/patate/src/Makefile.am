@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Sun May 20 13:11:49 2007 Nahlwe
+## Last update Sun May 20 20:05:03 2007 Nahlwe
 ##
 
 SUBDIRS = seq
@@ -18,7 +18,8 @@ noinst_HEADERS = Envelop.hh event.hh lfringbuffer.hh \
 	help.hpp patate_gui.hh drumseqview.hh noise.hh \
 	dsp_config.h iFilter.hh varinoise.hh iSynth.hh \
 	drumsynth.hh Envelop.hh synth_manager.hh \
-	midicontroller.hh synthview_generic.hh
+	midicontroller.hh synthview_generic.hh \
+	lv2Manager.hh
 
 #######################
 # Build an executable #
@@ -32,11 +33,14 @@ patate_SOURCES = AnalogFilter.cpp Envelop.cpp foncteurs.cpp \
 	lfringbuffer.cpp main.cpp patate.cpp \
 	thread.cpp help.cpp patate_gui.cpp drumseqview.cpp noise.cc \
 	iFilter.cc varinoise.cc drumsynth.cc \
-	synth_manager.cc midicontroller.cc synthview_generic.cc
+	synth_manager.cc midicontroller.cc synthview_generic.cc \
+	lv2Manager.cc
 
 # Don't forget that the order of the libraries _does_ matter
-patate_CPPFLAGS = -g -Wall -O3 -pthread @PKG_CFLAGS@ -Iseq/ -I../../../libs/libwef
-patate_LDADD = -lpthread -lrt @PKG_LIBS@ seq/libseq.la -L../../../libs/libwef #-lwef++
+patate_CPPFLAGS = -g -Wall -O3 -pthread @PKG_CFLAGS@ \
+	-Iseq/ -I../../../libs/libwef
+patate_LDADD = -lpthread -lrt @PKG_LIBS@ seq/libseq.la \
+	-L../../../libs/libwef -lwef++
 patate_LDFLAGS = -O3
 
 ##########
@@ -47,14 +51,6 @@ patate_LDFLAGS = -O3
 #TESTS = test-1.sh test-2
 TESTS = test-noise
 check_PROGRAMS = test-noise
-#test_2_SOURCES = main_for_tests.cc
-#test_lfrb_SOURCES = test_lfrb.cpp lfringbuffer.cpp
-#test_lfrb_CPPFLAGS = -g -Wall -pthread @SIGC_CFLAGS@
-#test_lfrb_LDADD = libkbdz.la -lpthread -lrt @SIGC_LIBS@
-
-#test_kbdz_SOURCES = test_kbdz.cpp
-#test_kbdz_CPPFLAGS = -g -Wall -pthread @SIGC_CFLAGS@
-#test_kbdz_LDADD = libkbdz.la -lpthread -lrt @SIGC_LIBS@
 
 test_noise_SOURCES = noise_test.cc drumsynth.cc \
 	noise.cc iFilter.cc varinoise.cc

@@ -23,6 +23,8 @@
 #include <iostream>
 #include "synth_manager.hh"
 
+using namespace std;
+
 SynthManager::SynthManager(unsigned int size)
   : m_synths(size, 0)
 {
@@ -47,7 +49,6 @@ void                  SynthManager::synth(unsigned int i,
 {
   m_synths[i] = &a_synth;
 }
-
 
 
 

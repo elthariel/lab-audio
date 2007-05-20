@@ -33,6 +33,7 @@ PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
   : m_reader(a_reader),
     m_writer(a_writer),
     m_patate(a_patate),
+    m_lv2(a_patate),
     m_bpm(160)
 {
   unsigned int i;
