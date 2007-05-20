@@ -30,6 +30,9 @@
 #include "event.hh"
 #include "synth_manager.hh"
 #include "seq.hh"
+
+class Patate;
+
 #include "midicontroller.hh"
 
 #define PATATE_SEQ_PPQ         96
@@ -45,6 +48,8 @@ public:
   int                   process(jack_nframes_t nframes);
   SynthManager          &get_synths();
   Seq::Seq              &get_drumseq();
+  void                  set_bpm(unsigned int a_new_bpm);
+  unsigned int          get_bpm();
 
 protected:
   void                  init_jack();
@@ -55,7 +60,6 @@ protected:
   void                  _process_event(Event &a_ev);
   void                  process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate);
-  void                  set_bpm(unsigned int a_new_bpm);
   SynthManager          m_synths;
   Seq::Seq              m_seq;
   MidiController        m_controller;

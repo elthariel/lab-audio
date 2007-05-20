@@ -27,12 +27,14 @@
 
 using namespace std;
 
-MidiController::MidiController(SynthManager &a_synths,
-                 Seq::Seq &a_seq,
-                 LFRingBufferWriter<Event> *a_writer,
-                 LFRingBufferReader<Event> *a_reader)
+MidiController::MidiController(Patate& a_patate,
+                               SynthManager &a_synths,
+                               Seq::Seq &a_seq,
+                               LFRingBufferWriter<Event> *a_writer,
+                               LFRingBufferReader<Event> *a_reader)
   : m_writer(a_writer),
     m_reader(a_reader),
+    m_patate(a_patate),
     m_synths(a_synths),
     m_seq(a_seq)
 {
@@ -131,6 +133,9 @@ void            MidiController::process_main(Event &a_ev)
         case 0: case 1: case 2: case 3: case 4: case 5:
           main_transport(a_ev);
           break;
+        case 6: case 7: case 8: case 9:
+          main_tempo(a_ev);
+          break;
         default:
           cout << "This midi message is no assigned" << endl;
           break;
@@ -140,9 +145,6 @@ void            MidiController::process_main(Event &a_ev)
     {
       switch(a_ev.data.ctrl.ctrl)
         {
-        case 0: case 1: case 2: case 3:
-          main_tempo(a_ev);
-          break;
         default:
           cout << "This midi message is no assigned" << endl;
           break;
@@ -185,10 +187,41 @@ void            MidiController::process_part(Event &a_ev)
 
 void                    MidiController::main_transport(Event &a_ev)
 {
+  switch(a_ev.data.note.note)
+    {
+    case 0:
+      m_seq.start();
+      break;
+    case 1:
+      m_seq.pause();
+      break;
+    case 2:
+      m_seq.stop();
+      break;
+    }
 }
 
 void                    MidiController::main_tempo(Event &a_ev)
 {
+  unsigned int tempo = m_patate.get_bpm();
+
+  switch (a_ev.data.note.note)
+    {
+    case 6:
+      if (tempo > 10)
+        m_patate.set_bpm(tempo - 10);
+      break;
+    case 7:
+      m_patate.set_bpm(tempo + 10);
+      break;
+    case 8:
+      if (tempo > 2)
+        m_patate.set_bpm(tempo - 1);
+      break;
+    case 9:
+      m_patate.set_bpm(tempo + 1);
+      break;
+    }
 }
 
 void                    MidiController::part_step(Event &a_ev)

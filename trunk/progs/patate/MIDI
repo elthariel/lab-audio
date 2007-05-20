@@ -5,7 +5,7 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sat May 19 14:36:08 2007 Nahlwe
-## Last update Sat May 19 18:37:27 2007 Nahlwe
+## Last update Sun May 20 11:31:02 2007 Nahlwe
 ##
 
 This is the patate's MIDI Implementation chart.
@@ -23,12 +23,13 @@ This is the patate's MIDI Implementation chart.
 3       : rewing
 4       : prev measures
 5       : next measures
+6       : Tempo down
+7       : Tempo up
+8       : Fine Tempo down
+9       : Fine Tempo up.
+
 
 #Control Change
-0       : Tempo down
-1       : Tempo up
-2       : Fine Tempo down
-3       : Fine Tempo up.
 
 
 

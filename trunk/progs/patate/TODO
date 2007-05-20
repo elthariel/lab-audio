@@ -5,7 +5,7 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sun May 20 01:31:11 2007 Nahlwe
-## Last update Sun May 20 01:49:52 2007 Nahlwe
+## Last update Sun May 20 12:30:45 2007 Nahlwe
 ##
 
 - Not started
@@ -23,10 +23,10 @@
    * Architecture.
    * Base of the MIDI chart.
    * Sequencer
-   - Transport control
+   * Transport control
  + Gui
    * Step sequencer.
-   - Transport
+   * Transport
 
 --@ Minor
 
@@ -48,6 +48,7 @@
 
 
 --@ Minor
+   - jack_midi->event tranformation.
 
 -------------------*
 -----@ v. 0.3.0

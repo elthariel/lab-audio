@@ -21,20 +21,60 @@
 */
 
 #include <iostream>
+#include <cstdio>
 #include "patate_gui.hh"
 
 using namespace std;
+using namespace sigc;
 
 PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
                      LFRingBufferWriter<Event> *a_writer,
                      Patate &a_patate)
   : m_reader(a_reader),
     m_writer(a_writer),
-    m_patate(a_patate)
+    m_patate(a_patate),
+    m_bpm(160)
 {
   unsigned int i;
 
   add(m_main_vbox);
+  m_main_vbox.pack_start(m_main_hbox[0]);
+  m_transport[0].set_label("Play");
+  m_transport[1].set_label("Pause");
+  m_transport[2].set_label("Stop");
+  m_transport[3].set_label("Rewind");
+  m_transport[4].set_label("prec");
+  m_transport[5].set_label("next");
+  for (i = 0; i < 6; i++)
+    {
+      m_main_hbox[0].pack_start(m_transport[i]);
+      m_transport[i].signal_clicked()
+        .connect(bind<0>(bind<1>(mem_fun(*this, &PatateGUI::event_note),
+                         true),i));
+    }
+
+  set_bpmview(0);
+  m_main_hbox[0].pack_start(m_bpmview);
+
+  m_bpmedit[0].set_label("bpm - 10");
+  m_bpmedit[1].set_label("bpm + 10");
+  m_bpmedit[2].set_label("bpm - 1");
+  m_bpmedit[3].set_label("bpm + 1");
+  m_bpmedit[0].signal_clicked()
+    .connect(bind<0>(bind<1>(mem_fun(*this, &PatateGUI::event_note_tempo),
+                             -10),6));
+  m_bpmedit[1].signal_clicked()
+    .connect(bind<0>(bind<1>(mem_fun(*this, &PatateGUI::event_note_tempo),
+                             +10),7));
+  m_bpmedit[2].signal_clicked()
+    .connect(bind<0>(bind<1>(mem_fun(*this, &PatateGUI::event_note_tempo),
+                             -1),8));
+  m_bpmedit[3].signal_clicked()
+    .connect(bind<0>(bind<1>(mem_fun(*this, &PatateGUI::event_note_tempo),
+                             +1),9));
+  for(i = 0; i < 4; i++)
+      m_main_hbox[0].pack_start(m_bpmedit[i]);
+
   for (i = 0; i < 16; i++)
     {
       m_seqview[i] = new DrumSeqView(*this, i);
@@ -70,4 +110,34 @@ LFRingBufferReader<Event>     *PatateGUI::reader()
 LFRingBufferWriter<Event>     *PatateGUI::writer()
 {
   return m_writer;
+}
+
+void            PatateGUI::event_note(char note, bool on)
+{
+  Event         ev;
+
+  ev.subsystem = Sys_Main;
+  ev.type = Event::TypeNote;
+  ev.data.note.on = true;
+  ev.data.note.note = note;
+  ev.data.note.vel = 127;
+  if (m_writer->ready())
+    m_writer->write(&ev);
+}
+
+void            PatateGUI::event_note_tempo(char note, int offset)
+{
+  set_bpmview(offset);
+  event_note(note);
+}
+
+void            PatateGUI::set_bpmview(int offset)
+{
+  char          tmp[6];
+
+  if ((offset < 0) && ((m_bpm + offset) <= 0))
+    return;
+  m_bpm += offset;
+  snprintf((char *)tmp, 6, "%d", m_bpm);
+  m_bpmview.set_label((char *)tmp);
 }

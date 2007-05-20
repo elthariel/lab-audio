@@ -5,12 +5,13 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Sat May 19 19:35:13 2007 Nahlwe
+## Last update Sun May 20 12:25:41 2007 Nahlwe
 ##
 
 SUBDIRS = seq
 
-CPPFLAGS =
+AM_CPPFLAGS =
+CPP_FLAGS =
 
 noinst_HEADERS = Envelop.hh event.hh lfringbuffer.hh \
 	patate_gui.hh patate.hh smp_uint.hh \

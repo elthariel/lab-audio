@@ -92,10 +92,15 @@ namespace Seq
   {
     unsigned int        res;
 
-    update_ticks();
-    res = m_ticks;
-    m_ticks = 0;
-    return (res);
+    if (!m_paused && m_started)
+      {
+        update_ticks();
+        res = m_ticks;
+        m_ticks = 0;
+        return (res);
+      }
+    else
+      return (0);
   }
 
   void                  Timer::update_tick_len()
