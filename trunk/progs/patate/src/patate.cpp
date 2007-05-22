@@ -24,6 +24,7 @@
 #include "patate.hh"
 #include "part.hh"
 #include "drumsynth.hh"
+#include "lv2Manager.hh"
 
 using namespace std;
 
@@ -49,6 +50,7 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
   for(i = 0; i < 16; i++)
     {
       m_synths.synth(i, *new DspSynthAdapter(*new Dsp::DrumHat));
+
       cout << "synth " << i << " " << m_synths.synth(i);
     }
 }
