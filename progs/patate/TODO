@@ -5,7 +5,7 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sun May 20 01:31:11 2007 Nahlwe
-## Last update Sun May 20 20:52:49 2007 Nahlwe
+## Last update Tue May 22 00:28:05 2007 Nahlwe
 ##
 
 - Not started
@@ -51,6 +51,7 @@
 
 --@ Minor
    - jack_midi->event tranformation.
+   - wait for the data to be initialized before rendering audio.
 
 -------------------*
 -----@ v. 0.3.0
