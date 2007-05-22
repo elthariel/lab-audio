@@ -81,9 +81,13 @@ void                    Lv2Manager::init_slv2()
 
 Lv2Adapter::Lv2Adapter(SLV2Plugin &a_plugin, unsigned int a_sample_rate)
   : m_plugin(a_plugin),
-    m_midi_connected(false),
-    m_midi_state({&m_midi_port, 4096, 0})
+    m_midi_connected(false)
 {
+
+  m_midi_state.midi = &m_midi_port;
+  m_midi_state.frame_count = 4096;
+  m_midi_state.position = 0;
+
   slv2_plugin_instantiate(m_plugin, a_sample_rate, g_features);
   slv2_instance_activate(m_lv2);
   create_ports();
@@ -132,6 +136,19 @@ void        Lv2Adapter::render(jack_nframes_t nframes,
                    jack_default_audio_sample_t **out)
 {
   frame(nframes);
+
+  // FIXME handle 3d synth
+  if (chan_count < 2)
+    {
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[0], out[0]);
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[1], out[0]);
+    }
+  else
+    {
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[0], out[0]);
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[1], out[1]);
+    }
+  slv2_instance_run(m_lv2, nframes);
 }
 
 void        Lv2Adapter::create_ports()

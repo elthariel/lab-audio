@@ -5,7 +5,7 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sun May 20 01:31:11 2007 Nahlwe
-## Last update Tue May 22 00:28:05 2007 Nahlwe
+## Last update Tue May 22 21:53:41 2007 Nahlwe
 ##
 
 - Not started
@@ -59,6 +59,7 @@
 --@ Major
 
  - Load/Save
+ - Break Patterns
 
 --@ Minor
 
