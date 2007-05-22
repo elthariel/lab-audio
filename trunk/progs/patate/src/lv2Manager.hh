@@ -65,6 +65,7 @@ public:
 protected:
   void                  create_ports();
   void                  connect_ports();
+  void                  frame(jack_nframes_t nframes);
 
   SLV2Plugin            &m_plugin;
   SLV2Instance          m_lv2;
@@ -73,6 +74,7 @@ protected:
   LV2_MIDI              m_midi_port;
   bool                  m_midi_connected;
   int                   m_audio_ports_index[2];
+  LV2_MIDIState         m_midi_state;
 };
 
 #endif	    /* !LV2MANAGER_HH_ */

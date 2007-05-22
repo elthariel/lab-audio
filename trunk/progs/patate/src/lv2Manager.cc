@@ -81,7 +81,8 @@ void                    Lv2Manager::init_slv2()
 
 Lv2Adapter::Lv2Adapter(SLV2Plugin &a_plugin, unsigned int a_sample_rate)
   : m_plugin(a_plugin),
-    m_midi_connected(false)
+    m_midi_connected(false),
+    m_midi_state({&m_midi_port, 4096, 0})
 {
   slv2_plugin_instantiate(m_plugin, a_sample_rate, g_features);
   slv2_instance_activate(m_lv2);
@@ -97,10 +98,20 @@ Lv2Adapter::~Lv2Adapter()
 
 void        Lv2Adapter::play_note(const Seq::Note &a_note)
 {
+  unsigned char midi[3];
+  midi[0] = 90;
+  midi[1] = a_note.note;
+  midi[2] = a_note.vel;
+  lv2midi_put_event(&m_midi_state, 0, 3, midi); //FIXME correct timestamp.
 }
 
 void        Lv2Adapter::stop_note(const Seq::Note &a_note)
 {
+  unsigned char midi[3];
+  midi[0] = 80;
+  midi[1] = a_note.note;
+  midi[2] = a_note.vel;
+  lv2midi_put_event(&m_midi_state, 0, 3, midi); //FIXME correct timestamp.
 }
 
 void        Lv2Adapter::cc(unsigned int control, float value)
@@ -120,6 +131,7 @@ void        Lv2Adapter::render(jack_nframes_t nframes,
                    unsigned int chan_count,
                    jack_default_audio_sample_t **out)
 {
+  frame(nframes);
 }
 
 void        Lv2Adapter::create_ports()
@@ -172,4 +184,9 @@ void        Lv2Adapter::connect_ports()
     }
 }
 
+void                  Lv2Adapter::frame(jack_nframes_t nframes)
+{
+  m_midi_state.frame_count = nframes;
+  m_midi_state.position = 0;
+}
 
