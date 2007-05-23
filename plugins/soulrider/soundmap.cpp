@@ -22,43 +22,88 @@
 
 #include "soundmap.h"
 
+SoundMap::SoundMap()
+  : m_buffer(NULL),
+    m_read_position(0),
+    m_write_position(0),
+    m_size(0),
+    m_allocated(0) {
+
+}
 
 SoundMap::~SoundMap() {
-	munmap(m_buffer, m_allocated);
+  if (m_buffer) {
+    munmap(m_buffer, m_allocated);
+    m_buffer = NULL;
+  }
 }
 
 /** set the mmap size
  * later you wont need this
  */
 void SoundMap::set_buffer_size(int samplecount) {
-	m_buffer = (float *) mmap(0, samplecount*sizeof(float), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANON, -1, 0);
+  if (m_buffer) {
+    munmap(m_buffer, m_allocated);
+    m_buffer = NULL;
+  }
+  m_buffer = (float *) mmap(0, samplecount*sizeof(float), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANON, -1, 0);
 }
 
-/** write samples into the sound buffer
- * @return the current write position or -1 on error
- */
-int SoundMap::put_samples(float *samples, int samplecount) {
-	return 0;
-}
 
 /** seek into the mmap buffer
  *  move the read position
  */
 int SoundMap::seek_read(int position) {
-	return 0;
+  m_read_position = position;
+  return 0;
 }
+
 
 /** seek into the mmap buffer
  *  move the write position
  */
 int SoundMap::seek_write(int position) {
-	return 0;
+  m_write_position = position;
+  return 0;
 }
+
 
 /** read samples from the sound buffer
  *  this function move the seek position
  *  @return the current read position or -1 on error
  */
 int SoundMap::get_samples(float *samples, int samplecount){
-	return 0;
+  int nb = 0;
+
+  if (m_read_position + samplecount > m_allocated)
+    nb = m_allocated - (m_read_position + samplecount);
+  else
+    nb = samplecount;
+  nb = nb < 0 ? 0 : nb;
+  copy(samples, m_buffer + m_read_position, nb);
+
+  //verify if the region exist and is filled
+
+  //update the region
+  m_read_position += nb;
+  return nb;
+}
+
+/** write samples into the sound buffer
+ * @return the current write position or -1 on error
+ */
+int SoundMap::put_samples(float *samples, int samplecount) {
+  int nb = 0;
+
+  if (m_write_position + samplecount > m_allocated) {
+    //allocate more baby
+    return -1;
+    nb = m_allocated - (m_read_position + samplecount);
+  }
+  else
+    nb = samplecount;
+  nb = nb < 0 ? 0 : nb;
+  copy(m_buffer + m_write_position, samples, nb);
+  m_write_position += nb;
+  return nb;
 }
