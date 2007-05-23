@@ -24,56 +24,56 @@
 
 
 BeatSmasher::BeatSmasher(int samplerate) {
-			m_samplerate = samplerate;
-			m_buffer = new float[samplerate];
-			m_active = false;
-			m_pos = 0;
-			m_pos_learn = 0.;
-			m_loop_size = 3000;
+  m_samplerate = samplerate;
+  m_buffer = new float[samplerate];
+  m_active = false;
+  m_pos = 0;
+  m_pos_learn = 0.;
+  m_loop_size = 3000;
 }
 
 void BeatSmasher::active(const bool active) {
-	m_active = active;
-	if (m_active) {
-		m_pos = 0;
-		m_pos_learn = 0.;
-	}
+  m_active = active;
+  if (m_active) {
+    m_pos = 0;
+    m_pos_learn = 0.;
+  }
 }
 
 void BeatSmasher::learn(float *buffer, const int samplecount) {
-	int i = 0;
-	for (;m_pos_learn < m_samplerate; ++m_pos_learn) {
-		m_buffer[m_pos_learn] = buffer[i];
-		++i;
-		if (i >= samplecount)
-			break;
-	}
-	if (m_pos_learn < m_loop_size)
-		m_pos = m_pos_learn;
+  int i = 0;
+  for (;m_pos_learn < m_samplerate; ++m_pos_learn) {
+    m_buffer[m_pos_learn] = buffer[i];
+    ++i;
+    if (i >= samplecount)
+      break;
+  }
+  if (m_pos_learn < m_loop_size)
+    m_pos = m_pos_learn;
 }
 
 void BeatSmasher::process(float *buffer,const int samplecount) {
-	int i = 0, j = 0, endsz, prevpos;
-	if (!m_active)
-		return;
-	prevpos = m_pos_learn;
-	//load internal buffer
-	learn(buffer, samplecount);
+  int i = 0, j = 0, endsz, prevpos;
+  if (!m_active)
+    return;
+  prevpos = m_pos_learn;
+  //load internal buffer
+  learn(buffer, samplecount);
 
-	if (m_pos_learn < m_loop_size)
-		return;
+  if (m_pos_learn < m_loop_size)
+    return;
 
-	if (m_pos_learn > m_loop_size && prevpos < m_loop_size) {
-		i = m_loop_size - prevpos;
-	}
+  if (m_pos_learn > m_loop_size && prevpos < m_loop_size) {
+    i = m_loop_size - prevpos;
+  }
 
-	//copy from the
-	for (; i < samplecount; ++i) {
-		buffer[i] = m_buffer[m_pos];
-		++m_pos;
-		if (m_pos > m_loop_size) {
-			m_pos = 0;
-		}
-	}
+  //copy from the
+  for (; i < samplecount; ++i) {
+    buffer[i] = m_buffer[m_pos];
+    ++m_pos;
+    if (m_pos > m_loop_size) {
+      m_pos = 0;
+    }
+  }
 }
 

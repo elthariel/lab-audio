@@ -23,49 +23,52 @@
 #define __SOUNDMAP_H__
 
 #include "sys/mman.h"
+
 /*** represent a sound buffer in memory using mmap
  * you should have only one thread that read
  * and one thread that write
  */
 class SoundMap {
 public:
-	SoundMap();
-	~SoundMap();
+  SoundMap();
+  ~SoundMap();
 
-	/** reset the buffer, set the mmap size
-	 * later it wont need this
-	 */
-	void set_buffer_size(int samplecount);
+  /** reset the buffer, set the mmap size
+   * later it wont need this
+   */
+  void set_buffer_size(int samplecount);
 
-	/** write samples into the sound buffer
-	 * @return the current write position or -1 on error
-	 */
-	int put_samples(float *samples, int samplecount);
+  /** write samples into the sound buffer
+   * @return the current write position or -1 on error
+   */
+  int put_samples(float *samples, int samplecount);
 
-	/** seek into the mmap buffer
-	 *  move the read position
-	 */
-	int seek_read(int position);
+  /** seek into the mmap buffer
+   *  move the read position
+   */
+  int seek_read(int position);
 
-	/** seek into the mmap buffer
-	 *  move the write position
-	 */
-	int seek_write(int position);
+  /** seek into the mmap buffer
+   *  move the write position
+   */
+  int seek_write(int position);
 
-	/** read samples from the sound buffer
-	 *  this function move the seek position
-	 *  @return the current read position or -1 on error
-	 */
-	int get_samples(float *samples, int samplecount);
+  /** read samples from the sound buffer
+   *  this function move the seek position
+   *  @return the current read position or -1 on error
+   */
+  int get_samples(float *samples, int samplecount);
 
-private:
-	int m_read_position;
-	int m_write_position;
-	int m_size;///needed?
-	int m_allocated;///the allocated size of the buffer
-	int grow_size;///the size the buffer grow by
-	float *m_buffer;
-///mmap
+ private:
+  int m_read_position;
+  int m_write_position;
+  int m_size;///needed?
+  int m_allocated;///the allocated size of the buffer
+  int grow_size;///the size the buffer grow by
+  float *m_buffer;
+  ///mmap
 };
 
+
+//linked list with {length, position} sorted by position
 #endif
