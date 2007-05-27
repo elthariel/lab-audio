@@ -5,13 +5,13 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Fri May 25 17:16:27 2007 Elthariel
+## Last update Sun May 27 15:55:30 2007 Nahlwe
 ##
 
 AM_CPPFLAGS =
 CPP_FLAGS =
 
-noinst_HEADERS = main_win.hh
+noinst_HEADERS = main_win.hh wefview.hh wef_win.hh
 
 #######################
 # Build an executable #
@@ -21,7 +21,7 @@ noinst_HEADERS = main_win.hh
 
 bin_PROGRAMS = wefedit
 
-wefedit_SOURCES = main_win.cc main.cc
+wefedit_SOURCES = main_win.cc main.cc wefview.cc wef_win.cc
 
 # Don't forget that the order of the libraries _does_ matter
 wefedit_CPPFLAGS = -g -Wall -O3 -pthread @PKG_CFLAGS@ \

@@ -3,7 +3,7 @@ dnl process with autoconf in order to get configure script
 dnl or use autogen.sh (recommended)
 
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(wefedit, 0.0.1)
+AM_INIT_AUTOMAKE(wefedit, 0.0.2)
 AM_PROG_LIBTOOL
 
 AM_MAINTAINER_MODE
@@ -24,7 +24,7 @@ dnl    pthreads, libxml++ (or embbed it into src tree)
 #AC_CHECK_HEADERS([pthread.h, semaphore.h])
 #AC_CHECK_HEADERS([iostream, vector, list])
 
-PKG_CHECK_MODULES(PKG, [gtkmm-2.4 sndfile alsa])
+PKG_CHECK_MODULES(PKG, [gtkmm-2.4 sndfile alsa cairomm-1.0])
 AC_SUBST(PKG_CFLAGS)
 AC_SUBST(PKG_LIBS)
 
