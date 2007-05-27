@@ -21,7 +21,10 @@
 */
 
 #include <iostream>
+#include <string>
+#include <wef.hh>
 #include "main_win.hh"
+#include "wef_win.hh"
 
 using namespace std;
 using namespace Gtk;
@@ -48,6 +51,53 @@ void                    MainWin::quit()
   Main::quit();
 }
 
+void                    MainWin::open()
+{
+  Gtk::FileChooserDialog dialog("Please choose a folder", Gtk::FILE_CHOOSER_ACTION_OPEN);
+  dialog.set_transient_for(*this);
+
+  //Add response buttons the the dialog:
+  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button("Select", Gtk::RESPONSE_OK);
+
+
+  Gtk::FileFilter filter_wef;
+  filter_wef.set_name("Wef files");
+  filter_wef.add_pattern("*.wef");
+  dialog.add_filter(filter_wef);
+
+  Gtk::FileFilter filter_any;
+  filter_any.set_name("Any files");
+  filter_any.add_pattern("*");
+  dialog.add_filter(filter_any);
+
+  int result = dialog.run();
+
+  //Handle the response:
+  switch(result)
+  {
+    case(Gtk::RESPONSE_OK):
+    {
+      string path = dialog.get_filename();
+
+      Wef       *wef = new Wef(path);
+      WefWin    *wefwin = new WefWin(*wef);
+      wefwin->show();
+      break;
+    }
+    case(Gtk::RESPONSE_CANCEL):
+    {
+      std::cout << "Cancel clicked." << std::endl;
+      break;
+    }
+    default:
+    {
+      std::cout << "Unexpected button clicked." << std::endl;
+      break;
+    }
+  }
+}
+
 void                    MainWin::create_actions()
 {
   Glib::ustring         ui;
@@ -69,7 +119,7 @@ void                    MainWin::create_actions()
   m_action_group->add(Action::create("FileOpen",
                                      Stock::OPEN, "_Open",
                                      "Open a wef file"),
-                      mem_fun(*this, &MainWin::unimplemented));
+                      mem_fun(*this, &MainWin::open));
   m_action_group->add(Action::create("FileQuit",
                                      Stock::QUIT, "_Quit",
                                      "Close this application"),

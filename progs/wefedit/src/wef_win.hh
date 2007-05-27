@@ -1,10 +1,10 @@
 /*
-** main_win.hh
-** Login : <lta@elthariel-main>
-** Started on  Fri May 25 17:11:21 2007 Elthariel
+** wef_win.hh
+** Login : <elthariel@elthariel-desktop>
+** Started on  Sun May 27 15:43:36 2007 Nahlwe
 ** $Id$
 **
-** Copyright (C) 2007 Elthariel
+** Copyright (C) 2007 Nahlwe
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
@@ -20,25 +20,21 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	MAIN_WIN_HH_
-# define   	MAIN_WIN_HH_
+#ifndef   	WEF_WIN_HH_
+# define   	WEF_WIN_HH_
 
-#include <gtkmm.h>
+#include <wef.hh>
+#include "wefview.hh"
 
-class MainWin : public Gtk::Window
+class WefWin : public Gtk::Window
 {
 public:
-  MainWin();
+  WefWin(Wef &a_wef);
 
-  void                  unimplemented();
-  void                  quit();
-  void                  open();
 protected:
-  void                  create_actions();
-
-  Gtk::VBox                             m_vbox;
-  Glib::RefPtr<Gtk::UIManager>          m_ui_manager;
-  Glib::RefPtr<Gtk::ActionGroup>        m_action_group;
+  Wef                   &m_wef;
+  WefView               &m_wefview;
+  Gtk::VBox             m_vbox;
 };
 
-#endif	    /* !MAIN_WIN_HH_ */
+#endif	    /* !WEF_WIN_HH_ */
