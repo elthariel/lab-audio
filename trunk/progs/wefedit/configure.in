@@ -4,7 +4,6 @@ dnl or use autogen.sh (recommended)
 
 AC_INIT(configure.in)
 AM_INIT_AUTOMAKE(wefedit, 0.0.3)
-AM_PROG_LIBTOOL
 
 AM_MAINTAINER_MODE
 
