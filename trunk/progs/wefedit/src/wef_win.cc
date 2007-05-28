@@ -32,7 +32,7 @@ WefWin::WefWin(Wef &a_wef)
     m_wefview(*new WefView(a_wef))
 {
   add(m_vbox);
-  m_vbox.pack_start(m_vbox);
+  m_vbox.pack_start(m_wefview);
   show_all();
 }
 

@@ -24,6 +24,8 @@
 #include "wefview.hh"
 #include <cmath>
 
+using namespace std;
+
 WefView::WefView(Wef &a_wef)
   : m_wef(a_wef)
 {
@@ -38,9 +40,8 @@ bool            WefView::on_expose_event(GdkEventExpose* event)
       Gtk::Allocation allocation = get_allocation();
       const int w = allocation.get_width();
       const int h = allocation.get_height();
-      float i;
       unsigned int wef_w = m_wef.get_size();
-      double wef_offset =((double) wef_w) / w;
+      double wef_offset =((double) wef_w) / ((double)w);
 
       Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
 
@@ -51,9 +52,19 @@ bool            WefView::on_expose_event(GdkEventExpose* event)
           cr->clip();
         }
 
+      cr->set_source_rgba(1.0, 1.0, 1.0, 1.0);
+      cr->rectangle(0.0, 0.0, w, h);
+      cr->stroke();
+      cr->set_line_width(1);
+      cr->set_source_rgba(0.4, 0.4, 0.4, 1.0);
       cr->move_to(0.0, h / 2.0);
-      for (i = 0.0; i < w; i += wef_offset)
-        cr->line_to(i, (m_wef[(unsigned int)i] + 1.0) * 0.5 * h);
+      cr->line_to(w, h / 2.0);
+      cr->stroke();
+      cr->set_source_rgba(0.0, 0.0, 0.3, 1.0);
+      cr->set_line_width(1.2);
+      cr->move_to(0.0, h / 2.0);
+      for (unsigned int i = 0.0; i < w; i ++)
+        cr->line_to(i, (m_wef[((unsigned int)i * wef_offset)] + 1.0) * 0.5 * h);
       cr->stroke();
     }
 }
