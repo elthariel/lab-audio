@@ -54,7 +54,9 @@ public:
   double        &operator()(unsigned int index,
                             unsigned int grain) const;
 
-  void          set_size(unsigned int size);
+  /*
+   * Mutators
+   */
   void          set_grain_count(unsigned int count);
   void          set_grain_size(unsigned int index,
                                unsigned int size);
@@ -62,13 +64,20 @@ public:
                               unsigned int pos);
   void          set_name(const char *name);
   void          set_author(const char *author);
-  void          set_wave(double *wave);
+  void          set_wave(double *wave, unsigned int size);
 
+
+  /*
+   * Serializer
+   */
+  bool          write_wef(std::string a_path);
 
 protected:
+  void          build_wef_file();
+
   wfm           *m_wef_mem;
   std::string   m_path;
-  bool          m_ro
+  bool          m_ro;
 };
 
 #endif	    /* !WEF_HH_ */
