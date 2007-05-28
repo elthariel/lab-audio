@@ -77,10 +77,10 @@ void            MidiController::process_midi_port(jack_nframes_t nframes,
   Event                 ev;
 
   ev.subsystem = a_sys;
-  ev_count = jack_midi_get_event_count(a_midi_buffer, nframes);
+  ev_count = jack_midi_get_event_count(a_midi_buffer);
   for (i = 0; i < ev_count; i++)
     {
-      if (jack_midi_event_get(&midi_ev, a_midi_buffer, i, nframes) == 0)
+      if (jack_midi_event_get(&midi_ev, a_midi_buffer, i) == 0)
         {
           if (midi_to_event(midi_ev, ev))
             process_event(ev);

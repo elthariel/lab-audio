@@ -34,6 +34,7 @@ public:
 protected:
   Wef                   &m_wef;
   WefView               &m_wefview;
+  Gtk::ScrolledWindow   m_scrolled_win;
   Gtk::VBox             m_vbox;
 };
 

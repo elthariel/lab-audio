@@ -23,10 +23,8 @@ extern "C"
 #endif
 
 # include <stdint.h>
-  //  typedef	int32_t           int32;
-  //pedef	int64_t           int64;
-  typedef	uint32_t					uint32;
-  typedef	uint64_t					uint64;
+  typedef	uint32_t uint32;
+  typedef	uint64_t uint64;
 
   typedef struct          _grain
   {
@@ -36,6 +34,10 @@ extern "C"
 		// Grain position offset (in 'sample size', ie 8 bytes),
 		//		relative to the start of the graintable data (.ie after grain index).
   }                       grain;
+
+# define WEF_MAGIC_LEN  6
+# define WEF_NAME_LEN   128
+# define WEF_AUTHOR_LEN 128
 
   typedef struct          _wf
   {
@@ -53,7 +55,7 @@ extern "C"
 		// Size of wf_content in byte. size of the waveform if simple waveform (monoperiod/not graintable).
     char				wf_content[];
 		// Contain optional grain index, and the waveform data.
-    //(Waveform data are stored as (x86) double precision floats).
+    //(Waveform data are stored as double precision floats).
   }                       wf;
 
   //Grain index (if any) is found at the beginning of wf_content.

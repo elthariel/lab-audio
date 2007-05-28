@@ -5,17 +5,31 @@
 // Login   <elthariel@epita.fr>
 //
 // Started on  Fri Feb  9 15:52:18 2007 Nahlwe
-// Last update Mon May 28 13:17:34 2007 Nahlwe
+// Last update Mon May 28 18:26:23 2007 Elthariel
 //
 
 #include "wef.hh"
 #include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
 Wef::Wef()
   : m_ro(false)
 {
+  m_wef_mem = (wfm *)malloc(sizeof(wfm));
+  m_wef_mem->wf_version = 1;
+  m_wef_mem->wf_magic = (char *)malloc(WEF_MAGIC_LEN);
+  strcpy(m_wef_mem->wf_magic, "Wef-0");
+  m_wef_mem->wf_name = (char *)malloc(WEF_NAME_LEN);
+  m_wef_mem->wf_author = (char *)malloc(WEF_AUTHOR_LEN);
+  memset((void *)m_wef_mem->wf_name, 0, WEF_NAME_LEN);
+  memset((void *)m_wef_mem->wf_author, 0, WEF_AUTHOR_LEN);
+  m_wef_mem->wf_grain_count = 0;
+  m_wef_mem->wf_size = 0;
+  m_wef_mem->wf_file = 0;
+  m_wef_mem->wf_grain_index = 0;
+  m_wef_mem->wf_wave = 0;
 }
 
 Wef::Wef(std::string path)
@@ -31,7 +45,14 @@ Wef::~Wef()
     wef_close(m_wef_mem);
   else
     {
-      // FIXME : free all allocated data;
+      free(m_wef_mem->wf_magic);
+      free(m_wef_mem->wf_name);
+      free(m_wef_mem->wf_author);
+      free(m_wef_mem->wf_grain_index);
+      free(m_wef_mem->wf_wave);
+      if (m_wef_mem->wf_file)
+        free(m_wef_mem->wf_file);
+      free(m_wef_mem);
     }
 }
 
@@ -86,12 +107,12 @@ unsigned char   Wef::version() const
   return m_wef_mem->wf_version;
 }
 
-const double    &Wef::operator[](unsigned int index) const
+double          &Wef::operator[](unsigned int index) const
 {
   return m_wef_mem->wf_wave[index % m_wef_mem->wf_size];
 }
 
-const double    &Wef::operator()(unsigned int index,
+double          &Wef::operator()(unsigned int index,
                                  unsigned int grain) const
 {
   unsigned int pos;
@@ -106,19 +127,13 @@ const double    &Wef::operator()(unsigned int index,
 /*
  * Mutators
  */
-void            Wef::set_size(unsigned int size)
-{
-  if (!m_ro)
-      m_wef_mem->wf_size = size;
-}
-
 void            Wef::set_grain_count(unsigned int count)
 {
   if (!m_ro)
     {
       m_wef_mem->wf_grain_count = count;
-      m_wef_mem->wf_grain_index = realloc(m_wef_mem->wf_grain_index,
-                                          count * sizeof(grain));
+      m_wef_mem->wf_grain_index = (grain *)realloc(m_wef_mem->wf_grain_index,
+                                                   count * sizeof(grain));
     }
 }
 
@@ -144,13 +159,38 @@ void            Wef::set_grain_pos(unsigned int index,
 
 void            Wef::set_name(const char *name)
 {
+  if (!m_ro)
+    {
+      free (m_wef_mem->wf_name);
+      m_wef_mem->wf_name = strndup(name, WEF_NAME_LEN - 1);
+    }
 }
 
 void            Wef::set_author(const char *author)
 {
+  if (!m_ro)
+    {
+      free (m_wef_mem->wf_author);
+      m_wef_mem->wf_author = strndup(author, WEF_NAME_LEN - 1);
+    }
 }
 
-void            Wef::set_wave(double *wave)
+void            Wef::set_wave(double *wave, unsigned int size)
+{
+  if (!m_ro)
+    {
+      if (m_wef_mem->wf_wave)
+        free(m_wef_mem->wf_wave);
+      m_wef_mem->wf_wave = wave;
+      m_wef_mem->wf_size = size;
+    }
+}
+
+bool            Wef::write_wef(std::string a_path)
+{
+  return true;
+}
+
+void            Wef::build_wef_file()
 {
 }
-

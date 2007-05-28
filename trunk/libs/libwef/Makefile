@@ -5,15 +5,15 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Fri Feb  9 13:40:59 2007 Nahlwe
-## Last update Sat Feb 10 08:42:11 2007 Nahlwe
+## Last update Fri May 25 11:15:34 2007 Elthariel
 ##
 
-CC							= gcc
+CC					= gcc
 
-OBJS						= wef_mem_0_2.o wef.o
+OBJS					= wef_mem_0_2.o wef.o
 TARGET					= libwef
 
-CFLAGS					= -g -Wall
+CFLAGS					= -g -Wall -fPIC
 LDFLAGS					=
 
 all : $(TARGET)

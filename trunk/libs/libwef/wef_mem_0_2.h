@@ -1,7 +1,7 @@
 // Waveform exchange file, memory representation. version 0.2
 //
 // Copyright 2006, BALLET Julien (ballet_j@epitech.net)
-// This file is released under LGPL.
+// This file is released under LGPL. (Lesser General Public License, see www.fsf.org)
 //
 
 #ifndef WEF_MEM_H_
