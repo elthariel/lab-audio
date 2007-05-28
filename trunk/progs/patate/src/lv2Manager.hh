@@ -34,25 +34,12 @@ extern const LV2_Host_Feature **g_features;
 
 bool                            lv2_is_synth(SLV2Plugin a_plug);
 
-class Lv2Manager
-{
-public:
-  Lv2Manager(Patate &a_patate);
-
-protected:
-  void                          init_slv2();
-
-  SLV2World                     m_world;
-  SLV2Plugins                   m_plugins;
-  Patate                        &m_patate;
-};
-
 class Lv2Adapter : public Seq::iSynth
 {
 public:
-  Lv2Adapter(SLV2Plugin &a_plugin,
+  Lv2Adapter(SLV2Plugin a_plugin,
              unsigned int a_sample_rate);
-  virtual     ~Lv2Adapter();
+  virtual ~Lv2Adapter();
 
   virtual void        play_note(const Seq::Note &a_note);
   virtual void        stop_note(const Seq::Note &a_note);
@@ -67,7 +54,8 @@ protected:
   void                  connect_ports();
   void                  frame(jack_nframes_t nframes);
 
-  SLV2Plugin            &m_plugin;
+  LV2_Host_Feature      **m_feat;
+  SLV2Plugin            m_plugin;
   SLV2Instance          m_lv2;
   unsigned int          m_port_count;
   float                 *m_controls;
@@ -76,5 +64,20 @@ protected:
   int                   m_audio_ports_index[2];
   LV2_MIDIState         m_midi_state;
 };
+
+class Lv2Manager
+{
+public:
+  Lv2Manager(Patate &a_patate);
+
+  Lv2Adapter                    *make_lv2(unsigned int a_id);
+protected:
+  void                          init_slv2();
+
+  SLV2World                     m_world;
+  SLV2Plugins                   m_plugins;
+  Patate                        &m_patate;
+};
+
 
 #endif	    /* !LV2MANAGER_HH_ */

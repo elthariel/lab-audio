@@ -25,8 +25,6 @@
 
 using namespace std;
 
-const LV2_Host_Feature **g_features = NULL;
-
 bool                    lv2_is_synth(SLV2Plugin a_plug)
 {
   /*  SLV2Values            values;
@@ -52,18 +50,32 @@ Lv2Manager::Lv2Manager(Patate &a_patate)
 
 void                    Lv2Manager::init_slv2()
 {
+  unsigned int i;
+
   m_world = slv2_world_new();
   slv2_world_load_all(m_world);
   m_plugins = slv2_world_get_plugins_by_filter(m_world, &lv2_is_synth);
 
-  for (unsigned i = 0; i < slv2_plugins_size(m_plugins); ++i)
+  for (i = 0; i < slv2_plugins_size(m_plugins); ++i)
     {
       SLV2Plugin p = slv2_plugins_get_at(m_plugins, i);
-      cout << "Plugin found : " << slv2_plugin_get_uri(p) << endl;
+      cout << "Plugin found : " << i << " : " << slv2_plugin_get_uri(p) << endl;
     }
 }
 
+Lv2Adapter              *Lv2Manager::make_lv2(unsigned int a_id)
+{
+  unsigned int          plug_count;
+  Lv2Adapter            *plug;
 
+  plug_count = slv2_plugins_size(m_plugins);
+
+  if (a_id >= plug_count)
+    return 0;
+  plug = new Lv2Adapter(slv2_plugins_get_at(m_plugins, a_id),
+                        m_patate.get_sample_rate());
+  return plug;
+}
 
 
 
@@ -79,19 +91,30 @@ void                    Lv2Manager::init_slv2()
  * Lv2Adapter class.
  */
 
-Lv2Adapter::Lv2Adapter(SLV2Plugin &a_plugin, unsigned int a_sample_rate)
+Lv2Adapter::Lv2Adapter(SLV2Plugin a_plugin, unsigned int a_sample_rate)
   : m_plugin(a_plugin),
     m_midi_connected(false)
 {
+  m_feat = new LV2_Host_Feature *[2];
+  m_feat[0] = new LV2_Host_Feature;
+  m_feat[0]->URI = "<http://ll-plugins.nongnu.org/lv2/namespace#instrument-ext>";
+  m_feat[0]->data = 0;
+  m_feat[1] = 0;
+
 
   m_midi_state.midi = &m_midi_port;
   m_midi_state.frame_count = 4096;
   m_midi_state.position = 0;
 
-  slv2_plugin_instantiate(m_plugin, a_sample_rate, g_features);
-  slv2_instance_activate(m_lv2);
+  m_lv2 = slv2_plugin_instantiate(m_plugin, a_sample_rate,
+                                  (const LV2_Host_Feature **)m_feat);
+  if (m_lv2 == NULL)
+    cout << "Unable to instantiate plugin" << endl;
+  else cout << "loaded plugin" << endl;
+
   create_ports();
   connect_ports();
+  slv2_instance_activate(m_lv2);
 }
 
 Lv2Adapter::~Lv2Adapter()
@@ -155,6 +178,7 @@ void        Lv2Adapter::create_ports()
 {
   m_port_count = slv2_plugin_get_num_ports(m_plugin);
 
+  cout << "This plugin has " << m_port_count << " ports." << endl;
   m_controls = new float[m_port_count];
   m_midi_port.data = new unsigned char[LV2_MIDI_BUFFER_SIZE];
   m_midi_port.event_count = 0;
@@ -175,10 +199,12 @@ void        Lv2Adapter::connect_ports()
       switch (port_class)
         {
         case SLV2_CONTROL_INPUT:
+          cout << "Found a SLV2_CONTROL_INPUT" << endl;
           m_controls[i] = slv2_port_get_default_value(m_plugin, port);
           slv2_instance_connect_port(m_lv2, i, &m_controls[i]);
           break;
         case SLV2_AUDIO_OUTPUT:
+          cout << "Found a SLV2_AUDIO_OUTPUT" << endl;
           if (m_audio_ports_index[0] < 0)
             m_audio_ports_index[0] = i;
           else if (m_audio_ports_index[1] < 0)
@@ -187,6 +213,7 @@ void        Lv2Adapter::connect_ports()
             cout << "This plugin has too much audio ouput" << endl;
           break;
         case SLV2_MIDI_INPUT:
+          cout << "Found a SLV2_MIDI_INPUT" << endl;
           if (!m_midi_connected)
             {
               m_midi_connected = false;
