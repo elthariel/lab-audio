@@ -52,18 +52,21 @@ bool            WefView::on_expose_event(GdkEventExpose* event)
           cr->clip();
         }
 
+      cr->set_line_width(0);
       cr->set_source_rgba(1.0, 1.0, 1.0, 1.0);
       cr->rectangle(0.0, 0.0, w, h);
       cr->stroke();
+
       cr->set_line_width(1);
       cr->set_source_rgba(0.4, 0.4, 0.4, 1.0);
       cr->move_to(0.0, h / 2.0);
       cr->line_to(w, h / 2.0);
       cr->stroke();
+
       cr->set_source_rgba(0.0, 0.0, 0.3, 1.0);
       cr->set_line_width(1.2);
       cr->move_to(0.0, h / 2.0);
-      for (unsigned int i = 0.0; i < w; i ++)
+      for (unsigned int i = 0; i < w; i++)
         cr->line_to(i, (m_wef[((unsigned int)i * wef_offset)] + 1.0) * 0.5 * h);
       cr->stroke();
     }
