@@ -50,6 +50,7 @@ public:
   Seq::Seq              &get_drumseq();
   void                  set_bpm(unsigned int a_new_bpm);
   unsigned int          get_bpm();
+  unsigned int          get_sample_rate();
 
 protected:
   void                  init_jack();

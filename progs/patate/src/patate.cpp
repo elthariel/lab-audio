@@ -49,9 +49,7 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
 
   for(i = 0; i < 16; i++)
     {
-      m_synths.synth(i, *new DspSynthAdapter(*new Dsp::DrumHat));
-
-      cout << "synth " << i << " " << m_synths.synth(i);
+      //      m_synths.synth(i, *new DspSynthAdapter(*new Dsp::DrumHat));
     }
 }
 
@@ -151,8 +149,9 @@ void            Patate::process_audio(jack_nframes_t nframes,
       out[1][i] = 0.0;
     }
   for (i = 0; i < m_synths.get_synth_count(); i++)
-    m_synths.synth(i)->render(nframes, sample_rate, 2,
-                              (jack_default_audio_sample_t **)out);
+    if (m_synths.synth(i) != 0)
+      m_synths.synth(i)->render(nframes, sample_rate, 2,
+                                (jack_default_audio_sample_t **)out);
 }
 
 void            Patate::process_midi(jack_nframes_t nframes)
@@ -230,6 +229,11 @@ SynthManager    &Patate::get_synths()
 Seq::Seq        &Patate::get_drumseq()
 {
   return m_seq;
+}
+
+unsigned int    Patate::get_sample_rate()
+{
+  return jack_get_sample_rate(m_jack_client);
 }
 
 
