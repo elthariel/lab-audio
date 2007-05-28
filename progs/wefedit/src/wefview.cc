@@ -24,12 +24,26 @@
 #include "wefview.hh"
 #include <cmath>
 
+# define SAMPLE_PER_PIXEL 25
+
 using namespace std;
 
 WefView::WefView(Wef &a_wef)
-  : m_wef(a_wef)
+  : m_wef(a_wef),
+    m_zoom(1.0),
+    m_clicked(false)
 {
+  set_size_request(m_wef.get_size() / (m_zoom * SAMPLE_PER_PIXEL), 250);
+  set_events(get_events() | Gdk::SCROLL_MASK | Gdk::BUTTON_RELEASE_MASK | Gdk::BUTTON_PRESS_MASK);
+}
 
+void            WefView::set_zoom(float a_zoom)
+{
+  Gtk::Allocation allocation = get_allocation();
+  const int h = allocation.get_height();
+
+  m_zoom = a_zoom;
+  set_size_request(m_wef.get_size() / (m_zoom * SAMPLE_PER_PIXEL), 250);
 }
 
 bool            WefView::on_expose_event(GdkEventExpose* event)
@@ -41,7 +55,7 @@ bool            WefView::on_expose_event(GdkEventExpose* event)
       const int w = allocation.get_width();
       const int h = allocation.get_height();
       unsigned int wef_w = m_wef.get_size();
-      double wef_offset =((double) wef_w) / ((double)w);
+      double wef_offset = SAMPLE_PER_PIXEL * m_zoom;
 
       Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
 
@@ -52,10 +66,32 @@ bool            WefView::on_expose_event(GdkEventExpose* event)
           cr->clip();
         }
 
-      cr->set_line_width(0);
-      cr->set_source_rgba(1.0, 1.0, 1.0, 1.0);
-      cr->rectangle(0.0, 0.0, w, h);
-      cr->stroke();
+      if (m_clicked)
+        {
+          cr->set_line_width(0);
+
+          cr->set_source_rgba(1.0, 1.0, 1.0, 1.0);
+          cr->rectangle(0.0, 0.0, m_start_pos, h);
+          cr->stroke();
+          cr->fill();
+
+          cr->set_source_rgba(0.6, 0.6, 0.6, 1.0);
+          cr->rectangle(m_start_pos, 0.0, m_end_pos, h);
+          cr->stroke();
+          cr->fill();
+
+          cr->set_source_rgba(1.0, 1.0, 1.0, 1.0);
+          cr->rectangle(m_end_pos, 0.0, w, h);
+          cr->stroke();
+          cr->fill();
+        }
+      else
+        {
+          cr->set_line_width(0);
+          cr->set_source_rgba(1.0, 1.0, 1.0, 1.0);
+          cr->rectangle(0.0, 0.0, w, h);
+          cr->stroke();
+        }
 
       cr->set_line_width(1);
       cr->set_source_rgba(0.4, 0.4, 0.4, 1.0);
@@ -72,4 +108,32 @@ bool            WefView::on_expose_event(GdkEventExpose* event)
     }
 }
 
+bool                    WefView::on_scroll_event(GdkEventScroll* event)
+{
+  if (event->direction == GDK_SCROLL_UP)
+    {
+      set_zoom(m_zoom * 0.75);
+    }
+  else
+    {
+      set_zoom(m_zoom * 1.25);
+    }
+  queue_draw();
+  return true;
+}
+
+bool                    WefView::on_button_press_event(GdkEventButton* event)
+{
+  m_clicked = true;
+  m_start_pos = m_end_pos = (unsigned int)event->x;
+  queue_draw();
+}
+
+bool                    WefView::on_button_release_event(GdkEventButton* event)
+{
+  m_end_pos = (unsigned int) event->x;
+  /*  if (m_end_pos > (m_start_pos - 2) && m_end_pos < (m_start_pos + 2))
+      m_clicked = false;*/
+  queue_draw();
+}
 

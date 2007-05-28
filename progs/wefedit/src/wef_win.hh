@@ -32,10 +32,12 @@ public:
   WefWin(Wef &a_wef);
 
 protected:
+
   Wef                   &m_wef;
   WefView               &m_wefview;
   Gtk::ScrolledWindow   m_scrolled_win;
   Gtk::VBox             m_vbox;
+
 };
 
 #endif	    /* !WEF_WIN_HH_ */
