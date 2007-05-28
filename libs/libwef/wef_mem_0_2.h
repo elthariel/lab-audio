@@ -17,15 +17,15 @@ extern "C"
   typedef struct		_wfm
   {
     unsigned char	wf_version;
-    char				*wf_magic;
-    char				*wf_name;
-    char				*wf_author;
-    uint32			wf_grain_count;
-    uint32			wf_size;
-    wf					*wf_file;
-    grain				*wf_grain_index;
-    double			*wf_wave;
-  }						wfm;
+    char		*wf_magic;
+    char		*wf_name;
+    char		*wf_author;
+    uint32		wf_grain_count;
+    uint32		wf_size;
+    wf			*wf_file;
+    grain		*wf_grain_index;
+    double		*wf_wave;
+  }				wfm;
 
   /*
   ** Read functions.

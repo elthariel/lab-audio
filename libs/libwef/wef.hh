@@ -25,29 +25,50 @@
 
 # include "wef_mem_0_2.h"
 # include <string>
+# include <exception>
 
 class Wef
 {
 public:
   Wef(std::string path);
+  Wef();
   ~Wef();
 
+  /*
+   * Accesors
+   */
+  bool          is_readonly();
+  void          make_writable();
   unsigned int  get_size() const;
   unsigned int  get_grain_count() const;
+  unsigned int  get_grain_pos(unsigned int grain) const;
   unsigned int  get_grain_size(unsigned int grain) const;
   const char    *get_name() const;
   const char    *get_author() const;
   unsigned char version() const;
 
-  // Accessors without grains.
-  const double  &operator[](unsigned int index) const;
+  // Wave Accessors without grains.
+  double        &operator[](unsigned int index) const;
 
-  // Accessors supporting grains.
-  const double  &operator()(unsigned int index,
+  // Wave Accessors supporting grains.
+  double        &operator()(unsigned int index,
                             unsigned int grain) const;
+
+  void          set_size(unsigned int size);
+  void          set_grain_count(unsigned int count);
+  void          set_grain_size(unsigned int index,
+                               unsigned int size);
+  void          set_grain_pos(unsigned int index,
+                              unsigned int pos);
+  void          set_name(const char *name);
+  void          set_author(const char *author);
+  void          set_wave(double *wave);
+
+
 protected:
   wfm           *m_wef_mem;
   std::string   m_path;
+  bool          m_ro
 };
 
 #endif	    /* !WEF_HH_ */
