@@ -54,7 +54,8 @@ void                    Lv2Manager::init_slv2()
 
   m_world = slv2_world_new();
   slv2_world_load_all(m_world);
-  m_plugins = slv2_world_get_plugins_by_filter(m_world, &lv2_is_synth);
+  //  m_plugins = slv2_world_get_plugins_by_filter(m_world, &lv2_is_synth);
+  m_plugins = slv2_world_get_all_plugins(m_world);
 
   for (i = 0; i < slv2_plugins_size(m_plugins); ++i)
     {
