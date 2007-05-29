@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Sun May 20 20:05:03 2007 Nahlwe
+## Last update Tue May 29 21:23:18 2007 Nahlwe
 ##
 
 SUBDIRS = seq
@@ -50,11 +50,17 @@ patate_LDFLAGS = -O3
 # --> make check
 #TESTS = test-1.sh test-2
 TESTS = test-noise
-check_PROGRAMS = test-noise
+check_PROGRAMS = test-noise test-lv2
 
 test_noise_SOURCES = noise_test.cc drumsynth.cc \
 	noise.cc iFilter.cc varinoise.cc
 test_noise_CPPFLAGS = -g -Wall
+
+test_lv2_SOURCES = test_lv2.cc lv2Manager.cc patate.cpp \
+	lfringbuffer.cpp synth_manager.cc midicontroller.cc
+
+test_lv2_CPPFLAGS = -g -Wall -O3 -pthread @PKG_CFLAGS@ -Iseq
+test_lv2_LDADD = @PKG_LIBS@ seq/libseq.la
 
 ####################
 # Additional Rules #
