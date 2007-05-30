@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Tue May 29 21:23:18 2007 Nahlwe
+## Last update Tue May 29 22:07:58 2007 Nahlwe
 ##
 
 SUBDIRS = seq
@@ -37,11 +37,11 @@ patate_SOURCES = AnalogFilter.cpp Envelop.cpp foncteurs.cpp \
 	lv2Manager.cc
 
 # Don't forget that the order of the libraries _does_ matter
-patate_CPPFLAGS = -g -Wall -O3 -pthread @PKG_CFLAGS@ \
+patate_CPPFLAGS = -g -Wall -pthread @PKG_CFLAGS@ \
 	-Iseq/ -I../../../libs/libwef
 patate_LDADD = -lpthread -lrt @PKG_LIBS@ seq/libseq.la \
 	-L../../../libs/libwef -lwef++
-patate_LDFLAGS = -O3
+patate_LDFLAGS =
 
 ##########
 # Checks #
@@ -59,7 +59,7 @@ test_noise_CPPFLAGS = -g -Wall
 test_lv2_SOURCES = test_lv2.cc lv2Manager.cc patate.cpp \
 	lfringbuffer.cpp synth_manager.cc midicontroller.cc
 
-test_lv2_CPPFLAGS = -g -Wall -O3 -pthread @PKG_CFLAGS@ -Iseq
+test_lv2_CPPFLAGS = -g -Wall -pthread @PKG_CFLAGS@ -Iseq
 test_lv2_LDADD = @PKG_LIBS@ seq/libseq.la
 
 ####################
