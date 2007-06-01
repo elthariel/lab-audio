@@ -3,7 +3,7 @@ dnl process with autoconf in order to get configure script
 dnl or use autogen.sh (recommended)
 
 AC_INIT(configure.in)
-AM_INIT_AUTOMAKE(patate, 0.1.5)
+AM_INIT_AUTOMAKE(patate, 0.1.6)
 AM_PROG_LIBTOOL
 
 AM_MAINTAINER_MODE
@@ -23,6 +23,20 @@ dnl    pthreads, libxml++ (or embbed it into src tree)
 
 #AC_CHECK_HEADERS([pthread.h, semaphore.h])
 #AC_CHECK_HEADERS([iostream, vector, list])
+
+# Check for debugging flag
+debug="no"
+AC_ARG_ENABLE(debug,
+	[AS_HELP_STRING(--enable-debug, [Enable debugging (false)])],
+	[debug="$enableval"])
+if test "$debug" = "yes"; then
+  CFLAGS="-O0 -g -DDEBUG"
+  CXXFLAGS="-O0 -g -DDEBUG"
+else
+  CFLAGS="$CFLAGS -DNDEBUG"
+  CXXFLAGS="$CFLAGS -DNDEBUG"
+fi
+
 
 PKG_CHECK_MODULES(PKG, [gtkmm-2.4 jack sndfile libslv2])
 AC_SUBST(PKG_CFLAGS)
