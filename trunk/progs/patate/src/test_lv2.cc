@@ -20,9 +20,10 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#include <iostream>
-#include <assert.h>
-#include "lv2Manager.hh"
+//#include <iostream>
+//#include <assert.h>
+//#include "lv2Manager.hh"
+#include <slv2/slv2.h>
 
 using namespace std;
 
@@ -43,5 +44,6 @@ int main(int argc, char **argv)
 
   unsigned int m_port_count = slv2_plugin_get_num_ports(p);
 
-  cout << "This plugin has " << m_port_count << " ports." << endl;
+  //  cout << "This plugin has " << m_port_count << " ports." << endl;
+  return m_port_count;
 }
