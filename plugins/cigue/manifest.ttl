@@ -1,7 +1,9 @@
 @prefix lv2:  <http://lv2plug.in/ontology#>.
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix doap: <http://usefulinc.com/ns/doap#>.
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/cigue>
-lv2:binary <cigue.so>;
-rdfs:seeAlso <cigue.ttl>.
+  a lv2:Plugin, lv2:InstrumentPlugin;
+  lv2:binary <cigue.so>;
+  rdfs:seeAlso <cigue.ttl>.
 

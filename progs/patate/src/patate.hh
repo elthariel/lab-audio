@@ -51,6 +51,7 @@ public:
   void                  set_bpm(unsigned int a_new_bpm);
   unsigned int          get_bpm();
   unsigned int          get_sample_rate();
+  void                  activate();
 
 protected:
   void                  init_jack();

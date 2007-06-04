@@ -45,9 +45,9 @@ Seq::iSynth           *SynthManager::synth(unsigned int i)
 }
 
 void                  SynthManager::synth(unsigned int i,
-                                          Seq::iSynth &a_synth)
+                                          Seq::iSynth *a_synth)
 {
-  m_synths[i] = &a_synth;
+  m_synths[i] = a_synth;
 }
 
 

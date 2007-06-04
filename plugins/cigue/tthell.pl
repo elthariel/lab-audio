@@ -60,30 +60,30 @@ sub write_port
     if ($line->[0] == 0)
     {
         if ($line->[1] =~ /in/) {
-            print TTL "a lv2:AudioRateInputPort;\nlv2:datatype lv2:float;\n";
+            print TTL "a lv2:InputPort, lv2:AudioPort;\n     lv2:datatype lv2:float;\n";
         }
         else {
-            print TTL "a lv2:AudioRateOutputPort;\nlv2:datatype lv2:float;\n";
+            print TTL "a lv2:OutputPort, lv2:AudioPort;\n    lv2:datatype lv2:float;\n";
         }
     }
     elsif ($line->[0] == 1)
     {
         if ($line->[1] =~ /in/) {
-            print TTL "a lv2:ControlRateInputPort;\nlv2:datatype ".
+            print TTL "    a lv2:InputPort, llext:MidiPort;\n     lv2:datatype ".
                 "<http://ll-plugins.nongnu.org/lv2/ext/miditype>;\n";
         }
         else {
-            print TTL "a lv2:ControlRateOutputPort;\nlv2:datatype ".
+            print TTL "    a lv2:OutputPort, llext:MidiPort;\n    lv2:datatype ".
                 "<http://ll-plugins.nongnu.org/lv2/ext/miditype>;\n";
         }
     }
     elsif ($line->[0] == 2)
     {
         if ($line->[1] =~ /in/) {
-            print TTL "a lv2:ControlRateInputPort;\nlv2:datatype lv2:float;\n";
+            print TTL "    a lv2:InputPort, lv2:ControlPort;\n    lv2:datatype lv2:float;\n";
         }
         else {
-            print TTL "a lv2:ControlRateOutputPort;\nlv2:datatype lv2:float;\n";
+            print TTL "    a lv2:OutputPort, lv2:ControlPort;\n    lv2:datatype lv2:float;\n";
         }
     }
 
@@ -123,7 +123,8 @@ sub make_ttl_header
     print TTL "\@prefix lv2:  <http://lv2plug.in/ontology#>.\n".
         "\@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.\n".
         "\@prefix doap: <http://usefulinc.com/ns/doap#>.\n".
-        "\@prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.\n";
+        "\@prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.\n".
+        "@prefix llext: <http://ll-plugins.nongnu.org/lv2/ext/>.";
     print TTL "\n<".$ttl[0]->[1].">\n";
     print TTL "a lv2:Plugin;\ndoap:name \"".$ttl[0]->[0]."\";\n";
     print TTL "doap:licence <http://usefulinc.com/doap/licenses/gpl>;\n";
