@@ -36,10 +36,10 @@ public:
   virtual unsigned int          get_synth_count();
   //virtual void                  set_sample_rate(unsigned int a_sr);
   virtual Seq::iSynth           *synth(unsigned int i);
-  virtual void                  synth(unsigned int i, Seq::iSynth &a_synth);
+  virtual void                  synth(unsigned int i, Seq::iSynth *a_synth);
 
 protected:
-  std::vector<Seq::iSynth *>    m_synths;
+  std::vector<Seq::iSynth *> m_synths;
 };
 
 class DspSynthAdapter : public Seq::iSynth

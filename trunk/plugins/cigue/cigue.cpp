@@ -5,7 +5,7 @@
 // Login   <elthariel@lse.epita.fr>
 //
 // Started on  Wed Feb  7 09:03:52 2007 Nahlwe
-// Last update Thu Feb 15 06:07:21 2007 Nahlwe
+// Last update Sun Jun  3 18:57:58 2007 Nahlwe
 //
 
 #include <iostream>
@@ -64,9 +64,13 @@ void            Cigue::process_midi(unsigned int sample_count)
   when = uint32_t(lv2midi_get_event(&midi, &event_time, &event_size, &ev));
   while (event_size)
     {
+      cout << (unsigned int)ev[0]
+           << " " << (unsigned int)ev[1]
+           << " " << (unsigned int)ev[2] << endl;
       switch(ev[0])
         {
         case 0x90:
+          cout << "note_on" << endl;
           m_note = ev[1];
           m_vel = ev[2];
           if (m_note_count == 0)
@@ -90,6 +94,7 @@ void            Cigue::process_midi(unsigned int sample_count)
           m_note_count++;
           break;
         case 0x80:
+              cout << "note_off" << endl;
           if (m_note_count == 1)
             {
               m_note = -1;
@@ -97,6 +102,8 @@ void            Cigue::process_midi(unsigned int sample_count)
             }
           if (m_note_count > 0)
             m_note_count--;
+          break;
+        default:
           break;
         }
       lv2midi_step(&midi);
@@ -128,6 +135,7 @@ void            Cigue::run(uint32_t sample_count)
 
   process_midi(sample_count);
   dispatch_control();
+  cout << "audio buffer is at " << out << endl;
 
   // Env pos
   env = m_exp.get_size() / (m_env_decay * m_sr);

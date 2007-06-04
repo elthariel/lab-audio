@@ -23,7 +23,7 @@
 #include <iostream>
 #include "patate.hh"
 #include "part.hh"
-#include "drumsynth.hh"
+//#include "drumsynth.hh"
 #include "lv2Manager.hh"
 
 using namespace std;
@@ -44,13 +44,14 @@ Patate::Patate(LFRingBufferWriter<Event> *a_writer,
 {
   unsigned int i;
 
-  init_jack();
   m_seq.start();
+  init_jack();
 
-  for(i = 0; i < 16; i++)
-    {
-      //      m_synths.synth(i, *new DspSynthAdapter(*new Dsp::DrumHat));
-    }
+
+//   for(i = 0; i < 16; i++)
+//     {
+//       m_synths.synth(i, new DspSynthAdapter(*new Dsp::DrumHat));
+//     }
 }
 
 Patate::~Patate()
@@ -62,7 +63,7 @@ void                  Patate::init_jack()
 {
 
   // Opening jack connection
-  m_jack_client = jack_client_new("Patate");
+  m_jack_client = jack_client_open("Patate", JackNoStartServer, 0);
   if (m_jack_client == 0)
     throw *(new jack_error("Unable to connect to jack (servernot running ?)"));
 
@@ -110,7 +111,11 @@ void                  Patate::init_jack()
 
   m_buffer_size = jack_get_buffer_size(m_jack_client);
 
-  //Activating client.
+}
+
+void            Patate::activate()
+{
+ //Activating client.
   if (jack_activate(m_jack_client))
     throw *(new jack_error("Unable to activate jack client"));
 }
@@ -123,7 +128,6 @@ void            Patate::close_jack()
 int             Patate::process(jack_nframes_t nframes)
 {
   jack_nframes_t sample_rate;
-
   sample_rate = jack_get_sample_rate(m_jack_client);
 
   //Midi process
@@ -132,6 +136,7 @@ int             Patate::process(jack_nframes_t nframes)
   process_seq(nframes, sample_rate);
   //Audio process
   process_audio(nframes, sample_rate);
+  return (0);
 }
 
 void            Patate::process_audio(jack_nframes_t nframes,

@@ -89,15 +89,20 @@ PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
   /*
    * Test code
    */
-  Lv2Adapter *synth;
-  for (i = 0; i < 16; i++)
-    {
-      synth = m_lv2.make_lv2(4); // Change here to load another synth.
-      if (synth)
-        m_patate.get_synths().synth(i, *synth);
-      else
-        cout << "Unable to load synth" << endl;
-    }
+    Lv2Adapter *synth = 0;
+    Seq::iSynth *todel;
+    for (i = 0; i < 16; i++)
+      {
+        synth = m_lv2.make_lv2(0); // Change here to load another synth.
+        if (synth)
+          {
+            todel = m_patate.get_synths().synth(i);
+            m_patate.get_synths().synth(i, synth);
+            delete todel;
+          }
+        else
+          cout << "Unable to load synth" << endl;
+      }
 }
 
 PatateGUI::~PatateGUI()

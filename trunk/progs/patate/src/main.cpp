@@ -30,14 +30,22 @@ using namespace Gtk;
 
 int     main(int ac, char **av)
 {
+  cout << "Creating msg queues" << endl;
   LFRingBuffer<Event>   *m_ring_gui2core = new LFRingBuffer<Event>(50);
   LFRingBuffer<Event>   *m_ring_core2gui = new LFRingBuffer<Event>(50);
-  Patate                patate(m_ring_core2gui->get_writer(),
-                               m_ring_gui2core->get_reader());
+  cout << "Creating patate object" << endl;
+  Patate                *patate = new Patate(m_ring_core2gui->get_writer(),
+                                             m_ring_gui2core->get_reader());
+  cout << "Initialising gtk" << endl;
   Main                  kit(ac, av);
-  PatateGUI             gui(m_ring_core2gui->get_reader(),
-                            m_ring_gui2core->get_writer(),
-                            patate);
+  cout << "Creating gui object" << endl;
+  PatateGUI             *gui = new PatateGUI(m_ring_core2gui->get_reader(),
+                                             m_ring_gui2core->get_writer(),
+                                             *patate);
+  cout << "Activtating jack client" << endl;
+  patate->activate();
+  cout << "Launching gui" << endl;
 
-  Main::run(gui);
+
+  Main::run(*gui);
 }

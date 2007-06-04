@@ -61,7 +61,7 @@ void                    Lv2Manager::init_slv2()
     {
       SLV2Plugin p = slv2_plugins_get_at(m_plugins, i);
       cout << "Plugin found : " << i << " : " << slv2_plugin_get_uri(p) << endl;
-    }
+      }
 }
 
 Lv2Adapter              *Lv2Manager::make_lv2(unsigned int a_id)
@@ -127,19 +127,21 @@ Lv2Adapter::~Lv2Adapter()
 void        Lv2Adapter::play_note(const Seq::Note &a_note)
 {
   unsigned char midi[3];
-  midi[0] = 90;
+  midi[0] = 0x90;
   midi[1] = a_note.note;
   midi[2] = a_note.vel;
   lv2midi_put_event(&m_midi_state, 0, 3, midi); //FIXME correct timestamp.
+  lv2midi_step(&m_midi_state);
 }
 
 void        Lv2Adapter::stop_note(const Seq::Note &a_note)
 {
   unsigned char midi[3];
-  midi[0] = 80;
+  midi[0] = 0x80;
   midi[1] = a_note.note;
   midi[2] = a_note.vel;
   lv2midi_put_event(&m_midi_state, 0, 3, midi); //FIXME correct timestamp.
+  lv2midi_step(&m_midi_state);
 }
 
 void        Lv2Adapter::cc(unsigned int control, float value)
@@ -159,20 +161,41 @@ void        Lv2Adapter::render(jack_nframes_t nframes,
                    unsigned int chan_count,
                    jack_default_audio_sample_t **out)
 {
-  frame(nframes);
+  unsigned int i;
+  jack_default_audio_sample_t tmp[2][nframes];
+
+  for (i = 0; i < nframes; i++)
+    {
+      tmp[0][i] = 0.0;
+      tmp[1][i] = 0.0;
+    }
+
+  cout << tmp[1] << " " << tmp[1] << endl;
 
   // FIXME handle 3d synth
   if (chan_count < 2)
     {
-      slv2_instance_connect_port(m_lv2, m_audio_ports_index[0], out[0]);
-      slv2_instance_connect_port(m_lv2, m_audio_ports_index[1], out[0]);
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[0], tmp[0]);
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[1], tmp[0]);
     }
   else
     {
-      slv2_instance_connect_port(m_lv2, m_audio_ports_index[0], out[0]);
-      slv2_instance_connect_port(m_lv2, m_audio_ports_index[1], out[1]);
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[0], tmp[0]);
+      slv2_instance_connect_port(m_lv2, m_audio_ports_index[1], tmp[1]);
     }
   slv2_instance_run(m_lv2, nframes);
+
+  if (chan_count < 2)
+    for (i = 0; i < nframes; i++)
+        out[0][i] += tmp[0][i];
+  else
+    for (i = 0; i < nframes; i++)
+      {
+        out[0][i] += tmp[0][i];
+        out[1][i] += tmp[1][i];
+      }
+
+  frame(nframes);
 }
 
 void        Lv2Adapter::create_ports()
@@ -222,16 +245,21 @@ void        Lv2Adapter::connect_ports()
             }
           break;
         default:
-          cout << "This plugins contains port type that are not handled by this program\n"
+          cout << "This plugins contains port type that are not handled by this program : "
+               << port_class << endl
                << "your plugin may not work correctly" << endl;
           break;
         }
     }
+  if (m_audio_ports_index[1] < 0)
+    m_audio_ports_index[1] = m_audio_ports_index[0];
 }
 
 void                  Lv2Adapter::frame(jack_nframes_t nframes)
 {
   m_midi_state.frame_count = nframes;
   m_midi_state.position = 0;
+  m_midi_port.event_count = 0;
+  m_midi_port.size = 0;
 }
 

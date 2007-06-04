@@ -80,4 +80,6 @@ protected:
   bool          m_ro;
 };
 
+#include "wefworld.hh"
+
 #endif	    /* !WEF_HH_ */
