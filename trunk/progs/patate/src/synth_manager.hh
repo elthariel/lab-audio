@@ -42,6 +42,7 @@ protected:
   std::vector<Seq::iSynth *> m_synths;
 };
 
+/*
 class DspSynthAdapter : public Seq::iSynth
 {
 public:
@@ -58,6 +59,6 @@ public:
                              jack_default_audio_sample_t **out);
 protected:
   Dsp::iSynth         &m_synth;
-};
+};*/
 
 #endif	    /* !SYNTH_MANAGER_HH_ */

@@ -53,12 +53,11 @@ void                  SynthManager::synth(unsigned int i,
 
 
 
-
-
-
 /*
- * DspSynthAdapter
- */
+
+
+// synth adaptater
+
 DspSynthAdapter::DspSynthAdapter(Dsp::iSynth &synth)
   : m_synth(synth)
 {
@@ -94,3 +93,5 @@ void        DspSynthAdapter::cc(unsigned int control, float value)
 {
   m_synth.cc(control, value);
 }
+*/
+
