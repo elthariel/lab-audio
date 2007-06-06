@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Fri Jun  1 00:09:32 2007 Nahlwe
+## Last update Wed Jun  6 22:59:07 2007 Nahlwe
 ##
 
 SUBDIRS = seq
@@ -13,11 +13,10 @@ SUBDIRS = seq
 AM_CPPFLAGS =
 CPP_FLAGS =
 
-noinst_HEADERS = Envelop.hh event.hh lfringbuffer.hh \
+noinst_HEADERS = event.hh lfringbuffer.hh \
 	patate_gui.hh patate.hh smp_uint.hh \
-	help.hpp patate_gui.hh drumseqview.hh noise.hh \
-	dsp_config.h iFilter.hh varinoise.hh iSynth.hh \
-	drumsynth.hh Envelop.hh synth_manager.hh \
+	help.hpp patate_gui.hh drumseqview.hh \
+	synth_manager.hh \
 	midicontroller.hh synthview_generic.hh \
 	lv2Manager.hh
 
@@ -29,10 +28,9 @@ noinst_HEADERS = Envelop.hh event.hh lfringbuffer.hh \
 
 bin_PROGRAMS = patate
 
-patate_SOURCES = AnalogFilter.cpp Envelop.cpp foncteurs.cpp \
+patate_SOURCES = foncteurs.cpp \
 	lfringbuffer.cpp main.cpp patate.cpp \
-	thread.cpp help.cpp patate_gui.cpp drumseqview.cpp noise.cc \
-	iFilter.cc varinoise.cc drumsynth.cc \
+	thread.cpp help.cpp patate_gui.cpp drumseqview.cpp \
 	synth_manager.cc midicontroller.cc synthview_generic.cc \
 	lv2Manager.cc
 
@@ -50,11 +48,7 @@ patate_LDFLAGS =
 # --> make check
 #TESTS = test-1.sh test-2
 TESTS =
-check_PROGRAMS = test-noise test-lv2
-
-test_noise_SOURCES = noise_test.cc drumsynth.cc \
-	noise.cc iFilter.cc varinoise.cc
-test_noise_CPPFLAGS = -g -Wall
+check_PROGRAMS = test-lv2
 
 #lv2_inspect.c
 test_lv2_SOURCES = test_lv2.c
