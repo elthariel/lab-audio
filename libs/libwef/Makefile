@@ -5,22 +5,21 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Fri Feb  9 13:40:59 2007 Nahlwe
-## Last update Fri May 25 11:15:34 2007 Elthariel
+## Last update Sat Jun  9 21:30:39 2007 Nahlwe
 ##
 
-CC					= gcc
+CC			= gcc
+OBJS			= wef_mem_0_2.o wef.o wefworld.o
+TARGET			= libwef
 
-OBJS					= wef_mem_0_2.o wef.o
-TARGET					= libwef
-
-CFLAGS					= -g -Wall -fPIC
-LDFLAGS					=
+CFLAGS			= -g -Wall -fPIC
+LDFLAGS			=
 
 all : $(TARGET)
 
 $(TARGET) : $(OBJS)
 	gcc -o $(TARGET).so -shared $(CFLAGS) $(LDFLAGS) wef_mem_0_2.o
-	g++ -o $(TARGET)++.so -shared $(CFLAGS) $(LDFLAGS) wef_mem_0_2.o wef.o
+	g++ -o $(TARGET)++.so -shared $(CFLAGS) $(LDFLAGS) wef_mem_0_2.o wef.o wefworld.o
 
 .c.o:
 	gcc -c $(CFLAGS) $<

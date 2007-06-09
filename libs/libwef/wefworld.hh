@@ -1,7 +1,7 @@
 /*
-** drumseqview.hh
+** wefworld.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Wed Apr 11 14:37:30 2007 Nahlwe
+** Started on  Sun Jun  3 23:52:25 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,30 +20,28 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	DRUMSEQVIEW_HH_
-# define   	DRUMSEQVIEW_HH_
+#ifndef   	WEFWORLD_HH_
+# define   	WEFWORLD_HH_
 
-#include <gtkmm.h>
-#include <vector>
-#include "seq.hh"
-#include "patate.hh"
+#include "wef.hh"
+#include <list>
+#include <string>
 
-class PatateGUI;
+typedef std::list<Wef *> WefList;
 
-class DrumSeqView : public Gtk::VBox
+class WefWorld
 {
 public:
-  DrumSeqView(PatateGUI &a_gui,
-              unsigned int a_init_track);
-protected:
-  void                  step_pressed(unsigned int a_step_id);
+  WefWorld();
+  ~WefWorld();
 
-  PatateGUI             &m_gui;
-  unsigned int          m_track_id;
-  Gtk::HBox             m_seq_hbox;
-  Gtk::ToggleButton     m_steps[16];
+protected:
+  void          load_wef(const char *a_path);
+  void          search_wef(std::string &a_dir);
+  void          init();
+  std::string   get_next_path(std::string &a_env);
+
+  WefList       m_wefs;
 };
 
-#include "patate_gui.hh"
-
-#endif	    /* !DRUMSEQVIEW_HH_ */
+#endif	    /* !WEFWORLD_HH_ */
