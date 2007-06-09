@@ -93,7 +93,7 @@ PatateGUI::PatateGUI(LFRingBufferReader<Event> *a_reader,
     Seq::iSynth *todel;
     for (i = 0; i < 16; i++)
       {
-        synth = m_lv2.make_lv2(0); // Change here to load another synth.
+        synth = m_lv2.make_lv2(2); // Change here to load another synth.
         if (synth)
           {
             todel = m_patate.get_synths().synth(i);

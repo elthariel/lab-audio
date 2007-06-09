@@ -170,7 +170,7 @@ void        Lv2Adapter::render(jack_nframes_t nframes,
       tmp[1][i] = 0.0;
     }
 
-  cout << tmp[1] << " " << tmp[1] << endl;
+  //  cout << tmp[1] << " " << tmp[1] << endl;
 
   // FIXME handle 3d synth
   if (chan_count < 2)
