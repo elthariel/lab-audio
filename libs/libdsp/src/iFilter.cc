@@ -24,6 +24,8 @@
 #include <cmath>
 #include "dsp/iFilter.hh"
 
+using namespace std;
+
 namespace Dsp
 {
 /*
@@ -99,6 +101,10 @@ void            OnePoleFilter::resonance(float q)
   compute_coefs();
 }
 
+
+/*  Where
+    out[n] = in[n]*a0 + in[n-1]*a1 + out[n-1]*b1;*/
+
 void            OnePoleFilter::apply(sample_t *out,
                                      unsigned int out_len)
 {
@@ -106,9 +112,9 @@ void            OnePoleFilter::apply(sample_t *out,
 
   for (i = 0; i < out_len; i++)
     {
-      m_state[0] = out[1];
+      m_state[0] = out[i];
 
-      out[i] = out[1] * m_coefs[0]
+      out[i] = out[i] * m_coefs[0]
         + m_state[1] * m_coefs[1]
         + m_state[2] * m_coefs[2];
 
@@ -123,26 +129,57 @@ void            OnePoleFilter::type(Type a_type)
   compute_coefs();
 }
 
+/*
+  void SetLPF(float fCut, float fSampling)
+  {
+  float w = 2.0 * fSampling;
+  float Norm;
+
+  fCut *= 2.0F * PI;
+  Norm = 1.0 / (fCut + w);
+  b1 = (w - fCut) * Norm;
+  a0 = a1 = fCut * Norm;
+  }
+
+  void SetHPF(float fCut, float fSampling)
+  {
+  float w = 2.0 * fSampling;
+  float Norm;
+
+  fCut *= 2.0F * PI;
+  Norm = 1.0 / (fCut + w);
+  a0 = w * Norm;
+  a1 = -a0;
+  b1 = (w - fCut) * Norm;
+  }
+
+  Where
+  out[n] = in[n]*a0 + in[n-1]*a1 + out[n-1]*b1;*/
+
 void            OnePoleFilter::compute_coefs()
 {
   float w = 2.0 * m_sample_rate;
   float norm, cut;
 
+  cut = m_cutoff * 2.0 * M_PI;
+  norm = 1.0 / (cut + w);
+
   if (m_type == LpFilter)
     {
-      cut = m_cutoff * 2.0 * M_PI;
-      norm = 1.0 / (cut + w);
       m_coefs[2] = (w - cut) * norm;
-      m_coefs[0] = m_coefs[0] = cut * norm;
+      m_coefs[0] = m_coefs[1] = cut * norm;
     }
   else
     {
-      cut = m_cutoff * 2.0 * M_PI;
-      norm = 1.0 / (cut + w);
       m_coefs[0] = w * norm;
       m_coefs[1] = -m_coefs[0];
       m_coefs[2] = (w - cut) * norm;
     }
+
+  cout << m_cutoff << " "
+       << m_coefs[0] << " "
+       << m_coefs[1] << " "
+       << m_coefs[2] << " " << endl;
 }
 
 };

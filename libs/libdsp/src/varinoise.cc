@@ -23,6 +23,8 @@
 #include <iostream>
 #include "dsp/VariNoise.hh"
 
+using namespace std;
+
 namespace Dsp
 {
 /*
@@ -31,7 +33,7 @@ namespace Dsp
 VariNoise::VariNoise(iOscVector &a_osc)
   : m_osc(a_osc)
 {
-  frequency(0.0);
+  frequency(1.0);
 }
 
 VariNoise::~VariNoise()
@@ -40,21 +42,21 @@ VariNoise::~VariNoise()
 
 void          VariNoise::reset()
 {
-  m_freq = 0.0;
+  frequency(0.0);
 }
 
 void          VariNoise::frequency(float new_frew)
 {
   m_freq = new_frew;
-  if (m_freq > 0.0)
+  if (m_freq >= 0.0)
     {
       m_filter.type(OnePoleFilter::HpFilter);
-      m_filter.cutoff(m_sample_rate / 2);
+      m_filter.cutoff(4000.0);
     }
   else if (m_freq < 0.0)
     {
       m_filter.type(OnePoleFilter::LpFilter);
-      m_filter.cutoff(20.0);
+      m_filter.cutoff(80);
     }
 }
 
@@ -69,15 +71,19 @@ void          VariNoise::render(sample_t *out, unsigned int out_len)
   for (i = 0; i < out_len; i++)
     buf[i] = out[i];
 
-  m_filter.apply(buf, out_len);
+  //  m_filter.apply(buf, out_len);
+  m_filter.apply(out, out_len);
 
-  if (m_freq < 0.0)
+  for (i = 0; i < out_len - 10 ; i += 10)
+    cout << out[i] << endl;
+
+  /*  if (m_freq < 0.0)
     amount = -m_freq;
   else
     amount = m_freq;
 
   for (i = 0; i < out_len; i++)
-    out[i] = (1.0 - amount) * out[i] + amount * buf[i];
+  out[i] = (1.0 - amount) * out[i] + amount * buf[i];*/
 }
 
 };
