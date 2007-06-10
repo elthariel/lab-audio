@@ -71,7 +71,7 @@ protected:
 
   Type                  m_type;
   float                 m_coefs[3]; // a0, a1, b1
-  sample_t              m_state[3];
+  sample_t              m_state[3]; // in[n]. in[n-1], out[n]
 };
 
 };
