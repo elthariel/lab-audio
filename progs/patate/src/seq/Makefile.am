@@ -20,17 +20,13 @@
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ##
 
-############################################################################
-##### WARNING ! THIS FILE IS A TEMPLATE - EDIT IT BEFORE USING IT !! #######
-############################################################################
-
 ## immediate subdirs
 ## extra files
 EXTRA_DIST =
 
 noinst_HEADERS =
 
-include_HEADERS = timer.hh iSynth.hh part.hh seq.hh
+include_HEADERS = timer.hh iSynth.hh part.hh seq.hh Sequence.hh event_bus.hh
 
 #######################
 # Build an executable #
@@ -39,7 +35,7 @@ include_HEADERS = timer.hh iSynth.hh part.hh seq.hh
 #INCLUDES = -I $(top_builddir)/src
 
 lib_LTLIBRARIES = libseq.la
-libseq_la_SOURCES = timer.cc part.cc seq.cc
+libseq_la_SOURCES = timer.cc part.cc seq.cc Sequence.cc event_bus.cc
 libseq_la_CPPFLAGS = -g3
 libseq_la_LIBADD = -lrt
 libseq_la_LDFLAGS =
