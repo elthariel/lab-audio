@@ -23,30 +23,83 @@
 #ifndef   	SEQUENCE_HH_
 # define   	SEQUENCE_HH_
 
-#include <multimap>
+#include <map>
+//#include "event_bus.hh"
 
-/*!
-** \brief Represents a sequence on (musical) event.
-** Implemented using multimap (red-black tree) assuring logarithmic worst
-** time complexity (if no duplicate keys).
-**
-** Should be used with a real-time safe allocator.
-*/
-template <class T>
-class Sequence
+namespace Seq
 {
-  typedef T                             value_type;
-  typedef T *                           pointer;
-  typedef const T *                     const_pointer;
-  typedef T &                           reference;
-  typedef const T &                     const_reference;
-  typedef uint32_t                      tick_type;
-  typedef std::multimap<tick, T*>       _sequence;
-  typedef _sequence::iterator           iterator;
-  typedef const _sequence::iterator     const_iterator;
+  /*!
+  ** \brief Represents a sequence of (musical) event.
+  ** Implemented using multimap (red-black tree) assuring logarithmic worst
+  ** time complexity (if no duplicate keys).
+  **
+  ** Should be used with a real-time safe allocator.
+  */
+  template <class T>
+  class Sequence
+  {
+    //   typedef T                           value_type;
+    //   typedef T *                         pointer;
+    //   typedef const T *                   const_pointer;
+    //   typedef T &                         reference;
+    //   typedef const T &                   const_reference;
+    typedef uint32_t                    tick;
+    typedef std::multimap<tick, T*>     _sequence;
+    typedef _sequence::iterator         iterator;
+    typedef const _sequence::iterator   const_iterator;
 
-public:
-protected:
+  public:
+    Sequence(unsigned short a_ppq = 96, short a_res = 1,
+             unsigned short a_seq_len = 1, EventBus<T> *a_bus = 0);
+    void                                connect(EventBus<T> *a_bus = 0);
+
+    void                                play(tick a_pos, tick a_len);
+
+    void                                add(tick a_pos, T &);
+    void                                remove(tick a_pos);
+    void                                remove_range(tick low_bound, tick high_bound);
+
+    void                                clear();
+
+    unsigned short                      get_ppq();
+    void                                set_pqq(unsigned short a_new_ppq);
+    short                               get_res();
+    void                                set_res(short a_new_res);
+    unsigned short                      get_len();
+    void                                set_len(unsigned short a_new_len);
+  protected:
+    _sequence                           m_seq; /// Actual container for event sequence.
+
+    /// Out EventBus (it is responsible to give the event to the right module) @see EventBus
+    EventBus<T>                         *m_out;
+
+    unsigned short                      m_seq_len; /// Sequence len (in bars)
+    unsigned short                      m_ppq; /// Pulse per quarter (timer resolution)
+    short                               m_res; /// Resolution of the pattern ( > 0 => x ppq; < 0 ==> / pqq)
+  };
+
+
+
+  /*!
+  ** \brief StepSequence(Adapter), this class adapts a Sequence into a step sequence.
+  **
+  */
+  /*  template <class T>
+  class StepSequence
+  {
+    typedef unsigned short              step;
+  public:
+    StepSequence(Sequence<T> &);
+    void                                add(step a_pos, T &a_event);
+    void                                remove(step a_pos);
+    void                                remove_range(step a_low_bound, step a_high_bound);
+    void                                clear();
+
+  protected:
+    Sequence<T>                         &m_seq;
+    };*/
+
 };
 
 #endif	    /* !SEQUENCE_HH_ */
+
