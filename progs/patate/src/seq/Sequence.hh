@@ -23,32 +23,30 @@
 #ifndef   	SEQUENCE_HH_
 # define   	SEQUENCE_HH_
 
+#include "event_bus.hh"
 #include <map>
-//#include "event_bus.hh"
 
 namespace Seq
 {
+
   /*!
   ** \brief Represents a sequence of (musical) event.
   ** Implemented using multimap (red-black tree) assuring logarithmic worst
   ** time complexity (if no duplicate keys).
   **
   ** Should be used with a real-time safe allocator.
+  ** FIXME : use a real-time safe allocator.
   */
   template <class T>
   class Sequence
   {
-    //   typedef T                           value_type;
-    //   typedef T *                         pointer;
-    //   typedef const T *                   const_pointer;
-    //   typedef T &                         reference;
-    //   typedef const T &                   const_reference;
-    typedef uint32_t                    tick;
-    typedef std::multimap<tick, T*>     _sequence;
-    typedef _sequence::iterator         iterator;
-    typedef const _sequence::iterator   const_iterator;
-
   public:
+    typedef uint32_t                            tick;
+    typedef std::multimap<tick, T*>             _sequence;
+    typedef typename _sequence::iterator        iterator;
+    typedef typename _sequence::const_iterator  const_iterator;
+    typedef typename _sequence::value_type      value_type;
+
     Sequence(unsigned short a_ppq = 96, short a_res = 1,
              unsigned short a_seq_len = 1, EventBus<T> *a_bus = 0);
     void                                connect(EventBus<T> *a_bus = 0);
@@ -100,6 +98,8 @@ namespace Seq
     };*/
 
 };
+
+//#include "Sequence.cc"
 
 #endif	    /* !SEQUENCE_HH_ */
 

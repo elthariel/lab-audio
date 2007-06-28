@@ -24,6 +24,9 @@
 #include "event_bus.hh"
 
 
+namespace Seq
+{
+
 /*
  * EventBus class
  */
@@ -77,13 +80,15 @@ void                          MasterEventBus<T>::set_size(unsigned short a_new_s
 }
 
 template <class T>
-Bus                           *MasterEventBus<T>::operator[](unsigned short a_index)
+EventBus<T>                   *MasterEventBus<T>::operator[](unsigned short a_index)
 {
   if (a_index >= m_buses.size())
     return 0;
   else
     return m_buses[a_index];
 }
+
+};
 
 
 
