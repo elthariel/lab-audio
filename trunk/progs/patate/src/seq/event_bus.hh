@@ -1,4 +1,4 @@
-es/*
+/*
 ** event_bus.hh
 ** Login : <lta@elthariel-main>
 ** Started on  Wed Jun 27 02:49:33 2007 Elthariel
