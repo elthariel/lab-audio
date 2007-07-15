@@ -1,5 +1,4 @@
 #summary ODL : Osc Discovery And Learn protocol
-#labels Featured,Network
 
 = Introduction =
 
