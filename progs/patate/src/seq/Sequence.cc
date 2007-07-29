@@ -76,6 +76,7 @@ void                                  Sequence<T>::remove(tick a_pos)
 template <class T>
 void                                  Sequence<T>::remove_range(tick low_bound, tick high_bound)
 {
+  // FIXME
   std::cout << "Sequence::remove_range : unimplemented" << std::endl;
 }
 

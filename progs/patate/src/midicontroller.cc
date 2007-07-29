@@ -231,7 +231,7 @@ void                    MidiController::part_step(Event &a_ev)
       Seq::Note         &note = *new Seq::Note();
       note.note = 63;
       note.vel = 127;
-      note.len = 300;
+      note.len = 30;
       m_seq.part(a_ev.data.note.chan).add_step(note, 0, a_ev.data.note.note);
     }
   else

@@ -31,8 +31,7 @@ namespace Seq
   class Timer
   {
   public:
-    Timer(unsigned int a_bpm, unsigned int a_ppq,
-          clockid_t a_clock = CLOCK_REALTIME);
+    Timer(unsigned int a_bpm, unsigned int a_ppq);
     void                  set_ppq(unsigned int a_ppq);
     void                  set_bpm(unsigned int a_bpm);
     void                  start();
@@ -40,21 +39,19 @@ namespace Seq
     void                  stop();
     bool                  paused();
     bool                  started();
-    unsigned int          ticks();
+    unsigned int          ticks(unsigned int frames);
+    uint64_t              frames();
   protected:
     void                  update_tick_len();
     void                  update_ticks();
 
     unsigned int          m_bpm;
     unsigned int          m_ppq;
-    clockid_t             m_clock;
 
     bool                  m_started;
     bool                  m_paused;
-    unsigned int          m_ticks;
-    timespec              m_last_tick;
-    timespec              m_tick_len;
-    unsigned long         m_remaining_nsec;
+    uint64_t              m_frames;
+    unsigned int          m_remaining_frames;
   };
 
 };
