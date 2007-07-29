@@ -33,11 +33,10 @@ using namespace std;
 namespace Seq
 {
 
-  Timer::Timer(unsigned int a_bpm, unsigned int a_ppq,
-               clockid_t a_clock)
-    : m_bpm(a_bpm), m_ppq(a_ppq), m_clock(a_clock),
-      m_started(false), m_paused(false), m_ticks(0),
-      m_remaining_nsec(0)
+  Timer::Timer(unsigned int a_bpm, unsigned int a_ppq)
+    : m_bpm(a_bpm), m_ppq(a_ppq),
+      m_started(false), m_paused(false), m_frames(0),
+      m_remaining_frames(0)
   {
     update_tick_len();
   }
@@ -57,7 +56,8 @@ namespace Seq
   void                  Timer::start()
   {
     m_started = true;
-    clock_gettime(m_clock, &m_last_tick);
+    m_frames = 0;
+    m_remaining_frames = 0;
   }
 
   void                  Timer::pause()
@@ -88,15 +88,18 @@ namespace Seq
     return m_started;
   }
 
-  unsigned int          Timer::ticks()
+  uint64_t              Timer::frames()
+  {
+    return m_frames;
+  }
+
+  unsigned int          Timer::ticks(unsigned int frames)
   {
     unsigned int        res;
 
-    if (!m_paused && m_started)
+    if (m_started && !m_paused)
       {
-        update_ticks();
-        res = m_ticks;
-        m_ticks = 0;
+        res = update_ticks();
         return (res);
       }
     else
@@ -127,7 +130,6 @@ namespace Seq
     static FILE         *fd = NULL;
     static timespec     last_now;
 
-    // FIXME doesn't support tick_len > 1s;
     clock_gettime(m_clock, &now);
     tmp = now.tv_sec - m_last_tick.tv_sec;
     tmp *= 1000000000;
