@@ -41,13 +41,8 @@ namespace Seq
     Part                &part(unsigned int part_id);
     void                set_bpm(unsigned int a_bpm);
     void                set_ppq(unsigned int a_ppq);
-    void                start();
-    void                pause();
-    void                stop();
-    bool                paused();
-    bool                started();
   protected:
-    Timer               m_timer;
+    Transport           &m_transport;
     iSynthContainer     &m_synths;
     std::vector<Part *> m_parts;
     unsigned int        m_part_count;
