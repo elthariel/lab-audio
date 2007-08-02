@@ -5,7 +5,7 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sun May 20 01:31:11 2007 Nahlwe
-## Last update Tue May 22 21:53:41 2007 Nahlwe
+## Last update Wed Aug  1 03:13:35 2007 Nahlwe
 ##
 
 - Not started
@@ -19,12 +19,12 @@
 
  * Jack Setup
  * Sequencer
- + MidiController
+ * MidiController
    * Architecture.
    * Base of the MIDI chart.
    * Sequencer
    * Transport control
- + Gui
+ * Gui
    * Step sequencer.
    * Transport
 
@@ -36,33 +36,53 @@
 --@ Major
 
  - Synth Management.
-   - Synth switch.
    + Lv2 Instrument support.
  - MidiController.
    - Measure edit switch.
- + Drumsynth.
-   + Hat.
-   - Snare.
-   - Kick.
  - Gui
-   - Lv2 choice.
    - Generic synth display.
+   - arch of gui sync with midi edit.
+ - Sequencer
+   + rewrite core with log(n) complexity for edit and play.
+   + sample based timer.
 
 
 --@ Minor
-   - jack_midi->event tranformation.
-   - wait for the data to be initialized before rendering audio.
+ - jack_midi->event tranformation.
+ - wait for the data to be initialized before rendering audio.
+ - Sampler
+   - Sync with current lv2 spec.
+   - Click at sample start.
+   - Antialising.
+   - sampler by default.
 
 -------------------*
 -----@ v. 0.3.0
 -------------------*
 --@ Major
 
+ - Synth Management
+   - Lv2 choice.
  - Load/Save
  - Break Patterns
+ - Sequencer
+
 
 --@ Minor
 
+-------------------*
+-----@ not sorted
+-------------------*
+--@ Major
+
+ + Drumsynth.
+   + Hat.
+   - Snare.
+   - Kick.
+ - Sequencer
+   - break patterns.
+
+--@ Minor
 
 
 

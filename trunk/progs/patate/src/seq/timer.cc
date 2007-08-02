@@ -33,10 +33,9 @@ using namespace std;
 namespace Seq
 {
 
-  Timer::Timer(unsigned int a_bpm, unsigned int a_ppq)
-    : m_bpm(a_bpm), m_ppq(a_ppq),
-      m_started(false), m_paused(false), m_frames(0),
-      m_remaining_frames(0)
+  Timer::Timer(unsigned int a_bpm, unsigned int a_ppq, unsigned int a_sr)
+    : m_bpm(a_bpm), m_ppq(a_ppq), m_sample_rate(a_sr),
+      m_samples(0)
   {
     update_tick_len();
   }
@@ -53,111 +52,28 @@ namespace Seq
     update_tick_len();
   }
 
-  void                  Timer::start()
+  uint64_t              Timer::samples()
   {
-    m_started = true;
-    m_frames = 0;
-    m_remaining_frames = 0;
+    return m_samples;
   }
 
-  void                  Timer::pause()
+  void                  Timer::samples_elapsed(unsigned int frames)
   {
-    // FIXME simplis pause
-    if (m_paused)
-      {
-        m_paused = false;
-        start();
-      }
-    else
-      m_paused = true;
-
+    m_samples += frames;
   }
 
-  void                  Timer::stop()
+  uint64_t              Timer::ticks()
   {
-    m_started = false;
-  }
-
-  bool                  Timer::paused()
-  {
-    return m_paused;
-  }
-
-  bool                  Timer::started()
-  {
-    return m_started;
-  }
-
-  uint64_t              Timer::frames()
-  {
-    return m_frames;
-  }
-
-  unsigned int          Timer::ticks(unsigned int frames)
-  {
-    unsigned int        res;
-
-    if (m_started && !m_paused)
-      {
-        res = update_ticks();
-        return (res);
-      }
-    else
-      return (0);
+    return (m_samples * m_tick_len);
   }
 
   void                  Timer::update_tick_len()
   {
-    double              len;
+    double              sample_len;
+    double              tick_len;
 
-    // FIXME doesn't support tick_len > 1s;
-    len = 60.0 / ((double)m_bpm * m_ppq);
-    m_tick_len.tv_sec = 0;
-    if (len >= 1.0)
-      m_tick_len.tv_nsec = (long) len;
-    else
-      {
-        len *= 1000000000.0;
-        m_tick_len.tv_nsec = (long) len;
-      }
+    sample_len = 1.0 / m_sample_rate;
+    tick_len = 60.0 / (m_bpm * m_ppq);
+    m_tick_len = tick_len / sample_len;
   }
-
-  void                  Timer::update_ticks()
-  {
-    unsigned long       tmp;
-    timespec            now;
-    static unsigned int tmp2 = 0;
-    static FILE         *fd = NULL;
-    static timespec     last_now;
-
-    clock_gettime(m_clock, &now);
-    tmp = now.tv_sec - m_last_tick.tv_sec;
-    tmp *= 1000000000;
-    tmp += now.tv_nsec - m_last_tick.tv_nsec;
-    tmp += m_remaining_nsec;
-
-    if ((tmp / m_tick_len.tv_nsec) > 0)
-      {
-        m_ticks += tmp / m_tick_len.tv_nsec;
-        m_remaining_nsec = tmp % m_tick_len.tv_nsec;
-        m_last_tick = now;
-      }
-    else
-      m_remaining_nsec = tmp;
-
-    /*    if (fd == NULL)
-      {
-        fd = fopen("tmp/debug", "w");
-        if (fd == NULL)
-          cout << "Unable to open debug file" << endl;
-      }
-    else
-      {
-        tmp = now.tv_sec - last_now.tv_sec;
-        tmp *= 1000000000;
-        tmp += now.tv_nsec - last_now.tv_nsec;
-        fprintf(fd, "%d : %d : %d \n", now.tv_sec, now.tv_nsec, m_ticks);
-        }*/
-  }
-
 };
