@@ -1,7 +1,7 @@
 /*
-** seq.hh
+** singleton.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Fri Apr 27 02:08:49 2007 Nahlwe
+** Started on  Thu Aug  2 21:08:41 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,35 +20,41 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	SEQ_HH_
-# define   	SEQ_HH_
+#ifndef   	SINGLETON_HH_
+# define   	SINGLETON_HH_
 
-# include <vector>
-# include "timer.hh"
-# include "part.hh"
-
-namespace Seq
+template <class T>
+class Singleton
 {
-  class Seq
+public:
+  static T              &get()
   {
-  public:
-    Seq(unsigned int a_bpm, unsigned int a_ppq,
-        unsigned int a_part_count, unsigned int a_bar_count,
-        iSynthContainer &a_sampler);
-    ~Seq();
+    if (!m_instance)
+      m_instance = new T();
+    return *m_instance;
+  }
 
-    void                run();
-    Part                &part(unsigned int part_id);
-    void                set_bpm(unsigned int a_bpm);
-    void                set_ppq(unsigned int a_ppq);
-  protected:
-    iSynthContainer     &m_synths;
-    std::vector<Part *> m_parts;
-    unsigned int        m_part_count;
-    unsigned int        m_bar_count;
-    unsigned int        m_ppq;
-    unsigned int        m_pos;
-  };
+protected:
+  static T      *m_instance;
 };
 
-#endif	    /* !SEQ_HH_ */
+template <class T>
+class SingletonInitialized
+{
+public:
+  static T              &get()
+  {
+    return *m_instance;
+  }
+
+  static void           init(T &a_instance)
+  {
+    if (!m_instance)
+      m_instance = a_instance;
+  }
+
+protected:
+  static T      *m_instance;
+};
+
+#endif	    /* !SINGLETON_HH_ */

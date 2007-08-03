@@ -52,19 +52,40 @@ namespace Seq
     update_tick_len();
   }
 
+  void                  Timer::set_sample_rate(unsigned int a_sr)
+  {
+    m_sample_rate = a_sr;
+    update_tick_len();
+  }
+
+  unsigned int                        Timer::ppq()
+  {
+    return m_ppq;
+  }
+
+  unsigned int                        Timer::bpm()
+  {
+    return m_bpm;
+  }
+
+  unsigned int                        Timer::sample_rate()
+  {
+    return m_sample_rate;
+  }
+
   uint64_t              Timer::samples()
   {
     return m_samples;
   }
 
-  void                  Timer::samples_elapsed(unsigned int frames)
+  void                  Timer::run(unsigned int frames)
   {
     m_samples += frames;
   }
 
   uint64_t              Timer::ticks()
   {
-    return (m_samples * m_tick_len);
+    return ((uint64_t) (m_samples * m_tick_len));
   }
 
   void                  Timer::update_tick_len()
@@ -75,5 +96,10 @@ namespace Seq
     sample_len = 1.0 / m_sample_rate;
     tick_len = 60.0 / (m_bpm * m_ppq);
     m_tick_len = tick_len / sample_len;
+  }
+
+  sigc::signal<void, uint64_t>        &Timer::samples_added()
+  {
+    return m_samples_added;
   }
 };

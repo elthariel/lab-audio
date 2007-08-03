@@ -1,7 +1,7 @@
 /*
-** seq.hh
+** debug.hh
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Fri Apr 27 02:08:49 2007 Nahlwe
+** Started on  Thu Aug  2 21:26:06 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,35 +20,16 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	SEQ_HH_
-# define   	SEQ_HH_
+#ifndef   	DEBUG_HH_
+# define   	DEBUG_HH_
 
-# include <vector>
-# include "timer.hh"
-# include "part.hh"
+/*!
+** \todo Develop a debug facility.
+**
+*/
 
-namespace Seq
+class Debug
 {
-  class Seq
-  {
-  public:
-    Seq(unsigned int a_bpm, unsigned int a_ppq,
-        unsigned int a_part_count, unsigned int a_bar_count,
-        iSynthContainer &a_sampler);
-    ~Seq();
-
-    void                run();
-    Part                &part(unsigned int part_id);
-    void                set_bpm(unsigned int a_bpm);
-    void                set_ppq(unsigned int a_ppq);
-  protected:
-    iSynthContainer     &m_synths;
-    std::vector<Part *> m_parts;
-    unsigned int        m_part_count;
-    unsigned int        m_bar_count;
-    unsigned int        m_ppq;
-    unsigned int        m_pos;
-  };
 };
 
-#endif	    /* !SEQ_HH_ */
+#endif	    /* !DEBUG_HH_ */
