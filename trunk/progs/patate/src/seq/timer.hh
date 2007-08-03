@@ -23,20 +23,27 @@
 #ifndef   	TIMER_HH_
 # define   	TIMER_HH_
 
-#include <time.h>
+#include "../generic/singleton.hh"
+#include <sigc++/sigc++.h>
 
 namespace Seq
 {
-
   class Timer
   {
   public:
-    Timer(unsigned int a_bpm, unsigned int a_ppq, unsigned int a_sr);
-    void                  set_ppq(unsigned int a_ppq);
-    void                  set_bpm(unsigned int a_bpm);
-    void                  samples_elapsed(unsigned int samples); /// \todo find better name.
-    uint64_t              samples();
-    uint64_t              ticks();
+    Timer(unsigned int a_bpm = 170, unsigned int a_ppq = 96, unsigned int a_sr = 44100);
+    void                                set_ppq(unsigned int a_ppq);
+    void                                set_bpm(unsigned int a_bpm);
+    void                                set_sample_rate(unsigned int a_sr);
+    unsigned int                        ppq();
+    unsigned int                        bpm();
+    unsigned int                        sample_rate();
+    void                                run(unsigned int samples);
+    uint64_t                            samples();
+    uint64_t                            ticks();
+
+    sigc::signal<void, uint64_t>        &samples_added();
+
   protected:
     void                  update_tick_len();
 
@@ -46,7 +53,11 @@ namespace Seq
 
     uint64_t              m_samples;
     double                m_tick_len;
+
+    sigc::signal<void, uint64_t>        m_samples_added;
   };
+
+  typedef SingletonInitialized<Timer>   TimerSingleton;
 
 };
 

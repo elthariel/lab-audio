@@ -23,6 +23,8 @@
 #ifndef   	TRANSPORT_HH_
 # define   	TRANSPORT_HH_
 
+#include "../generic/singleton.hh"
+#include <sigc++/sigc++.h>
 #include "timer.hh"
 
 namespace Seq
@@ -31,42 +33,54 @@ namespace Seq
   {
     enum State
       {
-        Started,
+        Running,
         Paused,
         Stopped
       };
     struct Position
     {
       Position();
+      Position(uint64_t);
+      Position(unsigned int a_bars, unsigned int a_beats, unsigned int a_ticks = 0);
+      Position(const Position &);
+      operator uint64_t() const;
+      Position          &operator=(const Position &);
+      Position          &operator+=(const Position &);
+      Position          &operator-=(const Position &);
+      Position          &operator=(uint64_t);
+      Position          &operator+=(uint64_t);
+      bool              zero() const;
+
       unsigned int      bars;
       unsigned int      beats;
       unsigned int      ticks;
     };
+
   public:
-    Transport(Timer &s_seq);
-    unsigned int        bars() const;
-    unsigned int        beats() const;
-    unsigned int        ticks() const;
-    const Position      &position() const;
-    uint64_t            ticks_total() const;
-    void                next_bar();
-    void                prev_bar();
-    void                start();
-    void                stop();
-    void                pause();
-    State               state();
+    Transport();
+    const Position                              &position() const;
+    void                                        set_position(Position &a_pos);
+    void                                        forward(Position &);
+    void                                        backward(Position &);
+    void                                        set_state(State);
+    State                                       state() const;
+    sigc::signal<void, Position &, Position &>  &signal_played();
+    void                                        run();
+
   protected:
-
     // interface to the 'user' things.
-    Timer               &m_timer;
-    State               m_state;
-    Position            m_current;
-    Position            m_loop_start;
-    Position            m_loop_end;
+    State                                       m_state;
+    Position                                    m_current;
+    Position                                    m_loop_start;
+    Position                                    m_loop_end;
+    sigc::signal<void, Position &, Position &>  m_played;
 
-    // interface to the timer.
-
+    // interface to the timer things.
+    uint64_t                                    m_last_tick;
   };
+
+  typedef Singleton<Transport>                  TransportSingleton;
+
 };
 
 #endif	    /* !TRANSPORT_HH_ */
