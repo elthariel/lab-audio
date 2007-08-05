@@ -21,8 +21,6 @@
 */
 
 #include <iostream>
-#include "event_bus.hh"
-
 
 namespace Seq
 {

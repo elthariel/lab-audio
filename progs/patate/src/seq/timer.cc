@@ -33,6 +33,10 @@ using namespace std;
 namespace Seq
 {
 
+  /*  template <>
+  Timer         *TimerSingleton::m_instance = 0;
+  */
+
   Timer::Timer(unsigned int a_bpm, unsigned int a_ppq, unsigned int a_sr)
     : m_bpm(a_bpm), m_ppq(a_ppq), m_sample_rate(a_sr),
       m_samples(0)

@@ -48,8 +48,6 @@ public:
   int                   process(jack_nframes_t nframes);
   SynthManager          &get_synths();
   Seq::Seq              &get_drumseq();
-  void                  set_bpm(unsigned int a_new_bpm);
-  unsigned int          get_bpm();
   unsigned int          get_sample_rate();
   void                  activate();
 

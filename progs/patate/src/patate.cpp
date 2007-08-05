@@ -22,8 +22,7 @@
 
 #include <iostream>
 #include "patate.hh"
-#include "part.hh"
-//#include "drumsynth.hh"
+#include "seq/part.hh"
 #include "lv2Manager.hh"
 
 using namespace std;
@@ -38,20 +37,10 @@ static int      jack_process_proxy(jack_nframes_t nframes, void *arg)
 Patate::Patate(LFRingBufferWriter<Event> *a_writer,
                LFRingBufferReader<Event> *a_reader)
   : m_synths(16),
-    m_seq(160, PATATE_SEQ_PPQ, PATATE_SAMPLER_COUNT, 1, m_synths),
-    m_controller(*this, m_synths, m_seq, a_writer, a_reader),
-    m_bpm(160)//, m_remaining_samples(0.0)
+    m_seq(PATATE_SAMPLER_COUNT),
+    m_controller(*this, m_synths, m_seq, a_writer, a_reader)
 {
-  unsigned int i;
-
-  m_seq.start();
   init_jack();
-
-
-//   for(i = 0; i < 16; i++)
-//     {
-//       m_synths.synth(i, new DspSynthAdapter(*new Dsp::DrumHat));
-//     }
 }
 
 Patate::~Patate()
@@ -110,7 +99,7 @@ void                  Patate::init_jack()
 
 
   m_buffer_size = jack_get_buffer_size(m_jack_client);
-
+  Seq::TimerSingleton::get().set_sample_rate(jack_get_sample_rate(m_jack_client));
 }
 
 void            Patate::activate()
@@ -168,62 +157,10 @@ void            Patate::process_midi(jack_nframes_t nframes)
              jack_port_get_buffer(m_midi_port_play, nframes));
 }
 
-/*void            _process_event(Event &a_ev)
-{
-  Seq::Note     &note = *(new Seq::Note);
-
-  // FIXME move to a PatateController.
-  //cout << "received an event from gui or midi" << endl;
-  if (a_ev.subsystem == Sys_DrumSeq)
-    {
-      if (a_ev.type == Event::TypeNote)
-        {
-          if (a_ev.data.note.note < 16)
-            {
-              note.note = 63;
-              note.vel = a_ev.data.note.vel;
-              note.len = 30;
-              get_drumseq().part(1).add_step(note, 0, a_ev.data.note.note);
-            }
-          else if ((a_ev.data.note.note >= 16) && (a_ev.data.note.note < 32))
-            get_drumseq().part(1).rem_step(0, a_ev.data.note.note - 16);
-        }
-    }
-}*/
-
 void            Patate::process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate)
 {
-  /*  float         tick_len;
-      float         sample_len;
-
-      tick_len = 60.0 / (m_bpm * 4 * PATATE_SEQ_PPQ);
-      sample_len = 1.0 / sample_rate;
-      tick_len = tick_len / sample_len;
-
-      m_remaining_samples += nframes;
-      while (m_remaining_samples >= tick_len)
-      {
-      m_seq.tick();
-      m_remaining_samples -= tick_len;
-      }
-  */
-  unsigned int i;
-
-  for (i = 0; i < 16; i++)
-    m_seq.part(i).set_synth(m_synths.synth(i));
-  m_seq.run();
-}
-
-void            Patate::set_bpm(unsigned int a_new_bpm)
-{
-  m_bpm = a_new_bpm;
-  m_seq.set_bpm(a_new_bpm);
-}
-
-unsigned int    Patate::get_bpm()
-{
-  return m_bpm;
+  /// \todo bind timer to transport, transport to seq, and then run timer from here.
 }
 
 SynthManager    &Patate::get_synths()

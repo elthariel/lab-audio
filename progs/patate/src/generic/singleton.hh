@@ -39,6 +39,9 @@ protected:
 };
 
 template <class T>
+T *Singleton<T>::m_instance = 0;
+
+template <class T>
 class SingletonInitialized
 {
 public:
@@ -50,11 +53,14 @@ public:
   static void           init(T &a_instance)
   {
     if (!m_instance)
-      m_instance = a_instance;
+      m_instance = &a_instance;
   }
 
 protected:
   static T      *m_instance;
 };
+
+template <class T>
+T *SingletonInitialized<T>::m_instance = 0;
 
 #endif	    /* !SINGLETON_HH_ */

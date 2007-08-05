@@ -187,39 +187,44 @@ void            MidiController::process_part(Event &a_ev)
 
 void                    MidiController::main_transport(Event &a_ev)
 {
+  Seq::Transport::State state = Seq::Transport::Running;
+
   switch(a_ev.data.note.note)
     {
     case 0:
-      m_seq.start();
+      state = Seq::Transport::Running;
       break;
     case 1:
-      m_seq.pause();
+      if (Seq::TransportSingleton::get().state() == Seq::Transport::Paused)
+        state = Seq::Transport::Running;
+      else
+        state = Seq::Transport::Paused;
       break;
     case 2:
-      m_seq.stop();
+      state = Seq::Transport::Stopped;
       break;
     }
 }
 
 void                    MidiController::main_tempo(Event &a_ev)
 {
-  unsigned int tempo = m_patate.get_bpm();
+  unsigned int tempo = Seq::TimerSingleton::get().bpm();
 
   switch (a_ev.data.note.note)
     {
     case 6:
       if (tempo > 10)
-        m_patate.set_bpm(tempo - 10);
+        Seq::TimerSingleton::get().set_bpm(tempo - 10);
       break;
     case 7:
-      m_patate.set_bpm(tempo + 10);
+      Seq::TimerSingleton::get().set_bpm(tempo + 10);
       break;
     case 8:
       if (tempo > 2)
-        m_patate.set_bpm(tempo - 1);
+        Seq::TimerSingleton::get().set_bpm(tempo - 1);
       break;
     case 9:
-      m_patate.set_bpm(tempo + 1);
+      Seq::TimerSingleton::get().set_bpm(tempo + 1);
       break;
     }
 }

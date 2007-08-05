@@ -28,6 +28,10 @@ using namespace std;
 
 namespace Seq
 {
+
+  /*  template <>
+      EventBusContainer<Event>      *MasterEventBus::m_instance = 0;*/
+
   /*
    * Note struct
    */
