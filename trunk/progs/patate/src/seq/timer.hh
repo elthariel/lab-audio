@@ -28,6 +28,12 @@
 
 namespace Seq
 {
+  /*!
+  ** \brief Represent an absolute or relative time value expressed in timer ticks
+  ** @see Transport::Position for a musical represention of time.
+  */
+  typedef uint64_t                      tick;
+
   class Timer
   {
   public:
@@ -40,7 +46,7 @@ namespace Seq
     unsigned int                        sample_rate();
     void                                run(unsigned int samples);
     uint64_t                            samples();
-    uint64_t                            ticks();
+    tick                                ticks();
 
     sigc::signal<void, uint64_t>        &samples_added();
 

@@ -27,9 +27,8 @@ namespace Seq
 {
 
 template <class T>
-Sequence<T>::Sequence(unsigned short a_ppq, short a_res,
-                      unsigned short a_seq_len, EventBus<T> *a_bus)
-  : m_out(a_bus), m_seq_len(a_seq_len), m_ppq(a_ppq), m_res(a_res)
+Sequence<T>::Sequence(short a_res,unsigned short a_seq_len, EventBus<T> *a_bus)
+  : m_out(a_bus), m_seq_len(a_seq_len), m_res(a_res)
 {
   if (m_res == 0)
     m_res = 1;
@@ -88,21 +87,9 @@ void                                  Sequence<T>::clear()
 }
 
 template <class T>
-unsigned short                        Sequence<T>::get_ppq()
-{
-  return m_ppq;
-}
-
-template <class T>
 short                                 Sequence<T>::get_res()
 {
   return m_res;
-}
-
-template <class T>
-void                                  Sequence<T>::set_pqq(unsigned short a_new_ppq)
-{
-  m_ppq = a_new_ppq;
 }
 
 template <class T>
@@ -124,3 +111,4 @@ void                                  Sequence<T>::set_len(unsigned short a_new_
 }
 
 };
+

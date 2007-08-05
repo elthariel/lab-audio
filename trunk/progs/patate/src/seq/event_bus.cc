@@ -54,33 +54,30 @@ void                        EventBus<T>::connect(iSynth *a_synth)
 
 
 
-
-
-
 /*
- * MasterEventBus class
+ * EventBusContainer class
  */
 
 template <class T>
-MasterEventBus<T>::MasterEventBus(unsigned short a_bus_count)
+EventBusContainer<T>::EventBusContainer(unsigned short a_bus_count)
   : m_buses(a_bus_count, 0)
 {
 }
 
 template <class T>
-unsigned short                MasterEventBus<T>::size()
+unsigned short                EventBusContainer<T>::size()
 {
   return m_buses.size();
 }
 
 template <class T>
-void                          MasterEventBus<T>::set_size(unsigned short a_new_size)
+void                          EventBusContainer<T>::set_size(unsigned short a_new_size)
 {
   m_buses.resize(a_new_size);
 }
 
 template <class T>
-EventBus<T>                   *MasterEventBus<T>::operator[](unsigned short a_index)
+EventBus<T>                   *EventBusContainer<T>::operator[](unsigned short a_index)
 {
   if (a_index >= m_buses.size())
     return 0;
@@ -89,6 +86,4 @@ EventBus<T>                   *MasterEventBus<T>::operator[](unsigned short a_in
 }
 
 };
-
-
 

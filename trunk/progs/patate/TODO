@@ -5,12 +5,25 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sun May 20 01:31:11 2007 Nahlwe
-## Last update Wed Aug  1 03:13:35 2007 Nahlwe
+## Last update Sun Aug  5 01:57:15 2007 Nahlwe
 ##
+
+###############################################################################
+
+This document is more a roadmap than a precise TODO file.
+
+For such a document please refer to the doxygen documentation (Related
+Pages -> Todo List).
+
+###############################################################################
+
+@Legend:
 
 - Not started
 + Started/untested/not all subtopics done
 * Done
+
+###############################################################################
 
 -------------------*
 -----@ v. 0.1.0

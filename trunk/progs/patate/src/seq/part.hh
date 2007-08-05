@@ -24,7 +24,10 @@
 # define   	PART_HH_
 
 # include <list>
-# include "iSynth.hh"
+# include "timer.hh"
+# include "event.hh"
+# include "event_bus.hh"
+# include "Sequence.hh"
 
 namespace Seq
 {
@@ -41,44 +44,43 @@ namespace Seq
     float               param[NOTE_PARAMS];
   };
 
+  /*!
+  ** \brief represent a part in a pattern.
+  ** \todo support different resolution.
+  */
+
   class Part
   {
-    /*
-     * TODO : take m_res in count.
-     */
   public:
-    Part(unsigned int a_ppq, iSynth *a_synth = 0,
+    Part(unsigned int a_part_index,
          unsigned int a_seq_len = 1, int a_res = 1);
     ~Part();
 
-    void                        play(unsigned int a_pos,
-                                unsigned int a_tick);
+    void                        play(tick a_pos, tick a_tick);
     void                        flush();
     void                        add_note(Note &a_note);
-    bool                        rem_note(unsigned int a_begin = 0,
-                                         unsigned int a_end = 0);
+    bool                        rem_note(tick a_begin = 0,
+                                         tick a_end = 0);
     void                        add_step(Note &a_note,
                                          unsigned int a_bar,
                                          unsigned int a_step);
     void                        rem_step(unsigned int a_bar,
                                          unsigned int a_step);
 
-    const std::list<Note *>     &get_seq() const;
     void                        set_mres(int a_res = 1);
-    void                        set_synth(iSynth *a_synth = 0);
+    void                        connect(EventBus<Event> &a_event_bus);
 
   protected:
-    void                        update_note_on(unsigned int a_tick);
-    void                        insert_note_on(Note *);
 
-    std::list<Note *>   m_seq;
-    std::list<Note *>   m_note_on;
-    iSynth              *m_synth;
+    Sequence<Event>     m_note_sequence;
+    Sequence<Event>     m_cc_sequence;
+    unsigned int        m_part_index;
     unsigned int        m_seq_len;
-    unsigned int        m_current_tick;
     int                 m_res;
-    unsigned int        m_ppq;
   };
+
+  typedef SingletonInitialized<EventBusContainer<Event> >        MasterEventBus;
+
 };
 
 #endif	    /* !PART_HH_ */

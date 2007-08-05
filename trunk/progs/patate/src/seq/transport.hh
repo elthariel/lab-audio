@@ -31,6 +31,7 @@ namespace Seq
 {
   class Transport
   {
+  public:
     enum State
       {
         Running,

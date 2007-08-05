@@ -25,30 +25,29 @@
 
 # include <vector>
 # include "timer.hh"
+# include "transport.hh"
+# include "event.hh"
 # include "part.hh"
 
 namespace Seq
 {
+  /*!
+  ** \brief Part container
+  ** \see Part
+  */
   class Seq
   {
   public:
-    Seq(unsigned int a_bpm, unsigned int a_ppq,
-        unsigned int a_part_count, unsigned int a_bar_count,
-        iSynthContainer &a_sampler);
+    Seq(unsigned int a_part_count);
     ~Seq();
 
-    void                run();
+    void                run(Transport::Position &, Transport::Position &);
     Part                &part(unsigned int part_id);
-    void                set_bpm(unsigned int a_bpm);
-    void                set_ppq(unsigned int a_ppq);
   protected:
-    iSynthContainer     &m_synths;
     std::vector<Part *> m_parts;
     unsigned int        m_part_count;
-    unsigned int        m_bar_count;
-    unsigned int        m_ppq;
-    unsigned int        m_pos;
   };
+
 };
 
 #endif	    /* !SEQ_HH_ */

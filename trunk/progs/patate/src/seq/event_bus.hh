@@ -24,6 +24,7 @@
 # define   	EVENT_BUS_HH_
 
 #include <vector>
+#include "../generic/singleton.hh"
 #include "iSynth.hh"
 
 namespace Seq
@@ -32,8 +33,6 @@ namespace Seq
   ** \brief EventBus is an event "stream" class which links sequencers parts
   ** to actual synths & Fx.
   ** The event buss will probably allow in the future the use of lv2 midi/event fx.
-  ** It is also responsible for sending note off associated to each note_on/len couple
-  ** a sequencer part pass to itself.
   */
   template <class T>
   class EventBus
@@ -47,23 +46,30 @@ namespace Seq
   };
 
 
-  /*!
-  ** \brief Bus Container & Manager
-  **
-  */
+/*!
+ * \brief EventBusContainer is a container and manager for the event bus.
+ * It (will) handles event fx (e.g. arpegiateur for midi midevents)
+ * \todo define an fx interface
+ * \todo write an fx chain class
+ * \todo write insert and send fx support
+ */
   template <class T>
-  class MasterEventBus
+  class EventBusContainer
   {
     typedef EventBus<T>         Bus;
     typedef std::vector<Bus *>  BusVector;
   public:
-    MasterEventBus(unsigned short a_bus_count);
+    EventBusContainer(unsigned short a_bus_count);
     unsigned short              size();
     void                        set_size(unsigned short a_new_size);
     Bus                         *operator[](unsigned short);
   protected:
     BusVector                   m_buses;
+
   };
 
 };
+
+#include "event_bus.cc"
+
 #endif	    /* !EVENT_BUS_HH_ */
