@@ -37,7 +37,7 @@ int     main(int ac, char **av)
   cout << "\t MasterEventBus" << endl;
   Seq::MasterEventBus::init(*new Seq::EventBusContainer<Event>(PATATE_SAMPLER_COUNT));
   cout << "\t Timer" << endl;
-  Seq::TimerSingleton::init(*new Seq::Timer(170, PATATE_SEQ_PPQ, 44100));
+  Seq::TimerSingleton::init(*new Seq::Timer(100, PATATE_SEQ_PPQ, 44100));
   cout << "\t Transport" << endl;
   Seq::TransportSingleton::get();
 
