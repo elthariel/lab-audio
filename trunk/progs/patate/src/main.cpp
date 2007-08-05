@@ -21,6 +21,9 @@
 */
 
 #include <iostream>
+#include "seq/timer.hh"
+#include "seq/transport.hh"
+#include "seq/part.hh"
 #include "patate.hh"
 #include "patate_gui.hh"
 #include "lfringbuffer.hh"
@@ -30,6 +33,15 @@ using namespace Gtk;
 
 int     main(int ac, char **av)
 {
+  cout << "Initializing Singletons" << endl;
+  cout << "\t MasterEventBus" << endl;
+  Seq::MasterEventBus::init(*new Seq::EventBusContainer<Event>(PATATE_SAMPLER_COUNT));
+  cout << "\t Timer" << endl;
+  Seq::TimerSingleton::init(*new Seq::Timer(170, PATATE_SEQ_PPQ, 44100));
+  cout << "\t Transport" << endl;
+  Seq::TransportSingleton::get();
+
+
   cout << "Creating msg queues" << endl;
   LFRingBuffer<Event>   *m_ring_gui2core = new LFRingBuffer<Event>(50);
   LFRingBuffer<Event>   *m_ring_core2gui = new LFRingBuffer<Event>(50);

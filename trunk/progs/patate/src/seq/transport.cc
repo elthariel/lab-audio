@@ -25,8 +25,8 @@
 
 namespace Seq
 {
-  template <>
-  Timer         *TimerSingleton::m_instance = 0;
+  /*  template <>
+      Transport     *TransportSingleton::m_instance = 0;*/
 
   Transport::Position::Position()
     : bars(0), beats(0), ticks(0)

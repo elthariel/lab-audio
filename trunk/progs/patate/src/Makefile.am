@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Wed Jun  6 22:59:07 2007 Nahlwe
+## Last update Sun Aug  5 04:20:53 2007 Nahlwe
 ##
 
 SUBDIRS = seq
@@ -13,7 +13,7 @@ SUBDIRS = seq
 AM_CPPFLAGS =
 CPP_FLAGS =
 
-noinst_HEADERS = event.hh lfringbuffer.hh \
+noinst_HEADERS = lfringbuffer.hh \
 	patate_gui.hh patate.hh smp_uint.hh \
 	help.hpp patate_gui.hh drumseqview.hh \
 	synth_manager.hh \
