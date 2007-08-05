@@ -204,6 +204,7 @@ void                    MidiController::main_transport(Event &a_ev)
       state = Seq::Transport::Stopped;
       break;
     }
+  Seq::TransportSingleton::get().set_state(state);
 }
 
 void                    MidiController::main_tempo(Event &a_ev)

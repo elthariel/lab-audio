@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include "patate.hh"
+#include "seq/timer.hh"
 #include "seq/part.hh"
 #include "lv2Manager.hh"
 
@@ -160,7 +161,7 @@ void            Patate::process_midi(jack_nframes_t nframes)
 void            Patate::process_seq(jack_nframes_t nframes,
                                     jack_nframes_t sample_rate)
 {
-  /// \todo bind timer to transport, transport to seq, and then run timer from here.
+  Seq::TimerSingleton::get().run(nframes);
 }
 
 SynthManager    &Patate::get_synths()

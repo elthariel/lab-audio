@@ -40,6 +40,8 @@ namespace Seq
 
     for (i = 0; i < m_part_count; i++)
       m_parts[i] = new Part(i, 1);
+
+    TransportSingleton::get().signal_played().connect(sigc::mem_fun(*this, &Seq::run));
   }
 
   ///  \todo delete parts
@@ -48,8 +50,12 @@ namespace Seq
   }
 
   ///  \todo run the sequencer
-  void                  Seq::run(Transport::Position &, Transport::Position &)
+  void                  Seq::run(Transport::Position &a_pos, Transport::Position &a_len)
   {
+
+    //    cout << "tranport_pos (bars-beats-ticks) \t" << a_pos.bars << " \t" << a_pos.beats << " \t" << a_pos.ticks << endl;
+    //    cout << a_len.bars << " \t" << a_len.beats << " \t" << a_len.ticks << endl;
+
     /*    unsigned int        ticks = m_timer.ticks();
     unsigned int        seq_len = m_bar_count * 4 * m_ppq;
     unsigned int        tmp;

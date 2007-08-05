@@ -48,9 +48,12 @@ libseq_la_LDFLAGS =
 # Checks #
 ##########
 
-#TESTS = test-1.sh test-2
-#check_PROGRAMS = test-2
-#test_2_SOURCES = main_for_tests.cc
+TESTS = test_position
+check_PROGRAMS = test_position
+test_position_SOURCES = test_position.cc transport.cc \
+	timer.cc
+test_position_CXXFLAGS = @SIGC_CFLAGS@
+test_position_LDADD = @SIGC_LIBS@
 
 
 ####################

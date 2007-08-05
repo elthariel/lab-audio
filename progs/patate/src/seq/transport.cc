@@ -23,6 +23,8 @@
 #include <iostream>
 #include "transport.hh"
 
+using namespace std;
+
 namespace Seq
 {
   /*  template <>
@@ -38,6 +40,11 @@ namespace Seq
   {
   }
 
+  Transport::Position::Position(unsigned int a_bars, unsigned int a_beats, unsigned int a_ticks)
+    : bars(a_bars), beats(a_beats), ticks(a_ticks)
+  {
+  }
+
   Transport::Position::Position(uint64_t a_ticks)
   {
     unsigned int ppq = TimerSingleton::get().ppq();
@@ -45,7 +52,7 @@ namespace Seq
     bars = a_ticks / (4 * ppq);
     a_ticks %= (4 * ppq);
     beats = a_ticks / ppq;
-    ticks %= ppq;
+    ticks = a_ticks % ppq;
   }
 
   Transport::Position::operator uint64_t() const
@@ -73,16 +80,16 @@ namespace Seq
   {
     unsigned int ppq = TimerSingleton::get().ppq();
 
-    bars = toadd.bars;
+    bars += toadd.bars;
 
-    beats = toadd.beats;
+    beats += toadd.beats;
 
-    ticks = toadd.ticks;
+    ticks += toadd.ticks;
 
     beats += ticks / ppq;
     ticks %= ppq;
     bars += beats / 4;
-    bars %= 4;
+    beats %= 4;
 
     return *this;
   }
@@ -115,6 +122,7 @@ namespace Seq
   Transport::Transport()
     : m_state(Stopped), m_loop_end(1), m_last_tick(0)
   {
+    TimerSingleton::get().samples_added().connect(sigc::mem_fun(*this, &Transport::run));
   }
 
   const Transport::Position                   &Transport::position() const
@@ -152,9 +160,12 @@ namespace Seq
     return m_played;
   }
 
-  void                                        Transport::run()
+  void                                        Transport::run(uint64_t sample_count)
   {
     uint64_t ticks = TimerSingleton::get().ticks();
+
+    //    cout << "Transport::run " << ticks << " " << m_state << " \t" << (ticks - m_last_tick) << endl;
+
     if (m_state == Running)
       {
         if (ticks > m_last_tick)
@@ -164,5 +175,6 @@ namespace Seq
             m_current += added;
           }
       }
+    m_last_tick = ticks;
   }
 }

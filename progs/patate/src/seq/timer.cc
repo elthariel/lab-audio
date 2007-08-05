@@ -84,12 +84,17 @@ namespace Seq
 
   void                  Timer::run(unsigned int frames)
   {
-    m_samples += frames;
+    //    cout << "timer::run " << frames << endl;
+    if (frames != 0)
+      {
+        m_samples += frames;
+        m_samples_added.emit(m_samples);
+      }
   }
 
   uint64_t              Timer::ticks()
   {
-    return ((uint64_t) (m_samples * m_tick_len));
+    return ((uint64_t) (m_samples / m_tick_len));
   }
 
   void                  Timer::update_tick_len()

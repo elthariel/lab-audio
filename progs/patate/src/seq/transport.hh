@@ -29,14 +29,14 @@
 
 namespace Seq
 {
-  class Transport
+  class Transport : public sigc::trackable
   {
   public:
     enum State
       {
-        Running,
-        Paused,
-        Stopped
+        Running = 0,
+        Paused = 1,
+        Stopped = 2
       };
     struct Position
     {
@@ -66,7 +66,7 @@ namespace Seq
     void                                        set_state(State);
     State                                       state() const;
     sigc::signal<void, Position &, Position &>  &signal_played();
-    void                                        run();
+    void                                        run(uint64_t);
 
   protected:
     // interface to the 'user' things.

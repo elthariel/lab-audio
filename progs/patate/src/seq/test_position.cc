@@ -1,7 +1,7 @@
 /*
-** seq.hh
+** test_position.cc
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Fri Apr 27 02:08:49 2007 Nahlwe
+** Started on  Sun Aug  5 16:56:49 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -20,34 +20,37 @@
 ** Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 */
 
-#ifndef   	SEQ_HH_
-# define   	SEQ_HH_
+#include <iostream>
+#include "transport.hh"
 
-# include <vector>
-# include "timer.hh"
-# include "transport.hh"
-# include "event.hh"
-# include "part.hh"
+using namespace std;
+using namespace Seq;
 
-namespace Seq
+static void print_pos(Transport::Position pos)
 {
-  /*!
-  ** \brief Part container
-  ** \see Part
-  */
-  class Seq : public sigc::trackable
-  {
-  public:
-    Seq(unsigned int a_part_count);
-    ~Seq();
+  cout << "Position :\t" << pos.bars << " \t" << pos.beats << " \t" << pos.ticks << endl;
+}
 
-    void                run(Transport::Position &, Transport::Position &);
-    Part                &part(unsigned int part_id);
-  protected:
-    std::vector<Part *> m_parts;
-    unsigned int        m_part_count;
-  };
+int main(int ac, char **av)
+{
+  TimerSingleton::init(*new Timer());
+  cout << "ppq is : " << TimerSingleton::get().ppq() << endl;
 
-};
+  Transport::Position a(1, 1, 95), b(3, 3, 50);
+  Transport::Position c(15000);
+  Transport::Position tmp;
+  uint64_t t;
 
-#endif	    /* !SEQ_HH_ */
+  cout << "printing a, b, and c" << endl;
+  print_pos(a);
+  print_pos(b);
+  print_pos(c);
+  cout << "printing a + b" << endl;
+  a += b;
+  print_pos(a);
+
+  t = c;
+  cout << "c in ticks : " << t << endl;
+}
+
+
