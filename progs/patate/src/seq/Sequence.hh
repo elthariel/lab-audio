@@ -24,6 +24,7 @@
 # define   	SEQUENCE_HH_
 
 #include "event_bus.hh"
+#include "timer.hh"
 #include <map>
 
 namespace Seq
@@ -41,14 +42,13 @@ namespace Seq
   class Sequence
   {
   public:
-    typedef uint32_t                            tick;
     typedef std::multimap<tick, T*>             _sequence;
     typedef typename _sequence::iterator        iterator;
     typedef typename _sequence::const_iterator  const_iterator;
     typedef typename _sequence::value_type      value_type;
 
-    Sequence(unsigned short a_ppq = 96, short a_res = 1,
-             unsigned short a_seq_len = 1, EventBus<T> *a_bus = 0);
+    Sequence(short a_res = 1, unsigned short a_seq_len = 1,
+             EventBus<T> *a_bus = 0);
     void                                connect(EventBus<T> *a_bus = 0);
 
     void                                play(tick a_pos, tick a_len);
@@ -59,8 +59,6 @@ namespace Seq
 
     void                                clear();
 
-    unsigned short                      get_ppq();
-    void                                set_pqq(unsigned short a_new_ppq);
     short                               get_res();
     void                                set_res(short a_new_res);
     unsigned short                      get_len();
@@ -72,7 +70,6 @@ namespace Seq
     EventBus<T>                         *m_out;
 
     unsigned short                      m_seq_len; /// Sequence len (in bars)
-    unsigned short                      m_ppq; /// Pulse per quarter (timer resolution)
     short                               m_res; /// Resolution of the pattern ( > 0 => x ppq; < 0 ==> / pqq)
   };
 
@@ -99,7 +96,7 @@ namespace Seq
 
 };
 
-//#include "Sequence.cc"
+#include "Sequence.cc"
 
 #endif	    /* !SEQUENCE_HH_ */
 

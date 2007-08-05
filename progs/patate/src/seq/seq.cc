@@ -32,29 +32,25 @@ namespace Seq
    * Seq class
    */
 
-  Seq::Seq(unsigned int a_bpm, unsigned int a_ppq,
-           unsigned int a_part_count, unsigned int a_bar_count,
-           iSynthContainer &a_sampler)
-    : m_timer(a_bpm, a_ppq), m_synths(a_sampler),
-      m_parts(a_part_count),
-      m_part_count(a_part_count),
-      m_bar_count(a_bar_count), m_ppq(a_ppq), m_pos(0)
+  Seq::Seq(unsigned int a_part_count)
+    : m_parts(a_part_count),
+      m_part_count(a_part_count)
   {
     unsigned int i;
 
     for (i = 0; i < m_part_count; i++)
-      m_parts[i] = new Part(a_ppq, m_synths.synth(i),
-                            a_bar_count);
+      m_parts[i] = new Part(i, 1);
   }
 
+  ///  \todo delete parts
   Seq::~Seq()
   {
-    // FIXME delete parts.
   }
 
-  void                  Seq::run()
+  ///  \todo run the sequencer
+  void                  Seq::run(Transport::Position &, Transport::Position &)
   {
-    unsigned int        ticks = m_timer.ticks();
+    /*    unsigned int        ticks = m_timer.ticks();
     unsigned int        seq_len = m_bar_count * 4 * m_ppq;
     unsigned int        tmp;
     unsigned int        i;
@@ -82,51 +78,11 @@ namespace Seq
             m_pos += ticks;
           }
         //        cout << ticks << " : " << m_pos << endl;
-      }
+        }*/
   }
 
   Part                  &Seq::part(unsigned int part_id)
   {
     return *(m_parts[part_id]);
   }
-
-  void                  Seq::set_bpm(unsigned int a_bpm)
-  {
-    m_timer.set_bpm(a_bpm);
-  }
-
-  void                  Seq::set_ppq(unsigned int a_ppq)
-  {
-    m_timer.set_ppq(a_ppq);
-    m_ppq = a_ppq;
-  }
-
-  void                  Seq::start()
-  {
-    m_timer.start();
-    m_pos = 0;
-
-  }
-
-  void                  Seq::pause()
-  {
-    m_timer.pause();
-  }
-
-  void                  Seq::stop()
-  {
-    m_timer.stop();
-    m_pos = 0;
-  }
-
-  bool                  Seq::paused()
-  {
-    return m_timer.paused();
-  }
-
-  bool                  Seq::started()
-  {
-    return m_timer.started();
-  }
-
 };
