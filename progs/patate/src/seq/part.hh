@@ -58,7 +58,8 @@ namespace Seq
 
     void                        play(tick a_pos, tick a_tick);
     void                        flush();
-    void                        add_note(Note &a_note);
+    void                        add_note(Event a_ev,
+                                         tick position);
     bool                        rem_note(tick a_begin = 0,
                                          tick a_end = 0);
     void                        add_step(Note &a_note,

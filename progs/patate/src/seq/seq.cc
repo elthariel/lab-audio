@@ -44,47 +44,22 @@ namespace Seq
     TransportSingleton::get().signal_played().connect(sigc::mem_fun(*this, &Seq::run));
   }
 
-  ///  \todo delete parts
   Seq::~Seq()
   {
+    unsigned int i;
+
+    for (i = 0; i < m_part_count; i++)
+      if(m_parts[i])
+        delete m_parts[i];
   }
 
-  ///  \todo run the sequencer
   void                  Seq::run(Transport::Position &a_pos, Transport::Position &a_len)
   {
-
-    //    cout << "tranport_pos (bars-beats-ticks) \t" << a_pos.bars << " \t" << a_pos.beats << " \t" << a_pos.ticks << endl;
-    //    cout << a_len.bars << " \t" << a_len.beats << " \t" << a_len.ticks << endl;
-
-    /*    unsigned int        ticks = m_timer.ticks();
-    unsigned int        seq_len = m_bar_count * 4 * m_ppq;
-    unsigned int        tmp;
     unsigned int        i;
 
-    if (ticks > 0)
-      {
-        if ((m_pos + ticks) >= seq_len)
-          {
-            tmp = seq_len - m_pos;
-            for (i = 0; i < m_part_count; i++)
-              m_parts[i]->play(m_pos, tmp);
-            m_pos = 0;
-            tmp = ticks - tmp;
-            if (tmp > 0)
-              {
-                for (i = 0; i < m_part_count; i++)
-                  m_parts[i]->play(m_pos, tmp);
-                m_pos += tmp;
-              }
-          }
-        else
-          {
-            for (i = 0; i < m_part_count; i++)
-              m_parts[i]->play(m_pos, ticks);
-            m_pos += ticks;
-          }
-        //        cout << ticks << " : " << m_pos << endl;
-        }*/
+    for (i = 0; i < m_part_count; i++)
+      if (m_parts[i])
+        m_parts[i]->play(a_pos, a_len);
   }
 
   Part                  &Seq::part(unsigned int part_id)
