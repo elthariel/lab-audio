@@ -29,9 +29,6 @@
 #include "promethee.peg"
 #include "Sample.hh"
 
-//FIXME macro defined twice, use config.h
-#define                 SAMPLES_COUNT 8
-
 class Promethee : public LV2Instrument
 {
 public:
@@ -44,15 +41,12 @@ public:
 protected:
   uint32_t              m_sample_rate;
 
-  Sample                *m_smp[SAMPLES_COUNT];
+  Sample                m_smp;
 
-  void                  dispatch_control_ports(unsigned int sample_id);
-  void                  dispatch_midi_ports(unsigned int sample_id,
-                                            unsigned int sample_count);
-  void                  process_audio(unsigned int sample_id,
-                                      unsigned int sample_count);
-  void                  dispatch_env_change(unsigned int sample_id,
-                                            EnvSelect env,
+  void                  dispatch_control_ports();
+  void                  dispatch_midi_ports(unsigned int sample_count);
+  void                  process_audio(unsigned int sample_count);
+  void                  dispatch_env_change(EnvSelect env,
                                             unsigned int port);
 };
 

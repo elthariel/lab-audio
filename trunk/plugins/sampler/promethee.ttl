@@ -2,753 +2,586 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix doap: <http://usefulinc.com/ns/doap#>.
 @prefix ll: <http://ll-plugins.nongnu.org/lv2/namespace#>.
+@prefix llext: <http://ll-plugins.nongnu.org/lv2/ext/>.
+
 
 <http://lab-audio.googlecode.com/svn/trunk/plugins/promethee>
-a lv2:Plugin;
-doap:name "promethee";
-doap:licence <http://usefulinc.com/doap/licenses/gpl>;
-ll:gtk2Gui <promethee_gtk.so>;
-lv2:requiredHostFeature ll:instrument-ext;
-ll:pegName "peg";
+  a lv2:Plugin;
+  doap:name "promethee";
+  doap:licence <http://usefulinc.com/doap/licenses/gpl>;
+  lv2:requiredHostFeature ll:instrument-ext;
+  ll:pegName "peg";
 
-lv2:port  
+lv2:port
 [
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, llext:MidiPort;
+     lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
 lv2:index 0;
-lv2:symbol "sample_0_outl";
-lv2:name "Out_0L";
+lv2:symbol "midi";
+lv2:name "Midi_In_Sample";
 ],
 
 [
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
+a lv2:OutputPort, lv2:AudioPort;
+    lv2:datatype lv2:float;
 lv2:index 1;
-lv2:symbol "sample_0_outr";
-lv2:name "Out_0R";
+lv2:symbol "sample_outl";
+lv2:name "Out";
 ],
 
 [
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
+a lv2:OutputPort, lv2:AudioPort;
+    lv2:datatype lv2:float;
 lv2:index 2;
-lv2:symbol "sample_1_outl";
-lv2:name "Out_0L";
+lv2:symbol "sample_outr";
+lv2:name "Out";
 ],
 
 [
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 3;
-lv2:symbol "sample_1_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 4;
-lv2:symbol "sample_2_outl";
-lv2:name "Out_0L";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 5;
-lv2:symbol "sample_2_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 6;
-lv2:symbol "sample_3_outl";
-lv2:name "Out_0L";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 7;
-lv2:symbol "sample_3_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 8;
-lv2:symbol "sample_4_outl";
-lv2:name "Out_0L";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 9;
-lv2:symbol "sample_4_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 10;
-lv2:symbol "sample_5_outl";
-lv2:name "Out_0L";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 11;
-lv2:symbol "sample_5_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 12;
-lv2:symbol "sample_6_outl";
-lv2:name "Out_0L";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 13;
-lv2:symbol "sample_6_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 14;
-lv2:symbol "sample_7_outl";
-lv2:name "Out_0L";
-],
-
-[
-a lv2:AudioRateOutputPort;
-lv2:datatype lv2:float;
-lv2:index 15;
-lv2:symbol "sample_7_outr";
-lv2:name "Out_0R";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 16;
-lv2:symbol "midi_0";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 17;
-lv2:symbol "midi_1";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 18;
-lv2:symbol "midi_2";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 19;
-lv2:symbol "midi_3";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 20;
-lv2:symbol "midi_4";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 21;
-lv2:symbol "midi_5";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 22;
-lv2:symbol "midi_6";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype <http://ll-plugins.nongnu.org/lv2/ext/miditype>;
-lv2:index 23;
-lv2:symbol "midi_7";
-lv2:name "Midi_In_Sample_0";
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 24;
-lv2:symbol "gain_0";
-lv2:name "Gain_0";
+lv2:symbol "gain";
+lv2:name "Gain";
 lv2:minimum 0;
 lv2:maximum 2;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 25;
-lv2:symbol "pan_0";
-lv2:name "Pan_0";
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 4;
+lv2:symbol "pan";
+lv2:name "Pan";
 lv2:minimum 0;
 lv2:maximum 1;
 lv2:default 0.5;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 26;
-lv2:symbol "pitch_0";
-lv2:name "Pitch_0";
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 5;
+lv2:symbol "pitch";
+lv2:name "Pitch";
 lv2:minimum 0;
 lv2:maximum 3;
 lv2:default 0;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 27;
-lv2:symbol "root_0";
-lv2:name "Root_note_0";
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 6;
+lv2:symbol "root";
+lv2:name "Root_note";
 lv2:minimum 0;
 lv2:maximum 127;
 lv2:default 63;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 28;
-lv2:symbol "filter_type_0";
-lv2:name "Filter_Type_0";
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 7;
+lv2:symbol "filter_type";
+lv2:name "Filter_Type";
 lv2:minimum 0;
 lv2:maximum 8;
 lv2:default 0;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 29;
-lv2:symbol "filter_stages_0";
-lv2:name "Filte_Stages_0";
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 8;
+lv2:symbol "filter_stages";
+lv2:name "Filte_Stages";
 lv2:minimum 1;
 lv2:maximum 4;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 30;
-lv2:symbol "filter_cutoff_0";
-lv2:name "Filter_Cutoff_0";
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 9;
+lv2:symbol "filter_cutoff";
+lv2:name "Filter_Cutoff";
 lv2:minimum 0;
 lv2:maximum 22000;
 lv2:default 22000;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 10;
+lv2:symbol "filter_res";
+lv2:name "Filter_Reso";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 11;
+lv2:symbol "reverse";
+lv2:name "Reverse";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 12;
+lv2:symbol "normalize";
+lv2:name "Normalize";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 13;
+lv2:symbol "antialias";
+lv2:name "Antialias";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 14;
+lv2:symbol "amp_env_coef0";
+lv2:name "Amp_env_Coef0";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 15;
+lv2:symbol "amp_env_coef1";
+lv2:name "Amp_env_Coef1";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 16;
+lv2:symbol "amp_env_coef2";
+lv2:name "Amp_env_Coef2";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 17;
+lv2:symbol "amp_env_coef3";
+lv2:name "Amp_env_Coef3";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 18;
+lv2:symbol "amp_env_coef4";
+lv2:name "Amp_env_Coef4";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 19;
+lv2:symbol "amp_env_coef5";
+lv2:name "Amp_env_Coef5";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 20;
+lv2:symbol "amp_env_sel";
+lv2:name "Amp_env_Select";
+lv2:minimum -1;
+lv2:maximum 3;
+lv2:default -1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 21;
+lv2:symbol "pan_env_amnt";
+lv2:name "Pan_Env_Amnt";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 22;
+lv2:symbol "pan_env_coef0";
+lv2:name "Pan_env_Coef0";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 23;
+lv2:symbol "pan_env_coef1";
+lv2:name "Pan_env_Coef1";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 24;
+lv2:symbol "pan_env_coef2";
+lv2:name "Pan_env_Coef2";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 25;
+lv2:symbol "pan_env_coef3";
+lv2:name "Pan_env_Coef3";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 26;
+lv2:symbol "pan_env_coef4";
+lv2:name "Pan_env_Coef4";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 27;
+lv2:symbol "pan_env_coef5";
+lv2:name "Pan_env_Coef5";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 28;
+lv2:symbol "pan_env_sel";
+lv2:name "Pan_env_Select";
+lv2:minimum -1;
+lv2:maximum 3;
+lv2:default -1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 29;
+lv2:symbol "pitch_env_amnt";
+lv2:name "Pitch_Env_Amnt";
+lv2:minimum 0;
+lv2:maximum 1;
+lv2:default 0;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
+lv2:index 30;
+lv2:symbol "pitch_env_coef0";
+lv2:name "Pitch_env_Coef0";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
+],
+
+[
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 31;
-lv2:symbol "filter_res_0";
-lv2:name "Filter_Reso_0";
+lv2:symbol "pitch_env_coef1";
+lv2:name "Pitch_env_Coef1";
 lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 32;
-lv2:symbol "reverse_0";
-lv2:name "Reverse_0";
+lv2:symbol "pitch_env_coef2";
+lv2:name "Pitch_env_Coef2";
 lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 33;
-lv2:symbol "normalize_0";
-lv2:name "Normalize_0";
+lv2:symbol "pitch_env_coef3";
+lv2:name "Pitch_env_Coef3";
 lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 34;
-lv2:symbol "antialias_0";
-lv2:name "Antialias_0";
+lv2:symbol "pitch_env_coef4";
+lv2:name "Pitch_env_Coef4";
 lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 35;
-lv2:symbol "amp_env_coef0_0";
-lv2:name "Amp_env_Coef0_0";
+lv2:symbol "pitch_env_coef5";
+lv2:name "Pitch_env_Coef5";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 36;
-lv2:symbol "amp_env_coef1_0";
-lv2:name "Amp_env_Coef1_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
+lv2:symbol "pitch_env_sel";
+lv2:name "Pitch_env_Select";
+lv2:minimum -1;
+lv2:maximum 3;
+lv2:default -1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 37;
-lv2:symbol "amp_env_coef2_0";
-lv2:name "Amp_env_Coef2_0";
+lv2:symbol "fcut_env_amnt";
+lv2:name "Fcut_Env_Amnt";
 lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
+lv2:maximum 1;
+lv2:default 0;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 38;
-lv2:symbol "amp_env_coef3_0";
-lv2:name "Amp_env_Coef3_0";
+lv2:symbol "fcut_env_coef0";
+lv2:name "Fcut_env_Coef0";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 39;
-lv2:symbol "amp_env_coef4_0";
-lv2:name "Amp_env_Coef4_0";
+lv2:symbol "fcut_env_coef1";
+lv2:name "Fcut_env_Coef1";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 40;
-lv2:symbol "amp_env_coef5_0";
-lv2:name "Amp_env_Coef5_0";
+lv2:symbol "fcut_env_coef2";
+lv2:name "Fcut_env_Coef2";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 41;
-lv2:symbol "amp_env_sel_0";
-lv2:name "Amp_env_Select_0";
-lv2:minimum -1;
-lv2:maximum 3;
-lv2:default -1;
+lv2:symbol "fcut_env_coef3";
+lv2:name "Fcut_env_Coef3";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 42;
-lv2:symbol "pan_env_amnt_0";
-lv2:name "Pan_Env_Amnt_0";
+lv2:symbol "fcut_env_coef4";
+lv2:name "Fcut_env_Coef4";
 lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 43;
-lv2:symbol "pan_env_coef0_0";
-lv2:name "Pan_env_Coef0_0";
+lv2:symbol "fcut_env_coef5";
+lv2:name "Fcut_env_Coef5";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 44;
-lv2:symbol "pan_env_coef1_0";
-lv2:name "Pan_env_Coef1_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
+lv2:symbol "fcut_env_sel";
+lv2:name "Fcut_env_Select";
+lv2:minimum -1;
+lv2:maximum 3;
+lv2:default -1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 45;
-lv2:symbol "pan_env_coef2_0";
-lv2:name "Pan_env_Coef2_0";
+lv2:symbol "fres_env_amnt";
+lv2:name "Fres_Env_Amnt";
 lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
+lv2:maximum 1;
+lv2:default 0;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 46;
-lv2:symbol "pan_env_coef3_0";
-lv2:name "Pan_env_Coef3_0";
+lv2:symbol "fres_env_coef0";
+lv2:name "Fres_env_Coef0";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 47;
-lv2:symbol "pan_env_coef4_0";
-lv2:name "Pan_env_Coef4_0";
+lv2:symbol "fres_env_coef1";
+lv2:name "Fres_env_Coef1";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 48;
-lv2:symbol "pan_env_coef5_0";
-lv2:name "Pan_env_Coef5_0";
+lv2:symbol "fres_env_coef2";
+lv2:name "Fres_env_Coef2";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 49;
-lv2:symbol "pan_env_sel_0";
-lv2:name "Pan_env_Select_0";
-lv2:minimum -1;
-lv2:maximum 3;
-lv2:default -1;
+lv2:symbol "fres_env_coef3";
+lv2:name "Fres_env_Coef3";
+lv2:minimum 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 50;
-lv2:symbol "pitch_env_amnt_0";
-lv2:name "Pitch_Env_Amnt_0";
+lv2:symbol "fres_env_coef4";
+lv2:name "Fres_env_Coef4";
 lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
+lv2:maximum 16;
+lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 51;
-lv2:symbol "pitch_env_coef0_0";
-lv2:name "Pitch_env_Coef0_0";
+lv2:symbol "fres_env_coef5";
+lv2:name "Fres_env_Coef5";
 lv2:minimum 0;
 lv2:maximum 16;
 lv2:default 1;
 ],
 
 [
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
+    a lv2:InputPort, lv2:ControlPort;
+    lv2:datatype lv2:float;
 lv2:index 52;
-lv2:symbol "pitch_env_coef1_0";
-lv2:name "Pitch_env_Coef1_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 53;
-lv2:symbol "pitch_env_coef2_0";
-lv2:name "Pitch_env_Coef2_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 54;
-lv2:symbol "pitch_env_coef3_0";
-lv2:name "Pitch_env_Coef3_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 55;
-lv2:symbol "pitch_env_coef4_0";
-lv2:name "Pitch_env_Coef4_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 56;
-lv2:symbol "pitch_env_coef5_0";
-lv2:name "Pitch_env_Coef5_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 57;
-lv2:symbol "pitch_env_sel_0";
-lv2:name "Pitch_env_Select_0";
-lv2:minimum -1;
-lv2:maximum 3;
-lv2:default -1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 58;
-lv2:symbol "fcut_env_amnt_0";
-lv2:name "Fcut_Env_Amnt_0";
-lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 59;
-lv2:symbol "fcut_env_coef0_0";
-lv2:name "Fcut_env_Coef0_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 60;
-lv2:symbol "fcut_env_coef1_0";
-lv2:name "Fcut_env_Coef1_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 61;
-lv2:symbol "fcut_env_coef2_0";
-lv2:name "Fcut_env_Coef2_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 62;
-lv2:symbol "fcut_env_coef3_0";
-lv2:name "Fcut_env_Coef3_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 63;
-lv2:symbol "fcut_env_coef4_0";
-lv2:name "Fcut_env_Coef4_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 64;
-lv2:symbol "fcut_env_coef5_0";
-lv2:name "Fcut_env_Coef5_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 65;
-lv2:symbol "fcut_env_sel_0";
-lv2:name "Fcut_env_Select_0";
-lv2:minimum -1;
-lv2:maximum 3;
-lv2:default -1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 66;
-lv2:symbol "fres_env_amnt_0";
-lv2:name "Fres_Env_Amnt_0";
-lv2:minimum 0;
-lv2:maximum 1;
-lv2:default 0;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 67;
-lv2:symbol "fres_env_coef0_0";
-lv2:name "Fres_env_Coef0_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 68;
-lv2:symbol "fres_env_coef1_0";
-lv2:name "Fres_env_Coef1_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 69;
-lv2:symbol "fres_env_coef2_0";
-lv2:name "Fres_env_Coef2_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 70;
-lv2:symbol "fres_env_coef3_0";
-lv2:name "Fres_env_Coef3_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 71;
-lv2:symbol "fres_env_coef4_0";
-lv2:name "Fres_env_Coef4_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 72;
-lv2:symbol "fres_env_coef5_0";
-lv2:name "Fres_env_Coef5_0";
-lv2:minimum 0;
-lv2:maximum 16;
-lv2:default 1;
-],
-
-[
-a lv2:ControlRateInputPort;
-lv2:datatype lv2:float;
-lv2:index 73;
-lv2:symbol "fres_env_sel_0";
-lv2:name "Fres_env_Select_0";
+lv2:symbol "fres_env_sel";
+lv2:name "Fres_env_Select";
 lv2:minimum -1;
 lv2:maximum 3;
 lv2:default -1;

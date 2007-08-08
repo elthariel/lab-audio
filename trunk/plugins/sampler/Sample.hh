@@ -61,8 +61,9 @@ struct SmpVoice
 class Sample
 {
 public:
-  Sample(Sample &smp);
-  Sample(std::string, unsigned int);
+  Sample(unsigned int);
+  //  Sample(Sample &smp);
+  //  Sample(std::string, unsigned int);
   ~Sample();
   //  Sample(int);
 
@@ -92,8 +93,8 @@ private:
   sample_t              *data;
   SF_INFO               info;
   static FrequencyTable freq_table;
-  AnalogFilter          aalias_l;
-  AnalogFilter          aalias_r;
+  //  AnalogFilter          aalias_l;
+  //  AnalogFilter          aalias_r;
 
   //User config
   EnvSwitch             &amp_env;
@@ -128,17 +129,5 @@ private:
 
 };
 
-class                   TempBuffer
-{
-public:
-  static float          *get(bool sel);
-
-private:
-  TempBuffer();
-
-  static TempBuffer     *m_instance;
-
-  float                 buffers[2][4096];
-};
 
 #endif	    /* !SAMPLE_HH_ */

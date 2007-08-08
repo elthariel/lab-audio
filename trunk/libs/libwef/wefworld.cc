@@ -95,3 +95,16 @@ void            WefWorld::init()
   while ((current = get_next_path(path)) != "")
     search_wef(current);
 }
+
+unsigned int    WefWorld::size()
+{
+  return m_wefs.size();
+}
+
+Wef             *WefWorld::wef(unsigned int i)
+{
+  if (i < m_wefs.size())
+    return m_wefs[i];
+}
+
+

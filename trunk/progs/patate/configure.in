@@ -59,4 +59,5 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/seq/Makefile
+src/rt/Makefile
 ])

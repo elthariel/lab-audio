@@ -6,7 +6,7 @@ VERSION = 0.1.9
 LV2PEG = lv2peg
 
 # These files go into the bundle
-BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so $(PLUGIN_NAME)_gtk.so
+BUNDLE_FILES = manifest.ttl $(PLUGIN_NAME).ttl $(PLUGIN_NAME).so #$(PLUGIN_NAME)_gtk.so
 
 # These are the source files for the plugin
 PLUGIN_SOURCES = $(PLUGIN_NAME).cpp lv2plugin.cpp lv2instrument.cpp \
@@ -18,10 +18,10 @@ PLUGIN_LDFLAGS = `pkg-config --libs gthread-2.0 sndfile`
 PLUGIN_CFLAGS = -g -Wall -O3 `pkg-config --cflags gthread-2.0 sndfile`
 
 # These are the source files for the plugin GUI
-GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
-GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h $(PLUGIN_NAME).peg
-GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0`
-GUI_CFLAGS = -g -Wall `pkg-config --cflags gtkmm-2.4 gthread-2.0`
+#GUI_SOURCES = $(PLUGIN_NAME)_gtk.cpp lv2gtk2gui.cpp
+#GUI_HEADERS = lv2gtk2gui.hpp lv2-gtk2gui.h $(PLUGIN_NAME).peg
+#GUI_LDFLAGS = `pkg-config --libs gtkmm-2.4 gthread-2.0`
+#GUI_CFLAGS = -g -Wall `pkg-config --cflags gtkmm-2.4 gthread-2.0`
 
 # Derived variables - do not edit
 PLUGIN_OBJECTS = $(subst .cpp,.o,$(PLUGIN_SOURCES))

@@ -25,15 +25,18 @@
 
 #include "wef.hh"
 #include <list>
-#include <string>
+#include <vector>
 
-typedef std::list<Wef *> WefList;
+typedef std::vector<Wef *> WefList;
 
 class WefWorld
 {
 public:
   WefWorld();
   ~WefWorld();
+
+  unsigned int  size();
+  Wef           *wef(unsigned int i);
 
 protected:
   void          load_wef(const char *a_path);

@@ -25,6 +25,12 @@
 
 namespace Rt
 {
+
+  /*!
+  ** \brief Pool allocator base component
+  ** \bug It may cause memory leeak if more than one thread allocate at the same time
+  */
+
   class Chunk
   {
   public:
@@ -34,17 +40,20 @@ namespace Rt
     Chunk(unsigned int a_chunk_size, unsigned int a_chunk_capacity);
     ~Chunk();
 
+    /// \return 0 if there is no more memory available in this chunk.
     template <class DataType>
-    DataType            *alloc();
+    DataType                    *alloc();
+
     template <class DataType>
-    void                dealloc(DataType *);
+    void                        dealloc(DataType *);
+
   protected:
-    unsigned int        m_chunk_size;
-    unsigned int        m_chunk_capacity;
-    unsigned int        m_free_chunks;
-    void                *m_heap;
-    address             *m_free;
-    Chunk               *m_next_chunk;
+    unsigned int                m_chunk_size;
+    unsigned int                m_chunk_capacity;
+    volatile unsigned int       m_free_chunks;
+    void                        *m_heap;
+    address                     *m_free;
+    Chunk                       *m_next_chunk;
   };
 };
 
