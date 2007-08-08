@@ -114,10 +114,14 @@ void            OnePoleFilter::apply(sample_t *out,
     {
       m_state[0] = out[i];
 
-      out[i] = out[i] * m_coefs[0]
-        + m_state[1] * m_coefs[1]
+      out[i] = m_state[1] * m_coefs[1]
         + m_state[2] * m_coefs[2];
 
+      /*
+      out[i] = out[i] * m_coefs[0]
+      + m_state[1] * m_coefs[1]
+      + m_state[2] * m_coefs[2];
+      */
       m_state[1] = m_state[0];
       m_state[2] = out[i];
     }

@@ -22,6 +22,7 @@
 
 #include <iostream>
 #include <cstdio>
+#include <slv2/slv2.h>
 #include "patate_gui.hh"
 
 using namespace std;

@@ -2,80 +2,59 @@
 
 lv2     promethee       http://lab-audio.googlecode.com/svn/trunk/plugins/promethee lv2-instrument
 
-audio   out             sample_0_outl   Out_0L
-audio   out             sample_0_outr   Out_0R
-audio   out             sample_1_outl   Out_0L
-audio   out             sample_1_outr   Out_0R
-audio   out             sample_2_outl   Out_0L
-audio   out             sample_2_outr   Out_0R
-audio   out             sample_3_outl   Out_0L
-audio   out             sample_3_outr   Out_0R
-audio   out             sample_4_outl   Out_0L
-audio   out             sample_4_outr   Out_0R
-audio   out             sample_5_outl   Out_0L
-audio   out             sample_5_outr   Out_0R
-audio   out             sample_6_outl   Out_0L
-audio   out             sample_6_outr   Out_0R
-audio   out             sample_7_outl   Out_0L
-audio   out             sample_7_outr   Out_0R
+midi    in              midi            Midi_In_Sample
 
-midi    in              midi_0          Midi_In_Sample_0
-midi    in              midi_1          Midi_In_Sample_0
-midi    in              midi_2          Midi_In_Sample_0
-midi    in              midi_3          Midi_In_Sample_0
-midi    in              midi_4          Midi_In_Sample_0
-midi    in              midi_5          Midi_In_Sample_0
-midi    in              midi_6          Midi_In_Sample_0
-midi    in              midi_7          Midi_In_Sample_0
+audio   out             sample_outl     Out  L
+audio   out             sample_outr     Out  R
 
-control in              gain_0          Gain_0          0       2       1
-control in              pan_0           Pan_0           0       1       0.5
-control in              pitch_0         Pitch_0         0       3       0
-control in              root_0          Root_note_0     0       127     63
-control in              filter_type_0   Filter_Type_0   0       8       0
-control in              filter_stages_0 Filte_Stages_0  1       4       1
-control in              filter_cutoff_0 Filter_Cutoff_0 0       22000   22000
-control in              filter_res_0    Filter_Reso_0   0       1       0
-control in              reverse_0       Reverse_0       0       1       0
-control in              normalize_0     Normalize_0     0       1       0
-control in              antialias_0     Antialias_0     0       1       0
-control in              amp_env_coef0_0 Amp_env_Coef0_0 0       16      1
-control in              amp_env_coef1_0 Amp_env_Coef1_0 0       16      1
-control in              amp_env_coef2_0 Amp_env_Coef2_0 0       16      1
-control in              amp_env_coef3_0 Amp_env_Coef3_0 0       16      1
-control in              amp_env_coef4_0 Amp_env_Coef4_0 0       16      1
-control in              amp_env_coef5_0 Amp_env_Coef5_0 0       16      1
-control in              amp_env_sel_0   Amp_env_Select_0 -1     3       -1
-control in              pan_env_amnt_0  Pan_Env_Amnt_0  0       1       0
-control in              pan_env_coef0_0 Pan_env_Coef0_0 0       16      1
-control in              pan_env_coef1_0 Pan_env_Coef1_0 0       16      1
-control in              pan_env_coef2_0 Pan_env_Coef2_0 0       16      1
-control in              pan_env_coef3_0 Pan_env_Coef3_0 0       16      1
-control in              pan_env_coef4_0 Pan_env_Coef4_0 0       16      1
-control in              pan_env_coef5_0 Pan_env_Coef5_0 0       16      1
-control in              pan_env_sel_0   Pan_env_Select_0 -1     3       -1
-control in              pitch_env_amnt_0 Pitch_Env_Amnt_0  0       1       0
-control in              pitch_env_coef0_0 Pitch_env_Coef0_0 0       16      1
-control in              pitch_env_coef1_0 Pitch_env_Coef1_0 0       16      1
-control in              pitch_env_coef2_0 Pitch_env_Coef2_0 0       16      1
-control in              pitch_env_coef3_0 Pitch_env_Coef3_0 0       16      1
-control in              pitch_env_coef4_0 Pitch_env_Coef4_0 0       16      1
-control in              pitch_env_coef5_0 Pitch_env_Coef5_0 0       16      1
-control in              pitch_env_sel_0   Pitch_env_Select_0 -1     3       -1
-control in              fcut_env_amnt_0  Fcut_Env_Amnt_0  0       1       0
-control in              fcut_env_coef0_0 Fcut_env_Coef0_0 0       16      1
-control in              fcut_env_coef1_0 Fcut_env_Coef1_0 0       16      1
-control in              fcut_env_coef2_0 Fcut_env_Coef2_0 0       16      1
-control in              fcut_env_coef3_0 Fcut_env_Coef3_0 0       16      1
-control in              fcut_env_coef4_0 Fcut_env_Coef4_0 0       16      1
-control in              fcut_env_coef5_0 Fcut_env_Coef5_0 0       16      1
-control in              fcut_env_sel_0   Fcut_env_Select_0 -1     3       -1
-control in              fres_env_amnt_0  Fres_Env_Amnt_0  0       1       0
-control in              fres_env_coef0_0 Fres_env_Coef0_0 0       16      1
-control in              fres_env_coef1_0 Fres_env_Coef1_0 0       16      1
-control in              fres_env_coef2_0 Fres_env_Coef2_0 0       16      1
-control in              fres_env_coef3_0 Fres_env_Coef3_0 0       16      1
-control in              fres_env_coef4_0 Fres_env_Coef4_0 0       16      1
-control in              fres_env_coef5_0 Fres_env_Coef5_0 0       16      1
-control in              fres_env_sel_0   Fres_env_Select_0 -1     3       -1
+control in              gain            Gain            0       2       1
+control in              pan             Pan             0       1       0.5
+control in              pitch           Pitch           0       3       0
+control in              root            Root_note       0       127     63
+control in              filter_type     Filter_Type     0       8       0
+control in              filter_stages   Filte_Stages    1       4       1
+control in              filter_cutoff   Filter_Cutoff   0       22000   22000
+control in              filter_res      Filter_Reso     0       1       0
+control in              reverse         Reverse         0       1       0
+control in              normalize       Normalize       0       1       0
+control in              antialias       Antialias       0       1       0
+control in              amp_env_coef0   Amp_env_Coef0   0       16      1
+control in              amp_env_coef1   Amp_env_Coef1   0       16      1
+control in              amp_env_coef2   Amp_env_Coef2   0       16      1
+control in              amp_env_coef3   Amp_env_Coef3   0       16      1
+control in              amp_env_coef4   Amp_env_Coef4   0       16      1
+control in              amp_env_coef5   Amp_env_Coef5   0       16      1
+control in              amp_env_sel     Amp_env_Select   -1     3       -1
+control in              pan_env_amnt    Pan_Env_Amnt    0       1       0
+control in              pan_env_coef0   Pan_env_Coef0   0       16      1
+control in              pan_env_coef1   Pan_env_Coef1   0       16      1
+control in              pan_env_coef2   Pan_env_Coef2   0       16      1
+control in              pan_env_coef3   Pan_env_Coef3   0       16      1
+control in              pan_env_coef4   Pan_env_Coef4   0       16      1
+control in              pan_env_coef5   Pan_env_Coef5   0       16      1
+control in              pan_env_sel     Pan_env_Select  -1      3       -1
+control in              pitch_env_amnt  Pitch_Env_Amnt  0       1       0
+control in              pitch_env_coef0 Pitch_env_Coef0 0       16      1
+control in              pitch_env_coef1 Pitch_env_Coef1 0       16      1
+control in              pitch_env_coef2 Pitch_env_Coef2 0       16      1
+control in              pitch_env_coef3 Pitch_env_Coef3 0       16      1
+control in              pitch_env_coef4 Pitch_env_Coef4 0       16      1
+control in              pitch_env_coef5 Pitch_env_Coef5 0       16      1
+control in              pitch_env_sel   Pitch_env_Select -1     3       -1
+control in              fcut_env_amnt   Fcut_Env_Amnt   0       1       0
+control in              fcut_env_coef0  Fcut_env_Coef0  0       16      1
+control in              fcut_env_coef1  Fcut_env_Coef1  0       16      1
+control in              fcut_env_coef2  Fcut_env_Coef2  0       16      1
+control in              fcut_env_coef3  Fcut_env_Coef3  0       16      1
+control in              fcut_env_coef4  Fcut_env_Coef4  0       16      1
+control in              fcut_env_coef5  Fcut_env_Coef5  0       16      1
+control in              fcut_env_sel    Fcut_env_Select -1      3       -1
+control in              fres_env_amnt   Fres_Env_Amnt   0       1       0
+control in              fres_env_coef0  Fres_env_Coef0  0       16      1
+control in              fres_env_coef1  Fres_env_Coef1  0       16      1
+control in              fres_env_coef2  Fres_env_Coef2  0       16      1
+control in              fres_env_coef3  Fres_env_Coef3  0       16      1
+control in              fres_env_coef4  Fres_env_Coef4  0       16      1
+control in              fres_env_coef5  Fres_env_Coef5  0       16      1
+control in              fres_env_sel    Fres_env_Select -1      3       -1
 

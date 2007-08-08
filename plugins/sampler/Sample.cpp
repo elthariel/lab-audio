@@ -43,10 +43,26 @@ SmpVoice::SmpVoice(unsigned int m_sr)
 
 FrequencyTable 			Sample::freq_table = FrequencyTable();
 
+Sample::Sample(unsigned int a_sample_rate)
+  : m_sr(a_sample_rate), data(0),
+    amp_env(*EnvSwitch::create_switch_full(a_sample_rate, 170)),
+    pitch_env(*EnvSwitch::create_switch_full(a_sample_rate, 170)),
+    pitch_amount(0.0),
+    pan_env(*EnvSwitch::create_switch_full(a_sample_rate, 170)),
+    pan_amount(0.0),
+    filter_env(*EnvSwitch::create_switch_full(a_sample_rate, 170)),
+    filter_amount(0.0),
+    voices(SAMPLER_POLY, SmpVoice(a_sample_rate)),
+    m_root_note(63), m_fine_pitch(0.0), m_gain(1.0), m_pan(1.0),
+    m_norm(false),
+    m_reverse(false)
+{
+}
+/*
 Sample::Sample(string path, unsigned int sample_rate)
   : m_sr(sample_rate),
-    aalias_l(sample_rate, 0, sample_rate / 2.0, 0.0, 2),
-    aalias_r(sample_rate, 0, sample_rate / 2.0, 0.0, 2),
+    //    aalias_l(sample_rate, 0, sample_rate / 2.0, 0.0, 2),
+    //    aalias_r(sample_rate, 0, sample_rate / 2.0, 0.0, 2),
     amp_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
     pitch_env(*EnvSwitch::create_switch_full(sample_rate, 170)),
     pitch_amount(0.0),
@@ -76,7 +92,7 @@ Sample::Sample(string path, unsigned int sample_rate)
 
 /*
  * This copy constructor is not up to date
- */
+ *
 Sample::Sample(Sample &smp)
   :m_sr(smp.m_sr), info(smp.info),
    aalias_l(smp.aalias_l), aalias_r(smp.aalias_r),
@@ -100,7 +116,7 @@ Sample::Sample(Sample &smp)
     }
   m_antialias = smp.m_antialias;
 }
-
+*/
 Sample::~Sample()
 {
   delete[] data;
@@ -218,28 +234,30 @@ void                    Sample::render(unsigned int sample_count,
 {
   int i;
 
-  for (int i = 0; i < sample_count; i++) // clear audio buffer
-  {
-  		outL[i] = 0.0;
-  		outR[i] = 0.0;
-  }
-
-  for (i = 0; i < SAMPLER_POLY; i++) // play sample voice
+  if (data)
     {
-      if (voices[i].activated)
+      for (int i = 0; i < sample_count; i++) // clear audio buffer
         {
-          play_voice(i, sample_count, outL, outR);
+          outL[i] = 0.0;
+          outR[i] = 0.0;
+        }
+
+      for (i = 0; i < SAMPLER_POLY; i++) // play sample voice
+        {
+          if (voices[i].activated)
+            {
+              play_voice(i, sample_count, outL, outR);
+            }
+        }
+
+      for (int i = 0; i < sample_count; i++) // Apply gain and pan
+        {
+          outL[i] *= m_gain;
+          outR[i] *= m_gain;
+          outL[i] *= 1.0 - m_pan;
+          outR[i] *= m_pan;
         }
     }
-
-  for (int i = 0; i < sample_count; i++) // Apply gain and pan
-  {
-  		outL[i] *= m_gain;
-  		outR[i] *= m_gain;
-      outL[i] *= 1.0 - m_pan;
-      outR[i] *= m_pan;
-  }
-  apply_antialias_filter(sample_count, outL, outR);
 }
 
 void                    Sample::note_on(char note_num, char velocity)
@@ -355,11 +373,7 @@ void                  Sample::apply_antialias_filter(unsigned int sample_count,
                                                      sample_t *outL,
                                                      sample_t *outR)
 {
-  if (m_antialias)
-    {
-      aalias_l.filterout(outL, sample_count);
-      aalias_r.filterout(outR, sample_count);
-    }
+
 }
 
 void                  Sample::normalize()
@@ -457,24 +471,3 @@ void                    Sample::set_aalias(float val)
   m_antialias = tmp;
 }
 
-
-/*
- * TempBuffer singleton
- */
-
-TempBuffer      *TempBuffer::m_instance = 0;
-
-TempBuffer::TempBuffer()
-{
-}
-
-float           *TempBuffer::get(bool sel)
-{
-  if (TempBuffer::m_instance == 0)
-    m_instance = new TempBuffer();
-
-    if (sel)
-      return m_instance->buffers[0];
-    else
-      return m_instance->buffers[1];
-}

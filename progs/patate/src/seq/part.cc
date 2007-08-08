@@ -81,7 +81,7 @@ namespace Seq
   }
 
   /// \todo handle note adding or removing
-  void                          Part::add_note(Note &a_note)
+  void                          Part::add_note(Event a_note, tick a_pos)
   {
   }
 
