@@ -27,8 +27,8 @@ namespace Rt
 {
 
   /*!
-  ** \brief Pool allocator base component
-  ** \bug It may cause memory leeak if more than one thread allocate at the same time
+  ** \brief Pool based memory manager (1).
+  ** This allocator is not thread safe.
   */
 
   class Chunk
@@ -47,6 +47,7 @@ namespace Rt
     template <class DataType>
     void                        dealloc(DataType *);
 
+    void                        debug_free(); /// \internal display the free chunk lifo.
   protected:
     unsigned int                m_chunk_size;
     unsigned int                m_chunk_capacity;
@@ -57,4 +58,8 @@ namespace Rt
   };
 };
 
+#include "pool.cc"
+
 #endif	    /* !POOL_HH_ */
+
+

@@ -5,7 +5,7 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Mon Aug  6 20:17:38 2007 Nahlwe
+## Last update Sun Aug 12 14:09:52 2007 Nahlwe
 ##
 
 SUBDIRS = seq rt
@@ -13,8 +13,7 @@ SUBDIRS = seq rt
 AM_CPPFLAGS =
 CPP_FLAGS =
 
-noinst_HEADERS = lfringbuffer.hh \
-	patate_gui.hh patate.hh smp_uint.hh \
+noinst_HEADERS = patate_gui.hh patate.hh \
 	help.hpp patate_gui.hh drumseqview.hh \
 	synth_manager.hh \
 	midicontroller.hh synthview_generic.hh \
@@ -29,7 +28,7 @@ noinst_HEADERS = lfringbuffer.hh \
 bin_PROGRAMS = patate
 
 patate_SOURCES = foncteurs.cpp \
-	lfringbuffer.cpp main.cpp patate.cpp \
+	main.cpp patate.cpp \
 	thread.cpp help.cpp patate_gui.cpp drumseqview.cpp \
 	synth_manager.cc midicontroller.cc synthview_generic.cc \
 	lv2Manager.cc
