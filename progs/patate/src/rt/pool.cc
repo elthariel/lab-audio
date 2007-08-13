@@ -50,13 +50,12 @@ namespace Rt
   DataType            *Chunk::alloc()
   {
     address               p;
-    ///  \todo use Compare and swap
     ///  \todo support chunk chaining
     if(m_free_chunks)
       {
-        p = m_free[m_free_chunks];
+        p = m_free[m_free_chunks - 1];
         m_free_chunks--;
-        return (m_heap + p);
+        return ((DataType *)((char *)m_heap + p * m_chunk_size));
       }
     else
       return (0);
@@ -66,13 +65,28 @@ namespace Rt
   void                Chunk::dealloc(DataType *p)
   {
     address a = (address) p;
-    if ((p < m_heap) | (p > (m_heap + m_chunk_capacity)))
+    if ((p < m_heap) | (p > (((char *)m_heap) + m_chunk_capacity * m_chunk_size)))
       return;
     a -= (address) m_heap;
     a /= m_chunk_size;
-    m_free[++m_free_chunks] = a;
+    m_free[++m_free_chunks - 1] = a;
     return;
 }
+
+  void                        Chunk::debug_free()
+  {
+    unsigned int i;
+
+    std::cout << "Free chunk stack state :" << std::endl;
+    for(i = 0; i < m_chunk_capacity; ++i)
+      {
+        std::cout << i << " :\t" << m_free[i];
+        if (m_free_chunks - 1 == i)
+          std::cout << " *";
+        std::cout << std::endl;
+      }
+  }
+
 };
 
 

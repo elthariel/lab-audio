@@ -61,7 +61,7 @@ void                    Lv2Manager::init_slv2()
     {
       SLV2Plugin p = slv2_plugins_get_at(m_plugins, i);
       cout << "Plugin found : " << i << " : " << slv2_plugin_get_uri(p) << endl;
-      }
+    }
 }
 
 Lv2Adapter              *Lv2Manager::make_lv2(unsigned int a_id)
