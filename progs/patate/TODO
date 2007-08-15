@@ -5,7 +5,7 @@
 ## Login   <elthariel@epita.fr>
 ##
 ## Started on  Sun May 20 01:31:11 2007 Nahlwe
-## Last update Sun Aug  5 01:57:15 2007 Nahlwe
+## Last update Thu Aug 16 00:02:07 2007 Nahlwe
 ##
 
 ###############################################################################
@@ -77,8 +77,6 @@ Pages -> Todo List).
  - Synth Management
    - Lv2 choice.
  - Load/Save
- - Break Patterns
- - Sequencer
 
 
 --@ Minor
