@@ -32,6 +32,10 @@ public:
            unsigned int a_times, unsigned int a_beats);
   virtual ~RollView();
 
+  void                  display_note(Cairo::RefPtr<Cairo::Context> cr,
+                                     unsigned int pos_x, char note, unsigned int len,
+                                     char vel, char p0, char p1, char p2);
+
 protected:
   virtual bool          on_expose_event(GdkEventExpose *event);
 
