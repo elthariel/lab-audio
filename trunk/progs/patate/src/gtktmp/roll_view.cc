@@ -48,6 +48,8 @@ bool                    RollView::on_expose_event(GdkEventExpose *event)
       const int height = allocation.get_height();
 
       Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
+      //      cr->set_antialias(Cairo::ANTIALIAS_NONE);
+      cr->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
 
       if (event)
         {
@@ -64,7 +66,7 @@ bool                    RollView::on_expose_event(GdkEventExpose *event)
       for (i = 0; i < notes; i++)
         {
           if (i % 12 == 0)
-            cr->set_line_width(1.5);
+            cr->set_line_width(1.3);
           else
             cr->set_line_width(0.9);
 
@@ -78,25 +80,67 @@ bool                    RollView::on_expose_event(GdkEventExpose *event)
           if (i % (m_times * m_beats) == 0)
             {
               cr->set_line_width(1.5);
-              cr->set_source_rgb(1.0, 1.0, 1.0);
+              cr->set_source_rgba(1.0, 1.0, 1.0, 0.4);
             }
           else if (i % m_times == 0)
             {
               cr->set_line_width(1.0);
-              cr->set_source_rgb(0.9, 0.9, 0.9);
+              cr->set_source_rgba(0.9, 0.9, 0.9, 0.5);
             }
           else
             {
               cr->set_line_width(0.5);
-              cr->set_source_rgb(0.6, 0.6, 0.6);
+              cr->set_source_rgba(0.6, 0.6, 0.6, 0.7);
             }
 
           cr->move_to(i * m_width, 0.0);
           cr->line_to(i * m_width, height);
           cr->stroke();
         }
+
+      display_note(cr, 0, 110, 40, 50, 30, 70, 127);
+      display_note(cr, 40,111, 40, 127, 127, 40, 10);
+
     }
 }
 
+void                  RollView::display_note(Cairo::RefPtr<Cairo::Context> cr,
+                                             unsigned int pos_x, char note, unsigned int len,
+                                             char vel, char p0, char p1, char p2)
+{
+  Gtk::Allocation allocation = get_allocation();
+  const int width = allocation.get_width();
+  const int height = allocation.get_height();
+  unsigned char lw = 2.5;
 
+  cr->save();
+  cr->begin_new_path();
+
+  cr->set_line_width(lw * 2);
+
+  cr->set_source_rgb(1.0 - vel / 127.0, 1.0 - vel / 127.0, 1.0 - vel / 127.0);
+  cr->rectangle(pos_x, height - (note + 1) * m_height,
+                len, m_height);
+  cr->fill();
+
+  // bottom line
+  cr->set_source_rgba(p0 / 127.0, 0.0, 0.0, 0.8);
+  cr->move_to(pos_x, height - note * m_height - lw);
+  cr->line_to(pos_x + len - lw, height - note * m_height - lw);
+  cr->stroke();
+
+  // right line
+  cr->set_source_rgba(0.0, p1 / 127.0, 0.0, 0.8);
+  cr->move_to(pos_x + len - lw, height - note * m_height);
+  cr->line_to(pos_x + len - lw, height - (note + 1) * m_height);
+  cr->stroke();
+
+  // top line
+  cr->set_source_rgba(0.0, 0.0, p2 / 127.0, 0.8);
+  cr->move_to(pos_x + len - 2 * lw, height - (note + 1) * m_height + lw);
+  cr->line_to(pos_x, height - (note + 1) * m_height + lw);
+  cr->stroke();
+
+  cr->restore();
+}
 

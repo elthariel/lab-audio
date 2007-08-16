@@ -43,6 +43,8 @@ int main(int ac, char **av)
   hbox.pack_start(kview, Gtk::PACK_SHRINK);
   hbox.pack_start(rview);
 
+  win.set_default_size(400, 600);
+
   win.show_all();
 
   Gtk::Main::run(win);
