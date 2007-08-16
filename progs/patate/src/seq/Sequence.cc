@@ -110,5 +110,15 @@ void                                  Sequence<T>::set_len(unsigned short a_new_
   m_seq_len = a_new_len;
 }
 
+iterator                              Sequence<T>::begin()
+{
+  return m_seq.begin();
+}
+
+iterator                              Sequence<T>::end()
+{
+  return m_seq.end();
+}
+
 };
 

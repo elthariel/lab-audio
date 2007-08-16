@@ -63,6 +63,11 @@ namespace Seq
     void                                set_res(short a_new_res);
     unsigned short                      get_len();
     void                                set_len(unsigned short a_new_len);
+
+    iterator                            begin();
+    iterator                            end();
+
+
   protected:
     _sequence                           m_seq; /// Actual container for event sequence.
 
