@@ -5,10 +5,10 @@
 ## Login   <elthariel@lse.epita.fr>
 ##
 ## Started on  Fri Feb 16 04:43:47 2007 Nahlwe
-## Last update Sun Aug 12 14:09:52 2007 Nahlwe
+## Last update Mon Aug 20 22:46:46 2007 Nahlwe
 ##
 
-SUBDIRS = seq rt
+SUBDIRS = seq rt widgets
 
 AM_CPPFLAGS =
 CPP_FLAGS =
@@ -35,7 +35,7 @@ patate_SOURCES = foncteurs.cpp \
 
 # Don't forget that the order of the libraries _does_ matter
 patate_CPPFLAGS = -g -Wall -pthread @PKG_CFLAGS@ \
-	-Iseq/ -I../../../libs/libwef
+	-Iseq/ -I../../../libs/libwef -Irt
 patate_LDADD = -lpthread -lrt @PKG_LIBS@ seq/libseq.la \
 	-L../../../libs/libwef -lwef++ rt/librtsa.la
 patate_LDFLAGS =

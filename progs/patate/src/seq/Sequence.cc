@@ -21,7 +21,6 @@
 */
 
 #include <iostream>
-#include "Sequence.hh"
 
 namespace Seq
 {
@@ -43,7 +42,7 @@ void                                  Sequence<T>::connect(EventBus<T> *a_bus)
 template <class T>
 void                                  Sequence<T>::play(tick a_pos, tick a_len)
 {
-  const_iterator                            iter;
+  const_iterator                      iter;
 
   if (m_out)
     {
@@ -108,16 +107,6 @@ template <class T>
 void                                  Sequence<T>::set_len(unsigned short a_new_len)
 {
   m_seq_len = a_new_len;
-}
-
-iterator                              Sequence<T>::begin()
-{
-  return m_seq.begin();
-}
-
-iterator                              Sequence<T>::end()
-{
-  return m_seq.end();
 }
 
 };
