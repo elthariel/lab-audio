@@ -42,7 +42,7 @@ namespace Seq
   class Sequence
   {
   public:
-    typedef std::multimap<tick, T*>             _sequence;
+    typedef typename std::multimap<tick, T*>    _sequence;
     typedef typename _sequence::iterator        iterator;
     typedef typename _sequence::const_iterator  const_iterator;
     typedef typename _sequence::value_type      value_type;
@@ -64,8 +64,8 @@ namespace Seq
     unsigned short                      get_len();
     void                                set_len(unsigned short a_new_len);
 
-    iterator                            begin();
-    iterator                            end();
+    iterator                            begin() {return m_seq.begin();}
+    iterator                            end() {return m_seq.end();}
 
 
   protected:

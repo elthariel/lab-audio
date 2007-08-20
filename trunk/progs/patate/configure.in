@@ -60,4 +60,5 @@ Makefile
 src/Makefile
 src/seq/Makefile
 src/rt/Makefile
+src/widgets/Makefile
 ])
