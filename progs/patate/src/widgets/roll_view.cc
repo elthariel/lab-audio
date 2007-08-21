@@ -24,9 +24,11 @@
 #include "roll_view.hh"
 
 RollView::  RollView(unsigned int a_note_h, unsigned int a_time_w,
-                     unsigned int a_times, unsigned int a_beats)
+                     unsigned int a_times, unsigned int a_beats,
+                     Sequence<Event_new> *a_seq)
   : m_height(a_note_h), m_width(a_time_w),
-    m_times(a_times), m_beats(a_beats)
+    m_times(a_times), m_beats(a_beats),
+    m_seq(a_seq)
 {
   set_size_request(-1, a_note_h * 120);
 }
