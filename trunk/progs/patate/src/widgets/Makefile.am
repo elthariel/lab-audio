@@ -54,9 +54,9 @@ libwidgets_la_LDFLAGS =
 
 TESTS = test_gtk
 check_PROGRAMS = test_gtk
-test_gtk_SOURCES = main.cc
-test_gtk_CXXFLAGS =
-test_gtk_LDADD =
+test_gtk_SOURCES = main.cc kbd_view.cc roll_view.cc
+test_gtk_CXXFLAGS = @PKG_CFLAGS@
+test_gtk_LDADD = @PKG_LIBS@ -L../seq -lseq
 
 
 ####################

@@ -46,7 +46,7 @@ enum SubSystem
     Sys_Gui
   };
 
-struct Event
+struct Event_old
 {
   SubSystem             subsystem;
   enum EventType
@@ -61,6 +61,17 @@ struct Event
     EventNote           note;
     EventCtrl           ctrl;
   }                     data;
+};
+
+typedef Event_old Event;
+
+struct Event_new
+{
+  Event_new():note(0, 0, 0)
+  uint8_t               note;
+  uint8_t               vel;
+  uint16_t              pad0;
+  uint32_t              len;
 };
 
 #endif	    /* !GUI_EVENT_HH_ */
