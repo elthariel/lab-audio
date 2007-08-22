@@ -25,7 +25,7 @@
 
 RollView::  RollView(unsigned int a_note_h, unsigned int a_time_w,
                      unsigned int a_times, unsigned int a_beats,
-                     Sequence<Event_new> *a_seq)
+                     Seq::Sequence<Event_new> *a_seq)
   : m_height(a_note_h), m_width(a_time_w),
     m_times(a_times), m_beats(a_beats),
     m_seq(a_seq)
@@ -39,8 +39,6 @@ RollView::~RollView()
 
 bool                    RollView::on_expose_event(GdkEventExpose *event)
 {
-  unsigned int  notes, i;
-
   Glib::RefPtr<Gdk::Window> window = get_window();
 
   if(window)
@@ -60,49 +58,55 @@ bool                    RollView::on_expose_event(GdkEventExpose *event)
           cr->clip();
         }
 
-      notes = 10 * 12;
+      draw_background(cr);
 
-      cr->set_source_rgb(0.0, 0.0, 0.1);
-      cr->paint();
-      cr->set_source_rgba(1.0, 1.0, 1.0, 0.8);
-      for (i = 0; i < notes; i++)
+    }
+}
+
+/// \todo use caching to avoid redwaing from scratch each time.
+void                  RollView::draw_background(Cairo::RefPtr<Cairo::Context> cr)
+{
+  unsigned int  notes, i;
+
+
+  notes = 10 * 12;
+
+  cr->set_source_rgb(0.0, 0.0, 0.1);
+  cr->paint();
+  cr->set_source_rgba(1.0, 1.0, 1.0, 0.8);
+  for (i = 0; i < notes; i++)
+    {
+      if (i % 12 == 0)
+        cr->set_line_width(1.3);
+      else
+        cr->set_line_width(0.9);
+
+      cr->move_to(0.0, height - i * m_height);
+      cr->line_to(width, height - i * m_height);
+      cr->stroke();
+    }
+
+  for (i = 0; (i * m_width) < width; i ++)
+    {
+      if (i % (m_times * m_beats) == 0)
         {
-          if (i % 12 == 0)
-            cr->set_line_width(1.3);
-          else
-            cr->set_line_width(0.9);
-
-          cr->move_to(0.0, height - i * m_height);
-          cr->line_to(width, height - i * m_height);
-          cr->stroke();
+          cr->set_line_width(1.5);
+          cr->set_source_rgba(1.0, 1.0, 1.0, 0.4);
+        }
+      else if (i % m_times == 0)
+        {
+          cr->set_line_width(1.0);
+          cr->set_source_rgba(0.9, 0.9, 0.9, 0.5);
+        }
+      else
+        {
+          cr->set_line_width(0.5);
+          cr->set_source_rgba(0.6, 0.6, 0.6, 0.7);
         }
 
-      for (i = 0; (i * m_width) < width; i ++)
-        {
-          if (i % (m_times * m_beats) == 0)
-            {
-              cr->set_line_width(1.5);
-              cr->set_source_rgba(1.0, 1.0, 1.0, 0.4);
-            }
-          else if (i % m_times == 0)
-            {
-              cr->set_line_width(1.0);
-              cr->set_source_rgba(0.9, 0.9, 0.9, 0.5);
-            }
-          else
-            {
-              cr->set_line_width(0.5);
-              cr->set_source_rgba(0.6, 0.6, 0.6, 0.7);
-            }
-
-          cr->move_to(i * m_width, 0.0);
-          cr->line_to(i * m_width, height);
-          cr->stroke();
-        }
-
-      display_note(cr, 0, 110, 40, 50, 30, 70, 127);
-      display_note(cr, 40,111, 40, 127, 127, 40, 10);
-
+      cr->move_to(i * m_width, 0.0);
+      cr->line_to(i * m_width, height);
+      cr->stroke();
     }
 }
 

@@ -24,7 +24,9 @@
 # define   	ROLL_VIEW_HH_
 
 #include <gtkmm/drawingarea.h>
-#include "Sequence.hh"
+#include "../seq/part.hh"
+#include "../seq/Sequence.hh"
+#include "timer.hh"
 #include "event.hh"
 
 class RollView : public Gtk::DrawingArea
@@ -32,18 +34,19 @@ class RollView : public Gtk::DrawingArea
 public:
   RollView(unsigned int a_note_h, unsigned int a_time_w,
            unsigned int a_times, unsigned int a_beats,
-           Sequence<Event_new> *a_seq = 0);
+           Seq::Sequence<Event_new> *a_seq = 0);
   virtual ~RollView();
 
   void                  display_note(Cairo::RefPtr<Cairo::Context> cr,
                                      unsigned int pos_x, char note, unsigned int len,
-                                     char vel, char p0, char p1, char p2);
+                                     char vel);
+  void                  draw_background(Cairo::RefPtr<Cairo::Context> cr);
 
 protected:
   virtual bool          on_expose_event(GdkEventExpose *event);
 
   unsigned int          m_height, m_width, m_times, m_beats;
-  Sequence<Event_new>   *m_seq;
+  Seq::Sequence<Event_new> *m_seq;
 };
 
 
