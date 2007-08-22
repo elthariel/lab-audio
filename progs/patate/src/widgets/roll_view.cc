@@ -21,7 +21,11 @@
 */
 
 #include <iostream>
+#include <gdk/gdkkeysyms.h>
+#include <gdk/gdktypes.h>
 #include "roll_view.hh"
+
+using namespace std;
 
 RollView::  RollView(unsigned int a_note_h, unsigned int a_time_w,
                      unsigned int a_times, unsigned int a_beats,
@@ -30,6 +34,9 @@ RollView::  RollView(unsigned int a_note_h, unsigned int a_time_w,
     m_times(a_times), m_beats(a_beats),
     m_seq(a_seq), m_floatting_note(0), m_current(0)
 {
+  property_can_focus().set_value(true);
+  grab_focus();
+  add_events(Gdk::KEY_PRESS_MASK);
   set_size_request(-1, a_note_h * 120);
 }
 
@@ -49,7 +56,7 @@ bool                    RollView::on_expose_event(GdkEventExpose *event)
 
       Cairo::RefPtr<Cairo::Context> cr = window->create_cairo_context();
       //      cr->set_antialias(Cairo::ANTIALIAS_NONE);
-      cr->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
+      //      cr->set_antialias(Cairo::ANTIALIAS_SUBPIXEL);
 
       if (event)
         {
@@ -120,7 +127,12 @@ void                  RollView::display_note(Cairo::RefPtr<Cairo::Context> cr,
   Gtk::Allocation allocation = get_allocation();
   const int width = allocation.get_width();
   const int height = allocation.get_height();
-  unsigned char lw = 2.5;
+  unsigned char lw = 2;
+  float ftick_len, flen, fpos_x;
+
+  ftick_len = (float)m_width / (float) Seq::TimerSingleton::get().ppq();
+  flen = len * ftick_len;
+  fpos_x = pos_x * ftick_len;
 
   cr->save();
   cr->begin_new_path();
@@ -128,8 +140,8 @@ void                  RollView::display_note(Cairo::RefPtr<Cairo::Context> cr,
   cr->set_line_width(lw * 2);
 
   cr->set_source_rgb(1.0 - vel / 127.0, 1.0 - vel / 127.0, 1.0 - vel / 127.0);
-  cr->rectangle(pos_x, height - (note + 1) * m_height,
-                len, m_height);
+  cr->rectangle(fpos_x, height - (note + 1) * m_height,
+                flen, m_height);
   cr->fill();
 
   if (a_current)
@@ -161,12 +173,76 @@ void                  RollView::display_note(Cairo::RefPtr<Cairo::Context> cr,
 
 bool                    RollView::on_key_press_event(GdkEventKey *event)
 {
+  Seq::Sequence<Event_new>::iterator i;
+  unsigned int ppq = Seq::TimerSingleton::get().ppq();
+
+  bool                  redraw = false;
   if (!m_floatting_note)
     {
       m_floatting_note = new Event_new;
+      m_floatting_note->len = ppq * 4;
+      m_floatting_note->vel = 65;
       m_current = 0;
+      m_seq->add(m_current, *m_floatting_note);
     }
 
+  switch (event->keyval)
+    {
+    case GDK_Up:
+      if (event->state & GDK_CONTROL_MASK)
+        m_floatting_note->inc_len(ppq);
+      else
+        m_floatting_note->inc_note();
+      redraw = true;
+      break;
+    case GDK_Down:
+      if (event->state & GDK_CONTROL_MASK)
+        m_floatting_note->dec_len(ppq);
+      else
+        m_floatting_note->dec_note();
+      redraw = true;
+      break;
+    case GDK_Left:
+      if (event->state & GDK_CONTROL_MASK)
+        m_floatting_note->dec_len();
+      else
+        {
+          if (m_current < ppq)
+            {
+          m_seq->move(m_current, *m_floatting_note, 0);
+          m_current = 0;
+            }
+          else
+            {
+              m_seq->move(m_current, *m_floatting_note,  m_current - ppq);
+              m_current -= ppq;
+            }
+        }
+      redraw = true;
+      break;
+    case GDK_Right:
+      if (event->state & GDK_CONTROL_MASK)
+        m_floatting_note->dec_len();
+      else
+        m_seq->move(m_current, *m_floatting_note, m_current + ppq);
+      m_current += ppq;
+      redraw = true;
+      break;
+    case GDK_Return:
+      m_floatting_note = new Event_new(*m_floatting_note);
+      m_seq->add(m_current + m_floatting_note->len, *m_floatting_note);
+      m_current = m_current + m_floatting_note->len;
+      redraw = true;
+      break;
+    };
+
+  if (redraw)
+    {
+      queue_draw();
+      return true;
+    }
+  else
+    return false;
 }
 
 void                    RollView::display_sequence(Cairo::RefPtr<Cairo::Context> cr)

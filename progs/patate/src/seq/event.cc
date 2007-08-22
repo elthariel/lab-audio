@@ -1,7 +1,7 @@
 /*
-** main.cc
+** event.cc
 ** Login : <elthariel@elthariel-desktop>
-** Started on  Wed Aug 15 00:44:50 2007 Nahlwe
+** Started on  Wed Aug 22 20:31:13 2007 Nahlwe
 ** $Id$
 **
 ** Copyright (C) 2007 Nahlwe
@@ -21,36 +21,49 @@
 */
 
 #include <iostream>
-#include <gtkmm/main.h>
-#include <gtkmm/box.h>
-#include <gtkmm/window.h>
-#include <gtkmm/scrolledwindow.h>
-#include "kbd_view.hh"
-#include "roll_view.hh"
-#include "../seq/timer.hh"
+#include "event.hh"
 
-int main(int ac, char **av)
+void                  Event_new::inc_note(unsigned int offset)
 {
-  Gtk::Main     kit(ac, av);
-  Seq::TimerSingleton::init(*new Seq::Timer());
-  Seq::Sequence<Event_new> seq(1, 2, 0);
-
-  Gtk::Window           win;
-  Gtk::HBox             hbox;
-  Gtk::ScrolledWindow   scroll;
-  KbdView               kview(20, 45);
-  RollView              rview(20, 15, 4, 4, &seq);
-
-  win.add(scroll);
-  scroll.add(hbox);
-  hbox.pack_start(kview, Gtk::PACK_SHRINK);
-  hbox.pack_start(rview);
-
-  win.set_default_size(400, 600);
-
-  win.show_all();
-
-  Gtk::Main::run(win);
+  if ((note + offset) > 127)
+    note = 127;
+  else
+    note += offset;
 }
 
+void                  Event_new::dec_note(unsigned int offset)
+{
+  if (note < offset)
+    note = 0;
+  else
+    note -= offset;
+}
 
+void                  Event_new::inc_vel(unsigned int offset)
+{
+  if ((vel + offset) > 127)
+    vel = 127;
+  else
+    vel += offset;
+}
+
+void                  Event_new::dec_vel(unsigned int offset)
+{
+  if (vel < offset)
+    vel = 0;
+  else
+    vel -= offset;
+}
+
+void                  Event_new::inc_len(unsigned int offset)
+{
+  len += offset;
+}
+
+void                  Event_new::dec_len(unsigned int offset)
+{
+  if (len <= offset)
+    len = 1;
+  else
+    len -= offset;
+}

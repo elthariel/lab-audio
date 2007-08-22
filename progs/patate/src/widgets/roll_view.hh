@@ -29,6 +29,7 @@
 #include "timer.hh"
 #include "event.hh"
 
+/// \todo use signature
 class RollView : public Gtk::DrawingArea
 {
 public:
