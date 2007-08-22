@@ -28,7 +28,7 @@ RollView::  RollView(unsigned int a_note_h, unsigned int a_time_w,
                      Seq::Sequence<Event_new> *a_seq)
   : m_height(a_note_h), m_width(a_time_w),
     m_times(a_times), m_beats(a_beats),
-    m_seq(a_seq)
+    m_seq(a_seq), m_floatting_note(0), m_current(0)
 {
   set_size_request(-1, a_note_h * 120);
 }
@@ -59,15 +59,18 @@ bool                    RollView::on_expose_event(GdkEventExpose *event)
         }
 
       draw_background(cr);
-
+      display_sequence(cr);
     }
 }
 
-/// \todo use caching to avoid redwaing from scratch each time.
+/// \todo use caching to avoid redrawing from scratch each time.
 void                  RollView::draw_background(Cairo::RefPtr<Cairo::Context> cr)
 {
   unsigned int  notes, i;
 
+  Gtk::Allocation allocation = get_allocation();
+  const int width = allocation.get_width();
+  const int height = allocation.get_height();
 
   notes = 10 * 12;
 
@@ -111,8 +114,8 @@ void                  RollView::draw_background(Cairo::RefPtr<Cairo::Context> cr
 }
 
 void                  RollView::display_note(Cairo::RefPtr<Cairo::Context> cr,
-                                             unsigned int pos_x, char note, unsigned int len,
-                                             char vel, char p0, char p1, char p2)
+                                             Seq::tick pos_x, char note, unsigned int len,
+                                             char vel, bool a_current)
 {
   Gtk::Allocation allocation = get_allocation();
   const int width = allocation.get_width();
@@ -129,24 +132,59 @@ void                  RollView::display_note(Cairo::RefPtr<Cairo::Context> cr,
                 len, m_height);
   cr->fill();
 
-  // bottom line
-  cr->set_source_rgba(p0 / 127.0, 0.0, 0.0, 0.8);
-  cr->move_to(pos_x, height - note * m_height - lw);
-  cr->line_to(pos_x + len - lw, height - note * m_height - lw);
-  cr->stroke();
+  if (a_current)
+    {
+      cr->set_source_rgb(0.8, 1.0, 0.8);
+      cr->stroke();
+    }
 
-  // right line
-  cr->set_source_rgba(0.0, p1 / 127.0, 0.0, 0.8);
-  cr->move_to(pos_x + len - lw, height - note * m_height);
-  cr->line_to(pos_x + len - lw, height - (note + 1) * m_height);
-  cr->stroke();
+//   // bottom line
+//   cr->set_source_rgba(p0 / 127.0, 0.0, 0.0, 0.8);
+//   cr->move_to(pos_x, height - note * m_height - lw);
+//   cr->line_to(pos_x + len - lw, height - note * m_height - lw);
+//   cr->stroke();
 
-  // top line
-  cr->set_source_rgba(0.0, 0.0, p2 / 127.0, 0.8);
-  cr->move_to(pos_x + len - 2 * lw, height - (note + 1) * m_height + lw);
-  cr->line_to(pos_x, height - (note + 1) * m_height + lw);
-  cr->stroke();
+//   // right line
+//   cr->set_source_rgba(0.0, p1 / 127.0, 0.0, 0.8);
+//   cr->move_to(pos_x + len - lw, height - note * m_height);
+//   cr->line_to(pos_x + len - lw, height - (note + 1) * m_height);
+//   cr->stroke();
+
+//   // top line
+//   cr->set_source_rgba(0.0, 0.0, p2 / 127.0, 0.8);
+//   cr->move_to(pos_x + len - 2 * lw, height - (note + 1) * m_height + lw);
+//   cr->line_to(pos_x, height - (note + 1) * m_height + lw);
+//   cr->stroke();
 
   cr->restore();
 }
+
+bool                    RollView::on_key_press_event(GdkEventKey *event)
+{
+  if (!m_floatting_note)
+    {
+      m_floatting_note = new Event_new;
+      m_current = 0;
+    }
+
+}
+
+void                    RollView::display_sequence(Cairo::RefPtr<Cairo::Context> cr)
+{
+  if (m_seq)
+    {
+      Seq::Sequence<Event_new>::iterator iter;
+
+      for(iter = m_seq->begin(); iter != m_seq->end(); iter++)
+        {
+          if((*iter).first == m_current)
+            display_note(cr, (*iter).first, (*iter).second->note, (*iter).second->len,
+                         (*iter).second->vel, true);
+          else
+            display_note(cr, (*iter).first, (*iter).second->note, (*iter).second->len,
+                         (*iter).second->vel, true);
+        }
+    }
+}
+
 
