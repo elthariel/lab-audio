@@ -38,16 +38,22 @@ public:
   virtual ~RollView();
 
   void                  display_note(Cairo::RefPtr<Cairo::Context> cr,
-                                     unsigned int pos_x, char note, unsigned int len,
-                                     char vel);
-  void                  draw_background(Cairo::RefPtr<Cairo::Context> cr);
+                                     Seq::tick pos_x, char note, unsigned int len,
+                                     char vel, bool a_current); /// Draw a single note
+  /// Display the note sequence and the note being edited.
+  void                  display_sequence(Cairo::RefPtr<Cairo::Context> cr);
+  void                  draw_background(Cairo::RefPtr<Cairo::Context> cr); /// draw the note grid.
 
 protected:
   virtual bool          on_expose_event(GdkEventExpose *event);
+  virtual bool          on_key_press_event(GdkEventKey *event);
 
   unsigned int          m_height, m_width, m_times, m_beats;
   Seq::Sequence<Event_new> *m_seq;
+  Event_new             *m_floatting_note; /// The note being moved.
+  Seq::tick             m_current; /// The position of the note being moved.
 };
 
 
 #endif	    /* !ROLL_VIEW_HH_ */
+

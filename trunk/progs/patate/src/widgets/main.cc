@@ -27,10 +27,12 @@
 #include <gtkmm/scrolledwindow.h>
 #include "kbd_view.hh"
 #include "roll_view.hh"
+#include "../seq/timer.hh"
 
 int main(int ac, char **av)
 {
   Gtk::Main     kit(ac, av);
+  Seq::TimerSingleton::init(new Seq::Timer());
 
   Gtk::Window           win;
   Gtk::HBox             hbox;
