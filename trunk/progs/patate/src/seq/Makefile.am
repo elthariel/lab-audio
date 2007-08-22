@@ -26,7 +26,7 @@ EXTRA_DIST =
 
 noinst_HEADERS =
 
-include_HEADERS = timer.hh iSynth.hh part.hh seq.hh Sequence.hh event_bus.hh transport.hh
+include_HEADERS = timer.hh iSynth.hh part.hh seq.hh Sequence.hh event_bus.hh transport.hh event.hh
 
 #######################
 # Build an executable #
@@ -35,7 +35,7 @@ include_HEADERS = timer.hh iSynth.hh part.hh seq.hh Sequence.hh event_bus.hh tra
 #INCLUDES = -I $(top_builddir)/src
 
 lib_LTLIBRARIES = libseq.la
-libseq_la_SOURCES = timer.cc transport.cc part.cc seq.cc
+libseq_la_SOURCES = timer.cc transport.cc part.cc seq.cc event.cc
 libseq_la_CXXFLAGS = -g3 @SIGC_CFLAGS@
 libseq_la_LIBADD = -lrt @SIGC_LIBS@
 libseq_la_LDFLAGS =

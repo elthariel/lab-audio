@@ -58,10 +58,10 @@ void                                  Sequence<T>::play(tick a_pos, tick a_len)
 template <class T>
 void                                  Sequence<T>::add(tick a_pos, T &a_event)
 {
-  value_type                          new_pair;
+  value_type                          new_pair(a_pos, &a_event);
 
-  new_pair.first = a_pos;
-  new_pair.second = &a_event;
+  /*  new_pair.first = a_pos;
+      new_pair.second = &a_event;*/
   m_seq.insert(new_pair);
 }
 
@@ -108,6 +108,25 @@ void                                  Sequence<T>::set_len(unsigned short a_new_
 {
   m_seq_len = a_new_len;
 }
+
+  template <class T>
+  void                                  Sequence<T>::move(iterator iter, tick new_pos)
+  {
+    T                                   *ev = iter->second;
+    value_type                          val(new_pos, ev);
+
+    m_seq.erase(iter);
+    m_seq.insert(val);
+  }
+
+  template <class T>
+  void                                  Sequence<T>::move(tick old_pos, T &event, tick new_pos)
+  {
+    iterator i = m_seq.find(old_pos);
+    while((i->second != &event) & (i != m_seq.end()))
+      i++;
+    move(i, new_pos);
+  }
 
 };
 

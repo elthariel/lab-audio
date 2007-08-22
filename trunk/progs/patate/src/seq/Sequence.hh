@@ -56,6 +56,8 @@ namespace Seq
     void                                add(tick a_pos, T &);
     void                                remove(tick a_pos);
     void                                remove_range(tick low_bound, tick high_bound);
+    void                                move(iterator el, tick new_pos);
+    void                                move(tick old_pos, T &ev, tick new_pos);
 
     void                                clear();
 

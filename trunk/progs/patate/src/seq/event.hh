@@ -68,10 +68,18 @@ typedef Event_old Event;
 struct Event_new
 {
   Event_new():note(0), vel(0), len(0) {}
+  Event_new(Event_new &e):note(e.note), vel(e.vel), len(e.len) {}
   unsigned char         note;
   unsigned char         vel;
   uint16_t              pad0;
   uint32_t              len;
+
+  void                  inc_note(unsigned int offset = 1);
+  void                  dec_note(unsigned int offset = 1);
+  void                  inc_vel(unsigned int offset = 1);
+  void                  dec_vel(unsigned int offset = 1);
+  void                  inc_len(unsigned int offset = 1);
+  void                  dec_len(unsigned int offset = 1);
 };
 
 #endif	    /* !GUI_EVENT_HH_ */
