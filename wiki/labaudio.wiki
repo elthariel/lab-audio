@@ -1,6 +1,9 @@
 #summary Presentation du lae (lab audio epi{ta, tech})
 #labels Featured
 
+= Update =
+Le lab-audio fera partie du futur lab open source de l'ecole. (www.osslab.eu), Our blog is here (news.osslab.eu)
+
 = Le but =
  * créer un pole de compétence dans le domaine de la musique/vidéo sous linux au seins de l'école
  * acquérir de la reconnaissance vis a vis des professionnels afin de trouver du travail dans le domaine
@@ -15,23 +18,10 @@
 == logiciels ==
  * wired
  * patchwork13
- * plugins lv2: 
-   * promethee : sampler
-   * 10tau : distortion (waveshaper-like)
-   * soulrider : simulation d'une platine vinyle
-   * tronsonator : mixeur 4 voix avec eq et pré-écoute
-   * butinator: gestionnaire de playlist (utilisable avec soulrider, promethee)
- * libthc : library de widget audio interconnectable entre application
  * kbdz : gestion des entrées materielles
- * frontend ingen utilisant libthc, pour se construire son studio virtuel a l'aide de lv2
-
-== Materiels ==
- * machine embarquée inter connecté par le reseau
- * recherche en IHM avec ecran tactile/midibox/reactable
 
 
 
 == Links ==
- * http://www.jazzmutant.com
  * http://patchwork13.sourceforge.net
  * http://wired.epitech.net
