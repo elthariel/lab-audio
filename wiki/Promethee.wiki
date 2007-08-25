@@ -1,5 +1,4 @@
 #summary Promethee sampler page.
-#labels Featured,LV2
 
 = Presentation =
 
