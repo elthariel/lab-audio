@@ -1,0 +1,70 @@
+##
+## lv2-resshare.ttl
+## Login : <elthariel@gmail.com>
+## Started on  Thu Nov 22 06:49:47 2007 Elthariel(Lta)
+##
+##
+## Copyright (C) 2007 elthariel
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU Lesser General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU Lesser General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+##
+
+@prefix :     <http://lv2plug.in/ns/lv2core#> .
+@prefix rsh:  <http://audio.osslab.eu/lv2/resshare/ns#>
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+
+rsh:Specification a rdfs:Class;
+        rdfs:comment """
+Some text of desc here
+""".
+
+<> a doap:Project ;
+   a :Specification ;
+   doap:license <http://usefulinc.com/doap/licenses/lgpl> ;
+   doap:name "LV2-Ressource-Sharing" ;
+   doap:homepage <http://audio.osslab.eu/lv2/resshare> ;
+   doap:created "2007-07-10" ;
+   doap:shortdesc "A ressource sharing extension between lv2 hosts and plugins" ;
+   doap:programming-language "C" ;
+   doap:release [
+       doap:revision "0.1alpha" ;
+       doap:created "2007-11-14"
+   ] ;
+   doap:maintainer [
+       a foaf:Person ;
+       foaf:name "Elthariel" ;
+       foaf:homepage <http://www.osslab.eu> ;
+       rdfs:seeAlso <http://none.org>
+   ] .
+
+rsh:ResPort a rdfs:Class ;
+    rdfs:label      "Ressource Port" ;
+    rdfs:subClassOf :Port ;
+	rdfs:comment    """
+Ports of this type will be connected to a pointer to some value, which will
+be read and/or write by the plugins during their run method.
+""" .
+
+rsh:InterleavedPCM a rdfs:Class ;
+    rdfs:domain     "rsh:ResPort" ;
+    rdfs:label      "Interleaved PCM Ressource Port" ;
+    rdfs:subClassOf rsh:ResPort ;
+	rdfs:comment    """
+""" .
+
